@@ -1,6 +1,8 @@
 #ifndef __BIRCH_H_
 #define __BIRCH_H_
 
+#include <gmpxx.h>
+
 /* Type definitions */
 
 typedef mpz_class W;
