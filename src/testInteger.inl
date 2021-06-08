@@ -29,7 +29,7 @@ bool testInteger<R>::testGcd(const R & a, const R & b, const R & d)
   Integer<R> a_int = a;
   Integer<R> b_int = b;
   
-  Integer<R> d_int = a.gcd(b);
+  Integer<R> d_int = a_int.gcd(b_int);
 
   return (d_int == d);
 }
