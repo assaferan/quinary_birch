@@ -69,7 +69,7 @@ public:
 
   void print(std::ostream&) const;
 
-  Integert<R>* get_ptr() { return this; }
+  Integer<R>* get_ptr() { return this; }
 
   const Integer<R>* get_ptr() const { return this; }
   
