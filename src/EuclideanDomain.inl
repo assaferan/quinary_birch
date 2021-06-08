@@ -30,7 +30,7 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
     old_s = temp;
   }
   
-  return std::make_tuple(d,s,t);
+  return std::make_tuple(a,s,t);
 }
 
 // This could use xgcd, but this implementation is lightly quicker
