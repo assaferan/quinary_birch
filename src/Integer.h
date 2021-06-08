@@ -68,6 +68,10 @@ public:
   euclideanDivision(const Integer<R>& b) const;
 
   void print(std::ostream&) const;
+
+  Integert<R>* get_ptr() { return this; }
+
+  const Integer<R>* get_ptr() const { return this; }
   
 protected:
   R _num;
