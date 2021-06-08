@@ -5,7 +5,7 @@
 template <class Derived>
 Derived Ring<Derived>::operator+ (const Derived& other) const
 {
-  Derived sum = (*this);
+  Derived sum = (*dynamic_cast<const Derived*>(this));
   sum += other;
   return sum;
 }
@@ -13,7 +13,7 @@ Derived Ring<Derived>::operator+ (const Derived& other) const
 template <class Derived>
 Derived Ring<Derived>::operator- (const Derived& other) const
 {
-  Derived diff = (*this);
+  Derived diff = (*dynamic_cast<const Derived*>(this));
   diff -= other;
   return diff;
 }
@@ -28,7 +28,7 @@ Derived Ring<Derived>::operator* (const Derived& other) const
 
 template <class Derived>
 Derived Ring<Derived>::operator- () const {
-  Derived neg = (*this);
+  Derived neg = (*dynamic_cast<const Derived*>(this));
   return neg.zero() - (*this);
 }
 
