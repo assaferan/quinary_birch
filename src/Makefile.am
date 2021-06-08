@@ -15,6 +15,8 @@ SOURCES += Integer.h
 SOURCES += Integer.inl
 SOURCES += Ring.h
 SOURCES += Ring.inl
+SOURCES += testInteger.h
+SOURCES += testInteger.inl
 
 birch_dbg_SOURCES = birch.cpp $(SOURCES)
 birch_dbg_CXXFLAGS = $(DBG_AM_CXXFLAGS)
