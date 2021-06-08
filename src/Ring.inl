@@ -13,7 +13,7 @@ Derived Ring<Derived>::operator+ (const Derived& other) const
 template <class Derived>
 Derived Ring<Derived>::operator- (const Derived& other) const
 {
-  Derived diff = (*dynamic_cast<const Derived*>(this));
+  Derived diff = *(this->get_ptr());
   diff -= other;
   return diff;
 }
@@ -21,38 +21,38 @@ Derived Ring<Derived>::operator- (const Derived& other) const
 template <class Derived>
 Derived Ring<Derived>::operator* (const Derived& other) const
 {
-  Derived prod = (*dynamic_cast<const Derived*>(this));
+  Derived prod = *(this->get_ptr());
   prod *= other;
   return prod;
 }
 
 template <class Derived>
 Derived Ring<Derived>::operator- () const {
-  Derived neg = (*dynamic_cast<const Derived*>(this));
-  return neg.zero() - (*this);
+  Derived neg = *(this->get_ptr());
+  return neg.zero() - (*this->get_ptr());
 }
 
 template <class Derived>
 Derived& Ring<Derived>::operator^= (unsigned long long int e)
 {
   if (e == 0) return this->one();
-  if (e == 1) return (*this);
+  if (e == 1) return *(this->get_ptr());
 
-  Derived a = (*this);
+  Derived a = *(this->get_ptr());;
 
   // !! - TODO - eliminate recursion here
   (*this) ^= (e>>1);
-  (*this) *= (*this);
+  (*this) *= (*(this->get_ptr()));
 
   if (e%2) (*this) *= a;
 
-  return (*this);
+  return (*(this->get_ptr()));
 }
 
 template <class Derived>
 Derived Ring<Derived>::operator^ (unsigned long long int e) const
 {
-  Derived pow = (*this);
+  Derived pow = *(this->get_ptr());
   pow ^= e;
   return pow;
 }
