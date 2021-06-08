@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "birch.h"
 #include "Integer.h"
 
 int main()

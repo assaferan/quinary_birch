@@ -1,5 +1,5 @@
-#ifndef __RING_H
-#define __RING_H
+#ifndef __RING_H_
+#define __RING_H_
 
 #include <ostream>
 #include <string>
@@ -142,4 +142,4 @@ public:
 
 #include "Ring.inl"
 
-#endif // __RING_H
+#endif // __RING_H_

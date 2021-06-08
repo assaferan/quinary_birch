@@ -1,5 +1,5 @@
-#ifndef __EUCLIDEAN_DOMAIN_H
-#define __EUCLIDEAN_DOMAIN_H
+#ifndef __EUCLIDEAN_DOMAIN_H_
+#define __EUCLIDEAN_DOMAIN_H_
 
 #include <tuple>
 
@@ -91,4 +91,4 @@ class EuclideanDomain : public virtual Ring<Derived>
 
 #include "EuclideanDomain.inl"
 
-#endif // __EUCLIDEAN_DOMAIN_H
+#endif // __EUCLIDEAN_DOMAIN_H_

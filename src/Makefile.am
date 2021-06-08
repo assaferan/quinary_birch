@@ -8,7 +8,8 @@ AM_CXXFLAGS += -fomit-frame-pointer
 AM_CXXFLAGS += -funroll-all-loops
 AM_LDFLAGS = -lm -lgmp -lgmpxx
 
-SOURCES = EuclideanDomain.h
+SOURCES = birch.h
+SOURCES += EuclideanDomain.h
 SOURCES += EuclideanDomain.inl
 SOURCES += Integer.h
 SOURCES += Integer.inl

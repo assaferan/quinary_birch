@@ -1,5 +1,5 @@
-#ifndef __INTEGER_H
-#define __INTEGER_H
+#ifndef __INTEGER_H_
+#define __INTEGER_H_
 
 #include "EuclideanDomain.h"
 
@@ -76,4 +76,4 @@ protected:
 
 #include "Integer.inl"
 
-#endif //__INTEGER_H
+#endif //__INTEGER_H_
