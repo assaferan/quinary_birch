@@ -21,7 +21,7 @@ Derived Ring<Derived>::operator- (const Derived& other) const
 template <class Derived>
 Derived Ring<Derived>::operator* (const Derived& other) const
 {
-  Derived prod = (*static_cast<const Derived*>(this));
+  Derived prod = (*dynamic_cast<const Derived*>(this));
   prod *= other;
   return prod;
 }
