@@ -34,6 +34,15 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
 template<class Derived>
 Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
 {
+  Derived a = *(this->getPtr());
+  while (!b.is_zero()) {
+    typename EuclideanDomain<Derived>::DivRes q_r = a.euclideanDivision(b);
+    a = b;
+    b = q_r.second;
+  }
+  
+  return a;
+  /*
   if (b.isZero())
     return (*this->getPtr());
 
@@ -42,6 +51,7 @@ Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
   
   // !! TODO - eliminate recursion here
   return b.gcd(r);
+  */
 }
   
 /**
