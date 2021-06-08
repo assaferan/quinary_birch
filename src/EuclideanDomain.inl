@@ -28,7 +28,7 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   Derived s = std::get<2>(d_t_s);
   t -= q * s;
   
-  return std::make_tuple<Derived>(std::move(d),s,t);
+  return std::make_tuple(d,s,t);
 }
 
 // This could use xgcd, but this implementation is lightly quicker
