@@ -6,10 +6,12 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
 {
   Derived old_r = *(this->getPtr());
   Derived r = b;
-  Derived s = a;
-  Derived t = a;
-  Derived old_s = a;
-  Derived old_t = a;
+  // we don't know if there is a default constructor
+  // so we use the copy constructor instead.
+  Derived s = r;
+  Derived t = r;
+  Derived old_s = r;
+  Derived old_t = r;
   Derived temp = a;
   
   old_s.zero();
