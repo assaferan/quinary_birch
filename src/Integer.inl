@@ -20,6 +20,13 @@ Integer<R> & Integer<R>::operator+=(const Integer<R> &other)
 }
 
 template <typename R>
+Integer<R> & Integer<R>::operator-=(const Integer<R> &other)
+{
+  this->_num -= other._num;
+  return (*this);
+}
+
+template <typename R>
 Integer<R> & Integer<R>::operator*=(const Integer<R> &other)
 {
   this->_num *= other._num;
