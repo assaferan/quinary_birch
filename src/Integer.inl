@@ -1,5 +1,7 @@
 // implementation of methods for Integer<R>
 
+#include <cassert>
+
 // assignment
 template<typename R>
 Integer<R> & Integer<R>::operator=(const Integer<R> & b)
