@@ -10,7 +10,7 @@
  */
 
 template<class Derived>
-class EuclideanDomain : public virtal Ring<Derived>
+class EuclideanDomain : public virtual Ring<Derived>
 {
   public:
 
