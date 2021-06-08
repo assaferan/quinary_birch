@@ -135,9 +135,9 @@ class Ring
    *
    * Defines a to string conversion.
    */
-  friend std::ostream& operator<< (std::ostream& ostream, const Derived& d);
+  friend std::ostream& operator<< <Derived>(std::ostream& ostream, const Derived& d);
 
-  friend std::ostream& operator<< (std::ostream& ostream, Derived&& d);
+  friend std::ostream& operator<< <Derived>(std::ostream& ostream, Derived&& d);
 };
 
 
