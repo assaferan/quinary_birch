@@ -5,8 +5,8 @@
 
 int main()
 {
-  Integer<Z> a = Z(240);
-  Integer<Z> b = Z(46);
+  Integer<Z64> a = Z64(240);
+  Integer<Z64> b = Z64(46);
 
   EuclideanDomain< Integer<Z> >::XGcdRes d_s_t = a.xgcd(b);
   
