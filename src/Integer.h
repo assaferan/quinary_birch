@@ -64,7 +64,8 @@ public:
    * Perform the eucldiean division of *this and b. Returns the
    * quotient and the remainder.
    */
-  EuclideanDomain<Integer<R> >::DivRes euclideanDivision(const Integer<R>& b) const;
+  typename EuclideanDomain<Integer<R> >::DivRes
+  euclideanDivision(const Integer<R>& b) const;
 
   void print(std::ostream&) const;
   
