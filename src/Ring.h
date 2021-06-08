@@ -13,11 +13,13 @@
 // i.e. Ring is not a completely virtual ADT
 
 // Forward declaration of friend operators
+/*
 template<class Derived>
 std::ostream& operator<< (std::ostream& ostream, const Derived& d);
 
 template<class Derived>
 std::ostream& operator<< (std::ostream& ostream, Derived&& d);
+*/
 
 template <class Derived>
 class Ring
