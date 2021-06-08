@@ -5,7 +5,7 @@ testInteger<R>::testInteger()
 {
   std::cerr << "testing gcd..." << std::endl;
   std::cerr << "testGcd() == " << testGcd() << std::endl;
-  assert(testGcd());
+  assert(testGcd() == true);
   assert(testXGcd());
 }
 
