@@ -7,7 +7,7 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   if (b.isZero()) {
     // We don't know whether there exists a default constructor,
     // but there is a copy constructor.
-    Derived a = *(static_cast<const Derived*>(this));
+    Derived a(static_cast<const Derived*>(this));
     Derived d = a;
     Derived s = d;
     Derived t = d;
