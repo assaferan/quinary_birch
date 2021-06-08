@@ -9,7 +9,7 @@
  * An abstract class defining the interface of a Euclidean domain.
  */
 
-template class<Derived>
+template<class Derived>
 class EuclideanDomain : public virtal Ring<Derived>
 {
   public:

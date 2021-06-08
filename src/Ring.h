@@ -22,7 +22,7 @@ std::ostream& operator<< (std::ostream& ostream, Derived&& d);
 template <class Derived>
 class Ring
 {
- public:
+public:
   
   /**
    * Determine if *this ring element is zero, that is the additive identity.
@@ -139,8 +139,6 @@ class Ring
 
   friend std::ostream& operator<< <Derived>(std::ostream& ostream, Derived&& d);
 };
-
-
 
 #include "Ring.inl"
 
