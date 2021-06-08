@@ -8,7 +8,7 @@ int main()
   Integer<Z> a = Z(240);
   Integer<Z> b = Z(46);
 
-  EuvlideanDomain< Integer<Z> >::XGcdRes d_s_t = a.xgcd(b);
+  EuclideanDomain< Integer<Z> >::XGcdRes d_s_t = a.xgcd(b);
   
   std::cout << d_s_t << std::endl;
   
