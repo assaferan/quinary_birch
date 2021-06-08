@@ -23,7 +23,7 @@ public:
   
   // copy c-tor
   Integer(const Integer<R> & other) : _num(other._num) {}
-
+  
   // assignment
   Integer<R> & operator=(const Integer<R> & b);
 
