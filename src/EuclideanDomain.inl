@@ -1,6 +1,6 @@
 
 
-template class<Derived>
+template<class Derived>
 typename EuclideanDomain<Derived>::XGcdRes
 EuclideanDomain<Derived>::xgcd(const Derived& b) const
 {
@@ -30,7 +30,7 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
 }
 
 // This could use xgcd, but this implementation is lightly quicker
-template class<Derived>
+template<class Derived>
 Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
 {
   if (b.isZero())
@@ -51,7 +51,7 @@ Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
  * @param b: the divisor
  * @return the quotient
  */
-template class<Derived>
+template<class Derived>
 Derived EuclideanDomain<Derived>::quotient(const Derived& b) const
 {
   typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
@@ -63,7 +63,7 @@ Derived EuclideanDomain<Derived>::quotient(const Derived& b) const
  * @param b: the divisor
  * @return the remainder
  */
-template class<Derived>
+template<class Derived>
 Derived EuclideanDomain<Derived>::remainder(const Derived& b) const
 {
   typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
@@ -76,7 +76,7 @@ Derived EuclideanDomain<Derived>::remainder(const Derived& b) const
  * @param d: the divisor.
  * @return the equotient.
  */
-template class<Derived>
+template<class Derived>
 Derived EuclideanDomain<Derived>::operator/ (const Derived& d) const
 {
   return this->quotient(d);
@@ -88,7 +88,7 @@ Derived EuclideanDomain<Derived>::operator/ (const Derived& d) const
  * @param d: the divisor.
  * @return a reference to this after assignment.
  */
-template class<Derived>
+template<class Derived>
 Derived& EuclideanDomain<Derived>::operator/= (const Derived& d)
 {
   return ((*this) = (*this) / d);
@@ -99,7 +99,7 @@ Derived& EuclideanDomain<Derived>::operator/= (const Derived& d)
  * @param b: the divisor
  * @return the remainder
  */
-template class<Derived>
+template<class Derived>
 Derived EuclideanDomain<Derived>::operator%(const Derived& b) const
 {
   return this->remainder(b);
@@ -110,7 +110,7 @@ Derived EuclideanDomain<Derived>::operator%(const Derived& b) const
  * @param b: the divisor
  * @return this after assignment.
  */
-template class<Derived>
+template<class Derived>
 Derived& EuclideanDomain<Derived>::operator%=(const Derived& b)
 {
   return ((*this) = (*this) % b);
