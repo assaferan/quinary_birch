@@ -29,4 +29,5 @@ bool testInteger<R>::testXGcd()
   return testXGcd(240, 46, 2, -9, -47);
   // https://en.wikipedia.org/wiki/Euclidean_algorithm
   return testXGcd(252, 105, 21, -2, 5);
+  return testXGcd(1071, 462, 21, -3, 7);
 }
