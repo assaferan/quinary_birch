@@ -27,6 +27,10 @@ template <class Derived>
 class Ring
 {
 public:
+
+  virtual Derived* get_ptr() = 0;
+
+  virtual const Derived* get_ptr() const = 0;
   
   /**
    * Determine if *this ring element is zero, that is the additive identity.
