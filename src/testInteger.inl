@@ -1,13 +1,13 @@
 #include <cassert>
 
 template<typename R>
-testIntegers<R>::testInteger()
+testInteger<R>::testInteger()
 {
   assert(testXGcd());
 }
 
 template<typename R>
-bool testIntegers<R>::testXGcd(const R & a, const R & b, const R & d,
+bool testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
 			       const R & s, const R & t)
 {
   Integer<R> a_int = a;
@@ -23,7 +23,7 @@ bool testIntegers<R>::testXGcd(const R & a, const R & b, const R & d,
 }
 
 template<typename R>
-bool testIntegers<R>::testXGcd()
+bool testInteger<R>::testXGcd()
 {
   //this is the wikipedia example
   return testXGcd(240, 46, 2, -9, -47);
