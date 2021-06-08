@@ -3,6 +3,7 @@
 template<typename R>
 testInteger<R>::testInteger()
 {
+  assert(testGcd());
   assert(testXGcd());
 }
 
