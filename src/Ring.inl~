@@ -1,0 +1,130 @@
+// implementation of Ring methods
+
+// return zero and one
+static Derived zero();
+static Derived one();
+
+/**
+* Determine if *this ring element is zero, that is the additive identity.
+*
+* returns true iff *this is zero.
+*/
+
+virtual bool isZero() const;
+
+/**
+* Make *this ring element zero.
+*/
+virtual void zero() = 0;
+
+/**
+* Determine if *this ring element is one, that is the multiplication identity.
+*
+* returns true iff *this is one.
+*/
+virtual bool isOne() const;
+
+/**
+* Make *this ring element one.
+*/
+virtual void one() = 0;
+
+/**
+* Copy assignment.
+*/
+virtual Derived& operator= (const Derived&) = 0;
+
+/**
+* Addition.
+*/
+virtual Derived operator+ (const Derived&) const;
+
+/**
+* Addition assignment.
+*/
+virtual Derived& operator+= (const Derived&) = 0;
+
+/**
+* Subtraction.
+*/
+virtual Derived operator- (const Derived&) const;
+
+/**
+* Subtraction assignment.
+*/
+virtual Derived& operator-= (const Derived&) = 0;
+
+/**
+* Negation.
+*/
+virtual Derived operator- () const;
+
+/**
+* Multiplication.
+*/
+virtual Derived operator* (const Derived&) const;
+
+/**
+* Multiplication assignment.
+*/
+virtual Derived& operator*= (const Derived&) = 0;
+
+/**
+* Exponentiation.
+*/
+virtual Derived operator^ (unsigned long long int e) const;
+
+/**
+* Exponentiation assignment.
+*/
+virtual Derived& operator^= (unsigned long long int e);
+
+/**
+* Equality test,
+*
+* returns true iff equal
+*/
+virtual bool operator== (const Derived&) const = 0;
+
+/**
+* Inequality test,
+*
+* returns true iff not equal.
+*/
+virtual bool operator!= (const Derived&) const;
+
+/**
+* Print the Ring element.
+*/
+virtual void print(std::ostream&) const = 0;
+
+/**
+* Convert the Ring element to a string.
+*
+* Simple delegation of printing to a stringstream to obtain a string.
+* Overriding the print method is sufficient for sub-classes
+* to make use of this method.
+*
+* returns the string representation of the Ring element.
+*/
+virtual std::string toString() const {
+std::stringstream ss;
+print(ss);
+return ss.str();
+}
+
+/**
+* Output operator.
+*
+* Defines a to string conversion.
+*/
+friend std::ostream& operator<< (std::ostream& ostream, const Derived& d) {
+d.print(ostream);
+return ostream;
+}
+
+friend std::ostream& operator<< (std::ostream& ostream, Derived&& d) {
+d.print(ostream);
+return ostream;
+}
+
