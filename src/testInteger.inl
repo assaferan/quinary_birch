@@ -15,9 +15,9 @@ bool testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
 
   typename EuclideanDomain< Integer<R> >::XGcdRes d_s_t = a_int.xgcd(b_int);
   
-  Integer<R> d_int = std:get<0>(d_s_t);
-  Integer<R> s_int = std:get<1>(d_s_t);
-  Integer<R> t_int = std:get<2>(d_s_t);
+  Integer<R> d_int = std::get<0>(d_s_t);
+  Integer<R> s_int = std::get<1>(d_s_t);
+  Integer<R> t_int = std::get<2>(d_s_t);
 
   return ((d_int == d) && (s_int == s) && (t_int == t));
 }
