@@ -23,6 +23,17 @@ bool testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
 }
 
 template<typename R>
+bool testInteger<R>::testGcd(const R & a, const R & b, const R & d)
+{
+  Integer<R> a_int = a;
+  Integer<R> b_int = b;
+  
+  Integer<R> d_int = a.gcd(b);
+
+  return (d_int == d);
+}
+
+template<typename R>
 bool testInteger<R>::testXGcd()
 {
   // https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
@@ -30,4 +41,14 @@ bool testInteger<R>::testXGcd()
   // https://en.wikipedia.org/wiki/Euclidean_algorithm
   return testXGcd(252, 105, 21, -2, 5);
   return testXGcd(1071, 462, 21, -3, 7);
+}
+
+template<typename R>
+bool testInteger<R>::testGcd()
+{
+  // https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+  return testGcd(240, 46, 2);
+  // https://en.wikipedia.org/wiki/Euclidean_algorithm
+  return testGcd(252, 105, 21);
+  return testGcd(1071, 462, 21);
 }
