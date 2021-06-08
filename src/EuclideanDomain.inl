@@ -11,7 +11,7 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
     Derived t = b;
     s.one();
     t.zero();
-    return std::make_tuple<Derived>(*this,s,t);
+    return std::make_tuple<Derived>(this,s,t);
   }
 
   typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
