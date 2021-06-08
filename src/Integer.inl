@@ -43,7 +43,6 @@ template <typename R>
 void Integer<R>::print(std::ostream& os) const
 {
   os << this->_num;
-  return os;
 }
 
 // Euclidean division
