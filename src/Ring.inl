@@ -70,13 +70,13 @@ std::string Ring<Derived>::toString() const {
  * Defines a to string conversion.
  */
 template <class Derived>
-std::ostream& operator<< (std::ostream& ostream, const Derived& d) {
+std::ostream& operator<< (std::ostream& ostream, const Ring<Derived>& d) {
   d.print(ostream);
   return ostream;
 }
 
 template <class Derived>
-std::ostream& operator<< (std::ostream& ostream, Derived&& d) {
+std::ostream& operator<< (std::ostream& ostream, Ring<Derived>&& d) {
   d.print(ostream);
   return ostream;
 }
