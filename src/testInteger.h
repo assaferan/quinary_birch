@@ -10,6 +10,8 @@ public:
   testInteger();
   
 protected:
+
+  static bool testXGcd();
   
   static bool testXGcd(const R & a, const R & b, const R & d,
 		       const R & s, const R & t);
