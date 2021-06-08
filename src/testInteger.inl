@@ -25,6 +25,8 @@ bool testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
 template<typename R>
 bool testInteger<R>::testXGcd()
 {
-  //this is the wikipedia example
+  // https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
   return testXGcd(240, 46, 2, -9, -47);
+  // https://en.wikipedia.org/wiki/Euclidean_algorithm
+  return testXGcd(252, 105, 21, -2, 5);
 }
