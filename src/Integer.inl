@@ -30,13 +30,13 @@ Integer<R> & Integer<R>::operator*=(const Integer<R> &other)
 template <typename R>
 bool Integer<R>::operator==(const Integer<R> &other) const
 {
-  return (this->num_ == other.num_); 
+  return (this->_num == other._num); 
 }
 
 template <typename R>
 bool Integer<R>::operator<(const Integer<R> &other) const
 {
-  return (this->num_ < other.num_); 
+  return (this->_num < other._num); 
 }
 
 template <typename R>
