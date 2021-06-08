@@ -35,7 +35,7 @@ template<class Derived>
 Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
 {
   if (b.isZero())
-    return (*this->get_ptr());
+    return (*this->getPtr());
 
   typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
   Derived r = q_r.second;
