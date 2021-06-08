@@ -9,6 +9,8 @@ AM_CXXFLAGS += -funroll-all-loops
 AM_LDFLAGS = -lm -lgmp -lgmpxx
 
 SOURCES = birch.h
+SOURCES += birch_util.h
+SOURCES += birch_util.inl
 SOURCES += EuclideanDomain.h
 SOURCES += EuclideanDomain.inl
 SOURCES += Integer.h
