@@ -22,7 +22,7 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   Derived r = q_r.second;
 
   // !! TODO - eliminate recursion here 
-  typename EuclideanDomain<Derived>::XGcdRes d_t_s = b.extendedEuclidean(r);
+  typename EuclideanDomain<Derived>::XGcdRes d_t_s = b.xgcd(r);
   Derived d = std::get<0>(d_t_s);
   Derived t = std::get<1>(d_t_s);
   Derived s = std::get<2>(d_t_s);
