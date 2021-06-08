@@ -69,9 +69,9 @@ public:
 
   void print(std::ostream&) const;
 
-  Integer<R>* get_ptr() { return this; }
+  Integer<R>* getPtr() { return this; }
 
-  const Integer<R>* get_ptr() const { return this; }
+  const Integer<R>* getPtr() const { return this; }
   
 protected:
   R _num;

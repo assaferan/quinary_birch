@@ -5,7 +5,7 @@
 template <class Derived>
 Derived Ring<Derived>::operator+ (const Derived& other) const
 {
-  Derived sum = *(this->get_ptr());
+  Derived sum = *(this->getPtr());
   sum += other;
   return sum;
 }
@@ -13,7 +13,7 @@ Derived Ring<Derived>::operator+ (const Derived& other) const
 template <class Derived>
 Derived Ring<Derived>::operator- (const Derived& other) const
 {
-  Derived diff = *(this->get_ptr());
+  Derived diff = *(this->getPtr());
   diff -= other;
   return diff;
 }
@@ -21,38 +21,38 @@ Derived Ring<Derived>::operator- (const Derived& other) const
 template <class Derived>
 Derived Ring<Derived>::operator* (const Derived& other) const
 {
-  Derived prod = *(this->get_ptr());
+  Derived prod = *(this->getPtr());
   prod *= other;
   return prod;
 }
 
 template <class Derived>
 Derived Ring<Derived>::operator- () const {
-  Derived neg = *(this->get_ptr());
-  return neg.zero() - (*this->get_ptr());
+  Derived neg = *(this->getPtr());
+  return neg.zero() - (*this->getPtr());
 }
 
 template <class Derived>
 Derived& Ring<Derived>::operator^= (unsigned long long int e)
 {
   if (e == 0) return this->one();
-  if (e == 1) return *(this->get_ptr());
+  if (e == 1) return *(this->getPtr());
 
-  Derived a = *(this->get_ptr());;
+  Derived a = *(this->getPtr());;
 
   // !! - TODO - eliminate recursion here
   (*this) ^= (e>>1);
-  (*this) *= (*(this->get_ptr()));
+  (*this) *= (*(this->getPtr()));
 
   if (e%2) (*this) *= a;
 
-  return (*(this->get_ptr()));
+  return (*(this->getPtr()));
 }
 
 template <class Derived>
 Derived Ring<Derived>::operator^ (unsigned long long int e) const
 {
-  Derived pow = *(this->get_ptr());
+  Derived pow = *(this->getPtr());
   pow ^= e;
   return pow;
 }

@@ -7,13 +7,12 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   if (b.isZero()) {
     // We don't know whether there exists a default constructor,
     // but there is a copy constructor.
-    Derived a(*static_cast<const Derived *>(this));
-    Derived d = a;
+    Derived d = *(this->getPtr());
     Derived s = d;
     Derived t = d;
     s.one();
     t.zero();
-    return std::make_tuple<Derived>(std::move(d),s,t);
+    return std::make_tuple(d,s,t);
   }
 
   typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
@@ -92,7 +91,7 @@ template<class Derived>
 Derived& EuclideanDomain<Derived>::operator/= (const Derived& d)
 {
  ((*this) = (*this) / d);
- return *(this->get_ptr());
+ return *(this->getPtr());
 }
 
 /**
@@ -115,5 +114,5 @@ template<class Derived>
 Derived& EuclideanDomain<Derived>::operator%=(const Derived& b)
 {
   ((*this) = (*this) % b);
-  return *(this->get_ptr());
+  return *(this->getPtr());
 }
