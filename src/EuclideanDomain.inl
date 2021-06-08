@@ -4,7 +4,8 @@ template<class Derived>
 typename EuclideanDomain<Derived>::XGcdRes
 EuclideanDomain<Derived>::xgcd(const Derived& b) const
 {
-  Derived a = *(this->getPtr());
+  Derived old_r = *(this->getPtr());
+  Derived r = b;
   Derived s = a;
   Derived t = a;
   Derived old_s = a;
@@ -16,10 +17,10 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   s.one();
   t.zero();
   
-  while (!b.isZero()) {
-    typename EuclideanDomain<Derived>::DivRes q_r = a.euclideanDivision(b);
-    a = b;
-    b = q_r.second;
+  while (!r.isZero()) {
+    typename EuclideanDomain<Derived>::DivRes q_r = old_r.euclideanDivision(r);
+    old_r = r;
+    r = q_r.second;
     
     temp = t;
     t -= q_r.first * old_t;
@@ -30,21 +31,22 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
     old_s = temp;
   }
   
-  return std::make_tuple(a,s,t);
+  return std::make_tuple(old_r,s,t);
 }
 
 // This could use xgcd, but this implementation is lightly quicker
 template<class Derived>
 Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
 {
-  Derived a = *(this->getPtr());
-  while (!b.isZero()) {
-    typename EuclideanDomain<Derived>::DivRes q_r = a.euclideanDivision(b);
-    a = b;
-    b = q_r.second;
+  Derived old_r = *(this->getPtr());
+  Derived r = b;
+  while (!r.isZero()) {
+    typename EuclideanDomain<Derived>::DivRes q_r = old_r.euclideanDivision(r);
+    old_r = r;
+    r = q_r.second;
   }
   
-  return a;
+  return old_r;
 }
   
 /**
