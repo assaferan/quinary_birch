@@ -42,16 +42,6 @@ Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
   }
   
   return a;
-  /*
-  if (b.isZero())
-    return (*this->getPtr());
-
-  typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
-  Derived r = q_r.second;
-  
-  // !! TODO - eliminate recursion here
-  return b.gcd(r);
-  */
 }
   
 /**
