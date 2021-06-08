@@ -12,7 +12,7 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   Derived t = r;
   Derived old_s = r;
   Derived old_t = r;
-  Derived temp = a;
+  Derived temp = r;
   
   old_s.zero();
   old_t.one();
