@@ -15,6 +15,9 @@
 // Forward declaration of friend operators
 
 template<class Derived>
+class Ring;
+
+template<class Derived>
 std::ostream& operator<< (std::ostream& ostream, const Ring<Derived> & d);
 
 template<class Derived>
