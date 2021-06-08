@@ -58,9 +58,10 @@ typename EuclideanDomain<Integer<R> >::DivRes
 Integer<R>::euclideanDivision(const Integer<R>& b) const
 {
   Integer<R> q(this->_num / b._num);
-  Integer<R> r(this->_num % b._num);
+  Integer<R> r(this->_num % abs(b._num));
 
-  assert((r._num >= 0) && (r._num < abs(b._num));
-  
+  assert((r._num >= 0) && (r._num < abs(b._num)));
+  assert(*this == q*b+r);
+	 
   return std::make_pair(q,r);
 }
