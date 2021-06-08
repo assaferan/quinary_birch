@@ -87,7 +87,7 @@ class EuclideanDomain : public virtual Ring<Derived>
    * @return this after assignment.
    */
   virtual Derived& operator%=(const Derived& b);
-}
+};
 
 #include "EuclideanDomain.inl"
 
