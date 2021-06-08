@@ -1,19 +1,13 @@
 #include <iostream>
 
 #include "birch.h"
-#include "Integer.h"
+#include "testInteger.h"
 
 int main()
 {
-  Integer<Z64> a = Z64(240);
-  Integer<Z64> b = Z64(46);
-
-  EuclideanDomain< Integer<Z64> >::XGcdRes d_s_t = a.xgcd(b);
-
-  std::cout << std::get<0>(d_s_t) << ", ";
-  std::cout << std::get<1>(d_s_t) << ", ";
-  std::cout << std::get<2>(d_s_t);
-  std::cout << std::endl;
+  testInteger<Z64> test1();
+  testInteger<Z> test2();
+  testInteger<Z128> test3();
   
   return 0;
 }
