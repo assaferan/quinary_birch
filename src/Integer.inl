@@ -53,5 +53,5 @@ Integer<R>::euclideanDivision(const Integer<R>& b) const
   Integer<R> q(this->_num / b._num);
   Integer<R> r(this->_num % b._num);
   
-  return std::make_pair< Integer<R> >(q,r);
+  return std::make_pair< Integer<R>, Integer<R> >(q,r);
 }
