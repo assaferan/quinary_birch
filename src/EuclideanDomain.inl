@@ -93,7 +93,8 @@ Derived EuclideanDomain<Derived>::operator/ (const Derived& d) const
 template<class Derived>
 Derived& EuclideanDomain<Derived>::operator/= (const Derived& d)
 {
-  return ((*this) = (*this) / d);
+ ((*this) = (*this) / d);
+ return *(this->get_ptr());
 }
 
 /**
