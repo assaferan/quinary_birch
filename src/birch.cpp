@@ -10,8 +10,9 @@ int main()
 
   EuclideanDomain< Integer<Z64> >::XGcdRes d_s_t = a.xgcd(b);
 
-  for (size_t i = 0; i < 3; i++)
-    std::cout << std::get<i>(d_s_t);
+  std::cout << std::get<0>(d_s_t) << ", ";
+  std::cout << std::get<1>(d_s_t) << ", ";
+  std::cout << std::get<2>(d_s_t);
   std::cout << std::endl;
   
   return 0;
