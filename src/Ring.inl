@@ -5,7 +5,7 @@
 template <class Derived>
 Derived Ring<Derived>::operator+ (const Derived& other) const
 {
-  Derived sum = (*dynamic_cast<const Derived*>(this));
+  Derived sum = *(this->get_ptr());
   sum += other;
   return sum;
 }
