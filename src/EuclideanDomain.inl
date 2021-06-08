@@ -39,8 +39,6 @@ Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
     return (*this->get_ptr());
 
   typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
-
-  Derived q = q_r.first;
   Derived r = q_r.second;
   
   // !! TODO - eliminate recursion here
@@ -116,5 +114,6 @@ Derived EuclideanDomain<Derived>::operator%(const Derived& b) const
 template<class Derived>
 Derived& EuclideanDomain<Derived>::operator%=(const Derived& b)
 {
-  return ((*this) = (*this) % b);
+  ((*this) = (*this) % b);
+  return *(this->get_ptr());
 }
