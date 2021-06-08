@@ -7,11 +7,12 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   if (b.isZero()) {
     // We don't know whether there exists a default constructor,
     // but there is a copy constructor.
+    Derived d = *this;
     Derived s = b;
     Derived t = b;
     s.one();
     t.zero();
-    return std::make_tuple<Derived>(this,s,t);
+    return std::make_tuple<Derived>(d,s,t);
   }
 
   typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
