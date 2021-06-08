@@ -4,28 +4,31 @@ template<class Derived>
 typename EuclideanDomain<Derived>::XGcdRes
 EuclideanDomain<Derived>::xgcd(const Derived& b) const
 {
-  if (b.isZero()) {
-    // We don't know whether there exists a default constructor,
-    // but there is a copy constructor.
-    Derived d = *(this->getPtr());
-    Derived s = d;
-    Derived t = d;
-    s.one();
-    t.zero();
-    return std::make_tuple(d,s,t);
+  Derived a = *(this->getPtr());
+  Derived s = a;
+  Derived t = a;
+  Derived old_s = a;
+  Derived old_t = a;
+  Derived temp = a;
+  
+  old_s.zero();
+  old_t.one();
+  s.one();
+  t.zero();
+  
+  while (!b.isZero()) {
+    typename EuclideanDomain<Derived>::DivRes q_r = a.euclideanDivision(b);
+    a = b;
+    b = q_r.second;
+    
+    temp = t;
+    t -= q_r.first * old_t;
+    old_t = temp;
+
+    temp = s;
+    s -= q_r.first * old_s;
+    old_s = temp;
   }
-
-  typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
-
-  Derived q = q_r.first;
-  Derived r = q_r.second;
-
-  // !! TODO - eliminate recursion here 
-  typename EuclideanDomain<Derived>::XGcdRes d_t_s = b.xgcd(r);
-  Derived d = std::get<0>(d_t_s);
-  Derived t = std::get<1>(d_t_s);
-  Derived s = std::get<2>(d_t_s);
-  t -= q * s;
   
   return std::make_tuple(d,s,t);
 }
