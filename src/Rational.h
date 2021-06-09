@@ -114,30 +114,25 @@ public:
   {R one = 1; return ((_denom == one) || (_denom == -one)); }
 
   // other
-  template <typename R>
   friend Rational<R> operator*(Integer<R> b, const Rational<R> & r) {
     return r*b;
   }
 
-  template <typename R>
   friend Rational<R> operator-(Integer<R> b, const Rational<R> & r) {
     Rational<R> b_rat(b);
     return b_rat-r;
   }
 
-  template <typename R>
   friend Rational<R> operator+(Integer<R> b, const Rational<R> & r) {
     Rational<R> b_rat(b);
     return b_rat+r;
   }
 
-  template <typename R>
   friend Rational<R> operator/(Integer<R> b, const Rational<R> & r) {
     Rational<R> b_rat(b);
     return b_rat/r;
   }
 
-  template <typename R>
   friend std::ostream& operator<<(std::ostream & os, const Rational<R> & r)
   {
     R one = 1;
