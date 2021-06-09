@@ -64,8 +64,14 @@ public:
 
   void setField(std::shared_ptr<const Fp<R,S>> fld) {this->_GF = fld;}
 
-  FpElement<R,S>& makeZero() override {this->_val = 0;}
-  FpElement<R,S>& makeOne() override {this->_val = 1;}
+  FpElement<R,S>& makeZero() override {this->_val = 0; return (*this); }
+  FpElement<R,S>& makeOne() override {this->_val = 1; return (*this); }
+
+  static FpElement<R,S> zero(std::shared_ptr< const Fp<R,S> > GF)
+  {FpElement<R,S> z(GF); z.makeZero(); return z;}
+
+  static FpElement<R,S> one(std::shared_ptr< const Fp<R,S> > GF)
+  {FpElement<R,S> z(GF); z.makeOne(); return z;}
   
   FpElement<R,S>* getPtr() override {return this;}
 
