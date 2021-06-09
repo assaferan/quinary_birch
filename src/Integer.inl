@@ -67,8 +67,9 @@ Integer<R>::euclideanDivision(const Integer<R>& other) const
   if (b < 0) {
     b = -b;
   }
-  Integer<R> q(a / b);
-  Integer<R> r(a % b);
+  
+  R q = a / b;
+  R r = a % b;
   
   if (this->_num < 0) {
     q = -q-1;
@@ -78,9 +79,12 @@ Integer<R>::euclideanDivision(const Integer<R>& other) const
   if (other._num < 0) {
     q = -q;
   }
+
+  Integer<R> q_int(q);
+  Integer<R> r_int(r);
   
-  assert((r._num >= 0) && (r._num < abs(other._num)));
-  assert(*this == q*b+r);
+  assert((r_int._num >= 0) && (r_int._num < abs(other._num)));
+  assert(*this == q_int*b_int+r_int);
 	 
-  return std::make_pair(q,r);
+  return std::make_pair(q_int,r_int);
 }
