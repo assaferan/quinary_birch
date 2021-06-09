@@ -11,7 +11,7 @@
 // class (as Jeff did with Fp), and then let the element wrap it ?
 
 template <class Derived, class DerivedElement>
-class Ring
+class Ring : public virtual std::enable_shared_from_this<const Derived>
 {
 public:
 
