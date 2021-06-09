@@ -42,5 +42,5 @@ Derived& Field<Derived>::operator^= (long long int e)
   this->operator^=(abs_e);
   if (e < 0)
     *(this->getPtr()) = this->inverse();
-  return (*this);
+  return (*this->getPtr());
 }
