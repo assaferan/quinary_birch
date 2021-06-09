@@ -29,13 +29,13 @@ Derived Ring<Derived>::operator* (const Derived& other) const
 template <class Derived>
 Derived Ring<Derived>::operator- () const {
   Derived neg = *(this->getPtr());
-  return neg.zero() - (*this->getPtr());
+  return neg.makeZero() - (*this->getPtr());
 }
 
 template <class Derived>
 Derived& Ring<Derived>::operator^= (unsigned long long int e)
 {
-  if (e == 0) return this->one();
+  if (e == 0) return this->makeOne();
   if (e == 1) return *(this->getPtr());
 
   Derived a = *(this->getPtr());;

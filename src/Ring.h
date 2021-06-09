@@ -43,7 +43,7 @@ public:
   /**
    * Make *this ring element zero.
    */
-  virtual Derived& zero() = 0;
+  virtual Derived& makeZero() = 0;
 
   /**
    * Determine if *this ring element is one, that is the multiplication identity.
@@ -55,7 +55,7 @@ public:
   /**
    * Make *this ring element one.
    */
-  virtual Derived& one() = 0;
+  virtual Derived& makeOne() = 0;
 
   /**
    * Copy assignment.

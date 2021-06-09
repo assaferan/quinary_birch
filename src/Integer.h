@@ -51,13 +51,16 @@ public:
   inline bool isZero() const { return (_num == 0); }
 
   // assign zero
-  inline Integer<R> & zero() { _num = 0; return (*this); }
+  inline Integer<R> & makeZero() { _num = 0; return (*this); }
 
   inline bool isOne() const { return (_num == 1); }
 
   // assign to one
-  inline Integer<R> & one() { _num = 1; return (*this); }
+  inline Integer<R> & makeOne() { _num = 1; return (*this); }
 
+  static Integer<R> zero() { Integer<R> a; return a.makeZero(); }
+  static Integer<R> one() { Integer<R> a; return a.makeOne(); }
+  
   // euclidean division
 
   /**

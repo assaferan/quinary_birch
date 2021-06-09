@@ -15,10 +15,10 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   Derived old_t = r;
   Derived temp = r;
   
-  old_s.one();
-  old_t.zero();
-  s.zero();
-  t.one();
+  old_s.makeOne();
+  old_t.makeZero();
+  s.makeZero();
+  t.makeOne();
   
   while (!r.isZero()) {
     typename EuclideanDomain<Derived>::DivRes q_r = old_r.euclideanDivision(r);
