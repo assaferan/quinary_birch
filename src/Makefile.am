@@ -1,12 +1,12 @@
 bin_PROGRAMS = birch birch_dbg
 lib_LTLIBRARIES = libbirch.la
 
-AM_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11
-DBG_AM_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
-AM_CXXFLAGS += -fvar-tracking-assignments-toggle
-AM_CXXFLAGS += -fomit-frame-pointer
-AM_CXXFLAGS += -funroll-all-loops
-DBG_AM_LDFLAGS = -lm -lgmp -lgmpxx
+OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11
+DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
+OPT_CXXFLAGS += -fvar-tracking-assignments-toggle
+OPT_CXXFLAGS += -fomit-frame-pointer
+OPT_CXXFLAGS += -funroll-all-loops
+DBG_LDFLAGS = -lm -lgmp -lgmpxx
 
 SOURCES = birch.h
 SOURCES += birch_util.cpp
@@ -21,20 +21,20 @@ SOURCES += testInteger.h
 SOURCES += testInteger.inl
 
 birch_dbg_SOURCES = birch.cpp $(SOURCES)
-birch_dbg_CXXFLAGS = $(DBG_AM_CXXFLAGS)
+birch_dbg_CXXFLAGS = $(DBG_CXXFLAGS)
 
 birch_SOURCES = birch.cpp $(SOURCES)
-birch_CXXFLAGS = $(AM_CXXFLAGS)
+birch_CXXFLAGS = $(OPT_CXXFLAGS)
 
 libbirch_la_SOURCES = $(SOURCES)
-libbirch_la_CXXFLAGS = -shared -fPIC $(AM_CXXFLAGS)
+libbirch_la_CXXFLAGS = -shared -fPIC $(OPT_CXXFLAGS)
 
-birch_dbg_LDFLAGS = ${DBG_AM_LDFLAGS}
+birch_dbg_LDFLAGS = ${DBG_LDFLAGS}
 
-AM_LDFLAGS = ${DBG_AM_LDFLAGS}
-AM_LDFLAGS += -O3 -fPIC
+OPT_LDFLAGS = ${DBG_LDFLAGS}
+OPT_LDFLAGS += -O3 -fPIC
 
-birch_LDFLAGS = ${AM_LDFLAGS}
-libbirch_la_LDFLAGS = ${AM_LDFLAGS}
+birch_LDFLAGS = ${OPT_LDFLAGS}
+libbirch_la_LDFLAGS = ${OPT_LDFLAGS}
 
 
