@@ -16,18 +16,18 @@
 
 // Forward declaration of friend operators
 
-template<class Derived>
+template<class Derived, class DerivedParent>
 class RingElement;
 
-template<class Derived>
+template<class Derived, class DerivedParent>
 std::ostream& operator<< (std::ostream& ostream,
-			  const RingElement<Derived> & d);
+			  const RingElement<Derived, DerivedParent> & d);
 
-template<class Derived>
+template<class Derived, class DerivedParent>
 std::ostream& operator<< (std::ostream& ostream,
-			  RingElement<Derived> && d);
+			  RingElement<Derived, DerivedParent> && d);
 
-template <class Derived>
+template <class Derived, class Parent>
 class RingElement
 {
 public:
@@ -148,12 +148,12 @@ public:
    * Defines a to string conversion.
    */
   friend std::ostream& operator<< <Derived>(std::ostream& ostream,
-					    const RingElement<Derived>& d);
+					    const RingElement<Derived,DerivedParent>& d);
 
   friend std::ostream& operator<< <Derived>(std::ostream& ostream,
-					    RingElement<Derived>&& d);
+					    RingElement<Derived,DerivedParent>&& d);
 
-  virtual std::shared_ptr<const Ring<Derived> > parent() const = 0;
+  virtual std::shared_ptr<const DerivedParent > parent() const = 0;
 
 };
 
