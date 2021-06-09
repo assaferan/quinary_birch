@@ -22,6 +22,7 @@ protected:
 		      const R & num2, const R & denom2);
   static void testPow(const R & num1, const R & denom1,
 		      const Z64 & e);
+  static void testInverse(const R & num, const R & denom);
   static void testZero(const R & denom);
   static void testOne(const R & val);
   static void testGcd(const R & num1, const R & denom1,
