@@ -31,18 +31,18 @@ inline FpElement<R,S> Fp<R,S>::mod(const T& a) const
 }
 
 template<typename R, typename S>
-std::shared_ptr< const Fp<R, S> > Fp<R,S>::getptr() const {
+std::shared_ptr< const Fp<R, S> > Fp<R,S>::getPtr() const {
   return std::enable_shared_from_this< const Fp<R, S> >::shared_from_this();
 }
 
 template<typename R, typename S>
-inline  R Fp<R,S>::neg(R a) const
+inline R Fp<R,S>::neg(R a) const
 {
   return this->kp-a;
 }
 
 template<typename R, typename S>
-inline  R Fp<R,S>::mul(R a, R b) const
+inline R Fp<R,S>::mul(R a, R b) const
 {
   S rem = ((S)a)*b;
   R hi = rem >> bits;
@@ -58,14 +58,14 @@ inline  R Fp<R,S>::mul(R a, R b) const
 }
 
 template<typename R, typename S>
-inline  R Fp<R,S>::add(R a, R b) const
+inline R Fp<R,S>::add(R a, R b) const
 {
   R neg = this->kp-a;
   return (b >= neg) ? b-neg : this->kp-(neg-b);
 }
 
 template<typename R, typename S>
-inline  R Fp<R,S>::sub(R a, R b) const
+inline R Fp<R,S>::sub(R a, R b) const
 {
   return add(a, this->kp-b);
 }
@@ -79,21 +79,21 @@ inline int Fp<R,S>::legendre(R a) const
 }
 
 template<typename R, typename S>
-inline  R Fp<R,S>::inverse(R a) const
+inline R Fp<R,S>::inverse(R a) const
 {
   if (this->use_inverse_lut) return this->inverse_lut[a];
   else return this->inv(a);
 }
 
 template<typename R, typename S>
-inline  R Fp<R,S>::inverse(const Z& a) const
+inline R Fp<R,S>::inverse(const Z& a) const
 {
   R inv = mpz_get_ui(a.get_mpz_t());
   return this->inverse(inv);
 }
 
 template<typename R, typename S>
-inline  R Fp<R,S>::inverse(const Z64& a) const
+inline R Fp<R,S>::inverse(const Z64& a) const
 {
   R inv = (R)a;
   return this->inverse(inv);
