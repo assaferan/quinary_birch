@@ -46,7 +46,7 @@ bool testInteger<R>::testXGcd()
 
   // test negative numbers
   ret = ret && testXGcd(-240, 46, 2, 9, 47);
-  ret = ret && testXGcd(-240, -46, 2, -9, 47);
+  ret = ret && testXGcd(-240, -46, 2, 9, -47);
   
   return ret;
 }
