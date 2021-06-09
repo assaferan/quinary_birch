@@ -11,6 +11,7 @@ template<typename R>
 void testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
 			       const R & s, const R & t)
 {
+#ifdef DEBUG
   Integer<R> a_int = a;
   Integer<R> b_int = b;
 
@@ -19,7 +20,8 @@ void testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
   Integer<R> d_int = std::get<0>(d_s_t);
   Integer<R> s_int = std::get<1>(d_s_t);
   Integer<R> t_int = std::get<2>(d_s_t);
-
+#endif
+  
   assert((d_int == d) && (s_int == s) && (t_int == t));
 
   return;
@@ -28,11 +30,14 @@ void testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
 template<typename R>
 void testInteger<R>::testGcd(const R & a, const R & b, const R & d)
 {
+  
+#ifdef DEBUG
   Integer<R> a_int = a;
   Integer<R> b_int = b;
   
   Integer<R> d_int = a_int.gcd(b_int);
-
+#endif
+  
   assert(d_int == d);
 
   return;
