@@ -1,7 +1,7 @@
 #ifndef __FP_ELEMENT_H_
 #define __FP_ELEMENT_H_
 
-#include "Field.h"
+#include "FieldElement.h"
 #include "Fp.h"
 
 template<typename R, typename S>
