@@ -17,6 +17,15 @@ typedef int32_t Z32;
 typedef int64_t Z64;
 typedef __int128_t Z128;
 
+/* Builtins */
+
+#define likely(x)   __builtin_expect(!!(x), 1)
+#define unlikely(x) __builtin_expect(!!(x), 0)
+
+// Constants
+constexpr W64 FNV_OFFSET = 0x811c9dc5;
+constexpr W64 FNV_PRIME  = 0x01000193;
+
 // Finite fields.
 template <typename R, typename S>
 class Fp;
