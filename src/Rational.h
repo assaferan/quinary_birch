@@ -87,34 +87,13 @@ public:
 
   // other
   Integer<R> floor() const    
-  {
-    Integer<R> num = _num;
-    Integer<R> denom = _denom;
-    
-    if (denom < 0) {
-      denom = -denom;
-      num = - num;
-    }
-      
-    return ((num >= Integer<R>::zero()) ? num : (num - denom + 1)) / denom;
-  }
+  { return _num / _denom; }
 
   Integer<R> ceiling() const
-  {
-    Integer<R> num = _num;
-    Integer<R> denom = _denom;
-    
-    if (denom < 0) {
-      denom = -denom;
-      num = - num;
-    }
-      
-    return ((num >= Integer<R>::zero()) ? (num + denom - 1) : num) / denom;
-
-  }
+  { return (_num + _denom - 1)/_denom; }
 
   bool is_integral() const
-  {R one = 1; return ((_denom == one) || (_denom == -one)); }
+  {return ((_denom.isOne()) || ((-_denom).isOne())); }
 
   // other
   friend Rational<R> operator*(Integer<R> b, const Rational<R> & r) {
