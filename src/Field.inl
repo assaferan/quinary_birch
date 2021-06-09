@@ -31,7 +31,7 @@ template<class Derived>
 Derived Field<Derived>::operator^ (long long int e) const
 {
   unsigned long long int abs_e = e < 0 ? -e : e;
-  Derived ret = this->operator^(abs_e);
+  Derived ret = Ring<Derived>::operator^(abs_e);
   return e < 0 ? ret.inverse() : ret;
 }
 
@@ -39,7 +39,7 @@ template<class Derived>
 Derived& Field<Derived>::operator^= (long long int e)
 {
   unsigned long long int abs_e = e < 0 ? -e : e;
-  this->operator^=(abs_e);
+  Ring<Derived>::operator^=(abs_e);
   if (e < 0)
     *(this->getPtr()) = this->inverse();
   return (*this->getPtr());
