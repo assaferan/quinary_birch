@@ -18,9 +18,10 @@ public:
   void operator=(IntegerRing<R> const &) = delete;
   
   inline Integer<R> zero() const override
-  {Integer<R> z = 0; return z;}
+  {return Integer<R>::zero(); }
+  
   inline Integer<R> one() const override
-  {Integer<R> z = 1; return z; }
+  {return Integer<R>::one(); }
 
   inline std::shared_ptr<const IntegerRing<R> > getPtr() const override
   {return std::enable_shared_from_this< const IntegerRing<R> >::shared_from_this(); }
