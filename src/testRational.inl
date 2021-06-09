@@ -82,7 +82,7 @@ void testDiv(const R & num1, const R & denom1,
 template<typename R>  
 void testPow(const R & num1, const R & denom1, const Z64 & e)
 {
-  Rational<R> f(num1, num2);
+  Rational<R> f(num1, denom1);
   Rational<R> f_e = f^e;
 
   assert(f_e.num()*(f.denom()^e) == f_e.denom()*(f.num()^e));
@@ -91,7 +91,7 @@ void testPow(const R & num1, const R & denom1, const Z64 & e)
 template<typename R>  
 void testInverse(const R & num, const R & denom)
 {
-  Rational<R> f(num1, num2);
+  Rational<R> f(num, denom);
   Rational<R> f_inv = f.inverse();
 
   assert((f*f_inv).isOne() && (f_inv*f).isOne());
