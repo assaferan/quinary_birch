@@ -23,8 +23,8 @@ int main()
   testRational<Z128> test6;
   
   W64 seed = 1;
-  std::share_ptr< Fp<W16,W32> > GF = std::make_shared(3, seed);
-  FpElement<W16, W32> a(GF);
+  std::share_ptr< W16_Fp > GF = std::make_shared(3, seed);
+  W16_FpElement a(GF);
   
   return 0;
 }

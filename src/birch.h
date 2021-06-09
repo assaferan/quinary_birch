@@ -17,6 +17,17 @@ typedef int32_t Z32;
 typedef int64_t Z64;
 typedef __int128_t Z128;
 
+// Finite fields.
+typedef Fp<W16,W32>  W16_Fp;
+typedef Fp<W32,W64>  W32_Fp;
+typedef Fp<W64,W128> W64_Fp;
+typedef F2<W16,W32>  W16_F2;
+
+// Finite field elements
+typedef FpElement<W16,W32>  W16_FpElement;
+typedef FpElement<W32,W64>  W32_FpElement;
+typedef FpElement<W64,W128> W64_FpElement;
+
 // There is no default operator<< for Z128
 std::ostream & operator<<(std::ostream & os, const Z128 & z);
 
