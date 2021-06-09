@@ -18,10 +18,10 @@ public:
   void operator=(RationalField<R> const &) = delete;
   
   inline Rational<R> zero() const override
-  {Rational<R> z = 0; return z;}
+  {return Rational<R>::zero(); }
   
   inline Rational<R> one() const override
-  {Rational<R> z = 1; return z; }
+  {return Rational<R>::one(); }
 
   inline std::shared_ptr<const RationalField<R> > getPtr() const override
   {return std::enable_shared_from_this< const RationalField<R> >::shared_from_this(); }
