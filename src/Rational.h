@@ -19,6 +19,10 @@ public:
     : _num(num), _denom(denom)
   { reduce(); }
 
+  Rational(const R & num, const R & denom = 1)
+    : _num(num), _denom(denom)
+  { reduce(); }
+
   Rational(const Integer<R> & num) : _num(num), _denom(1) {}
   
   // default c-tor
