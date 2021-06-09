@@ -5,6 +5,7 @@
 #include "testInteger.h"
 #include "testRational.h"
 #include "FpElement.h"
+#include "Matrix.h"
 
 std::ostream & operator<<(std::ostream & os, const Z128 & z)
 {
@@ -25,6 +26,8 @@ int main()
   W64 seed = 1;
   std::shared_ptr< W16_Fp > GF = std::make_shared<W16_Fp>(3, seed);
   W16_FpElement a(GF);
+
+  Matrix< W16_FpElement, W16_Fp > mat = Matrix< W16_FpElement, W16_Fp >::identity(GF,5);
   
   return 0;
 }
