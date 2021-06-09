@@ -2,38 +2,38 @@
 
 #include <sstream>
 
-template <class Derived>
-Derived RingElement<Derived>::operator+ (const Derived& other) const
+template <class Derived, class DerivedParent>
+Derived RingElement<Derived,DerivedParent>::operator+ (const Derived& other) const
 {
   Derived sum = *(this->getPtr());
   sum += other;
   return sum;
 }
 
-template <class Derived>
-Derived RingElement<Derived>::operator- (const Derived& other) const
+template <class Derived, class DerivedParent>
+Derived RingElement<Derived,DerivedParent>::operator- (const Derived& other) const
 {
   Derived diff = *(this->getPtr());
   diff -= other;
   return diff;
 }
 
-template <class Derived>
-Derived RingElement<Derived>::operator* (const Derived& other) const
+template <class Derived, class DerivedParent>
+Derived RingElement<Derived,DerivedParent>::operator* (const Derived& other) const
 {
   Derived prod = *(this->getPtr());
   prod *= other;
   return prod;
 }
 
-template <class Derived>
-Derived RingElement<Derived>::operator- () const {
+template <class Derived, class DerivedParent>
+Derived RingElement<Derived,DerivedParent>::operator- () const {
   Derived neg = *(this->getPtr());
   return neg.makeZero() - (*this->getPtr());
 }
 
-template <class Derived>
-Derived& RingElement<Derived>::operator^= (unsigned long long int exp)
+template <class Derived, class DerivedParent>
+Derived& RingElement<Derived,DerivedParent>::operator^= (unsigned long long int exp)
 {
   if (exp == 1) return *(this->getPtr());
   
@@ -51,16 +51,16 @@ Derived& RingElement<Derived>::operator^= (unsigned long long int exp)
   return (*(this->getPtr()));
 }
 
-template <class Derived>
-Derived RingElement<Derived>::operator^ (unsigned long long int e) const
+template <class Derived, class DerivedParent>
+Derived RingElement<Derived,DerivedParent>::operator^ (unsigned long long int e) const
 {
   Derived pow = *(this->getPtr());
   pow ^= e;
   return pow;
 }
 
-template <class Derived>
-std::string RingElement<Derived>::toString() const {
+template <class Derived, class DerivedParent>
+std::string RingElement<Derived,DerivedParent>::toString() const {
   std::stringstream ss;
   print(ss);
   return ss.str();
@@ -71,15 +71,15 @@ std::string RingElement<Derived>::toString() const {
  *
  * Defines a to string conversion.
  */
-template <class Derived>
+template <class Derived, class DerivedParent>
 std::ostream& operator<< (std::ostream& ostream,
-			  const RingElement<Derived>& d) {
+			  const RingElement<Derived,DerivedParent>& d) {
   d.print(ostream);
   return ostream;
 }
 
-template <class Derived>
-std::ostream& operator<< (std::ostream& ostream, RingElement<Derived>&& d) {
+template <class Derived, class DerivedParent>
+std::ostream& operator<< (std::ostream& ostream, RingElement<Derived,DerivedParent>&& d) {
   d.print(ostream);
   return ostream;
 }
