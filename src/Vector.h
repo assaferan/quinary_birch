@@ -11,7 +11,7 @@ template<class R, class Parent, size_t n>
 class Vector {
   
   static_assert(std::is_base_of<RingElement<R,Parent>, R>::value);
-  static_assert(std::is_base_of<Ring<Parent,R>, R>::value);
+  static_assert(std::is_base_of<Ring<Parent,R>, Parent>::value);
   
 public:
 
