@@ -29,8 +29,6 @@ public:
 
   inline int legendre(R a) const;
 
-  inline virtual R sqrt(R a) const;
-
   inline virtual R inverse(R a) const;
 
   inline virtual R inverse(const Z& a) const;
