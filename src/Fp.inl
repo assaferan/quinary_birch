@@ -1,3 +1,4 @@
+#include <memory>
 #include <random>
 
 template<typename R, typename S>
