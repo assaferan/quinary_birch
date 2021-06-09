@@ -23,7 +23,7 @@ public:
     : _num(num), _denom(denom)
   { reduce(); }
 
-  Rational(const Integer<R> & num) : _num(num), _denom(1) {}
+  // Rational(const Integer<R> & num) : _num(num), _denom(1) {}
   
   // default c-tor
   Rational() : _num(0), _denom(1) {}
