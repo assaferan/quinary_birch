@@ -15,7 +15,7 @@ class FieldElement : public virtual EuclideanDomainElement<Derived, DerivedParen
    */
   virtual Derived inverse() const = 0;
 
-  inline virtual typename EuclideanDomain<Derived,DerivedParent>::DivRes
+  inline virtual typename EuclideanDomainElement<Derived,DerivedParent>::DivRes
   euclideanDivision(const Derived & b) const override;
 
   inline virtual Derived gcd(const Derived &) const override;
