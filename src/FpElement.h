@@ -16,7 +16,7 @@ public:
 
   // access = get methods
   const R & lift() const {return _val; }
-  const std::shared_ptr< const Fp<R, S> > & field() const {return _GF; }
+  const std::shared_ptr< const Fp<R,S> > & field() const {return _GF; }
 
   // arithmetic
   FpElement<R,S> operator+() const {return FpElement(_GF, _val); }
@@ -63,6 +63,13 @@ public:
   bool isSquare(void) const;
 
   void setField(std::shared_ptr<const Fp<R,S>> fld) {this->_GF = fld;}
+
+  FpElement<R,S>& makeZero() override {this->_val = 0;}
+  FpElement<R,S>& makeOne() override {this->_val = 1;}
+  
+  FpElement<R,S>* getPtr() override {return this;}
+
+  const FpElement<R,S>* getPtr() const override {return this;}
   
 protected:
   std::shared_ptr< const Fp<R,S> > _GF;
