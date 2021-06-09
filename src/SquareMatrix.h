@@ -1,6 +1,7 @@
 #ifndef __SQUARE_MATRIX_H_
 #define __SQUARE_MATRIX_H_
 
+#include "birch.h"
 #include "Rational.h"
 #include "RingElement.h"
 #include "Vector.h"
