@@ -86,11 +86,11 @@ public:
   inline Matrix<R,Parent> transpose() const;
 
   // arithmetic
-  inline Matrix<R,Parent> operator*(const Matrix<R,Parent> &) const override;
+  inline Matrix<R,Parent> operator*(const Matrix<R,Parent> &) const;
 
-  inline Matrix<R,Parent>& operator+=(const Matrix<R,Parent> &) override;
-  inline Matrix<R,Parent>& operator-=(const Matrix<R,Parent> &) override;
-  inline Matrix<R,Parent>& operator*=(const Matrix<R,Parent> &) override;
+  inline Matrix<R,Parent>& operator+=(const Matrix<R,Parent> &);
+  inline Matrix<R,Parent>& operator-=(const Matrix<R,Parent> &);
+  inline Matrix<R,Parent>& operator*=(const Matrix<R,Parent> &);
 
   inline Matrix<R,Parent> operator*(const R & a) const;
 
@@ -114,15 +114,10 @@ public:
     return;
   }
 
-  inline Matrix<R,Parent>* getPtr() override {return this;}
+  inline bool isZero() const;
+  inline bool isOne() const;
 
-  inline const Matrix<R,Parent>* getPtr() const override {return this;}
-
-  inline bool isZero() const override;
-  inline bool isOne() const override;
-
-  inline Matrix<R,Parent>& makeZero() override;
-  inline Matrix<R,Parent>& makeOne() override;
+  inline Matrix<R,Parent>& makeZero();
   
 protected:
   size_t _nrows;
