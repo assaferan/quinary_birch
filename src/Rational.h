@@ -33,29 +33,29 @@ public:
     : _num(other._num), _denom(other._denom) {}
 
   // access
-  const Integer<R> & num() const {return this->_num; }
-  const Integer<R> & denom() const {return this->_denom; }
+  inline const Integer<R> & num() const {return this->_num; }
+  inline const Integer<R> & denom() const {return this->_denom; }
 
   // arithmetic
-  Rational<R> operator+() const {return Rational(_num, _denom); }
-  Rational<R> operator-() const {return Rational(-_num, _denom); }
-  Rational<R> operator+(const Rational<R> &) const override;
-  Rational<R> operator-(const Rational<R> &b) const override
+  inline Rational<R> operator+() const {return Rational(_num, _denom); }
+  inline Rational<R> operator-() const {return Rational(-_num, _denom); }
+  inline Rational<R> operator+(const Rational<R> &) const override;
+  inline Rational<R> operator-(const Rational<R> &b) const override
   {return (*this)+(-b); }
-  Rational<R> operator*(const Rational<R> &) const override;
-  Rational<R> operator*(const Integer<R> & b) const {
+  inline Rational<R> operator*(const Rational<R> &) const override;
+  inline Rational<R> operator*(const Integer<R> & b) const {
     Rational<R> b_rat(b);
     return (*this)*b_rat;
   }
 
-  Rational<R> operator/(const Rational<R> &) const override;
-  Rational<R> operator/(const Integer<R> & b) const {
+  inline Rational<R> operator/(const Rational<R> &) const override;
+  inline Rational<R> operator/(const Integer<R> & b) const {
     Rational<R> b_rat(b);
     return (*this)/b_rat;
   }
     
   // assignment
-  Rational<R> & operator=(const Rational<R> & b)
+  inline Rational<R> & operator=(const Rational<R> & b)
   {
     if (this != &b) {
       _num = b._num;
@@ -64,63 +64,63 @@ public:
     return (*this);
   }
   
-  Rational<R> & operator+=(const Rational<R> &b)
+  inline Rational<R> & operator+=(const Rational<R> &b)
   {return ((*this) = (*this) + b);}
-  Rational<R> & operator-=(const Rational<R> &b)
+  inline Rational<R> & operator-=(const Rational<R> &b)
   {return ((*this) = (*this) - b);}
-  Rational<R> & operator*=(const Rational<R> &b)
+  inline Rational<R> & operator*=(const Rational<R> &b)
   {return ((*this) = (*this) * b);}
-  Rational<R> & operator*=(const R &b)
+  inline Rational<R> & operator*=(const R &b)
   {return ((*this) = (*this) * b);}
-  Rational<R> & operator/=(const Rational<R> &b) override
+  inline Rational<R> & operator/=(const Rational<R> &b) override
   {return ((*this) = (*this) / b);}
-  Rational<R> & operator/=(const R &b)
+  inline Rational<R> & operator/=(const R &b)
   {return ((*this) = (*this) / b);}
 
-  Rational<R> inverse() const
+  inline Rational<R> inverse() const
   { Rational<R> inv(_denom, _num); return inv;}
   
   // comparison
-  bool operator==(const Rational<R> &) const;
+  inline bool operator==(const Rational<R> &) const;
   
-  bool operator<(const Rational<R> &) const;
-  bool operator>(const Rational<R> &b) const {return b < (*this); }
-  bool operator<=(const Rational<R> &b) const
+  inline bool operator<(const Rational<R> &) const;
+  inline bool operator>(const Rational<R> &b) const {return b < (*this); }
+  inline bool operator<=(const Rational<R> &b) const
   {return ((*this) == b) || ((*this) < b); }
-  bool operator>=(const Rational<R> &b) const
+  inline bool operator>=(const Rational<R> &b) const
   {return ((*this) == b) || ((*this) > b); }
 
   // other
-  Integer<R> floor() const    
+  inline Integer<R> floor() const    
   { return _num / _denom; }
 
-  Integer<R> ceiling() const
+  inline Integer<R> ceiling() const
   { return (_num + _denom - 1)/_denom; }
 
-  bool isIntegral() const
+  inline bool isIntegral() const
   {return ((_denom.isOne()) || ((-_denom).isOne())); }
 
   // other
-  friend Rational<R> operator*(Integer<R> b, const Rational<R> & r) {
+  inline friend Rational<R> operator*(Integer<R> b, const Rational<R> & r) {
     return r*b;
   }
 
-  friend Rational<R> operator-(Integer<R> b, const Rational<R> & r) {
+  inline friend Rational<R> operator-(Integer<R> b, const Rational<R> & r) {
     Rational<R> b_rat(b);
     return b_rat-r;
   }
 
-  friend Rational<R> operator+(Integer<R> b, const Rational<R> & r) {
+  inline friend Rational<R> operator+(Integer<R> b, const Rational<R> & r) {
     Rational<R> b_rat(b);
     return b_rat+r;
   }
 
-  friend Rational<R> operator/(Integer<R> b, const Rational<R> & r) {
+  inline friend Rational<R> operator/(Integer<R> b, const Rational<R> & r) {
     Rational<R> b_rat(b);
     return b_rat/r;
   }
 
-  void print(std::ostream & os) const
+  inline void print(std::ostream & os) const
   {
     if (_denom.isOne())
       os << _num;
@@ -144,18 +144,18 @@ public:
   inline Rational<R> & makeOne()
   { _num.makeOne(); _denom.makeOne(); return (*this); }
 
-  static Rational<R> zero() { Rational<R> a; return a.makeZero(); }
-  static Rational<R> one() { Rational<R> a; return a.makeOne(); }
+  inline static Rational<R> zero() { Rational<R> a; return a.makeZero(); }
+  inline static Rational<R> one() { Rational<R> a; return a.makeOne(); }
   
-  Rational<R>* getPtr() { return this; }
+  inline Rational<R>* getPtr() { return this; }
 
-  const Rational<R>* getPtr() const { return this; }
+  inline const Rational<R>* getPtr() const { return this; }
   
 protected:
   Integer<R> _num;
   Integer<R> _denom;
 
-  void reduce(void);
+  inline void reduce(void);
 };
 
 #include "Rational.inl"

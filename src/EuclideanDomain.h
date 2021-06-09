@@ -33,7 +33,7 @@ class EuclideanDomain : public virtual Ring<Derived>
    * @param b: the divisor.
    * @return the gcd and the bezout coefficients.
    */
-  virtual XGcdRes xgcd(const Derived& b) const;
+  inline virtual XGcdRes xgcd(const Derived& b) const;
 
   /**
    * Get GCD of *this and other.
@@ -41,7 +41,7 @@ class EuclideanDomain : public virtual Ring<Derived>
    * @param other: the other element to get a gcd with.
    * @return the gcd.
    */
-  virtual Derived gcd(const Derived& other) const;
+  inline virtual Derived gcd(const Derived& other) const;
   
   /**
    * Get the quotient of *this and b.
@@ -49,14 +49,14 @@ class EuclideanDomain : public virtual Ring<Derived>
    * @param b: the divisor
    * @return the quotient
    */
-  virtual Derived quotient(const Derived& b) const;
+  inline virtual Derived quotient(const Derived& b) const;
 
   /**
    * Get the remainder of *this and b.
    * @param b: the divisor
    * @return the remainder
    */
-  virtual Derived remainder(const Derived& b) const;
+  inline virtual Derived remainder(const Derived& b) const;
 
   /**
    * Exact division.
@@ -64,7 +64,7 @@ class EuclideanDomain : public virtual Ring<Derived>
    * @param d: the divisor.
    * @return the equotient.
    */
-  virtual Derived operator/ (const Derived& d) const;
+  inline virtual Derived operator/ (const Derived& d) const;
 
   /**
    * Exact division assignment.
@@ -72,21 +72,21 @@ class EuclideanDomain : public virtual Ring<Derived>
    * @param d: the divisor.
    * @return a reference to this after assignment.
    */
-  virtual Derived& operator/= (const Derived& d);
+  inline virtual Derived& operator/= (const Derived& d);
 
   /**
    * Get the remainder of *this and b;
    * @param b: the divisor
    * @return the remainder
    */
-  virtual Derived operator%(const Derived& b) const;
+  inline virtual Derived operator%(const Derived& b) const;
 
   /**
    * Assign *this to be the remainder of *this and b.
    * @param b: the divisor
    * @return this after assignment.
    */
-  virtual Derived& operator%=(const Derived& b);
+  inline virtual Derived& operator%=(const Derived& b);
 };
 
 #include "EuclideanDomain.inl"

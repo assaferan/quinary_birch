@@ -71,10 +71,57 @@ FpElement<R,S> & FpElement<R,S>::operator/=(const FpElement<R, S> &other)
 }
 
 template<typename R, typename S>
+inline int FpElement<R,S>::legendre() const
+{
+  return this->_GF->legendre(*this);
+}
+
+template<typename R, typename S>
 FpElement<R,S> FpElement<R,S>::sqrt() const
 {
-  assert(_GF != NULL);
-  return FpElement(_GF, _GF->sqrt(this->_val));
+  FpElement<R,S> a = *this;
+  
+  if (a.isOne()) return a;
+  if (a.isZero()) return a;
+  if (this->legendre() != 1) return zero();
+
+  R q = p-1;
+  R s = 0;
+  while(q % 2 == 0) { q >>= 1; s++; }
+
+  if (s == 1) return a^((p+1)/4);
+
+  FpElement<R,S> z = this->_GF->random();
+  while (z == 0 || z.legendre() == 1) {
+    z = this->_GF->random();
+  }
+
+  int m = s;
+  FpElement<R,S> c = z^q;
+  FpElement<R,S> r = a^((q+1)/2);
+  FpElement<R,S> t = a^q;
+
+  while (1)
+    {
+      if (t.isOne()) return r;
+      int i = 0;
+      FpElement<R,S> t1 = t;
+      while (!t1.isOne())
+      {
+	  t1 *= t1;
+	  i++;
+      }
+
+      int e = 1;
+      for (int j=0; j<m-i-1; j++) e <<= 1;
+      FpElement<R,S> b = c^e;
+      r *= b;
+      c = b*b;
+      t *= c;
+      m = i;
+    }
+
+  return zero();
 }
 
 // assignment and conversion
@@ -88,7 +135,6 @@ FpElement<R,S> & FpElement<R,S>::operator=(const FpElement<R, S> &other)
   return (*this);
 }
 
-  
 //boolean
 template<typename R, typename S>
 bool FpElement<R,S>::operator==(const FpElement<R, S> &other) const {

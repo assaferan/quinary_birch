@@ -15,12 +15,12 @@ class Fp : public std::enable_shared_from_this< const Fp<R, S> >
 public:
   Fp(const R& p, W64 seed, bool use_inverse_lut=false);
 
-  const R& prime(void) const { return this->p; }
+  inline const R& prime(void) const { return this->p; }
 
   template<typename T>
   inline FpElement<R,S> mod(const T& a) const;
     
-  std::shared_ptr< const Fp<R, S> > getptr() const;
+  inline std::shared_ptr< const Fp<R, S> > getptr() const;
 
   inline virtual R neg(R a) const;
   inline virtual R mul(R a, R b) const;

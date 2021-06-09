@@ -28,22 +28,22 @@ public:
   Integer<R> & operator=(const Integer<R> & b);
 
   // access
-  const R & num(void) const { return this->_num; }
+  inline const R & num(void) const { return this->_num; }
   
   // arithmetic
-  Integer<R> & operator+=(const Integer<R> &b);
-  Integer<R> & operator-=(const Integer<R> &b);
-  Integer<R> & operator*=(const Integer<R> &b);
+  inline Integer<R> & operator+=(const Integer<R> &b);
+  inline Integer<R> & operator-=(const Integer<R> &b);
+  inline Integer<R> & operator*=(const Integer<R> &b);
 
   // !! - TODO - move these to a monoid / ordered / valued ring
   // comparison
-  bool operator==(const Integer<R> &) const;
-  bool operator!=(const Integer<R> &b) const {return !((*this)==b); }
-  bool operator<(const Integer<R> &) const;
-  bool operator>(const Integer<R> &b) const {return b < (*this); }
-  bool operator<=(const Integer<R> &b) const
+  inline bool operator==(const Integer<R> &) const;
+  inline bool operator!=(const Integer<R> &b) const {return !((*this)==b); }
+  inline bool operator<(const Integer<R> &) const;
+  inline bool operator>(const Integer<R> &b) const {return b < (*this); }
+  inline bool operator<=(const Integer<R> &b) const
   {return ((*this) == b) || ((*this) < b); }
-  bool operator>=(const Integer<R> &b) const
+  inline bool operator>=(const Integer<R> &b) const
   {return ((*this) == b) || ((*this) > b); }
 
   // global constants
@@ -58,8 +58,8 @@ public:
   // assign to one
   inline Integer<R> & makeOne() { _num = 1; return (*this); }
 
-  static Integer<R> zero() { Integer<R> a; return a.makeZero(); }
-  static Integer<R> one() { Integer<R> a; return a.makeOne(); }
+  inline static Integer<R> zero() { Integer<R> a; return a.makeZero(); }
+  inline static Integer<R> one() { Integer<R> a; return a.makeOne(); }
   
   // euclidean division
 
@@ -67,14 +67,14 @@ public:
    * Perform the eucldiean division of *this and b. Returns the
    * quotient and the remainder.
    */
-  typename EuclideanDomain<Integer<R> >::DivRes
+  inline typename EuclideanDomain<Integer<R> >::DivRes
   euclideanDivision(const Integer<R>& b) const;
 
-  void print(std::ostream&) const;
+  inline void print(std::ostream&) const;
 
-  Integer<R>* getPtr() { return this; }
+  inline Integer<R>* getPtr() { return this; }
 
-  const Integer<R>* getPtr() const { return this; }
+  inline const Integer<R>* getPtr() const { return this; }
   
 protected:
   R _num;

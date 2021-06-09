@@ -65,7 +65,7 @@ public:
   /**
    * Addition.
    */
-  virtual Derived operator+ (const Derived&) const;
+  inline virtual Derived operator+ (const Derived&) const;
 
   /**
    * Addition assignment.
@@ -75,7 +75,7 @@ public:
   /**
    * Subtraction.
    */
-  virtual Derived operator- (const Derived&) const;
+  inline virtual Derived operator- (const Derived&) const;
 
   /**
    * Subtraction assignment.
@@ -85,12 +85,12 @@ public:
   /**
    * Negation.
    */
-  virtual Derived operator- () const;
+  inline virtual Derived operator- () const;
 
   /**
    * Multiplication.
    */
-  virtual Derived operator* (const Derived&) const;
+  inline virtual Derived operator* (const Derived&) const;
 
   /**
    * Multiplication assignment.
@@ -100,12 +100,12 @@ public:
   /**
    * Exponentiation.
    */
-  virtual Derived operator^ (unsigned long long int e) const;
+  inline virtual Derived operator^ (unsigned long long int e) const;
 
   /**
    * Exponentiation assignment.
    */
-  virtual Derived& operator^= (unsigned long long int e);
+  inline virtual Derived& operator^= (unsigned long long int e);
 
   /**
    * Equality test,
@@ -119,7 +119,7 @@ public:
    *
    * returns true iff not equal.
    */
-  virtual bool operator!= (const Derived& other) const
+  inline virtual bool operator!= (const Derived& other) const
   { return !((*this) == other); }
 
   /**
@@ -136,16 +136,16 @@ public:
    *
    * returns the string representation of the Ring element.
    */
-  virtual std::string toString() const;
+  inline virtual std::string toString() const;
 
   /**
    * Output operator.
    *
    * Defines a to string conversion.
    */
-  friend std::ostream& operator<< <Derived>(std::ostream& ostream, const Ring<Derived>& d);
+  inline friend std::ostream& operator<< <Derived>(std::ostream& ostream, const Ring<Derived>& d);
 
-  friend std::ostream& operator<< <Derived>(std::ostream& ostream, Ring<Derived>&& d);
+  inline friend std::ostream& operator<< <Derived>(std::ostream& ostream, Ring<Derived>&& d);
 };
 
 #include "Ring.inl"

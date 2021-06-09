@@ -15,69 +15,70 @@ public:
     : _GF(fld), _val(val) {}
 
   // access = get methods
-  const R & lift() const {return _val; }
-  const std::shared_ptr< const Fp<R,S> > & field() const {return _GF; }
+  inline const R & lift() const {return _val; }
+  inline const std::shared_ptr< const Fp<R,S> > & field() const {return _GF; }
 
   // arithmetic
-  FpElement<R,S> operator+() const {return FpElement(_GF, _val); }
-  FpElement<R,S> operator++(int)
+  inline FpElement<R,S> operator+() const {return FpElement(_GF, _val); }
+  inline FpElement<R,S> operator++(int)
   {(this->_val)++; return (*this); }
-  FpElement<R,S> operator-() const override;
-  FpElement<R,S> operator+(const FpElement<R,S> &other) const override;
-  FpElement<R,S> operator-(const FpElement<R,S> &other) const override;
-  FpElement<R,S> operator*(const FpElement<R,S> &other) const override;
-  FpElement<R,S> operator/(const FpElement<R,S> &other) const override;
-  FpElement<R,S> inverse(void) const override;
+  inline FpElement<R,S> operator-() const override;
+  inline FpElement<R,S> operator+(const FpElement<R,S> &other) const override;
+  inline FpElement<R,S> operator-(const FpElement<R,S> &other) const override;
+  inline FpElement<R,S> operator*(const FpElement<R,S> &other) const override;
+  inline FpElement<R,S> operator/(const FpElement<R,S> &other) const override;
+  inline FpElement<R,S> inverse(void) const override;
   
-  FpElement<R,S> & operator+=(const FpElement<R, S> &other) override;
-  FpElement<R,S> & operator-=(const FpElement<R, S> &other) override;
-  FpElement<R,S> & operator*=(const FpElement<R, S> &other) override;
-  FpElement<R,S> & operator/=(const FpElement<R, S> &other) override;
-  
-  FpElement<R, S> sqrt() const;
+  inline FpElement<R,S> & operator+=(const FpElement<R, S> &other) override;
+  inline FpElement<R,S> & operator-=(const FpElement<R, S> &other) override;
+  inline FpElement<R,S> & operator*=(const FpElement<R, S> &other) override;
+  inline FpElement<R,S> & operator/=(const FpElement<R, S> &other) override;
+
+  inline int legendre() const;
+  inline FpElement<R, S> sqrt() const;
   // assignment and conversion
-  FpElement<R, S> & operator=(const FpElement<R,S> &other) override;
-  FpElement<R, S> & operator=(const R &other)
+  inline FpElement<R,S> & operator=(const FpElement<R,S> &other) override;
+  inline FpElement<R,S> & operator=(const R &other)
   { this->_val = other; return (*this); }
   
   //boolean
-  bool isZero(void) const override
+  inline bool isZero(void) const override
   {return (this->_val % this->_GF->prime() == 0);}
 
-  bool isOne(void) const override
+  inline bool isOne(void) const override
   {return (this->_val % this->_GF->prime() == 1);}
   
-  bool operator==(const FpElement<R, S> &other) const override;
+  inline bool operator==(const FpElement<R, S> &other) const override;
   
   // This is for sorting, we use the lift for that
   // !! TODO - Is it useful in anyway? shoul we get rid fof that
-  bool operator<(const FpElement<R, S> &other) const
+  inline bool operator<(const FpElement<R, S> &other) const
   { return (this->_val < other._val); }
-  bool operator>(const FpElement<R, S> &other) const
+  inline bool operator>(const FpElement<R, S> &other) const
   { return (this->_val > other._val); }
-  bool operator>=(const FpElement<R, S> &other) const
+  inline bool operator>=(const FpElement<R, S> &other) const
   { return (this->_val >= other._val); }
   
-  bool operator==(const R &other) const;
-  bool operator!=(const R &other) const;
-  bool isSquare(void) const;
+  inline bool operator==(const R &other) const;
+  inline bool operator!=(const R &other) const;
+  inline bool isSquare(void) const;
 
-  void setField(std::shared_ptr<const Fp<R,S>> fld) {this->_GF = fld;}
+  inline void setField(std::shared_ptr<const Fp<R,S>> fld) {this->_GF = fld;}
 
-  FpElement<R,S>& makeZero() override {this->_val = 0; return (*this); }
-  FpElement<R,S>& makeOne() override {this->_val = 1; return (*this); }
+  inline FpElement<R,S>& makeZero() override {this->_val = 0; return (*this); }
+  inline FpElement<R,S>& makeOne() override {this->_val = 1; return (*this); }
 
-  static FpElement<R,S> zero(std::shared_ptr< const Fp<R,S> > GF)
+  inline static FpElement<R,S> zero(std::shared_ptr< const Fp<R,S> > GF)
   {FpElement<R,S> z(GF); z.makeZero(); return z;}
 
-  static FpElement<R,S> one(std::shared_ptr< const Fp<R,S> > GF)
+  inline static FpElement<R,S> one(std::shared_ptr< const Fp<R,S> > GF)
   {FpElement<R,S> z(GF); z.makeOne(); return z;}
   
-  FpElement<R,S>* getPtr() override {return this;}
+  inline FpElement<R,S>* getPtr() override {return this;}
 
-  const FpElement<R,S>* getPtr() const override {return this;}
+  inline const FpElement<R,S>* getPtr() const override {return this;}
 
-  void print(std::ostream& os) const
+  inline void print(std::ostream& os) const
   {
     // making sure this is in the range [0,p) before printing
     os << (this->field()->mod(this->lift())).lift();

@@ -15,14 +15,14 @@ class Field : public virtual EuclideanDomain<Derived>
    */
   virtual Derived inverse() const = 0;
 
-  virtual typename EuclideanDomain<Derived>::DivRes
+  inline virtual typename EuclideanDomain<Derived>::DivRes
   euclideanDivision(const Derived & b) const override;
 
-  virtual Derived gcd(const Derived &) const override;
+  inline virtual Derived gcd(const Derived &) const override;
 
-  virtual Derived operator^ (long long int e) const;
+  inline virtual Derived operator^ (long long int e) const;
 
-  virtual Derived& operator^= (long long int e);
+  inline virtual Derived& operator^= (long long int e);
 };
 
 #include "Field.inl"
