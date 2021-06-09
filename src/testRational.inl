@@ -26,7 +26,7 @@ testRational<R>::testRational()
 }
 
 template<typename R>
-void testConstructor(const R & num, const R & denom)
+void testRational<R>::testConstructor(const R & num, const R & denom)
 {
   Rational<R> f(num, denom);
   assert(f.num() == num);
@@ -36,8 +36,8 @@ void testConstructor(const R & num, const R & denom)
 }
 
 template<typename R>
-void testAdd(const R & num1, const R & denom1,
-	     const R & num2, const R & denom2)
+void testRational<R>::testAdd(const R & num1, const R & denom1,
+			      const R & num2, const R & denom2)
 {
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
@@ -50,8 +50,8 @@ void testAdd(const R & num1, const R & denom1,
 }
 
 template<typename R>
-void testSub(const R & num1, const R & denom1,
-	     const R & num2, const R & denom2)
+void testRational<R>::testSub(const R & num1, const R & denom1,
+			      const R & num2, const R & denom2)
 {
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
@@ -64,8 +64,8 @@ void testSub(const R & num1, const R & denom1,
 }
 
 template<typename R>
-void testMul(const R & num1, const R & denom1,
-	     const R & num2, const R & denom2)
+void testRational<R>::testMul(const R & num1, const R & denom1,
+			      const R & num2, const R & denom2)
 {
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
@@ -77,8 +77,8 @@ void testMul(const R & num1, const R & denom1,
 }
 
 template<typename R>
-void testDiv(const R & num1, const R & denom1,
-	     const R & num2, const R & denom2)
+void testRational<R>::testDiv(const R & num1, const R & denom1,
+			      const R & num2, const R & denom2)
 {
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
@@ -90,7 +90,7 @@ void testDiv(const R & num1, const R & denom1,
 }
 
 template<typename R>  
-void testPow(const R & num1, const R & denom1, const Z64 & e)
+void testRational<R>::testPow(const R & num1, const R & denom1, const Z64 & e)
 {
   Rational<R> f(num1, denom1);
   Rational<R> f_e = f^e;
@@ -101,7 +101,7 @@ void testPow(const R & num1, const R & denom1, const Z64 & e)
 }
 
 template<typename R>  
-void testInverse(const R & num, const R & denom)
+void testRational<R>::testInverse(const R & num, const R & denom)
 {
   Rational<R> f(num, denom);
   Rational<R> f_inv = f.inverse();
@@ -112,7 +112,7 @@ void testInverse(const R & num, const R & denom)
 }
 
 template<typename R>
-void testZero(const R & denom)
+void testRational<R>::testZero(const R & denom)
 {
   Rational<R> f(0, denom);
   assert(f.isZero());
@@ -123,7 +123,7 @@ void testZero(const R & denom)
 }
 
 template<typename R>
-void testOne(const R & val)
+void testRational<R>::testOne(const R & val)
 {
   Rational<R> f(val, val);
   assert(f.isOne());
@@ -134,8 +134,8 @@ void testOne(const R & val)
 }
 
 template<typename R>
-void testGcd(const R & num1, const R & denom1,
-	     const R & num2, const R & denom2)
+void testRational<R>::testGcd(const R & num1, const R & denom1,
+			      const R & num2, const R & denom2)
 {
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
@@ -148,8 +148,8 @@ void testGcd(const R & num1, const R & denom1,
 }
 
 template<typename R>
-void testEuclid(const R & num1, const R & denom1,
-		const R & num2, const R & denom2)
+void testRational<R>::testEuclid(const R & num1, const R & denom1,
+				 const R & num2, const R & denom2)
 {
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
