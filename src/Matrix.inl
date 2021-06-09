@@ -1,19 +1,23 @@
 // For implementations
 
-template<typename R>
+template<class R, class Parent>
 template <size_t n>
-Matrix<R>::Matrix(const R data[n][n])
+Matrix<R,Parent>::Matrix(const R data[n][n])
   : _nrows(n), _ncols(n), _data(n*n)
-{ size_t idx = 0;
+{
+  size_t idx = 0;
   for (size_t row = 0; row < _nrows; row++)
     for (size_t col = 0; col < _ncols; col++)
       _data[idx++] = data[row][col];
+
+  if (n > 0)
+    _base = data[0][0].parent();
 }
 
 /*
-template<typename R>
+template<class R, class Parent>
 template <size_t n>
-Matrix<R>::Matrix(const SquareMatrix<R, n> & mat)
+Matrix<R,Parent>::Matrix(const SquareMatrix<R, n> & mat)
   : _nrows(n), _ncols(n), _data(n*n)
 {
   size_t idx = 0;
@@ -24,23 +28,23 @@ Matrix<R>::Matrix(const SquareMatrix<R, n> & mat)
 */
 
 // return the i-th row
-template<typename R>
-std::vector<R> Matrix<R>::operator[](size_t i) const
+template<class R, class Parent>
+std::vector<R> Matrix<R,Parent>::operator[](size_t i) const
 {
   assert(i < _nrows);
 
-  std::vector<R> v(_ncols);
+  std::vector<R> v(_ncols, _base->zero());
   for (size_t j = 0; j < _ncols; j++)
     v[j] = (*this)(i,j);
   return v;
 }
 
-template<typename R>
-R Matrix<R>::determinant() const
+template<class R, class Parent>
+R Matrix<R,Parent>::determinant() const
 {		
   assert(_nrows == _ncols);
   size_t n = _nrows;
-  Matrix<R> M(n+1, n+1);
+  Matrix<R,Parent> M(_base, n+1, n+1);
   M(0,0).makeOne();
   // init
   for (size_t row = 0; row < n; row++)
@@ -55,10 +59,10 @@ R Matrix<R>::determinant() const
   return M(n,n);
 }
 
-template<typename R>
-void Matrix<R>::swapRows(size_t row1, size_t row2)
+template<class R, class Parent>
+void Matrix<R,Parent>::swapRows(size_t row1, size_t row2)
 {
-  R tmp;
+  R tmp = _base->zero();
   for (size_t col = 0; col < this->_ncols; col++) {
     tmp = (*this)(row1, col);
     (*this)(row1, col) = (*this)(row2, col);
@@ -68,9 +72,13 @@ void Matrix<R>::swapRows(size_t row1, size_t row2)
 }
 
 // in place echelon form, returns the rank and trans is the transformation
-template<typename R>
-size_t Matrix<R>::rowEchelon(Matrix<R> & echelon, Matrix<R>& trans)
+template<class R, class Parent>
+size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,Parent>& trans)
 {
+  // This one assumes R is a field
+  // !! TODO - think how to make this method appear only for fields
+  static_assert(std::is_base_of<R, FieldElement>::value);
+  
   // trans = identity(echelon.nrows());
   for (size_t row = 0; row < trans.nrows(); row++)
     for (size_t col = 0; col < trans.ncols(); col++)
@@ -78,28 +86,23 @@ size_t Matrix<R>::rowEchelon(Matrix<R> & echelon, Matrix<R>& trans)
   
   size_t pivot_row = 0;
   size_t pivot_col = 0;
+  // we don't use size pivoting because the field might not have a valuation
+  // !! TODO - add it in this case
   size_t row_max;
-  int max_val, val;
+  int max_val;
   
   while ((pivot_row < echelon.nrows()) && (pivot_col < echelon.ncols())) {
     row_max = pivot_row;
-    max_val = abs(echelon(row_max, pivot_col));
-    for (size_t row = pivot_row+1; row < echelon.nrows(); row++) {
-      val = abs(echelon(row, pivot_col));
-      if (max_val < val) {
-	row_max = row;
-	max_val = val;
-      }
-    }
+    max_val = echelon(row_max, pivot_col);
     if (max_val == 0) {
       pivot_col++;
     }
     else {
-      echelon.swap_rows(pivot_row, row_max);
-      trans.swap_rows(pivot_row, row_max);
+      echelon.swapRows(pivot_row, row_max);
+      trans.swapRows(pivot_row, row_max);
       for (size_t row = pivot_row+1; row < echelon.nrows(); row++) {
 	R factor = echelon(row,pivot_col) / echelon(pivot_row, pivot_col);
-	echelon(row, pivot_col) = 0;
+	echelon(row, pivot_col).makeZero();
 	for (size_t col = pivot_col + 1; col < echelon.ncols(); col++) {
 	  echelon(row,col) -= factor * echelon(pivot_row, col);
 	}
@@ -115,39 +118,39 @@ size_t Matrix<R>::rowEchelon(Matrix<R> & echelon, Matrix<R>& trans)
   return pivot_row;
 }
 
-template<typename R>
-size_t Matrix<R>::rank() const
+template<class R, class Parent>
+size_t Matrix<R,Parent>::rank() const
 {  
-  Matrix<R> echelon((*this));
-  Matrix<R> trans(echelon.nrows(), echelon.nrows());
-  return Matrix<R>::row_echelon(echelon, trans);
+  Matrix<R,Parent> echelon((*this));
+  Matrix<R,Parent> trans(echelon.nrows(), echelon.nrows());
+  return Matrix<R,Parent>::row_echelon(echelon, trans);
 }
 
-template<typename R>
-Matrix<R> Matrix<R>::kernel() const {
-  return this->transpose().left_kernel();
+template<class R, class Parent>
+Matrix<R,Parent> Matrix<R,Parent>::kernel() const {
+  return this->transpose().leftKernel();
 }
 
-template<typename R>
-Matrix<R> Matrix<R>::left_kernel() const {
-  Matrix<R> echelon((*this));
-  Matrix<R> trans(_nrows, _nrows);
-  size_t rank = Matrix<R>::row_echelon(echelon, trans);
+template<class R, class Parent>
+Matrix<R,Parent> Matrix<R,Parent>::leftKernel() const {
+  Matrix<R,Parent> echelon((*this));
+  Matrix<R,Parent> trans(_nrows, _nrows);
+  size_t rank = Matrix<R,Parent>::rowEchelon(echelon, trans);
   // getting the zero rows
-  Matrix<R> kernel(_nrows - rank, _nrows);
+  Matrix<R,Parent> kernel(_base, _nrows - rank, _nrows);
    for (size_t row = rank; row < _nrows; row++)
     for (size_t col = 0; col < _nrows; col++)
       kernel(row-rank,col) = trans(row, col);
   return kernel;
 }
 
-template<typename R>
-R Matrix<R>::trace() const
+template<class R, class Parent>
+R Matrix<R,Parent>::trace() const
 {
   // can only take trace of a square matrix
   assert(this->nrows() == this->ncols());
 
-  R ret = Math<R>::zero();
+  R ret = _base->zero();
   for (size_t i = 0; i < this->nrows(); i++)
     ret += (*this)(i,i);
   
@@ -157,8 +160,8 @@ R Matrix<R>::trace() const
 // We implement Faddeev-LeVerrier here, as this is
 // not expected to be a bottleneck
 /*
-template<typename R>
-UnivariatePoly<Z> Matrix<R>::char_poly() const
+template<class R, class Parent>
+UnivariatePoly<Z> Matrix<R,Parent>::char_poly() const
 {
   // can only compute characteristic polynomial for a square matrix
   assert(this->nrows() == this->ncols());
@@ -185,31 +188,32 @@ UnivariatePoly<Z> Matrix<R>::char_poly() const
 }
 */
 
-template<typename R>
-Matrix<R> Matrix<R>::restrict(const Matrix<R> & basis) const
+template<class R, class Parent>
+Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basis) const
 {
   assert(basis.nrows() == basis.rank());
   
-  Matrix<R> echelon = basis;
-  Matrix<R> trans(echelon.nrows(), echelon.nrows());
+  Matrix<R,Parent> echelon = basis;
+  Matrix<R,Parent> trans(_base, echelon.nrows(), echelon.nrows());
   rowEchelon(echelon, trans);
 
   return basis * (*this) * trans.transpose();
 }
 
-template<typename R>
-Matrix<R> Matrix<R>::diagonalJoin(const std::vector< Matrix<R> > & mats)
+template<class R, class Parent>
+Matrix<R,Parent> Matrix<R,Parent>::diagonalJoin(const std::vector< Matrix<R,Parent> > & mats)
 {
   size_t nrows = 0;
   size_t ncols = 0;
-  for (Matrix<R> mat : mats) {
+  for (Matrix<R,Parent> mat : mats) {
     nrows += mat.nrows();
     ncols += mat.ncols();
   }
-  Matrix<R> diag(nrows, ncols);
+  assert(mats.size() != 0);
+  Matrix<R,Parent> diag(mats[0]._base, nrows, ncols);
   size_t big_row = 0;
   size_t big_col = 0;
-  for (Matrix<R> mat : mats) {
+  for (Matrix<R,Parent> mat : mats) {
     for (size_t row = 0; row < mat.nrows(); row++)
       for (size_t col = 0; col < mat.ncols(); col++)
 	diag(big_row + row, big_col + col) = mat(row, col);
@@ -219,47 +223,47 @@ Matrix<R> Matrix<R>::diagonalJoin(const std::vector< Matrix<R> > & mats)
   return diag;
 }
 
-template<typename R>
-Matrix<R> Matrix<R>::identity(size_t n) {
-  Matrix<R> id(n,n);
+template<class R, class Parent>
+Matrix<R,Parent> Matrix<R,Parent>::identity(std::shared_ptr< const Parent > ring, size_t n) {
+  Matrix<R,Parent> id(ring, n,n);
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      id(i,j) = (i == j) ? Math<R>::one() : Math<R>::zero();
+      id(i,j) = (i == j) ? ring->one() : ring->zero();
   return id;
 }
 
 // TODO - just change access resolution to the same vector instead
-template<typename R>
-Matrix<R> Matrix<R>::transpose() const
+template<class R, class Parent>
+Matrix<R,Parent> Matrix<R,Parent>::transpose() const
 {
-  std::vector<R> _datat(_nrows*_ncols);
+  std::vector<R> _datat(_nrows*_ncols, _base->zero());
   size_t idx = 0;
   for (size_t col = 0; col < _ncols; col++)
     for (size_t row = 0; row < _nrows; row++)
       _datat[idx++] = (*this)(row, col);
-  Matrix<R> tr(_datat, _ncols, _nrows);
+  Matrix<R,Parent> tr(_datat, _ncols, _nrows);
   return tr;
 }
 
-template<typename R>
-Matrix<R> Matrix<R>::operator*(const Matrix<R> & other) const
+template<class R, class Parent>
+Matrix<R,Parent> Matrix<R,Parent>::operator*(const Matrix<R,Parent> & other) const
 {
   size_t nrows = this->_nrows;
   size_t ncols = other._ncols;
   assert( this->_ncols == other._nrows );
-  Matrix<R> prod(nrows, ncols);
+  Matrix<R,Parent> prod(_base, nrows, ncols);
     
   for (size_t row = 0; row < nrows; row++)
     for (size_t col = 0; col < ncols; col++) {
-      prod(row,col) = Math<R>::zero();
+      prod(row,col) = _base->zero();
       for (size_t j = 0; j < this->_ncols; j++)
 	prod(row,col) += (*this)(row,j)*other(j,col);
     }
   return prod;
 }
 
-template<typename R>
-Matrix<R>& Matrix<R>::operator+=(const Matrix<R> & other)
+template<class R, class Parent>
+Matrix<R,Parent>& Matrix<R,Parent>::operator+=(const Matrix<R,Parent> & other)
 {
   for (size_t row = 0; row < this->nrows(); row++)
     for (size_t col = 0; col < this->ncols(); col++)
@@ -268,8 +272,8 @@ Matrix<R>& Matrix<R>::operator+=(const Matrix<R> & other)
   return (*this);
 }
 
-template<typename R>
-Matrix<R>& Matrix<R>::operator-=(const Matrix<R> & other)
+template<class R, class Parent>
+Matrix<R,Parent>& Matrix<R,Parent>::operator-=(const Matrix<R,Parent> & other)
 {
   for (size_t row = 0; row < this->nrows(); row++)
     for (size_t col = 0; col < this->ncols(); col++)
@@ -278,18 +282,18 @@ Matrix<R>& Matrix<R>::operator-=(const Matrix<R> & other)
   return (*this);
 }
 
-template<typename R>
-Matrix<R>& Matrix<R>::operator*=(const Matrix<R> & other)
+template<class R, class Parent>
+Matrix<R,Parent>& Matrix<R,Parent>::operator*=(const Matrix<R,Parent> & other)
 {
   (*this) = (*this)*other;
   
   return (*this);
 }
 
-template<typename R>
-Matrix<R> Matrix<R>::operator*(const R & a) const
+template<class R, class Parent>
+Matrix<R,Parent> Matrix<R,Parent>::operator*(const R & a) const
 {
-  Matrix<R> prod(this->nrows(), this->ncols());
+  Matrix<R,Parent> prod(this->_base, this->nrows(), this->ncols());
   for (size_t row = 0; row < this->nrows(); row++)
     for (size_t col = 0; col < this->ncols(); col++)
       prod(row,col) = a*((*this)(row,col));
@@ -297,17 +301,17 @@ Matrix<R> Matrix<R>::operator*(const R & a) const
   return prod;
 }
 
-template<typename R>
-bool Matrix<R>::isZero() const
+template<class R, class Parent>
+bool Matrix<R,Parent>::isZero() const
 {
   for (size_t i = 0; i < _data.size(); i++)
-    if (!_data[i].zero())
+    if (!_data[i].isZero())
       return false;
   return true;
 }
 
-template<typename R>
-bool Matrix<R>::isOne() const
+template<class R, class Parent>
+bool Matrix<R,Parent>::isOne() const
 {
   if (_nrows != _ncols) return false;
   for (size_t row = 0; row < _nrows; row++)
@@ -328,8 +332,8 @@ bool Matrix<R>::isOne() const
   return true;
 }
 
-template<typename R>
-Matrix<R>& Matrix<R>::makeZero()
+template<class R, class Parent>
+Matrix<R,Parent>& Matrix<R,Parent>::makeZero()
 {
   for (size_t i = 0; i < _data.size(); i++)
     _data[i].makeZero();

@@ -5,18 +5,30 @@
 #include <type_traits>
 #include <vector>
 
+#include "RingElement.h"
+
 // #include "Polynomial.h"
 
-// R should be a ring, and the matrix class forms a ring by itself
+// R should be a ring element,
+// Parent the parent ring class
 
-template<class R>
-class Matrix : public virtual Ring< Matrix<R> >
+// This is a general matrix class (matrices of mxn)
+
+template<class R, class Parent>
+class Matrix
 {
-  static_assert(std::is_base_of<Ring, R>::value);
+  static_assert(std::is_base_of<RingElement, R>::value);
+  static_assert(std::is_base_of<Ring, Parent>::value);
   
 public:
   Matrix(const std::vector<R> & data, size_t nrows, size_t ncols)
-    : _nrows(nrows), _ncols(ncols), _data(data) {}
+    : _nrows(nrows), _ncols(ncols), _data(data)
+  {
+    assert(data.size() == nrows*ncols);
+    if (data.size() > 0) {
+      _base = data[0].parent();
+    }
+  }
   
   template <size_t n>
   Matrix(const R data[n][n]);
@@ -26,8 +38,10 @@ public:
   Matrix(const SquareMatrix<R, n> &);
   */
   
-  Matrix(size_t nrows, size_t ncols)
-    : _nrows(nrows), _ncols(ncols), _data(nrows*ncols) {}
+  Matrix(std::shared_ptr<const Parent> base_ring, size_t nrows, size_t ncols)
+    : _nrows(nrows), _ncols(ncols), _data(nrows*ncols, base_ring->zero())),
+      _base(base_ring)
+  {}
   
   inline const R & operator()(size_t row, size_t col) const
   {
@@ -51,32 +65,32 @@ public:
 
   inline size_t rank() const;
 
-  inline Matrix<R> kernel() const;
+  inline Matrix<R,Parent> kernel() const;
 
-  inline Matrix<R> leftKernel() const;
+  inline Matrix<R,Parent> leftKernel() const;
 
   // restrict matrix to the subspace specified by the argument
-  inline Matrix<R> restrict(const Matrix<R> & ) const;
+  inline Matrix<R,Parent> restrict(const Matrix<R,Parent> & ) const;
 
   inline R trace() const;
   
   // UnivariatePoly<Z> char_poly() const;
   
-  inline static Matrix<R> diagonalJoin(const std::vector< Matrix<R> > &);
+  inline static Matrix<R,Parent> diagonalJoin(const std::vector< Matrix<R,Parent> > &);
 
-  inline static Matrix<R> identity(size_t);
+  inline static Matrix<R,Parent> identity(size_t);
   
   // TODO - just change access resolution to the same vector instead
-  inline Matrix<R> transpose() const;
+  inline Matrix<R,Parent> transpose() const;
 
   // arithmetic
-  inline Matrix<R> operator*(const Matrix<R> &) const override;
+  inline Matrix<R,Parent> operator*(const Matrix<R,Parent> &) const override;
 
-  inline Matrix<R>& operator+=(const Matrix<R> &) override;
-  inline Matrix<R>& operator-=(const Matrix<R> &) override;
-  inline Matrix<R>& operator*=(const Matrix<R> &) override;
+  inline Matrix<R,Parent>& operator+=(const Matrix<R,Parent> &) override;
+  inline Matrix<R,Parent>& operator-=(const Matrix<R,Parent> &) override;
+  inline Matrix<R,Parent>& operator*=(const Matrix<R,Parent> &) override;
 
-  inline Matrix<R> operator*(const R & a) const;
+  inline Matrix<R,Parent> operator*(const R & a) const;
 
   // algorithms
   
@@ -84,7 +98,7 @@ public:
   
   // in-place row-echelon form for the matrix echelon,
   // returns the rank and the transformation matrix trans
-  inline static size_t rowEchelon(Matrix<R> & , Matrix<R>& );
+  inline static size_t rowEchelon(Matrix<R,Parent> & , Matrix<R,Parent>& );
 
   // printing
   
@@ -98,24 +112,26 @@ public:
     return;
   }
 
-  inline Matrix<R>* getPtr() override {return this;}
+  inline Matrix<R,Parent>* getPtr() override {return this;}
 
-  inline const Matrix<R>* getPtr() const override {return this;}
+  inline const Matrix<R,Parent>* getPtr() const override {return this;}
 
   inline bool isZero() const override;
   inline bool isOne() const override;
 
-  inline Matrix<R>& makeZero() override;
-  inline Matrix<R>& makeOne() override;
+  inline Matrix<R,Parent>& makeZero() override;
+  inline Matrix<R,Parent>& makeOne() override;
   
 protected:
   size_t _nrows;
   size_t _ncols;
   std::vector<R> _data;
+
+  std::shared_ptr< const Parent > _base;
 };
 
-template<typename R>
-inline Matrix<R> operator*(const R & a, const Matrix<R> & mat)
+template<class R, class Parent>
+inline Matrix<R, Parent> operator*(const R & a, const Matrix<R,Parent> & mat)
 { return mat*a; }
 
 #include "Matrix.inl"

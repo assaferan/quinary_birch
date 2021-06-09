@@ -6,28 +6,30 @@
 
 // Here R is derived from Ring and RElt is derived from RingElement
 
-template<class RElt>
+template<class RElt, class R>
 class Matrix;
 
-template<class R, class RElt>
-class MatrixRing : public virtual Ring< MatrixRing<R, RElt>, Matrix<RElt> >
+template<class RElt, class R>
+class MatrixRing : public virtual Ring< MatrixRing<RElt,R>, Matrix<RElt, R> >
 {
   static_assert(std::is_base_of<Ring, R>::value);
   static_assert(std::is_base_of<RingElement, RElt>::value);
   
 public:
 
-  MatrixRing(std::shared_ptr<const R> ring) : _base(ring) {}
+  MatrixRing(std::shared_ptr<const R> ring, size_t n) : _base(ring) {}
   
-  inline std::shared_ptr<const MatrixRing<R> > getPtr() const override
-  {return std::enable_shared_from_this< const MatrixRing<R> >::shared_from_this();}
+  inline std::shared_ptr<const MatrixRing<RElt,R> > getPtr() const override
+  {return std::enable_shared_from_this< const MatrixRing<RElt,R> >::shared_from_this();}
   
   // producing the global constants of the ring
-  inline Matrix<RElt> zero() const override
-  { return Matrix<RElt>::zero(_base); }
+  inline Matrix<RElt,R> zero() const override
+  { return Matrix<RElt,R>::zero(_base); }
     
-  inline Matrix<RElt> one() const override
-  { return Matrix<RElt>::one(_base); }
+  inline Matrix<RElt,R> one() const override
+  { return Matrix<RElt,R>::one(_base); }
+
+  inline std::shared_ptr<const R> baseRing() const {return _base;}
 
 protected:
 
