@@ -9,8 +9,8 @@
  * An abstract class defining the interface of a Euclidean domain.
  */
 
-template<class Derived>
-class EuclideanDomainElement : public virtual RingElement<Derived>
+template<class Derived, class DerivedParent>
+class EuclideanDomainElement : public virtual RingElement<Derived, DerivedParent>
 {
   public:
 

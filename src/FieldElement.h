@@ -3,8 +3,8 @@
 
 #include "EuclideanDomainElement.h"
 
-template<class Derived>
-class FieldElement : public virtual EuclideanDomainElement<Derived>
+template<class Derived, class DerivedParent>
+class FieldElement : public virtual EuclideanDomainElement<Derived, DerivedParent>
 {
   public:
 
@@ -15,7 +15,7 @@ class FieldElement : public virtual EuclideanDomainElement<Derived>
    */
   virtual Derived inverse() const = 0;
 
-  inline virtual typename EuclideanDomain<Derived>::DivRes
+  inline virtual typename EuclideanDomain<Derived,DerivedParent>::DivRes
   euclideanDivision(const Derived & b) const override;
 
   inline virtual Derived gcd(const Derived &) const override;

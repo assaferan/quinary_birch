@@ -10,7 +10,7 @@
  */
 
 template<typename R>
-class Integer : public virtual EuclideanDomainElement< Integer<R> >
+class Integer : public virtual EuclideanDomainElement< Integer<R>, IntegerRing<R> >
 {
 public:
   
@@ -80,7 +80,7 @@ public:
 
   inline const Integer<R>* getPtr() const { return this; }
 
-  inline std::shared_ptr<const Ring< Integer<R> > > parent() const
+  inline std::shared_ptr<const IntegerRing<R> > parent() const override
   {return std::make_shared(IntegerRing<R>::getInstance()); }
   
 protected:

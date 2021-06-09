@@ -11,7 +11,7 @@
  */
 
 template<typename R>
-class Rational : public virtual FieldElement< Rational<R> >
+class Rational : public virtual FieldElement< Rational<R>, RationalField<R> >
 {
 public:
   
@@ -152,6 +152,9 @@ public:
   inline Rational<R>* getPtr() { return this; }
 
   inline const Rational<R>* getPtr() const { return this; }
+
+  inline std::shared_ptr<const RationalField<R> > parent() const override
+  {return std::make_shared(RationalField<R>::getInstance()); }
   
 protected:
   Integer<R> _num;
