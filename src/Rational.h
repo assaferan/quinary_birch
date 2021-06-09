@@ -70,7 +70,7 @@ public:
   {return ((*this) = (*this) * b);}
   Rational<R> & operator/=(const Rational<R> &b) override
   {return ((*this) = (*this) / b);}
-  Rational<R> & operator/=(const R &b) override
+  Rational<R> & operator/=(const R &b)
   {return ((*this) = (*this) / b);}
 
   Rational<R> inverse() const
