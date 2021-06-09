@@ -39,7 +39,9 @@ public:
   */
   
   Matrix(std::shared_ptr<const Parent> base_ring, size_t nrows, size_t ncols)
-    : _nrows(nrows), _ncols(ncols), _data(nrows*ncols, base_ring->zero())),
+    : _nrows(nrows),
+      _ncols(ncols),
+      _data(nrows*ncols, base_ring->zero()),
       _base(base_ring)
   {}
   
