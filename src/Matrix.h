@@ -17,8 +17,8 @@
 template<class R, class Parent>
 class Matrix
 {
-  static_assert(std::is_base_of<RingElement, R>::value);
-  static_assert(std::is_base_of<Ring, Parent>::value);
+  static_assert(std::is_base_of<RingElement<R, Parent>, R>::value);
+  static_assert(std::is_base_of<Ring<Parent, R>, Parent>::value);
   
 public:
   Matrix(const std::vector<R> & data, size_t nrows, size_t ncols)
