@@ -794,7 +794,7 @@ std::ostream & SquareMatrix<R,Parent,n>::prettyPrint(std::ostream & os,
 }
 
 template<class R, class Parent, size_t n>
-void SquareMatrix<R,Parent,n>::set_identity(void)
+void SquareMatrix<R,Parent,n>::setIdentity(void)
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
