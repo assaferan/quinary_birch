@@ -39,7 +39,7 @@ bool testInteger<R>::testXGcd()
 {
   bool ret = true;
   // https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-  ret = ret && testXGcd(240, 46, 2, -9, -47);
+  ret = ret && testXGcd(240, 46, 2, -9, 47);
   // https://en.wikipedia.org/wiki/Euclidean_algorithm
   ret = ret && testXGcd(252, 105, 21, -2, 5);
   ret = ret && testXGcd(1071, 462, 21, -3, 7);
