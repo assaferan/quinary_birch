@@ -72,6 +72,9 @@ public:
   Rational<R> & operator/=(const R &b)
   {return ((*this) = (*this) / b);}
 
+  Rational<R> inverse() const
+  { Rational<R> inv(_denom, _num); return inv;}
+  
   // comparison
   bool operator==(const Rational<R> &) const;
   bool operator!=(const Rational<R> &b) const {return !((*this)==b); }
@@ -133,14 +136,35 @@ public:
     return b_rat/r;
   }
 
-  friend std::ostream& operator<<(std::ostream & os, const Rational<R> & r)
+  void print(std::ostream & os) const
   {
-    R one = 1;
-    if (r.denom() == one) return os << r.num();
-    if (r.denom() == -one) return os << -r.num();
-    os << r.num() << "/" << r.denom();
-    return os;
+    if (_denom.isOne())
+      os << _num;
+    else if ((-_denom()).isOne())
+      os << -_num;
+    else
+      os << _num << "/" << _denom;
+    return;
   }
+
+  // zero and one global constants
+
+  inline bool isZero() const { return (_num == 0); }
+
+  // assign zero
+  inline Rational<R> & makeZero() { _num = 0; return (*this); }
+
+  inline bool isOne() const { return (_num == _denom); }
+
+  // assign to one
+  inline Rational<R> & makeOne() { _num = 1; _denom = 1; return (*this); }
+
+  static Rational<R> zero() { Rational<R> a; return a.makeZero(); }
+  static Rational<R> one() { Rational<R> a; return a.makeOne(); }
+  
+  Rational<R>* getPtr() { return this; }
+
+  const Rational<R>* getPtr() const { return this; }
   
 protected:
   Integer<R> _num;

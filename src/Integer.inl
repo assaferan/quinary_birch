@@ -59,6 +59,8 @@ template <typename R>
 typename EuclideanDomain<Integer<R> >::DivRes
 Integer<R>::euclideanDivision(const Integer<R>& other) const
 {
+  assert(!other.isZero());
+  
   R a = this->_num;
   R b = other._num;
   if (a < 0) {

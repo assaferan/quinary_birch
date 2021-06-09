@@ -14,6 +14,12 @@ class Field : public virtual EuclideanDomain<Derived>
    * @return the inverse
    */
   virtual Derived inverse() const = 0;
+
+  typename EuclideanDomain<Derived>::DivRes
+  euclideanDivision(const Derived & b) const;
+  
 };
+
+#include "Field.inl"
 
 #endif // __FIELD_H
