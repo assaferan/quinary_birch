@@ -4,7 +4,8 @@ template<class Derived>
 typename EuclideanDomain<Derived>::XGcdRes
 EuclideanDomain<Derived>::xgcd(const Derived& b) const
 {
-  Derived old_r = *(this->getPtr());
+  Derived a = *(this->getPtr());
+  Derived old_r = a;
   Derived r = b;
   // we don't know if there is a default constructor
   // so we use the copy constructor instead.
@@ -14,10 +15,10 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   Derived old_t = r;
   Derived temp = r;
   
-  old_s.zero();
-  old_t.one();
-  s.one();
-  t.zero();
+  old_s.one();
+  old_t.zero();
+  s.zero();
+  t.one();
   
   while (!r.isZero()) {
     typename EuclideanDomain<Derived>::DivRes q_r = old_r.euclideanDivision(r);
@@ -31,9 +32,12 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
     temp = s;
     s -= q_r.first * old_s;
     old_s = temp;
+
+    assert(old_r == old_s*a+old_t*b);
+    assert(r == s*a+t*b);
   }
   
-  return std::make_tuple(old_r,s,t);
+  return std::make_tuple(old_r,old_s,old_t);
 }
 
 // This could use xgcd, but this implementation is lightly quicker
