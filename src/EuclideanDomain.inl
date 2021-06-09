@@ -26,11 +26,11 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
     r = q_r.second;
     
     temp = t;
-    t -= q_r.first * old_t;
+    t = old_t - q_r.first * t;
     old_t = temp;
 
     temp = s;
-    s -= q_r.first * old_s;
+    s = old_s - q_r.first * s;
     old_s = temp;
 
     assert(old_r == old_s*a+old_t*b);
