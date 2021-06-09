@@ -80,7 +80,7 @@ public:
   
   inline static Matrix<R,Parent> diagonalJoin(const std::vector< Matrix<R,Parent> > &);
 
-  inline static Matrix<R,Parent> identity(size_t);
+  inline static Matrix<R,Parent> identity(std::shared_ptr< const Parent >, size_t);
   
   // TODO - just change access resolution to the same vector instead
   inline Matrix<R,Parent> transpose() const;
