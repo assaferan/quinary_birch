@@ -1,7 +1,7 @@
 #include <random>
 
 template<typename R, typename S>
-Fp<R,S>::Fp(const R& p, W64 seed, bool use_inverse_lut=false)
+Fp<R,S>::Fp(const R& p, W64 seed, bool use_inverse_lut)
 {
   std::random_device rd;
   this->rng = std::unique_ptr<std::mt19937>( new std::mt19937(seed) );
@@ -34,13 +34,13 @@ std::shared_ptr< const Fp<R, S> > Fp<R,S>::getptr() const {
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::neg(R a) const
+inline  R Fp<R,S>::neg(R a) const
 {
   return this->kp-a;
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::mul(R a, R b) const
+inline  R Fp<R,S>::mul(R a, R b) const
 {
   S rem = ((S)a)*b;
   R hi = rem >> bits;
@@ -56,14 +56,14 @@ inline virtual R Fp<R,S>::mul(R a, R b) const
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::add(R a, R b) const
+inline  R Fp<R,S>::add(R a, R b) const
 {
   R neg = this->kp-a;
   return (b >= neg) ? b-neg : this->kp-(neg-b);
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::sub(R a, R b) const
+inline  R Fp<R,S>::sub(R a, R b) const
 {
   return add(a, this->kp-b);
 }
@@ -77,7 +77,7 @@ inline int Fp<R,S>::legendre(R a) const
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::sqrt(R a) const
+inline  R Fp<R,S>::sqrt(R a) const
 {
   a = a % p;
   if (a == 1) return 1;
@@ -128,21 +128,21 @@ inline virtual R Fp<R,S>::sqrt(R a) const
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::inverse(R a) const
+inline  R Fp<R,S>::inverse(R a) const
 {
   if (this->use_inverse_lut) return this->inverse_lut[a];
   else return this->inv(a);
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::inverse(const Z& a) const
+inline  R Fp<R,S>::inverse(const Z& a) const
 {
   R inv = mpz_get_ui(a.get_mpz_t());
   return this->inverse(inv);
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::inverse(const Z64& a) const
+inline  R Fp<R,S>::inverse(const Z64& a) const
 {
   R inv = (R)a;
   return this->inverse(inv);
@@ -155,7 +155,7 @@ inline FpElement<R, S> Fp<R,S>::random(void) const
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::inv(R a) const
+inline R Fp<R,S>::inv(R a) const
 {
   if (a == 0) return 0;
   Z aa(a);
