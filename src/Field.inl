@@ -28,7 +28,7 @@ Derived Field<Derived>::gcd(const Derived & b) const
 }
 
 template<class Derived>
-virtual Derived Field<Derived>::operator^ (long long int e) const
+Derived Field<Derived>::operator^ (long long int e) const
 {
   unsigned long long int abs_e = e < 0 ? -e : e;
   Derived ret = this->operator^(abs_e);
@@ -36,7 +36,7 @@ virtual Derived Field<Derived>::operator^ (long long int e) const
 }
 
 template<class Derived>
-virtual Derived& Field<Derived>::operator^= (long long int e)
+Derived& Field<Derived>::operator^= (long long int e)
 {
   unsigned long long int abs_e = e < 0 ? -e : e;
   this->operator^=(abs_e);
