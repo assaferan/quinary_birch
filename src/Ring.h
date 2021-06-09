@@ -10,7 +10,7 @@
 // Pondering - we could decide that all the actions belong to this
 // class (as Jeff did with Fp), and then let the element wrap it ?
 
-template <class Derived, DerivedElement>
+template <class Derived, class DerivedElement>
 class Ring
 {
 public:
