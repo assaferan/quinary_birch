@@ -20,8 +20,11 @@ public:
   {return std::enable_shared_from_this< const IntegerRing<R> >::shared_from_this();}
   
   // producing the global constants of the ring
-  inline Matrix<RElt> zero() const override;
-  inline Matrix<RElt> one() const override;
+  inline Matrix<RElt> zero() const override
+  { return Matrix<RElt>::zero(_base); }
+    
+  inline Matrix<RElt> one() const override
+  { return Matrix<RElt>::one(_base); }
 
 protected:
 
