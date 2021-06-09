@@ -21,7 +21,7 @@ protected:
   static void testDiv(const R & num1, const R & denom1,
 		      const R & num2, const R & denom2);
   static void testPow(const R & num1, const R & denom1,
-		      const R & num2, const R & denom2);
+		      const Z64 & e);
   static void testZero(const R & denom);
   static void testOne(const R & val);
   static void testGcd(const R & num1, const R & denom1,
