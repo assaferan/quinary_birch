@@ -16,7 +16,8 @@ public:
 
   // access = get methods
   inline const R & lift() const {return _val; }
-  inline const std::shared_ptr< const Fp<R,S> > & field() const {return _GF; }
+  inline const std::shared_ptr< const Fp<R,S> > & parent() const override
+  {return _GF; }
 
   // arithmetic
   inline FpElement<R,S> operator+() const {return FpElement(_GF, _val); }
