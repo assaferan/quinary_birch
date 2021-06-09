@@ -1,6 +1,9 @@
 #ifndef __MATRIX_RING_H_
 #define __MATRIX_RING_H_
 
+#include "Ring.h"
+#include "RingElement.h"
+
 // Here R is derived from Ring and RElt is derived from RingElement
 
 template<class RElt>
@@ -17,7 +20,7 @@ public:
   MatrixRing(std::shared_ptr<const R> ring) : _base(ring) {}
   
   inline std::shared_ptr<const MatrixRing<R> > getPtr() const override
-  {return std::enable_shared_from_this< const IntegerRing<R> >::shared_from_this();}
+  {return std::enable_shared_from_this< const MatrixRing<R> >::shared_from_this();}
   
   // producing the global constants of the ring
   inline Matrix<RElt> zero() const override
