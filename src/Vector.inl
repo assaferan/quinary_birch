@@ -83,7 +83,7 @@ template<class R, class Parent, size_t n>
 R Vector<R,Parent,n>::innerProduct(const Vector<R,Parent,n> & vec1,
 				   const Vector<R,Parent,n> & vec2)
 {
-  R prod = _base->zero();
+  R prod = vec1._base->zero();
 
   for (size_t i = 0; i < n; i++)
     prod += vec1[i]*vec2[i];
