@@ -6,7 +6,7 @@ DBG_AM_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
 AM_CXXFLAGS += -fvar-tracking-assignments-toggle
 AM_CXXFLAGS += -fomit-frame-pointer
 AM_CXXFLAGS += -funroll-all-loops
-AM_LDFLAGS = -lm -lgmp -lgmpxx
+DBG_AM_LDFLAGS = -lm -lgmp -lgmpxx
 
 SOURCES = birch.h
 SOURCES += birch_util.cpp
@@ -29,8 +29,9 @@ birch_CXXFLAGS = $(AM_CXXFLAGS)
 libbirch_la_SOURCES = $(SOURCES)
 libbirch_la_CXXFLAGS = -shared -fPIC $(AM_CXXFLAGS)
 
-birch_dbg_LDFLAGS = ${AM_LDFLAGS}
+birch_dbg_LDFLAGS = ${DBG_AM_LDFLAGS}
 
+AM_LDFLAGS = ${DBG_AM_LDFLAGS}
 AM_LDFLAGS += -O3 -fPIC
 
 birch_LDFLAGS = ${AM_LDFLAGS}
