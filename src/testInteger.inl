@@ -15,7 +15,8 @@ void testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
   Integer<R> a_int = a;
   Integer<R> b_int = b;
 
-  typename EuclideanDomain< Integer<R> >::XGcdRes d_s_t = a_int.xgcd(b_int);
+  typename EuclideanDomainElement< Integer<R>, IntegerRing<R> >::XGcdRes
+    d_s_t = a_int.xgcd(b_int);
   
   Integer<R> d_int = std::get<0>(d_s_t);
   Integer<R> s_int = std::get<1>(d_s_t);
