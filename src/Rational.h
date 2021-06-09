@@ -145,8 +145,11 @@ public:
   inline Rational<R> & makeOne()
   { _num.makeOne(); _denom.makeOne(); return (*this); }
 
-  inline static Rational<R> zero() { Rational<R> a; return a.makeZero(); }
-  inline static Rational<R> one() { Rational<R> a; return a.makeOne(); }
+  inline static Rational<R> zero()
+  { return Rational<R>::zero(); }
+  
+  inline static Rational<R> one()
+  { return Rational<R>::one(); }
   
   inline Rational<R>* getPtr() { return this; }
 
