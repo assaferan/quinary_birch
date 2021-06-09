@@ -147,10 +147,10 @@ public:
    *
    * Defines a to string conversion.
    */
-  friend std::ostream& operator<< <Derived>(std::ostream& ostream,
+  friend std::ostream& operator<< <Derived,DerivedParent>(std::ostream& ostream,
 					    const RingElement<Derived,DerivedParent>& d);
 
-  friend std::ostream& operator<< <Derived>(std::ostream& ostream,
+  friend std::ostream& operator<< <Derived,DerivedParent>(std::ostream& ostream,
 					    RingElement<Derived,DerivedParent>&& d);
 
   virtual std::shared_ptr<const DerivedParent > parent() const = 0;
