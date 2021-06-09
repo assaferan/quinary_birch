@@ -84,9 +84,9 @@ public:
   // this is needed in this form for jordan decomposition
   // F and FParent will be the field of fractions of R, RParent
   template<class F, class FParent>
-  inline static F innerProduct(const SquareMatrix<R,Parent,n> & F,
-			       const SquareMatrix<F,FParent,n> & S,
-			       size_t idx1, size_t idx2);
+  inline static F innerProduct(const SquareMatrix<R,Parent,n> &,
+			       const SquareMatrix<F,FParent,n> &,
+			       size_t, size_t);
   
   // global constants
   inline static SquareMatrix<R,Parent,n> identity(std::shared_ptr<const Parent>);
