@@ -15,7 +15,7 @@ Fp<R,S>::Fp(const R& p, W64 seed, bool use_inverse_lut)
       this->kp = (((R)-1)/p)*p;
       this->kp_inv = ((S)-1)/kp;
       this->use_inverse_lut = use_inverse_lut;
-      if (use_inverse_lut) this->make_inverse_lut();
+      if (use_inverse_lut) this->makeInverseLut();
     }
 }
 
