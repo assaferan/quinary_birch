@@ -117,7 +117,7 @@ inline std::ostream& operator<<(std::ostream&, const SquareMatrix<R,Parent,n>&);
 
 namespace std
 {
-  template<class R, class Parent<R>, size_t n>
+  template<class R, class Parent, size_t n>
   struct hash<Vector<R,Parent,n> >
   {
     Z64 operator()(const Vector<R,Parent,n>& vec) const
