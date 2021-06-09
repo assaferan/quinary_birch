@@ -37,7 +37,7 @@ public:
 
   inline virtual R inverse(const Z64& a) const;
 
-  inline FpElement<R, S> random(void);
+  inline FpElement<R, S> random(void) const;
 
 private:
   R p;
