@@ -4,6 +4,7 @@
 #include "birch_util.h"
 #include "testInteger.h"
 #include "testRational.h"
+#include "FpElement.h"
 
 std::ostream & operator<<(std::ostream & os, const Z128 & z)
 {
@@ -20,6 +21,10 @@ int main()
   testRational<Z64> test4;
   testRational<Z> test5;
   testRational<Z128> test6;
+  
+  W64 seed = 1;
+  std::share_ptr< Fp<W16,W32> > GF = std::make_shared(3, seed);
+  FpElement<W16, W32> a(GF);
   
   return 0;
 }
