@@ -35,7 +35,7 @@ Derived Ring<Derived>::operator- () const {
 template <class Derived>
 Derived& Ring<Derived>::operator^= (unsigned long long int exp)
 {
-  if (e == 1) return *(this->getPtr());
+  if (exp == 1) return *(this->getPtr());
   
   this->makeOne();
   Derived base = *(this->getPtr());;
