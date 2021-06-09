@@ -1,4 +1,4 @@
-
+#include <cassert>
 
 template<class Derived>
 typename EuclideanDomain<Derived>::XGcdRes
