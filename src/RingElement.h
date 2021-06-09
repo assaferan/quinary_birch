@@ -27,7 +27,7 @@ template<class Derived, class DerivedParent>
 std::ostream& operator<< (std::ostream& ostream,
 			  RingElement<Derived, DerivedParent> && d);
 
-template <class Derived, class Parent>
+template <class Derived, class DerivedParent>
 class RingElement
 {
 public:
