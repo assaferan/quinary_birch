@@ -3,27 +3,25 @@
 template<typename R>
 testRational<R>::testRational()
 {
-#ifdef DEBUG
   R num1 = std::rand();
   R denom1 = std::rand();
   R num2 = std::rand();
   R denom2 = std::rand();
 
   Z64 e = std::rand();
-#endif
   
-  assert(testConstructor(num1, denom1));
-  assert(testConstructor(num2, denom2));
-  assert(testAdd(num1, denom1, num2, denom2));
-  assert(testSub(num1, denom1, num2, denom2));
-  assert(testMul(num1, denom1, num2, denom2));
-  assert(testDiv(num1, denom1, num2, denom2));
-  assert(testPow(num1, denom1, e));
-  assert(testInverse(num1, denom1));
-  assert(testZero(denom1));
-  assert(testOne(num1));
-  assert(testGcd(num1, denom1, num2, denom2));
-  assert(testEuclid(num1, denom1, num2, denom2));
+  testConstructor(num1, denom1);
+  testConstructor(num2, denom2);
+  testAdd(num1, denom1, num2, denom2);
+  testSub(num1, denom1, num2, denom2);
+  testMul(num1, denom1, num2, denom2);
+  testDiv(num1, denom1, num2, denom2);
+  testPow(num1, denom1, e);
+  testInverse(num1, denom1);
+  testZero(denom1);
+  testOne(num1);
+  testGcd(num1, denom1, num2, denom2);
+  testEuclid(num1, denom1, num2, denom2);
   
 }
 
