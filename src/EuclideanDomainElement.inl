@@ -70,7 +70,8 @@ Derived EuclideanDomainElement<Derived, DerivedParent>::gcd(const Derived& b) co
 template<class Derived, class DerivedParent>
 Derived EuclideanDomainElement<Derived,DerivedParent>::quotient(const Derived& b) const
 {
-  typename EuclideanDomainElement<Derived>::DivRes q_r = this->euclideanDivision(b);
+  typename EuclideanDomainElement<Derived,DerivedParent>::DivRes q_r
+    = this->euclideanDivision(b);
   return q_r.first;
 }
 
