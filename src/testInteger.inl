@@ -3,12 +3,12 @@
 template<typename R>
 testInteger<R>::testInteger()
 {
-  assert(testGcd());
-  assert(testXGcd());
+  testGcd();
+  testXGcd();
 }
 
 template<typename R>
-bool testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
+void testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
 			       const R & s, const R & t)
 {
   Integer<R> a_int = a;
@@ -20,50 +20,52 @@ bool testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
   Integer<R> s_int = std::get<1>(d_s_t);
   Integer<R> t_int = std::get<2>(d_s_t);
 
-  return ((d_int == d) && (s_int == s) && (t_int == t));
+  assert((d_int == d) && (s_int == s) && (t_int == t));
+
+  return;
 }
 
 template<typename R>
-bool testInteger<R>::testGcd(const R & a, const R & b, const R & d)
+void testInteger<R>::testGcd(const R & a, const R & b, const R & d)
 {
   Integer<R> a_int = a;
   Integer<R> b_int = b;
   
   Integer<R> d_int = a_int.gcd(b_int);
 
-  return (d_int == d);
+  assert(d_int == d);
+
+  return;
 }
 
 template<typename R>
-bool testInteger<R>::testXGcd()
+void testInteger<R>::testXGcd()
 {
-  bool ret = true;
   // https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-  ret = ret && testXGcd(240, 46, 2, -9, 47);
+  testXGcd(240, 46, 2, -9, 47);
   // https://en.wikipedia.org/wiki/Euclidean_algorithm
-  ret = ret && testXGcd(252, 105, 21, -2, 5);
-  ret = ret && testXGcd(1071, 462, 21, -3, 7);
+  testXGcd(252, 105, 21, -2, 5);
+  testXGcd(1071, 462, 21, -3, 7);
 
   // test negative numbers
-  ret = ret && testXGcd(-240, 46, 2, 9, 47);
-  ret = ret && testXGcd(-240, -46, 2, 9, -47);
+  testXGcd(-240, 46, 2, 9, 47);
+  testXGcd(-240, -46, 2, 9, -47);
   
-  return ret;
+  return;
 }
 
 template<typename R>
-bool testInteger<R>::testGcd()
+void testInteger<R>::testGcd()
 {
-  bool ret = true;
   // https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-  ret = ret && testGcd(240, 46, 2);
+  testGcd(240, 46, 2);
   // https://en.wikipedia.org/wiki/Euclidean_algorithm
-  ret = ret && testGcd(252, 105, 21);
-  ret = ret && testGcd(1071, 462, 21);
+  testGcd(252, 105, 21);
+  testGcd(1071, 462, 21);
 
   // test negative numbers
-  ret = ret && testGcd(-240, 46, 2);
-  ret = ret && testGcd(-240, -46, 2);
+  testGcd(-240, 46, 2);
+  testGcd(-240, -46, 2);
 
-  return ret;
+  return;
 }

@@ -12,3 +12,17 @@ Field<Derived>::euclideanDivision(const Derived & b) const
   
   return std::make_pair(a*b_inv, z);
 }
+
+template<class Derived>
+Derived Field<Derived>::gcd(const Derived & b) const
+{
+  if (b.isZero() && this->isZero()) {
+    Derived z = b;
+    z.makeZero();
+    return z;
+  }
+  Derived id = b;
+  id.makeOne();
+  
+  return id;
+}

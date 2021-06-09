@@ -3,7 +3,7 @@
 #include "birch.h"
 #include "birch_util.h"
 #include "testInteger.h"
-#include "Rational.h"
+#include "testRational.h"
 
 std::ostream & operator<<(std::ostream & os, const Z128 & z)
 {
@@ -17,7 +17,9 @@ int main()
   testInteger<Z> test2;
   testInteger<Z128> test3;
 
-  Rational<Z64> r;
+  testRational<Z64> test4;
+  testRational<Z> test5;
+  testRational<Z128> test6;
   
   return 0;
 }

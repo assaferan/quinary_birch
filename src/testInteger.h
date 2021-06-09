@@ -11,12 +11,12 @@ public:
   
 protected:
 
-  static bool testXGcd();
-  static bool testGcd();
+  static void testXGcd();
+  static void testGcd();
   
-  static bool testXGcd(const R & a, const R & b, const R & d,
+  static void testXGcd(const R & a, const R & b, const R & d,
 		       const R & s, const R & t);
-  static bool testGcd(const R & a, const R & b, const R & d);
+  static void testGcd(const R & a, const R & b, const R & d);
   
 };
 

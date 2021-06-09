@@ -35,15 +35,16 @@ public:
   // arithmetic
   Rational<R> operator+() const {return Rational(_num, _denom); }
   Rational<R> operator-() const {return Rational(-_num, _denom); }
-  Rational<R> operator+(const Rational<R> &) const;
-  Rational<R> operator-(const Rational<R> &b) const {return (*this)+(-b); }
-  Rational<R> operator*(const Rational<R> &) const;
+  Rational<R> operator+(const Rational<R> &) const override;
+  Rational<R> operator-(const Rational<R> &b) const override
+  {return (*this)+(-b); }
+  Rational<R> operator*(const Rational<R> &) const override;
   Rational<R> operator*(const Integer<R> & b) const {
     Rational<R> b_rat(b);
     return (*this)*b_rat;
   }
 
-  Rational<R> operator/(const Rational<R> &) const;
+  Rational<R> operator/(const Rational<R> &) const override;
   Rational<R> operator/(const Integer<R> & b) const {
     Rational<R> b_rat(b);
     return (*this)/b_rat;
@@ -67,9 +68,9 @@ public:
   {return ((*this) = (*this) * b);}
   Rational<R> & operator*=(const R &b)
   {return ((*this) = (*this) * b);}
-  Rational<R> & operator/=(const Rational<R> &b)
+  Rational<R> & operator/=(const Rational<R> &b) override
   {return ((*this) = (*this) / b);}
-  Rational<R> & operator/=(const R &b)
+  Rational<R> & operator/=(const R &b) override
   {return ((*this) = (*this) / b);}
 
   Rational<R> inverse() const
@@ -77,7 +78,7 @@ public:
   
   // comparison
   bool operator==(const Rational<R> &) const;
-  bool operator!=(const Rational<R> &b) const {return !((*this)==b); }
+  
   bool operator<(const Rational<R> &) const;
   bool operator>(const Rational<R> &b) const {return b < (*this); }
   bool operator<=(const Rational<R> &b) const
@@ -92,7 +93,7 @@ public:
   Integer<R> ceiling() const
   { return (_num + _denom - 1)/_denom; }
 
-  bool is_integral() const
+  bool isIntegral() const
   {return ((_denom.isOne()) || ((-_denom).isOne())); }
 
   // other
