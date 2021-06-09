@@ -1,153 +1,25 @@
 #ifndef __RING_H_
 #define __RING_H_
 
-#include <ostream>
-#include <string>
+#include <memory>
 
-// We follow the same template pattern as in BPAS
-// Derived is a concrete class derived from Ring
+// This is an ADT for a ring - basically a factory for proucing ring elements
+// which should be a parent of a ring element
+// The DerivedElement class is a class derived from RingElement
 
-// on the other hand, we want to be able to implement as little
-// as possible in the derived class,
-// so we define as many methods as possible already here
-// i.e. Ring is not a completely virtual ADT
+// Pondering - we could decide that all the actions belong to this
+// class (as Jeff did with Fp), and then let the element wrap it ?
 
-// Forward declaration of friend operators
-
-template<class Derived>
-class Ring;
-
-template<class Derived>
-std::ostream& operator<< (std::ostream& ostream, const Ring<Derived> & d);
-
-template<class Derived>
-std::ostream& operator<< (std::ostream& ostream, Ring<Derived> && d);
-
-template <class Derived>
+template <class Derived, DerivedElement>
 class Ring
 {
 public:
 
-  virtual Derived* getPtr() = 0;
-
-  virtual const Derived* getPtr() const = 0;
+  virtual std::shared_ptr<const Derived> getPtr() const = 0;
   
-  /**
-   * Determine if *this ring element is zero, that is the additive identity.
-   *
-   * returns true iff *this is zero.
-   */
-   
-  virtual bool isZero() const = 0;
-  
-  /**
-   * Make *this ring element zero.
-   */
-  virtual Derived& makeZero() = 0;
-
-  /**
-   * Determine if *this ring element is one, that is the multiplication identity.
-   *
-   * returns true iff *this is one.
-   */
-  virtual bool isOne() const = 0;
-
-  /**
-   * Make *this ring element one.
-   */
-  virtual Derived& makeOne() = 0;
-
-  /**
-   * Copy assignment.
-   */
-  virtual Derived& operator= (const Derived&) = 0;
-
-  /**
-   * Addition.
-   */
-  inline virtual Derived operator+ (const Derived&) const;
-
-  /**
-   * Addition assignment.
-   */
-  virtual Derived& operator+= (const Derived&) = 0;
-
-  /**
-   * Subtraction.
-   */
-  inline virtual Derived operator- (const Derived&) const;
-
-  /**
-   * Subtraction assignment.
-   */
-  virtual Derived& operator-= (const Derived&) = 0;
-
-  /**
-   * Negation.
-   */
-  inline virtual Derived operator- () const;
-
-  /**
-   * Multiplication.
-   */
-  inline virtual Derived operator* (const Derived&) const;
-
-  /**
-   * Multiplication assignment.
-   */
-  virtual Derived& operator*= (const Derived&) = 0;
-
-  /**
-   * Exponentiation.
-   */
-  inline virtual Derived operator^ (unsigned long long int e) const;
-
-  /**
-   * Exponentiation assignment.
-   */
-  inline virtual Derived& operator^= (unsigned long long int e);
-
-  /**
-   * Equality test,
-   *
-   * returns true iff equal
-   */
-  virtual bool operator== (const Derived&) const = 0;
-
-  /**
-   * Inequality test,
-   *
-   * returns true iff not equal.
-   */
-  inline virtual bool operator!= (const Derived& other) const
-  { return !((*this) == other); }
-
-  /**
-   * Print the Ring element.
-   */
-  virtual void print(std::ostream&) const = 0;
-
-  /**
-   * Convert the Ring element to a string.
-   *
-   * Simple delegation of printing to a stringstream to obtain a string.
-   * Overriding the print method is sufficient for sub-classes
-   * to make use of this method.
-   *
-   * returns the string representation of the Ring element.
-   */
-  inline virtual std::string toString() const;
-
-  /**
-   * Output operator.
-   *
-   * Defines a to string conversion.
-   */
-  friend std::ostream& operator<< <Derived>(std::ostream& ostream, const Ring<Derived>& d);
-
-  friend std::ostream& operator<< <Derived>(std::ostream& ostream, Ring<Derived>&& d);
+  // producing the global constants of the ring
+  virtual DerivedElement zero() const = 0;
+  virtual DerivedElement one() const = 0;
 };
-
-#include "Ring.inl"
 
 #endif // __RING_H_

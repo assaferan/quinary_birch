@@ -5,12 +5,13 @@
 #include <random>
 
 #include "birch.h"
+#include "Ring.h"
 
 template<typename R, typename S>
 class FpElement;
 
 template<typename R, typename S>
-class Fp : public std::enable_shared_from_this< const Fp<R, S> >
+class Fp : public virtual Ring< Fp<R,S>, FpElement<R,S> >
 {
 public:
   Fp(const R& p, W64 seed, bool use_inverse_lut=false);
@@ -20,7 +21,7 @@ public:
   template<typename T>
   inline FpElement<R,S> mod(const T& a) const;
     
-  inline std::shared_ptr< const Fp<R, S> > getptr() const;
+  inline std::shared_ptr< const Fp<R, S> > getPtr() const override;
 
   inline virtual R neg(R a) const;
   inline virtual R mul(R a, R b) const;
@@ -35,7 +36,13 @@ public:
 
   inline virtual R inverse(const Z64& a) const;
 
-  inline FpElement<R, S> random(void);
+  inline FpElement<R,S> random(void);
+
+  inline FpElement<R,S> zero(void) const override
+  {return FpElement<R,S>::zero(this->getPtr()); }
+  
+  inline FpElement<R,S> one(void) const override
+  {return FpElement<R,S>::one(this->getPtr()); }
 
 private:
   R p;
@@ -56,7 +63,7 @@ private:
 };
 
 template<typename R, typename S>
-class F2 : public Fp<R,S>
+class F2 : public virtual Fp<R,S>
 {
 public:
   F2(const R& p, W64 seed) : Fp<R,S>(p, seed, false) {}

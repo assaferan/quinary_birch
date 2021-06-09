@@ -1,8 +1,9 @@
 #ifndef __RATIONAL_H_
 #define __RATIONAL_H_
 
-#include "Field.h"
+#include "FieldElement.h"
 #include "Integer.h"
+#include "RationalField.h"
 
 /**
  * A rational number based on the integer class R.
@@ -10,13 +11,14 @@
  */
 
 template<typename R>
-class Rational : public Field< Rational<R> >
+class Rational : public virtual FieldElement< Rational<R> >
 {
 public:
   
   // c-tors
   Rational(const Integer<R>& num, const Integer<R>& denom = Integer<R>::one())
-    : _num(num), _denom(denom)
+    : RingElement< Integer<R> >(std::make_shared(RationalField<R>::getInstance()))
+    _num(num), _denom(denom)
   { reduce(); }
 
   Rational(const R & num, const R & denom = 1)

@@ -3,7 +3,7 @@
 #include <sstream>
 
 template <class Derived>
-Derived Ring<Derived>::operator+ (const Derived& other) const
+Derived RingElement<Derived>::operator+ (const Derived& other) const
 {
   Derived sum = *(this->getPtr());
   sum += other;
@@ -11,7 +11,7 @@ Derived Ring<Derived>::operator+ (const Derived& other) const
 }
 
 template <class Derived>
-Derived Ring<Derived>::operator- (const Derived& other) const
+Derived RingElement<Derived>::operator- (const Derived& other) const
 {
   Derived diff = *(this->getPtr());
   diff -= other;
@@ -19,7 +19,7 @@ Derived Ring<Derived>::operator- (const Derived& other) const
 }
 
 template <class Derived>
-Derived Ring<Derived>::operator* (const Derived& other) const
+Derived RingElement<Derived>::operator* (const Derived& other) const
 {
   Derived prod = *(this->getPtr());
   prod *= other;
@@ -27,13 +27,13 @@ Derived Ring<Derived>::operator* (const Derived& other) const
 }
 
 template <class Derived>
-Derived Ring<Derived>::operator- () const {
+Derived RingElement<Derived>::operator- () const {
   Derived neg = *(this->getPtr());
   return neg.makeZero() - (*this->getPtr());
 }
 
 template <class Derived>
-Derived& Ring<Derived>::operator^= (unsigned long long int exp)
+Derived& RingElement<Derived>::operator^= (unsigned long long int exp)
 {
   if (exp == 1) return *(this->getPtr());
   
@@ -52,7 +52,7 @@ Derived& Ring<Derived>::operator^= (unsigned long long int exp)
 }
 
 template <class Derived>
-Derived Ring<Derived>::operator^ (unsigned long long int e) const
+Derived RingElement<Derived>::operator^ (unsigned long long int e) const
 {
   Derived pow = *(this->getPtr());
   pow ^= e;
@@ -60,7 +60,7 @@ Derived Ring<Derived>::operator^ (unsigned long long int e) const
 }
 
 template <class Derived>
-std::string Ring<Derived>::toString() const {
+std::string RingElement<Derived>::toString() const {
   std::stringstream ss;
   print(ss);
   return ss.str();
@@ -72,13 +72,14 @@ std::string Ring<Derived>::toString() const {
  * Defines a to string conversion.
  */
 template <class Derived>
-std::ostream& operator<< (std::ostream& ostream, const Ring<Derived>& d) {
+std::ostream& operator<< (std::ostream& ostream,
+			  const RingElement<Derived>& d) {
   d.print(ostream);
   return ostream;
 }
 
 template <class Derived>
-std::ostream& operator<< (std::ostream& ostream, Ring<Derived>&& d) {
+std::ostream& operator<< (std::ostream& ostream, RingElement<Derived>&& d) {
   d.print(ostream);
   return ostream;
 }

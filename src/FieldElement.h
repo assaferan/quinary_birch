@@ -1,10 +1,10 @@
-#ifndef __FIELD_H
-#define __FIELD_H
+#ifndef __FIELD_ELEMENT_H
+#define __FIELD_ELEMENT_H
 
-#include "EuclideanDomain.h"
+#include "EuclideanDomainElement.h"
 
 template<class Derived>
-class Field : public virtual EuclideanDomain<Derived>
+class FieldElement : public virtual EuclideanDomainElement<Derived>
 {
   public:
 
@@ -25,6 +25,6 @@ class Field : public virtual EuclideanDomain<Derived>
   inline virtual Derived& operator^= (long long int e);
 };
 
-#include "Field.inl"
+#include "FieldElement.inl"
 
-#endif // __FIELD_H
+#endif // __FIELD_ELEMENT_H

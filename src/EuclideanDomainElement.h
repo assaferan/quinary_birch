@@ -1,16 +1,16 @@
-#ifndef __EUCLIDEAN_DOMAIN_H_
-#define __EUCLIDEAN_DOMAIN_H_
+#ifndef __EUCLIDEAN_DOMAIN_ELEMENT_H_
+#define __EUCLIDEAN_DOMAIN_ELEMENT_H_
 
 #include <tuple>
 
-#include "Ring.h"
+#include "RingElement.h"
 
 /**
  * An abstract class defining the interface of a Euclidean domain.
  */
 
 template<class Derived>
-class EuclideanDomain : public virtual Ring<Derived>
+class EuclideanDomainElement : public virtual RingElement<Derived>
 {
   public:
 
@@ -89,6 +89,6 @@ class EuclideanDomain : public virtual Ring<Derived>
   inline virtual Derived& operator%=(const Derived& b);
 };
 
-#include "EuclideanDomain.inl"
+#include "EuclideanDomainElement.inl"
 
-#endif // __EUCLIDEAN_DOMAIN_H_
+#endif // __EUCLIDEAN_DOMAIN_ELEMENT_H_

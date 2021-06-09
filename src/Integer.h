@@ -1,7 +1,8 @@
 #ifndef __INTEGER_H_
 #define __INTEGER_H_
 
-#include "EuclideanDomain.h"
+#include "IntegerRing.h"
+#include "EuclideanDomainElement.h"
 
 /**
  * An integer based on the integer class R.
@@ -9,20 +10,23 @@
  */
 
 template<typename R>
-class Integer : public EuclideanDomain< Integer<R> >
+class Integer : public virtual EuclideanDomainElement< Integer<R> >
 {
 public:
   
   // c-tors
-  Integer(const R & num) : _num(num) {}
+  Integer(const R & num)
+    : _num(num) {}
   
   /**
    * Get a zero integer.
    */
-  Integer() : _num(0) {}
+  Integer()
+    : _num(0) {}
   
   // copy c-tor
-  Integer(const Integer<R> & other) : _num(other._num) {}
+  Integer(const Integer<R> & other)
+    : _num(other._num) {}
   
   // assignment
   Integer<R> & operator=(const Integer<R> & b);
@@ -67,7 +71,7 @@ public:
    * Perform the eucldiean division of *this and b. Returns the
    * quotient and the remainder.
    */
-  inline typename EuclideanDomain<Integer<R> >::DivRes
+  inline typename EuclideanDomainElement<Integer<R> >::DivRes
   euclideanDivision(const Integer<R>& b) const;
 
   inline void print(std::ostream&) const;
@@ -75,6 +79,9 @@ public:
   inline Integer<R>* getPtr() { return this; }
 
   inline const Integer<R>* getPtr() const { return this; }
+
+  inline std::shared_ptr<const Ring< Integer<R> > > parent() const
+  {return std::make_shared(IntegerRing<R>::getInstance()); }
   
 protected:
   R _num;

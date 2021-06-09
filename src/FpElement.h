@@ -5,7 +5,7 @@
 #include "Fp.h"
 
 template<typename R, typename S>
-class FpElement : public Field< FpElement<R,S> >
+class FpElement : public virtual Field< FpElement<R,S> >
 {
 public:
   //c-tors

@@ -1,8 +1,8 @@
 #include <cassert>
 
 template<class Derived>
-typename EuclideanDomain<Derived>::DivRes
-Field<Derived>::euclideanDivision(const Derived & b) const
+typename EuclideanDomainElement<Derived>::DivRes
+FieldElement<Derived>::euclideanDivision(const Derived & b) const
 {
   assert(!b.isZero());
   Derived a = *(this->getPtr());
@@ -14,7 +14,7 @@ Field<Derived>::euclideanDivision(const Derived & b) const
 }
 
 template<class Derived>
-Derived Field<Derived>::gcd(const Derived & b) const
+Derived FieldElement<Derived>::gcd(const Derived & b) const
 {
   if (b.isZero() && this->isZero()) {
     Derived z = b;
@@ -28,7 +28,7 @@ Derived Field<Derived>::gcd(const Derived & b) const
 }
 
 template<class Derived>
-Derived Field<Derived>::operator^ (long long int e) const
+Derived FieldElement<Derived>::operator^ (long long int e) const
 {
   unsigned long long int abs_e = e < 0 ? -e : e;
   Derived ret = Ring<Derived>::operator^(abs_e);
@@ -36,7 +36,7 @@ Derived Field<Derived>::operator^ (long long int e) const
 }
 
 template<class Derived>
-Derived& Field<Derived>::operator^= (long long int e)
+Derived& FieldElement<Derived>::operator^= (long long int e)
 {
   unsigned long long int abs_e = e < 0 ? -e : e;
   Ring<Derived>::operator^=(abs_e);

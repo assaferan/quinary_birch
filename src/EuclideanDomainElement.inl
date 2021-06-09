@@ -1,8 +1,8 @@
 #include <cassert>
 
 template<class Derived>
-typename EuclideanDomain<Derived>::XGcdRes
-EuclideanDomain<Derived>::xgcd(const Derived& b) const
+typename EuclideanDomainElement<Derived>::XGcdRes
+EuclideanDomainElement<Derived>::xgcd(const Derived& b) const
 {
   Derived a = *(this->getPtr());
   Derived old_r = a;
@@ -21,7 +21,8 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
   t.makeOne();
   
   while (!r.isZero()) {
-    typename EuclideanDomain<Derived>::DivRes q_r = old_r.euclideanDivision(r);
+    typename EuclideanDomainElement<Derived>::DivRes q_r
+      = old_r.euclideanDivision(r);
     old_r = r;
     r = q_r.second;
     
@@ -42,7 +43,7 @@ EuclideanDomain<Derived>::xgcd(const Derived& b) const
 
 // This could use xgcd, but this implementation is lightly quicker
 template<class Derived>
-Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
+Derived EuclideanDomainElement<Derived>::gcd(const Derived& b) const
 {
   Derived old_r = *(this->getPtr());
   Derived r = b;
@@ -51,7 +52,7 @@ Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
     std::cerr << "r = " << r << std::endl;
     std::cerr << "old_r = " << old_r << std::endl;
 #endif
-    typename EuclideanDomain<Derived>::DivRes q_r = old_r.euclideanDivision(r);
+    typename EuclideanDomainElement<Derived>::DivRes q_r = old_r.euclideanDivision(r);
     old_r = r;
     r = q_r.second;
   }
@@ -66,9 +67,9 @@ Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
  * @return the quotient
  */
 template<class Derived>
-Derived EuclideanDomain<Derived>::quotient(const Derived& b) const
+Derived EuclideanDomainElement<Derived>::quotient(const Derived& b) const
 {
-  typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
+  typename EuclideanDomainElement<Derived>::DivRes q_r = this->euclideanDivision(b);
   return q_r.first;
 }
 
@@ -78,9 +79,9 @@ Derived EuclideanDomain<Derived>::quotient(const Derived& b) const
  * @return the remainder
  */
 template<class Derived>
-Derived EuclideanDomain<Derived>::remainder(const Derived& b) const
+Derived EuclideanDomainElement<Derived>::remainder(const Derived& b) const
 {
-  typename EuclideanDomain<Derived>::DivRes q_r = this->euclideanDivision(b);
+  typename EuclideanDomainElement<Derived>::DivRes q_r = this->euclideanDivision(b);
   return q_r.second;
 }
 
@@ -91,7 +92,7 @@ Derived EuclideanDomain<Derived>::remainder(const Derived& b) const
  * @return the equotient.
  */
 template<class Derived>
-Derived EuclideanDomain<Derived>::operator/ (const Derived& d) const
+Derived EuclideanDomainElement<Derived>::operator/ (const Derived& d) const
 {
   return this->quotient(d);
 }
@@ -103,7 +104,7 @@ Derived EuclideanDomain<Derived>::operator/ (const Derived& d) const
  * @return a reference to this after assignment.
  */
 template<class Derived>
-Derived& EuclideanDomain<Derived>::operator/= (const Derived& d)
+Derived& EuclideanDomainElement<Derived>::operator/= (const Derived& d)
 {
  ((*this) = (*this) / d);
  return *(this->getPtr());
@@ -115,7 +116,7 @@ Derived& EuclideanDomain<Derived>::operator/= (const Derived& d)
  * @return the remainder
  */
 template<class Derived>
-Derived EuclideanDomain<Derived>::operator%(const Derived& b) const
+Derived EuclideanDomainElement<Derived>::operator%(const Derived& b) const
 {
   return this->remainder(b);
 }
@@ -126,7 +127,7 @@ Derived EuclideanDomain<Derived>::operator%(const Derived& b) const
  * @return this after assignment.
  */
 template<class Derived>
-Derived& EuclideanDomain<Derived>::operator%=(const Derived& b)
+Derived& EuclideanDomainElement<Derived>::operator%=(const Derived& b)
 {
   ((*this) = (*this) % b);
   return *(this->getPtr());
