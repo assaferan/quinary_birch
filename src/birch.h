@@ -18,12 +18,18 @@ typedef int64_t Z64;
 typedef __int128_t Z128;
 
 // Finite fields.
+template <typename R, typename S>
+class Fp;
+
 typedef Fp<W16,W32>  W16_Fp;
 typedef Fp<W32,W64>  W32_Fp;
 typedef Fp<W64,W128> W64_Fp;
 typedef F2<W16,W32>  W16_F2;
 
 // Finite field elements
+template <typename R, typename S>
+class FpElement;
+
 typedef FpElement<W16,W32>  W16_FpElement;
 typedef FpElement<W32,W64>  W32_FpElement;
 typedef FpElement<W64,W128> W64_FpElement;
