@@ -68,7 +68,7 @@ Vector<R,Parent,n> & Vector<R,Parent,n>::operator-=(const Vector<R,Parent,n> & o
 }
 
 template<class R, class Parent, size_t n>
-Vector<R,Parent,n> Vector<R,Parent,n>::operator*(const SquareMatrix<R, n>& mat) const
+Vector<R,Parent,n> Vector<R,Parent,n>::operator*(const SquareMatrix<R,Parent,n>& mat) const
 {
   Vector<R,Parent,n> prod;
   for (size_t i = 0; i < n; i++) {
@@ -81,7 +81,7 @@ Vector<R,Parent,n> Vector<R,Parent,n>::operator*(const SquareMatrix<R, n>& mat) 
 
 template<class R, class Parent, size_t n>
 R Vector<R,Parent,n>::innerProduct(const Vector<R,Parent,n> & vec1,
-				    const Vector<R,Parent,n> & vec2)
+				   const Vector<R,Parent,n> & vec2)
 {
   R prod = _base->zero();
 
