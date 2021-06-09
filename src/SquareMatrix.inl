@@ -686,7 +686,7 @@ SquareMatrix<R,Parent,n> SquareMatrix<R,Parent,n>::adjugate(size_t dim) const
 // static functions
 template<class R, class Parent, size_t n>
 template<class F, class FParent>
-F SquareMatrix<R,Parent,n>::innerProduct(const SquareMatrix<R,Parent,n> & F,
+F SquareMatrix<R,Parent,n>::innerProduct(const SquareMatrix<R,Parent,n> & G,
 					 const SquareMatrix<F,FParent,n> & S,
 					 size_t idx1, size_t idx2)
 {
@@ -695,7 +695,7 @@ F SquareMatrix<R,Parent,n>::innerProduct(const SquareMatrix<R,Parent,n> & F,
   F ans = S._base->zero();
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      ans += S(idx1, i) * F(i,j) * S(idx2, j);
+      ans += S(idx1, i) * G(i,j) * S(idx2, j);
   return ans;
 }
 
