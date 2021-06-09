@@ -74,9 +74,9 @@ protected:
 
 //scalar multiple
 template<class R, class Parent, size_t n>
-inline Vector<R,n> operator*(const R & a, const Vector<R,Parent,n> & v)
+inline Vector<R,Parent,n> operator*(const R & a, const Vector<R,Parent,n> & v)
 { return v*a; }
 
 #include "Vector.inl"
 
-#endif __VECTOR_H_
+#endif // __VECTOR_H_
