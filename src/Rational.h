@@ -17,8 +17,7 @@ public:
   
   // c-tors
   Rational(const Integer<R>& num, const Integer<R>& denom = Integer<R>::one())
-    : RingElement< Integer<R> >(std::make_shared(RationalField<R>::getInstance()))
-    _num(num), _denom(denom)
+    : _num(num), _denom(denom)
   { reduce(); }
 
   Rational(const R & num, const R & denom = 1)
