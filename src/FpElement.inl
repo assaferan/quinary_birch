@@ -85,6 +85,7 @@ FpElement<R,S> FpElement<R,S>::sqrt() const
   if (a.isZero()) return a;
   if (this->legendre() != 1) return zero();
 
+  R p = this->_GF->prime();
   R q = p-1;
   R s = 0;
   while(q % 2 == 0) { q >>= 1; s++; }
