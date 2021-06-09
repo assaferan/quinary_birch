@@ -69,17 +69,6 @@ inline virtual R Fp<R,S>::sub(R a, R b) const
 }
 
 template<typename R, typename S>
-inline virtual R Fp<R,S>::pow(R a, Z64 e) const
-{
-  if (e == 0) return 1;
-  if (e == 1) return a;
-
-  R temp = this->pow(a, e>>1);
-  temp = this->mul(temp, temp);
-  return (e%2) ? this->mul(temp, a) : temp;
-}
-
-template<typename R, typename S>
 inline int Fp<R,S>::legendre(R a) const
 {
   Z aa(a);
