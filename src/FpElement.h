@@ -8,7 +8,12 @@ template<typename R, typename S>
 class FpElement : public virtual FieldElement< FpElement<R,S>, Fp<R,S> >
 {
 public:
+  
   //c-tors
+  // We allow a default constructor for static memory allocation
+  // This might have consequence, so we should be extra careful.
+  FpElement() = default;
+  
   FpElement(std::shared_ptr<const Fp<R,S> > fld) : _GF(fld) {}
   
   FpElement(std::shared_ptr<const Fp<R,S> > fld, const R & val)
