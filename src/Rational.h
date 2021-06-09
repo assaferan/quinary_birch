@@ -129,15 +129,16 @@ public:
 
   // zero and one global constants
 
-  inline bool isZero() const { return (_num == 0); }
+  inline bool isZero() const { return _num.isZero(); }
 
   // assign zero
-  inline Rational<R> & makeZero() { _num = 0; return (*this); }
+  inline Rational<R> & makeZero() { _num.makeZero(); return (*this); }
 
   inline bool isOne() const { return (_num == _denom); }
 
   // assign to one
-  inline Rational<R> & makeOne() { _num = 1; _denom = 1; return (*this); }
+  inline Rational<R> & makeOne()
+  { _num.makeOne(); _denom.makeOne(); return (*this); }
 
   static Rational<R> zero() { Rational<R> a; return a.makeZero(); }
   static Rational<R> one() { Rational<R> a; return a.makeOne(); }
