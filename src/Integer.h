@@ -81,7 +81,7 @@ public:
   inline const Integer<R>* getPtr() const { return this; }
 
   inline std::shared_ptr<const IntegerRing<R> > parent() const override
-  {return std::make_shared(IntegerRing<R>::getInstance()); }
+  {return IntegerRing<R>::getInstance().getPtr(); }
   
 protected:
   R _num;
