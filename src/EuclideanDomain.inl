@@ -47,8 +47,10 @@ Derived EuclideanDomain<Derived>::gcd(const Derived& b) const
   Derived old_r = *(this->getPtr());
   Derived r = b;
   while (!r.isZero()) {
+#ifdef DEBUG_LEVEL_FULL
     std::cerr << "r = " << r << std::endl;
     std::cerr << "old_r = " << old_r << std::endl;
+#endif
     typename EuclideanDomain<Derived>::DivRes q_r = old_r.euclideanDivision(r);
     old_r = r;
     r = q_r.second;
