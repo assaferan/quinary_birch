@@ -6,7 +6,8 @@ Fp<R,S>::Fp(const R& p, W64 seed, bool use_inverse_lut)
 {
   std::random_device rd;
   this->rng = std::unique_ptr<std::mt19937>( new std::mt19937(seed) );
-  this->distr = std::unique_ptr<std::uniform_int_distribution<>>(0, p-1);
+  this->distr = std::unique_ptr<std::uniform_int_distribution<>>
+    (new std::uniform_int_distribution<>(0, p-1));
 
   this->p = p;
   if (this->p != 2)
