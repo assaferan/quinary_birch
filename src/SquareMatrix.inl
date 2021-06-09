@@ -262,7 +262,7 @@ SquareMatrix<R,Parent,n>::inverseLowerTriangular(void) const
 
   for (size_t col = 0; col < n; col++) {
     for (size_t i = col; i < n; i++) {
-      sum = Math<R>::zero();
+      sum.makeZero();
       for (size_t j = 0; j < i; j++)
 	sum += mat[i][j] * inv(j, col);
       R delta = (i == col) ? _base->one() : _base->zero();
