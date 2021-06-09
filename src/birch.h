@@ -24,6 +24,10 @@ class Fp;
 typedef Fp<W16,W32>  W16_Fp;
 typedef Fp<W32,W64>  W32_Fp;
 typedef Fp<W64,W128> W64_Fp;
+
+template <typename R, typename S>
+class F2;
+
 typedef F2<W16,W32>  W16_F2;
 
 // Finite field elements
