@@ -74,7 +74,7 @@ public:
   void print(std::ostream& os) const
   {
     // making sure this is in the range [0,p) before printing
-    (os << (a.field()->mod(a.lift())).lift());
+    os << (this->field()->mod(this->lift())).lift();
     return;
   }
   
