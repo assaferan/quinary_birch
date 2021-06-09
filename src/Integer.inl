@@ -57,12 +57,29 @@ void Integer<R>::print(std::ostream& os) const
 // Euclidean division
 template <typename R>
 typename EuclideanDomain<Integer<R> >::DivRes
-Integer<R>::euclideanDivision(const Integer<R>& b) const
+Integer<R>::euclideanDivision(const Integer<R>& other) const
 {
-  Integer<R> q(this->_num / b._num);
-  Integer<R> r(this->_num % abs(b._num));
+  R a = this->_num;
+  R b = other._num;
+  if (a < 0) {
+    a = -a-1;
+  }
+  if (b < 0) {
+    b = -b;
+  }
+  Integer<R> q(a / b);
+  Integer<R> r(a % b);
+  
+  if (this->_num < 0) {
+    q = -q-1;
+    r = b-1-r;
+  }
 
-  assert((r._num >= 0) && (r._num < abs(b._num)));
+  if (other._num < 0) {
+    q = -q;
+  }
+  
+  assert((r._num >= 0) && (r._num < abs(other._num)));
   assert(*this == q*b+r);
 	 
   return std::make_pair(q,r);
