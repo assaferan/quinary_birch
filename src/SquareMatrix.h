@@ -47,7 +47,7 @@ public:
   inline bool operator<(const SquareMatrix<R,Parent,n>&) const;
   
   inline bool isUpperTriangular() const;
-  inline bool isTowerTriangular() const;
+  inline bool isLowerTriangular() const;
   inline bool isSymmetric() const;
   inline bool isPositiveDefinite() const;
   
