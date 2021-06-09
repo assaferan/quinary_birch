@@ -31,10 +31,14 @@ SOURCES += RationalField.h
 SOURCES += Ring.h
 SOURCES += RingElement.h
 SOURCES += RingElement.inl
+SOURCES += SquareMatrix.h
+SOURCES += SquareMatrix.inl
 SOURCES += testInteger.h
 SOURCES += testInteger.inl
 SOURCES += testRational.h
 SOURCES += testRational.inl
+SOURCES += Vector.h
+SOURCES += Vector.inl
 
 birch_dbg_SOURCES = birch.cpp $(SOURCES)
 birch_dbg_CXXFLAGS = $(DBG_CXXFLAGS)

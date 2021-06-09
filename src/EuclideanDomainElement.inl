@@ -60,6 +60,12 @@ Derived EuclideanDomainElement<Derived, DerivedParent>::gcd(const Derived& b) co
   
   return old_r;
 }
+
+template<class Derived, class DerivedParent>
+Derived EuclideanDomainElement<Derived, DerivedParent>::lcm(const Derived& b) const
+{
+  return (*(this->getPtr()))*b / this->gcd(b);
+}
   
 /**
  * Get the quotient of *this and b.

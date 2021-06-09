@@ -42,6 +42,14 @@ class EuclideanDomainElement : public virtual RingElement<Derived, DerivedParent
    * @return the gcd.
    */
   inline virtual Derived gcd(const Derived& other) const;
+
+  /**
+   * Get LCM of *this and other.
+   *
+   * @param other: the other element to get a gcd with.
+   * @return the lcm.
+   */
+  inline virtual Derived lcm(const Derived& other) const;
   
   /**
    * Get the quotient of *this and b.

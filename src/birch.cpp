@@ -6,6 +6,8 @@
 #include "testRational.h"
 #include "FpElement.h"
 #include "Matrix.h"
+#include "SquareMatrix.h"
+#include "Vector.h"
 
 std::ostream & operator<<(std::ostream & os, const Z128 & z)
 {
@@ -28,6 +30,9 @@ int main()
   W16_FpElement a(GF);
 
   Matrix< W16_FpElement, W16_Fp > mat = Matrix< W16_FpElement, W16_Fp >::identity(GF,5);
+  Vector< W16_FpElement, W16_Fp, 5> vec(GF);
+  SquareMatrix< W16_FpElement, W16_Fp, 5> sq_mat(GF);
+  
   
   return 0;
 }
