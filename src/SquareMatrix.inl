@@ -370,7 +370,7 @@ SquareMatrix<R,Parent,n>::ldl(SquareMatrix<R,Parent,n>& L,  Vector<R,Parent,n> &
 	  L(i, j).makeZero();
 	  for (size_t k = j; k < i; k++)
 	    {
-	      inner_sum = Math<R>::zero();
+	      inner_sum.makeZero();
 	      for (size_t r = 0; r <= k; r++)
 		inner_sum += L(k, r)*((*this)(i,r))*L(k,j);
 	      inner_sum *= -L(i, i) / D[k];
