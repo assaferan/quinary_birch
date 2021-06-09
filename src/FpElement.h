@@ -70,6 +70,13 @@ public:
   FpElement<R,S>* getPtr() override {return this;}
 
   const FpElement<R,S>* getPtr() const override {return this;}
+
+  void print(std::ostream& os) const
+  {
+    // making sure this is in the range [0,p) before printing
+    (os << (a.field()->mod(a.lift())).lift());
+    return;
+  }
   
 protected:
   std::shared_ptr< const Fp<R,S> > _GF;
