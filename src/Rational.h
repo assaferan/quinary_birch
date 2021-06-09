@@ -153,7 +153,7 @@ public:
   inline const Rational<R>* getPtr() const { return this; }
 
   inline std::shared_ptr<const RationalField<R> > parent() const override
-  {return std::make_shared(RationalField<R>::getInstance()); }
+  {return std::make_shared<RationalField<R> >(RationalField<R>::getInstance()); }
   
 protected:
   Integer<R> _num;
