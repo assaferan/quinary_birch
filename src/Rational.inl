@@ -20,7 +20,7 @@ Rational<R> Rational<R>::operator*(const Rational<R> &other) const
 
 template <typename R>
 Rational<R> Rational<R>::operator/(const Rational<R> &other) const
-  {
+{
   Rational<R> prod;
   prod._num = (this->_num) * other._denom;
   prod._denom = (this->_denom) * other._num;
