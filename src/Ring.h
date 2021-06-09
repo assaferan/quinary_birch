@@ -18,10 +18,10 @@ template<class Derived>
 class Ring;
 
 template<class Derived>
-std::ostream& operator<< (std::ostream& ostream, const Ring<Derived> & d);
+inline std::ostream& operator<< (std::ostream& ostream, const Ring<Derived> & d);
 
 template<class Derived>
-std::ostream& operator<< (std::ostream& ostream, Ring<Derived> && d);
+inline std::ostream& operator<< (std::ostream& ostream, Ring<Derived> && d);
 
 template <class Derived>
 class Ring
