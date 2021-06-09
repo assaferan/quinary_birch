@@ -82,7 +82,7 @@ public:
   inline void print(std::ostream& os) const
   {
     // making sure this is in the range [0,p) before printing
-    os << (this->field()->mod(this->lift())).lift();
+    os << (this->parent()->mod(this->lift())).lift();
     return;
   }
   
