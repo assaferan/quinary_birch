@@ -28,7 +28,9 @@ testRational<R>::testRational()
 template<typename R>
 void testRational<R>::testConstructor(const R & num, const R & denom)
 {
+#ifdef DEBUG
   Rational<R> f(num, denom);
+#endif
   assert(f.num() == num);
   assert(f.denom() == denom);
 
@@ -39,10 +41,12 @@ template<typename R>
 void testRational<R>::testAdd(const R & num1, const R & denom1,
 			      const R & num2, const R & denom2)
 {
+#ifdef DEBUG
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
 
   Rational<R> f = f1 + f2;
+#endif
   assert(f1.denom()*f2.denom()*f.num() ==
 	 f.denom()*f2.denom()*f1.num() + f.denom()*f1.denom()*f2.num());
 
@@ -53,10 +57,12 @@ template<typename R>
 void testRational<R>::testSub(const R & num1, const R & denom1,
 			      const R & num2, const R & denom2)
 {
+#ifdef DEBUG
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
 
   Rational<R> f = f1 - f2;
+#endif
   assert(f1.denom()*f2.denom()*f.num() ==
 	 f.denom()*f2.denom()*f1.num() - f.denom()*f1.denom()*f2.num());
 
@@ -67,10 +73,12 @@ template<typename R>
 void testRational<R>::testMul(const R & num1, const R & denom1,
 			      const R & num2, const R & denom2)
 {
+#ifdef DEBUG
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
 
   Rational<R> f = f1 * f2;
+#endif
   assert(f1.denom()*f2.denom()*f.num() ==  f.denom()*f1.num()*f2.num());
 
   return;
@@ -80,10 +88,12 @@ template<typename R>
 void testRational<R>::testDiv(const R & num1, const R & denom1,
 			      const R & num2, const R & denom2)
 {
+#ifdef DEBUG
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
 
   Rational<R> f = f1 / f2;
+#endif
   assert(f1.denom()*f2.num()*f.num() ==  f.denom()*f1.num()*f2.denom());
 
   return;
@@ -92,9 +102,10 @@ void testRational<R>::testDiv(const R & num1, const R & denom1,
 template<typename R>  
 void testRational<R>::testPow(const R & num1, const R & denom1, const Z64 & e)
 {
+#ifdef DEBUG
   Rational<R> f(num1, denom1);
   Rational<R> f_e = f^e;
-
+#endif
   assert(f_e.num()*(f.denom()^e) == f_e.denom()*(f.num()^e));
 
   return;
@@ -103,9 +114,10 @@ void testRational<R>::testPow(const R & num1, const R & denom1, const Z64 & e)
 template<typename R>  
 void testRational<R>::testInverse(const R & num, const R & denom)
 {
+#ifdef DEBUG
   Rational<R> f(num, denom);
   Rational<R> f_inv = f.inverse();
-
+#endif
   assert((f*f_inv).isOne() && (f_inv*f).isOne());
 
   return;
@@ -137,11 +149,13 @@ template<typename R>
 void testRational<R>::testGcd(const R & num1, const R & denom1,
 			      const R & num2, const R & denom2)
 {
+#ifdef DEBUG
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
 
   Rational<R> d = f1.gcd(f2);
-
+#endif
+  
   assert(d.isOne());
 
   return;
@@ -151,6 +165,7 @@ template<typename R>
 void testRational<R>::testEuclid(const R & num1, const R & denom1,
 				 const R & num2, const R & denom2)
 {
+#ifdef DEBUG
   Rational<R> f1(num1, denom1);
   Rational<R> f2(num2, denom2);
 
@@ -161,7 +176,8 @@ void testRational<R>::testEuclid(const R & num1, const R & denom1,
   Rational<R> r = f1 % f2;
 
   assert(r.isZero());
-
+#endif
+  
   return;
 }
   
