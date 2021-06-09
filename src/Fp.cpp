@@ -1,5 +1,6 @@
 #include "birch.h"
 #include "Fp.h"
+#include "FpElement.h"
 
 template<>
 template<>
