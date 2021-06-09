@@ -170,7 +170,7 @@ void Fp<R,S>::makeInverseLut(void)
   q = p;
   while (q > 1)
     {
-      this->inverse_lut_populate(offset, len);
+      this->inverseLutPopulate(offset, len);
 
       offset |= len;
       q ^= len;
