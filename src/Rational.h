@@ -140,7 +140,7 @@ public:
   {
     if (_denom.isOne())
       os << _num;
-    else if ((-_denom()).isOne())
+    else if ((-_denom).isOne())
       os << -_num;
     else
       os << _num << "/" << _denom;
