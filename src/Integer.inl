@@ -85,7 +85,7 @@ Integer<R>::euclideanDivision(const Integer<R>& other) const
   Integer<R> q_int(q);
   Integer<R> r_int(r);
   
-  assert((r_int._num >= 0) && (r_int._num < abs(other._num)));
+  assert((r_int._num >= 0) && (r_int._num < b));
   assert(*this == q_int*other+r_int);
 	 
   return std::make_pair(q_int,r_int);
