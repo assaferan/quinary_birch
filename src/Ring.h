@@ -18,10 +18,10 @@ template<class Derived>
 class Ring;
 
 template<class Derived>
-inline std::ostream& operator<< (std::ostream& ostream, const Ring<Derived> & d);
+std::ostream& operator<< (std::ostream& ostream, const Ring<Derived> & d);
 
 template<class Derived>
-inline std::ostream& operator<< (std::ostream& ostream, Ring<Derived> && d);
+std::ostream& operator<< (std::ostream& ostream, Ring<Derived> && d);
 
 template <class Derived>
 class Ring
@@ -143,9 +143,9 @@ public:
    *
    * Defines a to string conversion.
    */
-  inline friend std::ostream& operator<< <Derived>(std::ostream& ostream, const Ring<Derived>& d);
+  friend std::ostream& operator<< <Derived>(std::ostream& ostream, const Ring<Derived>& d);
 
-  inline friend std::ostream& operator<< <Derived>(std::ostream& ostream, Ring<Derived>&& d);
+  friend std::ostream& operator<< <Derived>(std::ostream& ostream, Ring<Derived>&& d);
 };
 
 #include "Ring.inl"
