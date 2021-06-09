@@ -338,5 +338,5 @@ Matrix<R,Parent>& Matrix<R,Parent>::makeZero()
   for (size_t i = 0; i < _data.size(); i++)
     _data[i].makeZero();
 
-  return;
+  return (*this);
 }
