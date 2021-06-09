@@ -15,7 +15,7 @@ class Rational : public Field< Rational<R> >
 public:
   
   // c-tors
-  Rational(const Integer<R>& num, const Integer<R>& denom)
+  Rational(const Integer<R>& num, const Integer<R>& denom = Integer<R>::one())
     : _num(num), _denom(denom)
   { reduce(); }
 
