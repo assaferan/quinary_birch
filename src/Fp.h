@@ -26,7 +26,6 @@ public:
   inline virtual R mul(R a, R b) const;
   inline virtual R add(R a, R b) const;
   inline virtual R sub(R a, R b) const;
-  inline virtual R pow(R a, Z64 e) const;
 
   inline int legendre(R a) const;
 
