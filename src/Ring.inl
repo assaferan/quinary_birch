@@ -33,18 +33,20 @@ Derived Ring<Derived>::operator- () const {
 }
 
 template <class Derived>
-Derived& Ring<Derived>::operator^= (unsigned long long int e)
+Derived& Ring<Derived>::operator^= (unsigned long long int exp)
 {
-  if (e == 0) return this->makeOne();
   if (e == 1) return *(this->getPtr());
-
-  Derived a = *(this->getPtr());;
-
-  // !! - TODO - eliminate recursion here
-  (*this) ^= (e>>1);
-  (*this) *= (*(this->getPtr()));
-
-  if (e%2) (*this) *= a;
+  
+  this->makeOne();
+  Derived base = *(this->getPtr());;
+  unsigned long long int e = exp;
+  
+  while (e) {
+    if (e & 1)
+      (*this) *= base;
+    e >>= 1;
+    base *= base;
+  }
 
   return (*(this->getPtr()));
 }
