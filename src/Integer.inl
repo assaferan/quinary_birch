@@ -56,7 +56,7 @@ void Integer<R>::print(std::ostream& os) const
 
 // Euclidean division
 template <typename R>
-typename EuclideanDomain<Integer<R>, IntegerRing<R> >::DivRes
+typename EuclideanDomainElement<Integer<R>, IntegerRing<R> >::DivRes
 Integer<R>::euclideanDivision(const Integer<R>& other) const
 {
   assert(!other.isZero());
