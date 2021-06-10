@@ -85,7 +85,7 @@ static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Integer<Z>& p)
     }
   }
   // Otherwise, return the zero vector to indicate no solution found.
-  for (size_t i = 0; i < n; i++) vec[i] = 0;
+  for (size_t i = 0; i < n; i++) vec[i].makeZero();
   return vec;
 }
 
