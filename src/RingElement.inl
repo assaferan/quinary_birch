@@ -3,7 +3,7 @@
 #include <sstream>
 
 template <class Derived, class DerivedParent>
-Derived RingElement<Derived,DerivedParent>::operator+ (const Derived& other) const
+inline Derived RingElement<Derived,DerivedParent>::operator+ (const Derived& other) const
 {
   Derived sum = *(this->getPtr());
   sum += other;
@@ -11,7 +11,7 @@ Derived RingElement<Derived,DerivedParent>::operator+ (const Derived& other) con
 }
 
 template <class Derived, class DerivedParent>
-Derived RingElement<Derived,DerivedParent>::operator- (const Derived& other) const
+inline Derived RingElement<Derived,DerivedParent>::operator- (const Derived& other) const
 {
   Derived diff = *(this->getPtr());
   diff -= other;
@@ -19,7 +19,7 @@ Derived RingElement<Derived,DerivedParent>::operator- (const Derived& other) con
 }
 
 template <class Derived, class DerivedParent>
-Derived RingElement<Derived,DerivedParent>::operator* (const Derived& other) const
+inline Derived RingElement<Derived,DerivedParent>::operator* (const Derived& other) const
 {
   Derived prod = *(this->getPtr());
   prod *= other;
@@ -27,13 +27,13 @@ Derived RingElement<Derived,DerivedParent>::operator* (const Derived& other) con
 }
 
 template <class Derived, class DerivedParent>
-Derived RingElement<Derived,DerivedParent>::operator- () const {
+inline Derived RingElement<Derived,DerivedParent>::operator- () const {
   Derived neg = *(this->getPtr());
   return neg.makeZero() - (*this->getPtr());
 }
 
 template <class Derived, class DerivedParent>
-Derived& RingElement<Derived,DerivedParent>::operator^= (unsigned long long int exp)
+inline Derived& RingElement<Derived,DerivedParent>::operator^= (unsigned long long int exp)
 {
   if (exp == 1) return *(this->getPtr());
   
@@ -52,7 +52,7 @@ Derived& RingElement<Derived,DerivedParent>::operator^= (unsigned long long int 
 }
 
 template <class Derived, class DerivedParent>
-Derived RingElement<Derived,DerivedParent>::operator^ (unsigned long long int e) const
+inline Derived RingElement<Derived,DerivedParent>::operator^ (unsigned long long int e) const
 {
   Derived pow = *(this->getPtr());
   pow ^= e;
@@ -60,11 +60,50 @@ Derived RingElement<Derived,DerivedParent>::operator^ (unsigned long long int e)
 }
 
 template <class Derived, class DerivedParent>
-std::string RingElement<Derived,DerivedParent>::toString() const {
+inline std::string RingElement<Derived,DerivedParent>::toString() const {
   std::stringstream ss;
   print(ss);
   return ss.str();
 }
+
+template <class Derived, class DerivedParent>
+inline Derived RingElement<Derived,DerivedParent>::operator++ (int dummy)
+{
+  Derived before = *(this->getPtr());
+  Derived one = before;
+  one.makeOne();
+  this->operator+=(one);
+  return before;
+}
+
+template <class Derived, class DerivedParent>
+inline Derived& RingElement<Derived,DerivedParent>::operator++ ()
+{
+  Derived one = *(this->getPtr());
+  one.makeOne();
+  this->operator+=(one);
+  return *this;
+}
+
+template <class Derived, class DerivedParent>
+inline Derived RingElement<Derived,DerivedParent>::operator-- (int dummy)
+{
+  Derived before = *(this->getPtr());
+  Derived one = before;
+  one.makeOne();
+  this->operator-=(one);
+  return before;
+}
+
+template <class Derived, class DerivedParent>
+inline Derived& RingElement<Derived,DerivedParent>::operator-- ()
+{
+  Derived one = *(this->getPtr());
+  one.makeOne();
+  this->operator-=(one);
+  return *this;
+}
+
 
 /**
  * Output operator.
@@ -72,14 +111,14 @@ std::string RingElement<Derived,DerivedParent>::toString() const {
  * Defines a to string conversion.
  */
 template <class Derived, class DerivedParent>
-std::ostream& operator<< (std::ostream& ostream,
+inline std::ostream& operator<< (std::ostream& ostream,
 			  const RingElement<Derived,DerivedParent>& d) {
   d.print(ostream);
   return ostream;
 }
 
 template <class Derived, class DerivedParent>
-std::ostream& operator<< (std::ostream& ostream, RingElement<Derived,DerivedParent>&& d) {
+inline std::ostream& operator<< (std::ostream& ostream, RingElement<Derived,DerivedParent>&& d) {
   d.print(ostream);
   return ostream;
 }
