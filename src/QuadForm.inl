@@ -30,7 +30,11 @@ template<class R, class Parent, size_t n>
 inline R QuadForm<R,Parent,n>::discriminant(void) const
 {
   R det = this->_B.determinant();
-  return (n % 2 == 0) ? det : det/2;
+  R one = _B.baseRing()->one();
+  R two = one+one;
+  // !! TODO - add discriminant in the characteristic 2 case
+  assert(!two.isZero());
+  return (n % 2 == 0) ? det : det/(one+one);
 }
 
 template<class R, class Parent, size_t n>
