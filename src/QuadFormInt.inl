@@ -778,7 +778,7 @@ inline bool QuadFormInt<R,n>::signNormalizationSlow(SquareMatrixInt<R,n> & qf,
 	w_F2(boundary_basis.size(), col) = GF2->mod(0);
       w_F2(boundary_basis.size(), k) = GF2->mod(1);
       w_F2(boundary_basis.size(), k+j) = GF2->mod(1);
-      if ((w_F2.rank() > count) && (qf(k,k+j) != 0)) {
+      if ((w_F2.rank() > count) && (!(qf(k,k+j).isZero()))) {
 	priority_set.insert(std::make_pair(k,k+j));
 	W16_VectorFp<n> last_row(GF2);
 	for (size_t col = 0; col < n; col++)
@@ -1286,11 +1286,11 @@ bool QuadFormInt<R,n>::signNormalizationFast(SquareMatrixInt<R,n> & qf,
     // vec will always have the only the bits k and k+j on 
     vec = 1 | (1 << j);
     for (size_t k = 0; k < n-j; k++) {
-      if (qf(k,k+j) != 0) {
+      if (!(qf(k,k+j).isZero())) {
 	int lead = k;
 	ech_vec = vec;
 
-	if (qf(k,k+j) < 0)
+	if (qf(k,k+j) < Integer<R>::zero())
 	  ech_vec |= (1 << n);
 
 	// while we already have this as pivot, we 
