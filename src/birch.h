@@ -135,6 +135,13 @@ using SquareMatrixInt = SquareMatrix< Integer<R>, IntegerRing<R>, n>;
 template<typename R, size_t n>
 using SquareMatrixRat = SquareMatrix< Rational<R>, RationalField<R>, n>;
 
+template<size_t n>
+using Z_SquareMatrix = SquareMatrixInt<Z, n>;
+template<size_t n>
+using Z64_SquareMatrix = SquareMatrixInt<Z64, n>;
+template<size_t n>
+using Z128_SquareMatrix = SquareMatrixInt<Z128, n>;
+
 // vectors
 template<typename R, typename S, size_t n>
 using VectorFp = Vector< FpElement<R,S>, Fp<R,S>, n>;
