@@ -286,9 +286,9 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
       if (solution & mask)
         {
 	  b *= p;
-	  if (p > 0)
+	  if (p > IntegerRing<Z>::getInstance().zero())
             {
-	      if (det % p == 0) det /= p;
+	      if ((det % p).isZero() ) det /= p;
 	      else
                 {
 		  // Add p to the base primes.
