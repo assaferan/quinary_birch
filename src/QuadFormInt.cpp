@@ -18,7 +18,7 @@ static W64 signVector(const Z& x, const Z& det,
     W64 vec = (x == -1);
     for (const Z_PrimeSymbol& symb : primes)
     {
-        int value = Z_Math::hilbert_symbol(x, -det, symb.p);
+      int value = Integer<Z>::hilbertSymbolZ(x, -det, symb.p);
         vec = (vec << 1) | (value == -1);
     }
     return vec;
