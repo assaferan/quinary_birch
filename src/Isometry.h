@@ -79,16 +79,19 @@ public:
   void updatePerm(const VectorInt<size_t,n> & perm);
 
   inline friend std::ostream& operator<<(std::ostream& os, const Isometry<R,n>& s)
-  { os << s._a; return os; }
+  { os << s._a << " scaled by " << s._scale; return os; }
 
   inline bool operator==(const Isometry<R,n> & other) const
-  {return (this->_a == other._a);}
+  {return (other._scale * this->_a == this->_scale * other._a);}
 
   inline bool operator<(const Isometry<R,n> & other) const
-  {return (this->_a < other._a);}
+  {return (other._scale * this->_a < this->_scale * other._a);}
 
   inline Rational<R> determinant() const
   {return _a.determinant() / (_scale^n); }
+
+  inline bool isOne() const
+  {return _a == _scale * SquareMatrixInt<R,n>::identity(_a.baseRing()); }
   
 protected:
   SquareMatrixInt<R,n> _a;
