@@ -82,14 +82,17 @@ class QuadFormFp;
 template<typename R, size_t n>
 class QuadFormInt;
 
-template<size_t n>
-using Z_QuadForm = QuadFormInt<Z,n>;
+template<typename R, size_t n>
+class QuadFormZZ;
 
 template<size_t n>
-class Z64_QuadForm;
+using Z_QuadForm = QuadFormZZ<Z,n>;
 
 template<size_t n>
-class Z128_QuadForm;
+using Z64_QuadForm = QuadFormZZ<Z64,n>;
+
+template<size_t n>
+using Z128_QuadForm = QuadFormZZ<Z128,n>;
 
 // matrices
 template<class R, class Parent>
