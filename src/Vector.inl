@@ -70,7 +70,7 @@ Vector<R,Parent,n> & Vector<R,Parent,n>::operator-=(const Vector<R,Parent,n> & o
 template<class R, class Parent, size_t n>
 Vector<R,Parent,n> Vector<R,Parent,n>::operator*(const SquareMatrix<R,Parent,n>& mat) const
 {
-  Vector<R,Parent,n> prod;
+  Vector<R,Parent,n> prod(_base);
   for (size_t i = 0; i < n; i++) {
     prod[i] = _base->zero();
     for (size_t j = 0; j < n; j++)
