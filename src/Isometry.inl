@@ -41,8 +41,9 @@ inline void Isometry<R,n>::updatePerm(const VectorInt<size_t, n> & perm) {
 template<typename R, size_t n>
 inline Isometry<R,n> Isometry<R,n>::inverse(void) const
 {
-  std::shared_ptr< IntegerRing<R> > ZZ = _a.baseRing();
-  std::shared_ptr< RationalField<R> > QQ = std::make_shared< RationalField<R> >();
+  std::shared_ptr< const IntegerRing<R> > ZZ = _a.baseRing();
+  std::shared_ptr< const RationalField<R> >
+    QQ = std::make_shared< const RationalField<R> >();
   // !! TODO - should be able to invert without using rationals
   // for example, can always track back (save the inverse for the ride)
   SquareMatrixRat<R,n> a_rat(QQ);
