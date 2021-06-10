@@ -123,7 +123,7 @@ protected:
 
   static std::vector< std::vector<size_t> > allPerms(size_t m);
   
-  static int hasse(const VectorInt<R,n>& , const R & );
+  static int hasse(const VectorInt<R,n>& , const Integer<R> & );
 
   // update in-place q and iso according to the closest vector
   // to the space spanned by the n-1 first ones
