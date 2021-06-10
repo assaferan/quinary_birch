@@ -61,46 +61,46 @@ public:
   inline size_t ncols() const {return _ncols;}
 
   // return the i-th row
-  inline std::vector<R> operator[](size_t i) const;
+  std::vector<R> operator[](size_t i) const;
   
-  inline R determinant() const;
+  R determinant() const;
 
-  inline size_t rank() const;
+  size_t rank() const;
 
-  inline Matrix<R,Parent> kernel() const;
+  Matrix<R,Parent> kernel() const;
 
-  inline Matrix<R,Parent> leftKernel() const;
+  Matrix<R,Parent> leftKernel() const;
 
   // restrict matrix to the subspace specified by the argument
-  inline Matrix<R,Parent> restrict(const Matrix<R,Parent> & ) const;
+  Matrix<R,Parent> restrict(const Matrix<R,Parent> & ) const;
 
-  inline R trace() const;
+  R trace() const;
   
   // UnivariatePoly<Z> char_poly() const;
   
-  inline static Matrix<R,Parent> diagonalJoin(const std::vector< Matrix<R,Parent> > &);
+  static Matrix<R,Parent> diagonalJoin(const std::vector< Matrix<R,Parent> > &);
 
-  inline static Matrix<R,Parent> identity(std::shared_ptr< const Parent >, size_t);
+  static Matrix<R,Parent> identity(std::shared_ptr< const Parent >, size_t);
   
   // TODO - just change access resolution to the same vector instead
-  inline Matrix<R,Parent> transpose() const;
+  Matrix<R,Parent> transpose() const;
 
   // arithmetic
-  inline Matrix<R,Parent> operator*(const Matrix<R,Parent> &) const;
+  Matrix<R,Parent> operator*(const Matrix<R,Parent> &) const;
 
-  inline Matrix<R,Parent>& operator+=(const Matrix<R,Parent> &);
-  inline Matrix<R,Parent>& operator-=(const Matrix<R,Parent> &);
-  inline Matrix<R,Parent>& operator*=(const Matrix<R,Parent> &);
+  Matrix<R,Parent>& operator+=(const Matrix<R,Parent> &);
+  Matrix<R,Parent>& operator-=(const Matrix<R,Parent> &);
+  Matrix<R,Parent>& operator*=(const Matrix<R,Parent> &);
 
-  inline Matrix<R,Parent> operator*(const R & a) const;
+  Matrix<R,Parent> operator*(const R & a) const;
 
   // algorithms
   
-  inline void swapRows(size_t, size_t);
+  void swapRows(size_t, size_t);
   
   // in-place row-echelon form for the matrix echelon,
   // returns the rank and the transformation matrix trans
-  inline static size_t rowEchelon(Matrix<R,Parent> & , Matrix<R,Parent>& );
+  static size_t rowEchelon(Matrix<R,Parent> & , Matrix<R,Parent>& );
 
   // printing
   
@@ -114,10 +114,10 @@ public:
     return;
   }
 
-  inline bool isZero() const;
-  inline bool isOne() const;
+  bool isZero() const;
+  bool isOne() const;
 
-  inline Matrix<R,Parent>& makeZero();
+  Matrix<R,Parent>& makeZero();
   
 protected:
   size_t _nrows;
