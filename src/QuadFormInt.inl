@@ -344,10 +344,10 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	 for (size_t l = k+2; l < n; l++)
 	   {
 	     Rational<R> tl =
-	       T12*SquareMatrixInt<R, n>::innerProduct(this->_B,S,k+1,l) -
+	       T12*SquareMatrixInt<R,n>::innerProduct(this->_B,S,k+1,l) -
 	       T22*SquareMatrixInt<R,n>::innerProduct(this->_B,S,k,l);
 	     Rational<R> ul =
-	       T12*SquareMatrixInt<R,n>>::innerProduct(this->_B,S,k,l) -
+	       T12*SquareMatrixInt<R,n>::innerProduct(this->_B,S,k,l) -
 	       T11*SquareMatrixInt<R,n>::innerProduct(this->_B,S,k+1,l);
 	     for (size_t i = 0; i < n; i++)
 	       S(l,i) += (tl/d)*S(k,i) + (ul/d)*S(k+1,i);
