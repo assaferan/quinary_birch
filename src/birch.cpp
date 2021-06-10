@@ -31,7 +31,7 @@ int main()
   W16_FpElement a(GF);
 
   Matrix< W16_FpElement, W16_Fp > mat = Matrix< W16_FpElement, W16_Fp >::identity(GF,5);
-  Vector< W16_FpElement, W16_Fp, 5> vec(GF);
+  Vector< W16_FpElement, W16_Fp, 5> vec_fp(GF);
   SquareMatrix< W16_FpElement, W16_Fp, 5> sq_mat(GF);
 
   /*
