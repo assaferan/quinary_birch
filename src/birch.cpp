@@ -8,6 +8,7 @@
 #include "Matrix.h"
 #include "SquareMatrix.h"
 #include "Vector.h"
+#include "QuadFormInt.h"
 
 std::ostream & operator<<(std::ostream & os, const Z128 & z)
 {
