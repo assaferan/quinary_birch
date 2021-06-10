@@ -61,7 +61,7 @@ QuadFormInt<R,n>::nippToForms(NippEntry entry)
 	{
 	  for (size_t row = 0; row < col; row++)
 	    {
-	      form[form_idx++] = lat.form[5+triangular[col]+row]; 
+	      form[form_idx++] = R(lat.form[5+triangular[col]+row]); 
 	    }
 	  form[form_idx++] = 2*lat.form[col];
 	}
