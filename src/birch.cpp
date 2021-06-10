@@ -43,7 +43,7 @@ int main()
   Z128_PrimeSymbol p_128;
     
   Z64_QuadForm<3>::SymVec coeffs_64 = {2,1,2,1,1,2};
-  Z_QuadForm<3>::SymVec coeffs = {2,1,2,1,1,2};
+  Z_QuadForm<3>::SymVec coeffs = {Z(2),Z(1),Z(2),Z(1),Z(1),Z(2)};
 
   Z64_QuadForm<3> q0_64(coeffs_64);
     
