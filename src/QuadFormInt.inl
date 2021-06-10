@@ -49,7 +49,7 @@ template<typename R, size_t n>
 inline std::vector< QuadFormZZ<R,5> >
 QuadFormInt<R,n>::nippToForms(NippEntry entry)
 {
-  std::vector< QuadFormInt<R,5> > forms;
+  std::vector< QuadFormZZ<R,5> > forms;
   size_t triangular[5];
   for (size_t j = 0; j < 5; j++)
     triangular[j] = j*(j-1)/2;
