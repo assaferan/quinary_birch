@@ -89,7 +89,7 @@ size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,Parent>
   // we don't use size pivoting because the field might not have a valuation
   // !! TODO - add it in this case
   size_t row_max;
-  int max_val;
+  R max_val(echelon._base);
   
   while ((pivot_row < echelon.nrows()) && (pivot_col < echelon.ncols())) {
     row_max = pivot_row;
