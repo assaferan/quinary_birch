@@ -599,7 +599,7 @@ inline void QuadFormInt<R,n>::greedy(SquareMatrixInt<R,n>& gram,
   Isometry<R,n> temp;
 
   std::pair<R,size_t> perm_pair[n];
-  VectorInt<size_t,n> perm(IntegerRing<R>::getInstance().getPtr());
+  VectorInt<size_t,n> perm(IntegerRing<size_t>::getInstance().getPtr());
   do {
     for (size_t i = 0; i < dim; i++)
       perm_pair[i] = std::make_pair(gram(i,i), i);
