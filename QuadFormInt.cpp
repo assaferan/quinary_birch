@@ -2,7 +2,7 @@
 #include <type_traits>
 
 #include "birch.h"
-#include "QuadForm.h"
+#include "QuadFormInt.h"
 
 template class Z_QuadForm<3>;
 template class Z64_QuadForm<3>;
