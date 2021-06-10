@@ -367,7 +367,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
             }
 	  else
             {
-	      a += (b*vec[1]*vec[1] + c*vec[2]*vec[2] + f*vec[1]*vec[2] + g*vec[2] + h*vec[1]);
+	      a += (b*vec[1]*vec[1] + c*vec[2]*vec[2] + f*vec[1]*vec[2] + g*vec[2] + h*vec[1]).num();
 	      g += 2*c*vec[2] + f*vec[1];
 	      h += 2*b*vec[1] + f*vec[2];
 
