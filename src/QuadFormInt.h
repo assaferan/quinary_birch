@@ -67,7 +67,7 @@ public:
   static std::vector< QuadFormZZ<R,5> > nippToForms(NippEntry entry);
   
   static std::vector<std::vector< QuadFormZZ<R,5> > >
-  getQuinaryForms(const Integer<R> & disc);
+  getQuinaryForms(const R & disc);
 
   static void greedy(SquareMatrixInt<R,n>& q, Isometry<R,n>& s, size_t dim = n);
 
