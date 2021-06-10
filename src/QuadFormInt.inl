@@ -251,7 +251,7 @@ inline typename QuadFormInt<R,n>::jordan_data
 QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 {
   bool even = (p == R(2));
-  std::shared_ptr< const RationalField<R> > QQ = RationalField<R>::getInstance().getPtr();
+  std::shared_ptr< const RationalField<R> > QQ = std::make_shared< RationalField<R> >();
   SquareMatrixRat<R,n> S = SquareMatrixRat<R,n>::identity(QQ);
   SquareMatrixRat<R,n> G(QQ);
   MatrixRat<R> F(QQ,n,n);
@@ -488,7 +488,7 @@ inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
   SquareMatrixInt<R,n> x_gram;
   SquareMatrixInt<R,n-1> H_int;
   VectorInt<R,n-1> v_int;
-  std::shared_ptr< const IntegerRing<R> > ZZ = IntegerRing<R>::getInstance().getPtr();
+  std::shared_ptr< const IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
 
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "finding closest_lattice_vector with gram:" << std::endl;
@@ -599,7 +599,8 @@ inline void QuadFormInt<R,n>::greedy(SquareMatrixInt<R,n>& gram,
   Isometry<R,n> temp;
 
   std::pair<Integer<R>,size_t> perm_pair[n];
-  VectorInt<size_t,n> perm(IntegerRing<size_t>::getInstance().getPtr());
+  std::shared_ptr<const IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
+  VectorInt<size_t,n> perm(ZZ);
   do {
     for (size_t i = 0; i < dim; i++)
       perm_pair[i] = std::make_pair(gram(i,i), i);
@@ -689,7 +690,7 @@ inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
   bool is_reduced = true;
   std::map<Integer<R>, std::vector<size_t> > stable_sets;
   Isometry<R, n> s_final;
-  std::shared_ptr<const IntegerRing<R> > ZZ = IntegerRing<R>::getInstance().getPtr();
+  std::shared_ptr<const IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
   SquareMatrixInt<R,n> q0(ZZ);
   SquareMatrixInt<R,n> q1(ZZ);
   q0 = qf;
@@ -712,7 +713,7 @@ inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
     std::vector<size_t> value = iter->second;
     std::vector< std::vector<size_t> > val_perms = allPerms(value.size());
     for (std::vector<size_t> perm : val_perms) {
-      VectorInt<size_t, n> large_perm;
+      VectorInt<size_t, n> large_perm(ZZ);
       for (size_t k = 0; k < n; k++)
 	large_perm[k] = k;
       for (size_t idx = 0; idx < value.size(); idx++) {
@@ -870,7 +871,8 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
   bool is_reduced = true;
   std::vector< std::set< VectorInt<R,n> > > local_neighbors(1);
   Isometry<R,n> b0;
-  VectorInt<R,n> vec(IntegerRing<R>::getInstance().getPtr());
+  std::shared_ptr< IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
+  VectorInt<R,n> vec(ZZ);
   vec[0] = 1;
   for (size_t i = 1; i < n; i++)
     vec[i] = 0;

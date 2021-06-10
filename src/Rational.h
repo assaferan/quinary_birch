@@ -156,7 +156,7 @@ public:
   inline const Rational<R>* getPtr() const { return this; }
 
   inline std::shared_ptr<const RationalField<R> > parent() const override
-  {return RationalField<R>::getInstance().getPtr(); }
+  {return std::make_shared< RationalField<R> >(); }
 
   inline size_t valuation(const Integer<R>& p) const
   {return _num.valuation(p) - _denom.valuation(p);}

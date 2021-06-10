@@ -83,7 +83,7 @@ public:
   inline const Integer<R>* getPtr() const { return this; }
 
   inline std::shared_ptr<const IntegerRing<R> > parent() const override
-  {return IntegerRing<R>::getInstance().getPtr(); }
+  {return std::make_shared< IntegerRing<R> >(); }
 
   int hilbertSymbol(const Integer<R> & b, const Integer<R>& p) const;
   

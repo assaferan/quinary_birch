@@ -1,6 +1,7 @@
 #ifndef __ISOMETRY_H_
 #define __ISOMETRY_H_
 
+#include "birch.h"
 #include "Integer.h"
 #include "QuadForm.h"
 #include "SquareMatrix.h"
@@ -11,43 +12,34 @@
 // we only use isometries with integral types
 
 template<typename R, size_t n>
-using Mat = SquareMatrix<Integer<R>, IntegerRing<R>, n>;
-
-template<typename R, size_t n>
-using Vec = Vector<Integer<R>, IntegerRing<R>, n>;
-
-template<typename R, size_t n>
-using QF = QuadForm<Integer<R>, IntegerRing<R>, n>;
-
-template<typename R, size_t n>
 class Isometry
 {
 public:
   // c-tors
   Isometry() :
-    _a(Mat<R,n>::identity(IntegerRing<R>::getInstance().getPtr())),
+    _a(SquareMatrixInt<R,n>::identity(std::make_shared< IntegerRing<R> >())),
     _scale(Integer<R>::one())
   {}
 
-  Isometry(const Mat<R,n> & mat) : _a(mat), _scale(Integer<R>::one()) {}
+  Isometry(const SquareMatrixInt<R,n> & mat) : _a(mat), _scale(Integer<R>::one()) {}
 
-  Isometry(const Mat<R,n> & mat, const Integer<R> & scale) :
+  Isometry(const SquareMatrixInt<R,n> & mat, const Integer<R> & scale) :
     _a(mat), _scale(scale) { this->rescale(); }
 
   // access - set/get
   inline const Integer<R> & getScale(void) const
   { return this->_scale; }
   
-  inline void setValues(const Mat<R,n> & mat)
+  inline void setValues(const SquareMatrixInt<R,n> & mat)
   { this->_a = mat; }
 
   inline void setIdentity(void)
-  { this->_a.set_identity(); this->_scale = Integer<R>::one(); }
+  { this->_a.setIdentity(); this->_scale = Integer<R>::one(); }
 
   inline void setScale(const Integer<R> & scale)
   { this->_scale = scale; }
 
-  inline void rescale(void);
+  void rescale(void);
 
   inline const Integer<R> & operator()(size_t i, size_t j) const
   { return this->a(i, j); }
@@ -57,17 +49,17 @@ public:
 
   // basic operations
   
-  inline Isometry<R,n> inverse(void) const;
+  Isometry<R,n> inverse(void) const;
 
   inline Isometry<R,n> transpose(void) const
   { return Isometry(this->_a.transpose(), this->_scale); }
 
   // arithmetic
   
-  inline Isometry<R, n> operator*(const Isometry<R,n>& s) const
+  inline Isometry<R,n> operator*(const Isometry<R,n>& s) const
   { return Isometry((this->_a)*s._a, (this->_scale)*s._scale); }
 
-  Vec<R,n> operator*(const Vec<R,n>& vec) const
+  inline VectorInt<R,n> operator*(const VectorInt<R,n>& vec) const
   { return (this->_a)*vec; }
 
   // assignment
@@ -79,14 +71,14 @@ public:
     return *this;
   }
   
-  inline Mat<R,n> transform(const Mat<R,n>& from) const;
+  SquareMatrixInt<R,n> transform(const SquareMatrixInt<R,n>& from) const;
 
   // we save some clocks by returning once a single coordinate is mismatched.
-  inline bool isIsometry(const QF<R,n>& from, const QF<R,n>& to) const;
+  bool isIsometry(const QuadFormInt<R,n>& from, const QuadFormInt<R,n>& to) const;
   
-  inline void updatePerm(const Vec<size_t,n> & perm);
+  void updatePerm(const VectorInt<size_t,n> & perm);
 
-  friend std::ostream& operator<<(std::ostream& os, const Isometry<R,n>& s)
+  inline friend std::ostream& operator<<(std::ostream& os, const Isometry<R,n>& s)
   { os << s._a; return os; }
 
   inline bool operator==(const Isometry<R,n> & other) const
@@ -95,7 +87,7 @@ public:
   inline bool operator<(const Isometry<R,n> & other) const
   {return (this->_a < other._a);}
 
-  Mat<R,n> _a;
+  SquareMatrixInt<R,n> _a;
   
 protected:
  

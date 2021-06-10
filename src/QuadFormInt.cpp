@@ -57,7 +57,7 @@ static W64 GF2solveNaive(const std::vector<W64>& vecs, W64 start, W64 target)
 template<size_t n>
 static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Integer<Z>& p)
 {
-  std::shared_ptr<const IntegerRing<Z> > ZZ = IntegerRing<Z>::getInstance().getPtr();
+  std::shared_ptr<const IntegerRing<Z> > ZZ = std::make_shared< IntegerRing<R> >;
   Integer<Z> pp = p*p;
   Z_Vector<n> vec(ZZ);
   vec[n-1] = ZZ->one();
@@ -194,7 +194,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 		  if (solution & mask)
                     {
 		      b *= q;
-		      if (q > IntegerRing<Z>::getInstance().zero())
+		      if (q > Integer<Z>::zero())
                         {
 			  if ((det2 % q).isZero() ) det2 /= q;
 			  else
@@ -291,7 +291,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
       if (solution & mask)
         {
 	  b *= p;
-	  if (p > IntegerRing<Z>::getInstance().zero())
+	  if (p > Integer<Z>::zero())
             {
 	      if ((det % p).isZero() ) det /= p;
 	      else

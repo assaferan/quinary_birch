@@ -11,11 +11,7 @@ class IntegerRing : public virtual Ring< IntegerRing<R>, Integer<R> >
 {
 public:
 
-  inline static IntegerRing<R>& getInstance()
-  { static IntegerRing<R> instance; return instance; }
-
-  IntegerRing(IntegerRing<R> const&) = delete;
-  void operator=(IntegerRing<R> const &) = delete;
+  IntegerRing() {}
   
   inline Integer<R> zero() const override
   {return Integer<R>::zero(); }
@@ -25,9 +21,7 @@ public:
 
   inline std::shared_ptr<const IntegerRing<R> > getPtr() const override
   {return std::enable_shared_from_this< const IntegerRing<R> >::shared_from_this(); }
-
-private:
-  IntegerRing() {}
+  
 };
 
 #endif // __INTEGER_RING_H

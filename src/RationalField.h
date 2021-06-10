@@ -11,11 +11,7 @@ class RationalField : public virtual Ring< RationalField<R>, Rational<R> >
 {
 public:
 
-  static RationalField<R>& getInstance()
-  { static RationalField<R> instance; return instance; }
-
-  RationalField(RationalField<R> const&) = delete;
-  void operator=(RationalField<R> const &) = delete;
+  RationalField() {}
   
   inline Rational<R> zero() const override
   {return Rational<R>::zero(); }
@@ -26,8 +22,7 @@ public:
   inline std::shared_ptr<const RationalField<R> > getPtr() const override
   {return std::enable_shared_from_this< const RationalField<R> >::shared_from_this(); }
 
-private:
-  RationalField() {}
+  
 };
 
 #endif // __RATIONAL_FIELD_H_
