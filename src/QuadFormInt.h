@@ -18,7 +18,7 @@ template<typename R, size_t n>
 class QuadFormInt : public R_QuadForm<R,n>
 {
 public:
-  QuadFormInt(std::shared_ptr<const Parent > ring)
+  QuadFormInt(std::shared_ptr<const IntegerRing<R> > ring)
     : R_QuadForm<R,n>(ring),
       _is_reduced(false),
       _num_aut(0),
