@@ -149,11 +149,7 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram() const
 	  d = d.gcd(L(i, j));
 	}
       for (size_t j = 0; j <= i; j++) {
-#ifdef DEBUG
-	Integer<R> l_tmp = L(i,j);
-#endif
 	L(i,j) /= d;
-	assert(L(i,j) == l_tmp / d);
       }
       D[i].makeZero();
       for (size_t j = 0; j <= i; j++)
