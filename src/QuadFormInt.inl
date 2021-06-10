@@ -1077,7 +1077,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   std::set< Isometry<R,n> > auts;
   SquareMatrixInt<R,n> qf = q.bilinearForm();
   size_t num_aut = iReduce(qf, isom, auts, calc_aut);
-  QuadFormInt<R,n> q_red(qf);
+  QuadFormZZ<R,n> q_red(qf);
   if (calc_aut) {
     q_red._num_aut = num_aut;
     q_red._num_aut_init = true;
