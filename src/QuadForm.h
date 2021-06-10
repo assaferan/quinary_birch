@@ -33,7 +33,8 @@ class QuadForm
   {return !((*this)==q);}
 
   inline R evaluate(const Vector<R,Parent,n>& vec) const
-  { return Vector<R,Parent,n>::innerProduct(vec, (this->_B) * vec) / 2; }
+  { R one = baseRing()->one(); R two = one + one; assert(!(two.isZero()));
+    return Vector<R,Parent,n>::innerProduct(vec, (this->_B) * vec) / two; }
 
   inline const SquareMatrix<R,Parent,n> & bilinearForm() const
   { return this->_B; }
