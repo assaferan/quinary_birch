@@ -44,7 +44,7 @@ QuadFormInt<R,n>::mod(std::shared_ptr< Fp<S,T> > GF) const
 }
 
 template<typename R, size_t n>
-inline std::vector< QuadFormInt<R,5> >
+inline std::vector< QuadFormZZ<R,5> >
 QuadFormInt<R,n>::nippToForms(NippEntry entry)
 {
   std::vector< QuadFormInt<R,5> > forms;
@@ -69,7 +69,7 @@ QuadFormInt<R,n>::nippToForms(NippEntry entry)
 }
 
 template<typename R, size_t n>
-inline std::vector<std::vector< QuadFormInt<R,5> > >
+inline std::vector<std::vector< QuadFormZZ<R,5> > >
 QuadFormInt<R,n>::getQuinaryForms(const Integer<R> & disc)
 {
   std::vector< std::vector< QuadFormInt<R,5> > > all_forms;
