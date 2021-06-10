@@ -249,7 +249,7 @@ template<typename R, size_t n>
 inline typename QuadFormInt<R,n>::jordan_data
 QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 {
-  bool even = (p == 2);
+  bool even = (p == R(2));
   std::shared_ptr< const RationalField<R> > QQ = RationalField<R>::getInstance().getPtr();
   SquareMatrixRat<R,n> S = SquareMatrixRat<R,n>::identity(QQ);
   SquareMatrixRat<R,n> G(QQ);
