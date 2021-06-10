@@ -823,12 +823,13 @@ inline bool QuadFormInt<R,n>::signNormalizationSlow(SquareMatrixInt<R,n> & qf,
   for (size_t row = 0; row + 1 < ker.nrows(); row++) {
     is_reduced = false;
     for (size_t i = 0; i < n; i++)
-      s(i,i) = (ker(row, i) + ker(ker.nrows()-1, i) == 1) ? -1 : 1;
+      s(i,i) = (ker(row, i) + ker(ker.nrows()-1, i)).isOne() ?
+	-Integer<R>::one() : Integer<R>::one();
     if (s.transform(qf) == qf) {
       auts.insert(isom*s*isom.inverse());
       is_reduced = true;
       // to be compatible with magma implementation for debugging
-      for (size_t i = 0; i < n; i++) s(i,i) = 1;
+      for (size_t i = 0; i < n; i++) s(i,i) = Integer<R>::one();
     }
   }
   qf = s.transform(qf);
