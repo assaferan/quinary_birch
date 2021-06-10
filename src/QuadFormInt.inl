@@ -914,7 +914,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
 #ifdef DEBUG_LEVEL_FULL
 	assert((isom_orig.inverse() * isom).transform(qf_orig) == qf);
 #endif
-	norm_echelon(qf, isom);
+	normEchelon(qf, isom);
 #ifdef DEBUG_LEVEL_FULL
 	assert((isom_orig.inverse() * isom).transform(qf_orig) == qf);
 #endif
@@ -967,7 +967,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
   }
   for (size_t i = 1; i < n; i++) {
     std::vector< std::vector< VectorInt<R,n> > > ns1;
-    R norm = qf(i,i);
+    Integer<R> norm = qf(i,i);
     std::vector<size_t> inds;
     for (size_t j = 0; j < i; j++)
       if (qf(j,j) == norm) inds.push_back(j);
@@ -980,14 +980,14 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
 	    break;
 	  }
 	if ((include) &&
-	    (abs(VectorInt<R,n>::innerProduct(c[i-1]*qf, y)) >= abs(qf(i,i-1)))) {
+	    (VectorInt<R,n>::innerProduct(c[i-1]*qf, y).abs() >= qf(i,i-1).abs())) {
 	  c.push_back(y);
 	  ns1.push_back(c);
 	}
 	else {
 	  for (size_t j = 1; j < i; j++) {
-	    if (abs(VectorInt<R,n>::innerProduct(c[j-1]*qf, c[j])) >
-		abs(qf(j,j-1))) {
+	    if (VectorInt<R,n>::innerProduct(c[j-1]*qf, c[j]).abs() >
+		qf(j,j-1).abs() ) {
 	      c.push_back(y);
 	      ns1.push_back(c);
 	      break;
