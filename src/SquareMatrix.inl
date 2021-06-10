@@ -111,6 +111,7 @@ bool SquareMatrix<R,Parent,n>::operator==(const SquareMatrix<R,Parent,n>& other)
 }
 
 // !! - TODO - replace == and < by compare to save time
+// Also, this is only relevant for integral matrices
 template<class R, class Parent, size_t n>
 bool SquareMatrix<R,Parent,n>::operator<(const SquareMatrix<R,Parent,n>& other) const
 {
@@ -120,8 +121,8 @@ bool SquareMatrix<R,Parent,n>::operator<(const SquareMatrix<R,Parent,n>& other) 
   }
   for (size_t col = 0; col < n-1; col++)
     for (size_t row = 0; row < n-1-col; row++) {
-      if (abs(mat[row][row+col+1]) > abs(other(row, row+col+1))) return true;
-      if (abs(mat[row][row+col+1]) < abs(other(row, row+col+1))) return false;
+      if (mat[row][row+col+1].abs() > other(row, row+col+1).abs()) return true;
+      if (mat[row][row+col+1].abs() < other(row, row+col+1).abs()) return false;
     }
   for (size_t col = 0; col < n-1; col++)
     for (size_t row = 0; row < n-1-col; row++) {
