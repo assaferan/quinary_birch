@@ -45,7 +45,7 @@ SquareMatrix<R,Parent,n> &
 SquareMatrix<R,Parent,n>::operator=(const SquareMatrix<R,Parent,n> & other)
 {
   if (this !=  &other) {
-    deep_copy(other.mat);
+    deepCopy(other.mat);
     _base = other._base;
   }
   return (*this);
