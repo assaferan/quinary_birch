@@ -137,3 +137,71 @@ inline size_t Integer<R>::valuation(const Integer<R>& p) const
 
   return exp;
 }
+
+template <typename R>
+inline int Integer<R>::kroneckerSymbol(const Integer<R> & n) const
+{
+  // extremal cases
+  if (n.isZero()) return (this->abs().isOne()) ? 1 : 0;
+  if ((-n).isOne()) return (*this < Integer<R>::zero()) ? -1 : 1;
+  if (n.isOne()) return 1;
+  if (n == R(2)) {
+    if (((*this) % R(2)).isZero()) return 0;
+    R val = (this->num() % 8)/2;
+    if ((val == 0) || (val == 3))
+      return 1;
+    return -1;
+  }
+  if ((-(*this)).isOne()) {
+    R n_prime = n.num();
+    while (n_prime % 2 == 0) n_prime /= 2;
+    return ((n_prime / 2) % 2 == 0) ? 1 : -1;
+  }
+  if ((this->num() == 2) && ((n % R(2)).isOne())) {
+    return ((n^2 / R(8)) % R(2)).isZero() ? 1 : -1;
+  }
+  // multiplicativity
+  if (n < Integer<R>::zero()) return kroneckerSymbol(-1)*kronecker_symbol(-n);
+  if ((*this) < Integer<R>::zero())
+    return (-Integer<R>::one()).kroneckerSymbol(n)*(-(*this)).kronecker_symbol(n);
+
+  // now may assume n >= 3, a >= 0
+ 
+  // quadratic reciprocity
+  if (a < n) {
+    Integer<R> n_star;
+    R n_prime = n.num();
+    while (n_prime % 2 == 0) n_prime /= 2;
+    n_star = ((n_prime / 2) % 2 == 0) ? n : -n;
+    return n_star.kroneckerSymbol(*this);
+  }
+
+  // now we may also assume a ge n
+
+  // if n = 2 mod 4, we can't reduce, use multiplicativity again
+  if (n.num() % 4 == 2) return kroneckerSymbol(n/2)*kroneckerSymbol(2);
+  // now we can reduce
+  return (a % n).kroneckerSymbol(n);
+}
+
+
+template <typename R>
+inline bool Integer<R>::isLocalSquare(const Integer<R>& p) const
+{
+  if (this->isZero()) return true;
+  size_t v = this->valuation(p);
+  if (v % 2 == 1) return false;
+  Integer<R> a0 = *this;
+  for (size_t i = 0; i < v; i++) a0 /= p;
+  bool ok = (a0.kroneckerSymbol(p) != -1);
+  if (p != R(2)) return ok;
+  size_t w = (a0-Integer<R>::one()).valuation(p);
+  assert(w >= 1);
+  size_t ee = 2;
+
+  while ((w < ee) && (w % 2 == 0)) {
+    a0 /= R(1+ (1<< (w/2)))*(1+ (1<< (w/2)));
+    w = (a0-1).valuation(p);
+  }
+  return ((w > ee) || ((w == ee) && (a0 % R(8)).isOne()));
+}

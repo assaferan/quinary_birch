@@ -101,6 +101,10 @@ public:
   size_t valuation(const Integer<R>& p) const;
 
   inline Integer<R> abs() const {return _num < 0 ? -(*this) : *this; }
+
+  int kroneckerSymbol(const Integer<R> & n) const;
+  
+  bool isLocalSquare(const Integer<R>& p) const;
   
 protected:
   R _num;

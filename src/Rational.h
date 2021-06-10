@@ -160,12 +160,18 @@ public:
 
   inline Rational<R> abs() const
   {return (_num*_denom < Integer<R>::zero()) ? -(*this) : *this; }
+
+  inline bool isLocalSquare(const Integer<R>& p) const
+  {return _num.isLocalSquare(p) == _denom.isLocalSquare(p); }
+
+  static Rational<R> bernoulliNumber(const size_t & n);
   
 protected:
   Integer<R> _num;
   Integer<R> _denom;
 
   void reduce(void);
+  static std::vector< Rational<R> > bernoulliUpTo(const size_t & n);
 };
 
 #include "Rational.inl"
