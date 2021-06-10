@@ -1,5 +1,7 @@
 // implementation file for SquareMatrix.h
 
+#include <cassert>
+
 // SquareMatrix
 
 template<class R, class Parent, size_t n>
