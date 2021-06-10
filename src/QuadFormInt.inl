@@ -378,7 +378,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	 }
 	 else
 	   {
-	     Integer<R> one = 1;
+	     Integer<R> one = Integer<R>::one();
 	     // std::cerr << "adding rows" << std::endl;
 	     S.addRow(i_pair.first, i_pair.second, one);
 	     
