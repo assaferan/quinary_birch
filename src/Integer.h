@@ -86,6 +86,9 @@ public:
   {return IntegerRing<R>::getInstance().getPtr(); }
 
   int hilbertSymbol(const Integer<R> & b, const Integer<R>& p) const;
+  
+  // temporary - to have it exported for where it is used 
+  static int hilbertSymbolZ(const Z & x, const Z & y, const Z & p);
 
   typedef std::vector< std::pair<Integer<R>, size_t> > FactorData;
 
