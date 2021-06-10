@@ -95,7 +95,7 @@ Integer<R>::euclideanDivision(const Integer<R>& other) const
 // (in all our use cases, num will be in the order of 1000 at most)
 
 template <typename R>
-inline typename Integer<R>::FactorData Integer<R>::factorization() const
+typename Integer<R>::FactorData Integer<R>::factorization() const
 {
   Integer<R> num = *this;
   assert(num < 10000);
@@ -122,7 +122,7 @@ inline typename Integer<R>::FactorData Integer<R>::factorization() const
 }
 
 template <typename R>
-inline size_t Integer<R>::valuation(const Integer<R>& p) const
+size_t Integer<R>::valuation(const Integer<R>& p) const
 {
   assert(!(this->isZero()));
   Integer<R> t = *this;
