@@ -36,6 +36,13 @@ class Ring;
 template<class Derived, class DerivedParent>
 class RingElement;
 
+// fields (ADT)
+template <class Derived, class DerivedElement>
+class Field;
+
+template<class Derived, class DerivedParent>
+class FieldElement;
+
 // integers
 template <typename R>
 class IntegerRing;
