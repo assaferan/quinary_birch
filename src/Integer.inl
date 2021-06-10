@@ -98,7 +98,7 @@ template <typename R>
 inline typename Integer<R>::FactorData Integer<R>::factorization() const
 {
   Integer<R> num = *this;
-  assert(num < 10000);
+  assert(num < R(10000));
   typename Integer<R>::FactorData factors;
   Integer<R> temp_num = num.abs();
   size_t exp;
