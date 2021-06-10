@@ -682,9 +682,9 @@ QuadFormInt<R,n>::allPerms(size_t m)
 
 template<typename R, size_t n>
 inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
-					     Isometry<R,n> & isom,
-					     std::set< Isometry<R, n> > & auts,
-					     bool calc_aut)
+						   Isometry<R,n> & isom,
+						   std::set< Isometry<R, n> > & auts,
+						   bool calc_aut)
 {
   bool is_reduced = true;
   std::map<Integer<R>, std::vector<size_t> > stable_sets;
@@ -827,7 +827,7 @@ inline bool QuadFormInt<R,n>::signNormalizationSlow(SquareMatrixInt<R,n> & qf,
 // (by permutation). Though it seems this is covered by permutation_reduction
 template<typename R, size_t n>
 inline bool QuadFormInt<R,n>::normEchelon(SquareMatrixInt<R,n> & qf,
-				   Isometry<R,n> & isom)
+					  Isometry<R,n> & isom)
 {
 #ifdef DEBUG
   SquareMatrixInt<R,n> qf_orig = qf;
@@ -1391,7 +1391,7 @@ QuadFormInt<R,n>::generateOrbit() const
 
 
 template<typename R, size_t n>
-inline std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> >
+inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
 QuadFormInt<R,n>::permutationOrbit() const
 {
   std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > orbit; 
