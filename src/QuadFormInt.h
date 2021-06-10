@@ -54,20 +54,20 @@ public:
 
   VectorInt<R,n> orthogonalizeGram() const;
 
-  static QuadFormInt<R,n> reduce(const QuadFormInt<R,n> & q,
-				 Isometry<R,n> & isom,
-				 bool calc_aut = false);
+  static QuadFormZZ<R,n> reduce(const QuadFormZZ<R,n> & q,
+				Isometry<R,n> & isom,
+				bool calc_aut = false);
 
   std::set<Isometry<R,n>> properAutomorphisms() const;
 
-  static std::vector< QuadFormInt<R,5> > nippToForms(NippEntry entry);
+  static std::vector< QuadFormZZ<R,5> > nippToForms(NippEntry entry);
   
-  static std::vector<std::vector< QuadFormInt<R,5> > >
+  static std::vector<std::vector< QuadFormZZ<R,5> > >
   getQuinaryForms(const Integer<R> & disc);
 
   static void greedy(SquareMatrixInt<R,n>& q, Isometry<R,n>& s, size_t dim = n);
 
-  std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > generateOrbit() const;
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > generateOrbit() const;
 
   inline bool isReduced() const { return this->_is_reduced; }
 
@@ -144,67 +144,88 @@ protected:
   
   static std::vector<uint8_t> kernel(const std::vector< uint8_t > & mat);
 
-  std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> >
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
   permutationOrbit() const;
   
-  std::unordered_map<  QuadFormInt<R,n>, Isometry<R,n> >
+  std::unordered_map<  QuadFormZZ<R,n>, Isometry<R,n> >
   signOrbit() const;
+};
+
+// we need this intermediate class for the partial specialization
+
+template<typename R, size_t n>
+class QuadFormZZ : public QuadFormInt<R,n>
+{
+public:
+  QuadFormZZ() : QuadFormInt<R,n>() {}
+
+  // a more general constructor
+  // We adhere to magma convention - giving the rows
+  // up to the diagonal
+  QuadFormZZ(const typename QuadFormInt<R,n>::SymVec& coeffs)
+    : QuadFormInt<R,n>(coeffs) {}
+
+  QuadFormZZ(const SquareMatrixInt<R,n> & B)
+    : QuadFormInt<R,n>(B) {}
+
+  using QuadFormInt<R,n>::operator==;
+    
+  using QuadFormInt<R,n>::discriminant;
+  
+  W64 hashValue(void) const;
+
+  using QuadFormInt<R,n>::evaluate;
+  using QuadFormInt<R,n>::reduce;
+  using QuadFormInt<R,n>::generateOrbit;
+
 };
 
 // Here we find that we must instantiate the following classes due to
 // partial template specilization of hashValue.
   
 template<size_t n>
-class QuadFormInt<Z,n> : public R_QuadForm<Z,n>
+class QuadFormZZ<Z,n> : public QuadFormInt<Z,n>
 {
 public:
+  QuadFormZZ() : QuadFormInt<Z,n>() {}
 
-  QuadFormInt() : R_QuadForm<Z,n>(), _is_reduced(false), _num_aut(0), _num_aut_init(false)
-  {}
-
+  // a more general constructor
   // We adhere to magma convention - giving the rows
   // up to the diagonal
-  QuadFormInt(const typename R_QuadForm<Z,n>::SymVec& coeffs)
-    : R_QuadForm<Z,n>(coeffs), _is_reduced(false), _num_aut(0), _num_aut_init(false) {}
+  QuadFormZZ(const typename QuadFormInt<Z,n>::SymVec& coeffs)
+    : QuadFormInt<Z,n>(coeffs) {}
 
-  QuadFormInt(const SquareMatrixInt<Z,n> & B)
-    : R_QuadForm<Z,n>(B), _is_reduced(false), _num_aut(0), _num_aut_init(false)  {}
+  QuadFormZZ(const SquareMatrixInt<Z,n> & B)
+    : QuadFormInt<Z,n>(B) {}
 
-  using R_QuadForm<Z,n>::operator==;
+  using QuadFormInt<Z,n>::operator==;
     
-  using R_QuadForm<Z,n>::discriminant;
+  using QuadFormInt<Z,n>::discriminant;
   
   W64 hashValue(void) const;
 
-  using R_QuadForm<Z,n>::evaluate;
-  using R_QuadForm<Z,n>::generateOrbit;
-  using R_QuadForm<Z,n>::reduce;
+  using QuadFormInt<Z,n>::evaluate;
+  using QuadFormInt<Z,n>::generateOrbit;
+  using QuadFormInt<Z,n>::reduce;
   
   static Z_QuadForm<3> getQuadForm(const std::vector<Z_PrimeSymbol>& input);
-
-protected:
-
-  // we save these for quick access
-  bool _is_reduced;
-  size_t _num_aut;
-  bool _num_aut_init;
 
 };
 
 
 template<size_t n>
-class Z64_QuadForm : public QuadFormInt<Z64,n>
+class QuadFormZZ<Z64,n> : public QuadFormInt<Z64,n>
 {
 public:
-  Z64_QuadForm() : QuadFormInt<Z64,n>() {}
+  QuadFormZZ() : QuadFormInt<Z64,n>() {}
 
   // a more general constructor
   // We adhere to magma convention - giving the rows
   // up to the diagonal
-  Z64_QuadForm(const typename QuadFormInt<Z64,n>::SymVec& coeffs)
+  QuadFormZZ(const typename QuadFormInt<Z64,n>::SymVec& coeffs)
     : QuadFormInt<Z64,n>(coeffs) {}
 
-  Z64_QuadForm(const SquareMatrixInt<Z64,n> & B)
+  QuadFormZZ(const SquareMatrixInt<Z64,n> & B)
     : QuadFormInt<Z64,n>(B) {}
 
   using QuadFormInt<Z64,n>::operator==;
@@ -223,18 +244,18 @@ public:
 };
 
 template<size_t n>
-class Z128_QuadForm : public QuadFormInt<Z128,n>
+class QuadFormZZ<Z128,n> : public QuadFormInt<Z128,n>
 {
 public:
-  Z128_QuadForm() : QuadFormInt<Z128,n>() {}
+  QuadFormZZ() : QuadFormInt<Z128,n>() {}
 
   // a more general constructor
   // We adhere to magma convention - giving the rows
   // up to the diagonal
-  Z128_QuadForm(const typename QuadFormInt<Z128,n>::SymVec& coeffs)
+  QuadFormZZ(const typename QuadFormInt<Z128,n>::SymVec& coeffs)
     : QuadFormInt<Z128,n>(coeffs) {}
 
-  Z128_QuadForm(const SquareMatrixInt<Z128,n> & B)
+  QuadFormZZ(const SquareMatrixInt<Z128,n> & B)
     : QuadFormInt<Z128,n>(B) {}
 
   using QuadFormInt<Z128,n>::operator==;
