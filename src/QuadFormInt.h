@@ -19,7 +19,7 @@ class QuadFormInt : public R_QuadForm<R,n>
 {
 public:
   QuadFormInt()
-    : R_QuadForm<R,n>(IntegerRing<R>::getInstance().getPtr()),
+    : R_QuadForm<R,n>(std::make_shared<IntegerRing<R> >()),
       _is_reduced(false),
       _num_aut(0),
       _num_aut_init(false)
