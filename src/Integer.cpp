@@ -21,7 +21,7 @@ int Integer<Z>::hilbertSymbol(const Integer<Z>& other, const Integer<Z>& p) cons
   Integer<Z> a = *this;
   Integer<Z> b = other;
   int a_val = 0;
-  while (a % p == 0)
+  while ((a % p).isZero())
     {
       ++a_val;
       a /= p;
