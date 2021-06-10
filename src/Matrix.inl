@@ -77,7 +77,7 @@ size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,Parent>
 {
   // This one assumes R is a field
   // !! TODO - think how to make this method appear only for fields
-  static_assert(std::is_base_of<R, FieldElement<R,Parent> >::value);
+  static_assert(std::is_base_of<FieldElement<R,Parent>, R>::value);
   
   // trans = identity(echelon.nrows());
   for (size_t row = 0; row < trans.nrows(); row++)
