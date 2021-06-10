@@ -262,7 +262,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
         }
 
       // ...and push it's sign vector onto the list.
-      signs.push_back(signVector(p.num(), det, primes));
+      signs.push_back(signVector(p.num(), det.num(), primes));
       fullbase.push_back(p);
       added_to_end = true;
     }
