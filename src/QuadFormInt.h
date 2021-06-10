@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "birch.h"
+#include "ParseNipp.h"
 #include "QuadForm.h"
 
 // quadratic forms over the integers
