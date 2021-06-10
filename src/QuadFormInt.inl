@@ -859,9 +859,9 @@ inline bool QuadFormInt<R,n>::normEchelon(SquareMatrixInt<R,n> & qf,
 
 template<typename R, size_t n>
 inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
-					 Isometry<R,n> & isom,
-					 std::set< Isometry<R,n> > & auts,
-					 bool calc_aut)
+						Isometry<R,n> & isom,
+						std::set< Isometry<R,n> > & auts,
+						bool calc_aut)
 {
 #ifdef DEBUG_LEVEL_FULL
   SquareMatrixInt<R,n> qf_orig = qf;
@@ -870,7 +870,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
   bool is_reduced = true;
   std::vector< std::set< VectorInt<R,n> > > local_neighbors(1);
   Isometry<R,n> b0;
-  VectorInt<R,n> vec;
+  VectorInt<R,n> vec(IntegerRing<R>::getInstance().getPtr());
   vec[0] = 1;
   for (size_t i = 1; i < n; i++)
     vec[i] = 0;
