@@ -91,9 +91,9 @@ SquareMatrix<R,Parent,n> SquareMatrix<R,Parent,n>::operator*(const R & scalar) c
 template<class R, class Parent, size_t n>
 SquareMatrix<R,Parent,n>  SquareMatrix<R,Parent,n>::operator/(const R & scalar) const
 {
-  assert(scalar != 0);
+  assert(!(scalar.isZero()));
 
-  SquareMatrix<R,Parent,n> quo;
+  SquareMatrix<R,Parent,n> quo(_base);
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
       quo(row,col) = this->mat[row][col] / scalar;
