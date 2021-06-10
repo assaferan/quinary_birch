@@ -69,7 +69,7 @@ public:
   /**
    * Addition.
    */
-  inline virtual Derived operator+ (const Derived&) const;
+  virtual Derived operator+ (const Derived&) const;
 
   /**
    * Addition assignment.
@@ -77,9 +77,15 @@ public:
   virtual Derived& operator+= (const Derived&) = 0;
 
   /**
+   * Increment operators
+   */
+  virtual Derived operator++ (int);
+  virtual Derived& operator++ ();
+
+  /**
    * Subtraction.
    */
-  inline virtual Derived operator- (const Derived&) const;
+  virtual Derived operator- (const Derived&) const;
 
   /**
    * Subtraction assignment.
@@ -87,14 +93,20 @@ public:
   virtual Derived& operator-= (const Derived&) = 0;
 
   /**
+   * Decrement operators
+   */
+  virtual Derived operator-- (int);
+  virtual Derived& operator-- ();
+  
+  /**
    * Negation.
    */
-  inline virtual Derived operator- () const;
+  virtual Derived operator- () const;
 
   /**
    * Multiplication.
    */
-  inline virtual Derived operator* (const Derived&) const;
+  virtual Derived operator* (const Derived&) const;
 
   /**
    * Multiplication assignment.
@@ -104,12 +116,12 @@ public:
   /**
    * Exponentiation.
    */
-  inline virtual Derived operator^ (unsigned long long int e) const;
+  virtual Derived operator^ (unsigned long long int e) const;
 
   /**
    * Exponentiation assignment.
    */
-  inline virtual Derived& operator^= (unsigned long long int e);
+  virtual Derived& operator^= (unsigned long long int e);
 
   /**
    * Equality test,
@@ -140,7 +152,7 @@ public:
    *
    * returns the string representation of the Ring element.
    */
-  inline virtual std::string toString() const;
+  virtual std::string toString() const;
 
   /**
    * Output operator.
