@@ -16,7 +16,7 @@ void SquareMatrix<R,Parent,n>::deepCopy(const R mat[n][n])
 template<class R, class Parent, size_t n>
 SquareMatrix<R,Parent,n>::SquareMatrix(const R mat[n][n])
 {
-  deep_copy(mat);
+  deepCopy(mat);
   if (n > 0)
     _base = mat[0][0].parent();
 }
