@@ -287,11 +287,9 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
      // infty
      size_t m = std::numeric_limits<size_t>::max();
 
-     Integer<R> zero = 0;
-     
      for (size_t i = k; i < n; i++)
        {
-	 if (G(i,i) != zero) {
+	 if (!(G(i,i).isZero())) {
 	   size_t val = G(i,i).valuation(p);
 	   if (val < m)
 	     {
@@ -304,7 +302,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
      for (size_t i = k; i < n; i++)
        for (size_t j = i+1; j < n; j++)
 	 {
-	   if (G(i,j) != zero) {
+	   if (!(G(i,j).isZero())) {
 	     size_t tmp = G(i,j).valuation(p);
 	     if (tmp < m)
 	       {
