@@ -113,20 +113,20 @@ using MatrixRat = Matrix< Rational<R>, RationalField<R> >;
 
 // square matrices 
 template<typename R, typename S, size_t n>
-using class SquareMatrixFp = SquareMatrix< FpElement<R,S>, Fp<R,S>, n>;
+using SquareMatrixFp = SquareMatrix< FpElement<R,S>, Fp<R,S>, n>;
 
 template<typename R, size_t n>
-using class SquareMatrixInt = SquareMatrix< Integer<R>, IntegerRing<R>, n>;
+using SquareMatrixInt = SquareMatrix< Integer<R>, IntegerRing<R>, n>;
 
 template<typename R, size_t n>
-using class SquareMatrixRat = SquareMatrix< Rational<R>, RationalField<R>, n>;
+using SquareMatrixRat = SquareMatrix< Rational<R>, RationalField<R>, n>;
 
 // vectors
 template<typename R, typename S, size_t n>
-using class VectorFp = Vector< FpElement<R,S>, Fp<R,S>, n>;
+using VectorFp = Vector< FpElement<R,S>, Fp<R,S>, n>;
 
 template<typename R, size_t n>
-using class VectorInt = Vector< Integer<R>, IntegerRing<R>, n>;
+using VectorInt = Vector< Integer<R>, IntegerRing<R>, n>;
 
 // finite fields
 typedef Fp<W16,W32>  W16_Fp;
