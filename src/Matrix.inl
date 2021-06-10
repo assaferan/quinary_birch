@@ -122,8 +122,8 @@ template<class R, class Parent>
 size_t Matrix<R,Parent>::rank() const
 {  
   Matrix<R,Parent> echelon((*this));
-  Matrix<R,Parent> trans(echelon.nrows(), echelon.nrows());
-  return Matrix<R,Parent>::row_echelon(echelon, trans);
+  Matrix<R,Parent> trans(_base, echelon.nrows(), echelon.nrows());
+  return Matrix<R,Parent>::rowEchelon(echelon, trans);
 }
 
 template<class R, class Parent>
@@ -134,7 +134,7 @@ Matrix<R,Parent> Matrix<R,Parent>::kernel() const {
 template<class R, class Parent>
 Matrix<R,Parent> Matrix<R,Parent>::leftKernel() const {
   Matrix<R,Parent> echelon((*this));
-  Matrix<R,Parent> trans(_nrows, _nrows);
+  Matrix<R,Parent> trans(_base, _nrows, _nrows);
   size_t rank = Matrix<R,Parent>::rowEchelon(echelon, trans);
   // getting the zero rows
   Matrix<R,Parent> kernel(_base, _nrows - rank, _nrows);
