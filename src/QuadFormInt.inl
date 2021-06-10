@@ -543,7 +543,7 @@ inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
     Integer<R> tmp =  y_int[i] + det*voronoi[i];
     // Check tht it now works normally with Integer<R>
     // x_max[i] = ((tmp >= 0) ? tmp : tmp-det+1)/det;
-    x_max[i] = (tmp+det-1)/det;
+    x_max[i] = (tmp+det-Integer<R>::one())/det;
   }
   
   for (size_t i = 0; i < dim-1; i++)
