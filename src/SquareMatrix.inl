@@ -169,8 +169,8 @@ bool SquareMatrix<R,Parent,n>::isSymmetric() const
 template<class R, class Parent, size_t n>
 bool SquareMatrix<R,Parent,n>::isPositiveDefinite() const
 {
-  SquareMatrix<R,Parent,n> L;
-  Vector<R,Parent,n> D;
+  SquareMatrix<R,Parent,n> L(_base);
+  Vector<R,Parent,n> D(_base);
   return ldl(L,D);
 }
   
@@ -341,7 +341,7 @@ SquareMatrix<R,Parent,n>::cholesky(SquareMatrix<R,Parent,n>& L,
   /*
     #ifdef DEBUG
     // verify that L*Q*L^t = D
-    SquareMatrix<R,n> diag;
+    SquareMatrix<R,n> diag(_base);
     for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
     diag(i,j) = (i == j) ? D[i] : Math<R>::zero();
@@ -411,9 +411,9 @@ Vector<R,Parent,n>
 SquareMatrix<R,Parent,n>::solve(const Vector<R,Parent,n> & vec) const
 {
   assert(isSymmetric());
-  Vector<R,Parent,n> sol;
-  SquareMatrix<R,Parent,n> L;
-  Vector<R,Parent,n> D;
+  Vector<R,Parent,n> sol(_base);
+  SquareMatrix<R,Parent,n> L(_base);
+  Vector<R,Parent,n> D(_base);
   bool is_positive_definite = cholesky(L, D);
   assert(is_positive_definite);
   sol = L.forwardSubstitution(vec);
