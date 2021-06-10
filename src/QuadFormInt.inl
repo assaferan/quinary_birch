@@ -3,6 +3,7 @@
 #include <random>
 
 #include "birch_util.h"
+#include "Fp.h"
 #include "ParseNipp.h"
 #include "Matrix.h"
 #include "SquareMatrix.h"
