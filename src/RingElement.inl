@@ -101,7 +101,7 @@ inline Derived& RingElement<Derived,DerivedParent>::operator-- ()
   Derived one = *(this->getPtr());
   one.makeOne();
   this->operator-=(one);
-  return *this;
+  return *(this->getPtr());
 }
 
 
