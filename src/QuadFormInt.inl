@@ -223,6 +223,7 @@ inline Integer<R>
 QuadFormInt<R,n>::invariants(typename QuadFormInt<R,n>::QFInv &F,
 			     size_t& I) const
 {
+  std::shared_ptr<const IntegerRing<R> > ZZ = IntegerRing<R>::getInstance().getPtr();
   VectorInt<R, n> D = this->orthogonalizeGram();
   std::set<Integer<R> > P;
   F.clear();
@@ -231,7 +232,7 @@ QuadFormInt<R,n>::invariants(typename QuadFormInt<R,n>::QFInv &F,
   P.insert(R(2));
   for (size_t i = 0; i < n; i++)
     {
-      if (D[i] < 0) I++;
+      if (D[i] < ZZ->zero()) I++;
       typename Integer<R>::FactorData facs = D[i].factorization();
       for (std::pair<Integer<R>, size_t> fa : facs)
 	  if (fa.second % 2 == 1)
@@ -240,7 +241,7 @@ QuadFormInt<R,n>::invariants(typename QuadFormInt<R,n>::QFInv &F,
   for (Integer<R> p : P)
     F.insert(std::make_pair(p, hasse(D,p)));
 
-  Integer<R> prod = 1;
+  Integer<R> prod = ZZ->one();
   for (size_t i = 0; i < n; i++)
     prod *= D[i];
   
