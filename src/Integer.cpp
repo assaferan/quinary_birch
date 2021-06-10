@@ -19,8 +19,8 @@ const std::vector<int> hilbert_lut_p2 = { 1, 1, 1, 1, 1, 1, 1, 1,
                                           1, 1,-1,-1,-1,-1, 1, 1,
                                           1,-1,-1, 1,-1, 1, 1,-1,
                                           1, 1,-1,-1, 1, 1,-1,-1 };
-
-int hilbertSymbolZ(const Z & x, const Z & y, const Z & p) {
+template<typename R>
+int Integer<R>::hilbertSymbolZ(const Z & x, const Z & y, const Z & p) {
   Z a = x;
   Z b = y;
   int a_val = 0;
