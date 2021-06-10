@@ -172,7 +172,7 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram() const
 }
 
 template<typename R, size_t n>
-inline int QuadFormInt<R,n>::hasse(const VectorInt<R,n> & D, const R & p)
+inline int QuadFormInt<R,n>::hasse(const VectorInt<R,n> & D, const Integer<R> & p)
 {
   std::shared_ptr<const IntegerRing<R> > ring = D.baseRing();
   int hasse = 1;
