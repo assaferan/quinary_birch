@@ -34,8 +34,6 @@ public:
     
   using R_QuadForm<R,n>::discriminant;
   using R_QuadForm<R,n>::evaluate;
-  using R_QuadForm<R,n>::reduce;
-  using R_QuadForm<R,n>::generateOrbit;
 
   struct jordan_data {
     std::vector< SquareMatrixRat<R,n> > matrices;
