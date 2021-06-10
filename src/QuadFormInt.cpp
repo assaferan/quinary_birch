@@ -2,6 +2,7 @@
 #include <type_traits>
 
 #include "birch.h"
+#include "Isomtry.h"
 #include "QuadFormInt.h"
 
 template class Z_QuadForm<3>;
@@ -379,14 +380,14 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
                 g /= p;
                 h /= p;
             }
-	    form[0] = 2*a;
+	    form[0] = Z(2*a);
 	    form[1] = h;
-	    form[2] = 2*b;
+	    form[2] = Z(2*b);
 	    form[3] = g;
 	    form[4] = f;
-	    form[5] = 2*c;
+	    form[5] = Z(2*c);
             q = Z_QuadForm<3>(form);
-            N = q.discriminant();
+            N = q.discriminant().num();
         }
     }
 
@@ -404,13 +405,13 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 	  q._B(2,0) *= symb.p;
 	  q._B(1,2) *= symb.p;
 	  q._B(2,1) *= symb.p;
-	  q._B(2,2) *= symb.p * symb.p;
+	  q._B(2,2) *= Z(symb.p * symb.p);
         }
     }
     q = Z_QuadForm<3>::reduce(q, s);
 
     // Do one final verification that the symbols are correct.
-    Z x = q._B(0,0) * q._B(1,1) - q._B(0,1) * q._B(1,0);
+    Z x = (q._B(0,0) * q._B(1,1) - q._B(0,1) * q._B(1,0)).num();
     mask = 1LL << primes.size();
     for (const Z_PrimeSymbol& symb : primes)
     {
