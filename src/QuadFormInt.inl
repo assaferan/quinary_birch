@@ -330,8 +330,8 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
      
      if ((even) && (i_pair.first != i_pair.second))
        {
-	 S.swap_rows(i_pair.first, k);
-	 S.swap_rows(i_pair.second, k+1);
+	 S.swapRows(i_pair.first, k);
+	 S.swapRows(i_pair.second, k+1);
 	 
 	 // T12 = S[k]*F*S[k+1]^t
 	 Rational<R> T12 =
