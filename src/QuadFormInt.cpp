@@ -350,13 +350,13 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 	      f /= p;
 	      g /= p;
             }
-	  else if (vec[0] == 0)
+	  else if (vec[0].isZero())
             {
 	      b += (c*vec[2]*vec[2] + f*vec[2]);
 	      f += (2*c*vec[2]);
 	      h += (g*vec[2]);
 
-	      assert( vec[1] == 1 );
+	      assert( vec[1].isOne() );
 	      assert( b % pp == 0 );
 	      assert( f % p == 0 );
 	      assert( h % p == 0 );
@@ -371,7 +371,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 	      g += (2*c*vec[2] + f*vec[1]);
 	      h += (2*b*vec[1] + f*vec[2]);
 
-	      assert( vec[0] == 1 );
+	      assert( vec[0].isOne() );
 	      assert( a % pp == 0 );
 	      assert( g % p == 0 );
 	      assert( h % p == 0 );
