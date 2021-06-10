@@ -37,6 +37,8 @@ class QuadForm
 
   inline const SquareMatrix<R,Parent,n> & bilinearForm() const
   { return this->_B; }
+
+  std::shared_ptr<const Parent > baseRing() const {return _B.baseRing();}
   
 protected:
   // _B = the matrix representing the
