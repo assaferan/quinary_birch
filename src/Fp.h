@@ -80,7 +80,7 @@ public:
   inline R pow(R a, Z64 e) const
   { return e == 0 ? 1 : (a & 1);}
 
-  inline R sqrt(R a) const override
+  inline R sqrt(R a) const
   { return (a & 1); }
 
   inline R inverse(R a) const override
