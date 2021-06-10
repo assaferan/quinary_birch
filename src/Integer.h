@@ -92,6 +92,8 @@ public:
   typename Integer<R>::FactorData factorization() const;
   
   size_t valuation(const Integer<R>& p) const;
+
+  inline Integer<R> abs() const {return _num < 0 ? -(*this) : *this; }
   
 protected:
   R _num;
