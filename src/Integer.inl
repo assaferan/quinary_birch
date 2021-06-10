@@ -105,11 +105,11 @@ inline typename Integer<R>::FactorData Integer<R>::factorization() const
   Integer<R> a = 2;
   while (!temp_num.isOne())
     {
-      if (temp_num % a == 0)
+      if ((temp_num % a).isZero())
 	{
 	  exp = 1; 
 	  temp_num /= a;
-	  while (temp_num % a == 0)
+	  while ((temp_num % a).isZero())
 	    {
 	      exp++;
 	      temp_num /= a;
@@ -129,7 +129,7 @@ inline size_t Integer<R>::valuation(const Integer<R>& p) const
   
   size_t exp = 0;
 
-  while (t % p == 0)
+  while ((t % p).isZero())
     {
       exp++;
       t /= p;
