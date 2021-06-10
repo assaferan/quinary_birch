@@ -18,7 +18,11 @@ template<typename R, size_t n>
 class QuadFormInt : public R_QuadForm<R,n>
 {
 public:
-  QuadFormInt() : R_QuadForm<R,n>(), _is_reduced(false), _num_aut(0), _num_aut_init(false)
+  QuadFormInt(std::shared_ptr<const Parent > ring)
+    : R_QuadForm<R,n>(ring),
+      _is_reduced(false),
+      _num_aut(0),
+      _num_aut_init(false)
   {}
 
   // We adhere to magma convention - giving the rows
