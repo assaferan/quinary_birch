@@ -1,4 +1,5 @@
 #include <cassert>
+#include <iostream>
 
 template<class Derived, class DerivedParent>
 typename EuclideanDomainElement<Derived, DerivedParent>::XGcdRes
