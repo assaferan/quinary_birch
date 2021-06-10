@@ -163,7 +163,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
       fullbase.push_back(symb.p);
     }
 
-  Integer<Z> p = 2;
+  Integer<Z> p = Z(2);
   W64 solution;
   bool done = false;
   bool added_to_end = false;
@@ -189,9 +189,9 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 		  if (solution & mask)
                     {
 		      b *= q;
-		      if (q > 0)
+		      if (q > IntegerRing<Z>::getInstance().zero())
                         {
-			  if (det2 % q == 0) det2 /= q;
+			  if ((det2 % q).isZero() ) det2 /= q;
 			  else
                             {
 			      det2 *= q;
