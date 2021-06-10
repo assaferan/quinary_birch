@@ -34,7 +34,8 @@ public:
   Integer<R> & operator=(const Integer<R> & b);
 
   // conversion
-  inline operator R() const { return this->_num; }
+  // This might be dangerous, so we don't do it for now
+  // inline operator R() const { return this->_num; }
   
   // access
   inline const R & num(void) const { return this->_num; }
