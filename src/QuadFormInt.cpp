@@ -57,7 +57,7 @@ static W64 GF2solveNaive(const std::vector<W64>& vecs, W64 start, W64 target)
 template<size_t n>
 static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Integer<Z>& p)
 {
-  std::shared_ptr<const IntegerRing<Z> > ZZ = std::make_shared< IntegerRing<R> >;
+  std::shared_ptr<const IntegerRing<Z> > ZZ = std::make_shared< IntegerRing<Z> >();
   Integer<Z> pp = p*p;
   Z_Vector<n> vec(ZZ);
   vec[n-1] = ZZ->one();
