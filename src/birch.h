@@ -141,6 +141,14 @@ typedef FpElement<W16,W32>  W16_FpElement;
 typedef FpElement<W32,W64>  W32_FpElement;
 typedef FpElement<W64,W128> W64_FpElement;
 
+// Vectors of Finite field elements
+template<size_t n>
+using W16_VectorFp = VectorFp< W16, W32, n>;
+template<size_t n>
+using W32_VectorFp = VectorFp< W32, W64, n>;
+template<size_t n>
+using W64_VectorFp = VectorFp< W64, W128, n>;
+
 /* Struct definitions */
 
 template<typename R>
