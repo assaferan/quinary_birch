@@ -4,7 +4,7 @@
 
 // assignment
 template<typename R>
-Integer<R> & Integer<R>::operator=(const Integer<R> & b)
+inline Integer<R> & Integer<R>::operator=(const Integer<R> & b)
 {
   if (this != &b) {
     _num = b._num;
@@ -15,21 +15,21 @@ Integer<R> & Integer<R>::operator=(const Integer<R> & b)
 // arithmetic
 
 template <typename R>
-Integer<R> & Integer<R>::operator+=(const Integer<R> &other)
+inline Integer<R> & Integer<R>::operator+=(const Integer<R> &other)
 {
   this->_num += other._num;
   return (*this);
 }
 
 template <typename R>
-Integer<R> & Integer<R>::operator-=(const Integer<R> &other)
+inline Integer<R> & Integer<R>::operator-=(const Integer<R> &other)
 {
   this->_num -= other._num;
   return (*this);
 }
 
 template <typename R>
-Integer<R> & Integer<R>::operator*=(const Integer<R> &other)
+inline Integer<R> & Integer<R>::operator*=(const Integer<R> &other)
 {
   this->_num *= other._num;
  
@@ -37,26 +37,26 @@ Integer<R> & Integer<R>::operator*=(const Integer<R> &other)
 }
 
 template <typename R>
-bool Integer<R>::operator==(const Integer<R> &other) const
+inline bool Integer<R>::operator==(const Integer<R> &other) const
 {
   return (this->_num == other._num); 
 }
 
 template <typename R>
-bool Integer<R>::operator<(const Integer<R> &other) const
+inline bool Integer<R>::operator<(const Integer<R> &other) const
 {
   return (this->_num < other._num); 
 }
 
 template <typename R>
-void Integer<R>::print(std::ostream& os) const
+inline void Integer<R>::print(std::ostream& os) const
 {
   os << this->_num;
 }
 
 // Euclidean division
 template <typename R>
-typename EuclideanDomainElement<Integer<R>, IntegerRing<R> >::DivRes
+inline typename EuclideanDomainElement<Integer<R>, IntegerRing<R> >::DivRes
 Integer<R>::euclideanDivision(const Integer<R>& other) const
 {
   assert(!other.isZero());
@@ -95,7 +95,7 @@ Integer<R>::euclideanDivision(const Integer<R>& other) const
 // (in all our use cases, num will be in the order of 1000 at most)
 
 template <typename R>
-typename Integer<R>::FactorData Integer<R>::factorization() const
+inline typename Integer<R>::FactorData Integer<R>::factorization() const
 {
   Integer<R> num = *this;
   assert(num < 10000);
@@ -122,7 +122,7 @@ typename Integer<R>::FactorData Integer<R>::factorization() const
 }
 
 template <typename R>
-size_t Integer<R>::valuation(const Integer<R>& p) const
+inline size_t Integer<R>::valuation(const Integer<R>& p) const
 {
   assert(!(this->isZero()));
   Integer<R> t = *this;

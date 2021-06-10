@@ -37,15 +37,15 @@ public:
   inline const R & num(void) const { return this->_num; }
   
   // arithmetic
-  inline Integer<R> & operator+=(const Integer<R> &b);
-  inline Integer<R> & operator-=(const Integer<R> &b);
-  inline Integer<R> & operator*=(const Integer<R> &b);
+  Integer<R> & operator+=(const Integer<R> &b);
+  Integer<R> & operator-=(const Integer<R> &b);
+  Integer<R> & operator*=(const Integer<R> &b);
 
   // !! - TODO - move these to a monoid / ordered / valued ring
   // comparison
-  inline bool operator==(const Integer<R> &) const;
+  bool operator==(const Integer<R> &) const;
   inline bool operator!=(const Integer<R> &b) const {return !((*this)==b); }
-  inline bool operator<(const Integer<R> &) const;
+  bool operator<(const Integer<R> &) const;
   inline bool operator>(const Integer<R> &b) const {return b < (*this); }
   inline bool operator<=(const Integer<R> &b) const
   {return ((*this) == b) || ((*this) < b); }
@@ -73,10 +73,10 @@ public:
    * Perform the eucldiean division of *this and b. Returns the
    * quotient and the remainder.
    */
-  inline typename EuclideanDomainElement<Integer<R>, IntegerRing<R> >::DivRes
+  typename EuclideanDomainElement<Integer<R>, IntegerRing<R> >::DivRes
   euclideanDivision(const Integer<R>& b) const;
 
-  inline void print(std::ostream&) const;
+  void print(std::ostream&) const;
 
   inline Integer<R>* getPtr() { return this; }
 
@@ -89,9 +89,9 @@ public:
 
   typedef std::vector< std::pair<Integer<R>, size_t> > FactorData;
 
-  inline typename Integer<R>::FactorData factorization() const;
+  typename Integer<R>::FactorData factorization() const;
   
-  inline size_t valuation(const Integer<R>& p) const;
+  size_t valuation(const Integer<R>& p) const;
   
 protected:
   R _num;
