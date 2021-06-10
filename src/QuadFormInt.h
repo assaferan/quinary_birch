@@ -149,7 +149,7 @@ protected:
   
   std::unordered_map<  QuadFormInt<R,n>, Isometry<R,n> >
   signOrbit() const;
-}
+};
 
 // Here we find that we must instantiate the following classes due to
 // partial template specilization of hashValue.
