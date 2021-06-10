@@ -1,5 +1,10 @@
+#include <limits>
+#include <map>
+#include <random>
+
 #include "birch_util.h"
 #include "ParseNipp.h"
+#include "SquareMatrix.h"
 
 template<typename R, size_t n>
 inline QuadFormInt<R,n>&
@@ -655,7 +660,7 @@ QuadFormInt<R,n>::allPerms(size_t m)
     perms.push_back(id);
     return perms;
   }
-  std::vector< std::vector<size_t> > rec_perms = all_perms(m-1);
+  std::vector< std::vector<size_t> > rec_perms = allPerms(m-1);
   for (std::vector<size_t> perm : rec_perms) {
     perm.push_back(m-1);
     perms.push_back(perm);
@@ -700,16 +705,16 @@ inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
   for (iter = stable_sets.begin(); iter != stable_sets.end(); iter++) {
     //    R key = iter->first;
     std::vector<size_t> value = iter->second;
-    std::vector< std::vector<size_t> > val_perms = all_perms(value.size());
+    std::vector< std::vector<size_t> > val_perms = allPerms(value.size());
     for (std::vector<size_t> perm : val_perms) {
-      Vector<size_t, n> large_perm;
+      VectorInt<size_t, n> large_perm;
       for (size_t k = 0; k < n; k++)
 	large_perm[k] = k;
       for (size_t idx = 0; idx < value.size(); idx++) {
 	large_perm[value[idx]] = value[perm[idx]];
       }
       Isometry<R,n> s;
-      s.update_perm(large_perm);
+      s.updatePerm(large_perm);
       q1 = s.transform(qf);
       if (q1 < q0) {
 	q0 = q1;
