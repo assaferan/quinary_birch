@@ -40,16 +40,16 @@ public:
   // arithmetic
   inline Rational<R> operator+() const {return Rational(_num, _denom); }
   inline Rational<R> operator-() const {return Rational(-_num, _denom); }
-  inline Rational<R> operator+(const Rational<R> &) const override;
+  Rational<R> operator+(const Rational<R> &) const override;
   inline Rational<R> operator-(const Rational<R> &b) const override
   {return (*this)+(-b); }
-  inline Rational<R> operator*(const Rational<R> &) const override;
+  Rational<R> operator*(const Rational<R> &) const override;
   inline Rational<R> operator*(const Integer<R> & b) const {
     Rational<R> b_rat(b);
     return (*this)*b_rat;
   }
 
-  inline Rational<R> operator/(const Rational<R> &) const override;
+  Rational<R> operator/(const Rational<R> &) const override;
   inline Rational<R> operator/(const Integer<R> & b) const {
     Rational<R> b_rat(b);
     return (*this)/b_rat;
@@ -82,9 +82,9 @@ public:
   { Rational<R> inv(_denom, _num); return inv;}
   
   // comparison
-  inline bool operator==(const Rational<R> &) const;
+  bool operator==(const Rational<R> &) const;
   
-  inline bool operator<(const Rational<R> &) const;
+  bool operator<(const Rational<R> &) const;
   inline bool operator>(const Rational<R> &b) const {return b < (*this); }
   inline bool operator<=(const Rational<R> &b) const
   {return ((*this) == b) || ((*this) < b); }
@@ -157,12 +157,15 @@ public:
 
   inline std::shared_ptr<const RationalField<R> > parent() const override
   {return RationalField<R>::getInstance().getPtr(); }
+
+  inline size_t valuation(const Integer<R>& p) const
+  {return _num.valuation(p) - _denom.valuation(p);}
   
 protected:
   Integer<R> _num;
   Integer<R> _denom;
 
-  inline void reduce(void);
+  void reduce(void);
 };
 
 #include "Rational.inl"
