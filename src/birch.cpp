@@ -34,14 +34,15 @@ int main()
   Vector< W16_FpElement, W16_Fp, 5> vec(GF);
   SquareMatrix< W16_FpElement, W16_Fp, 5> sq_mat(GF);
 
-
+  /*
   std::vector<Z64_PrimeSymbol> symbols_64;
   Z64_PrimeSymbol p_64;
   std::vector<Z_PrimeSymbol> symbols;
   Z_PrimeSymbol p;
   std::vector<Z128_PrimeSymbol> symbols_128;
   Z128_PrimeSymbol p_128;
-    
+  */
+  
   Z64_QuadForm<3>::SymVec coeffs_64 = {2,1,2,1,1,2};
   Z_QuadForm<3>::SymVec coeffs = {Z(2),Z(1),Z(2),Z(1),Z(1),Z(2)};
 
