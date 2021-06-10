@@ -540,7 +540,7 @@ inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
   for (size_t i = 0; i < dim-1; i++)
     num_xs *= x_num[i];
   // This should be infinity
-  Integer<R> min_dist = std::limits<R>::max();
+  Integer<R> min_dist = std::numeric_limits<R>::max();
   for (Integer<R> x_idx = 0; x_idx < num_xs; x_idx++) {
     Integer<R> tmp = x_idx;
     for (size_t i = 0; i < dim-1; i++) {
