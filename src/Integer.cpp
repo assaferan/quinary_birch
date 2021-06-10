@@ -20,7 +20,7 @@ const std::vector<int> hilbert_lut_p2 = { 1, 1, 1, 1, 1, 1, 1, 1,
                                           1,-1,-1, 1,-1, 1, 1,-1,
                                           1, 1,-1,-1, 1, 1,-1,-1 };
 
-int hilbertSymbol(const Z & x, const Z & y, const Z & p) {
+int hilbertSymbolZ(const Z & x, const Z & y, const Z & p) {
   Z a = x;
   Z b = y;
   int a_val = 0;
@@ -62,22 +62,22 @@ int hilbertSymbol(const Z & x, const Z & y, const Z & p) {
 template<>
 int Integer<Z>::hilbertSymbol(const Integer<Z>& other, const Integer<Z>& p) const
 {
-  return hilbertSymbol(this->_num, other._num, p._num);
+  return hilbertSymbolZ(this->_num, other._num, p._num);
 }
 
 
 template<>
 int Integer<Z64>::hilbertSymbol(const Integer<Z64> b, const Integer<Z64>& p)
 {
-  return hilbertSymbol(birch_util::convert_Integer<Z64,Z>(this->_num),
-		       birch_util::convert_Integer<Z64,Z>(b._num),
-		       birch_util::convert_Integer<Z64,Z>(p._num));
+  return hilbertSymbolZ(birch_util::convert_Integer<Z64,Z>(this->_num),
+			birch_util::convert_Integer<Z64,Z>(b._num),
+			birch_util::convert_Integer<Z64,Z>(p._num));
 }
 
 template<>
 int Integer<Z128>::hilbert_symbol(const Integer<Z128> b, const Integer<Z128>& p)
 {
-  return hilbertSymbol(birch_util::convert_Integer<Z128,Z>(this->_num),
-		       birch_util::convert_Integer<Z128,Z>(b._num),
-		       birch_util::convert_Integer<Z128,Z>(p._num));
+  return hilbertSymbolZ(birch_util::convert_Integer<Z128,Z>(this->_num),
+			birch_util::convert_Integer<Z128,Z>(b._num),
+			birch_util::convert_Integer<Z128,Z>(p._num));
 }
