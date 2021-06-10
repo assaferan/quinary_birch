@@ -32,7 +32,40 @@ int main()
   Matrix< W16_FpElement, W16_Fp > mat = Matrix< W16_FpElement, W16_Fp >::identity(GF,5);
   Vector< W16_FpElement, W16_Fp, 5> vec(GF);
   SquareMatrix< W16_FpElement, W16_Fp, 5> sq_mat(GF);
-  
-  
+
+
+  std::vector<Z64_PrimeSymbol> symbols_64;
+  Z64_PrimeSymbol p_64;
+  std::vector<Z_PrimeSymbol> symbols;
+  Z_PrimeSymbol p;
+  std::vector<Z128_PrimeSymbol> symbols_128;
+  Z128_PrimeSymbol p_128;
+    
+  Z64_QuadForm<3>::SymVec coeffs_64 = {2,1,2,1,1,2};
+  Z_QuadForm<3>::SymVec coeffs = {2,1,2,1,1,2};
+
+  Z64_QuadForm<3> q0_64(coeffs_64);
+    
+#ifdef DEBUG
+  const Z64_SquareMatrix<3> & B_64 = q0_64.bilinear_form();
+  std::cerr << "B_64 = " << B_64 << std::endl;
+#endif
+    
+  Z_QuadForm<3> q0(coeffs);
+    
+#ifdef DEBUG
+  const Z_SquareMatrix<3> & B = q0.bilinear_form();
+  std::cerr << "B = " << B << std::endl;
+#endif
+    
+  std::vector<std::vector<Z64_QuadForm<5> > >
+    vec_64 = Z64_QuadForm<5>::get_quinary_forms(61);
+
+  std::vector<std::vector<Z128_QuadForm<5> > >
+    vec_128 = Z128_QuadForm<5>::get_quinary_forms(61);
+    
+  std::vector<std::vector<Z_QuadForm<5> > >
+    vec = Z_QuadForm<5>::get_quinary_forms(61);
+
   return 0;
 }
