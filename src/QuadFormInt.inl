@@ -163,7 +163,7 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram() const
   // are even, and we are more interested in their half values,
   // which corresponds to the quadratic form.
   for (size_t i = 0; i < n; i++)
-    D[i] /= 2;
+    D[i] /= (ring->one() + ring->one());
   
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "L=" << std::endl << L << std::endl;
