@@ -155,32 +155,32 @@ protected:
 // partial template specilization of hashValue.
   
 template<size_t n>
-class Z_QuadForm : public QuadFormInt<Z,n>
+class QuadFormInt<Z,n> : public R_QuadForm<Z,n>
 {
 public:
-  Z_QuadForm() : QuadFormInt<Z,n>() {}
 
-  // a more general constructor
+  QuadFormInt() : R_QuadForm<Z,n>(), _is_reduced(false), _num_aut(0), _num_aut_init(false)
+  {}
+
   // We adhere to magma convention - giving the rows
   // up to the diagonal
-  Z_QuadForm(const typename QuadFormInt<Z,n>::SymVec& coeffs)
-    : QuadFormInt<Z,n>(coeffs) {}
+  QuadFormInt(const typename R_QuadForm<Z,n>::SymVec& coeffs)
+    : R_QuadForm<Z,n>(coeffs), _is_reduced(false), _num_aut(0), _num_aut_init(false) {}
 
-  Z_QuadForm(const SquareMatrixInt<Z,n> & B)
-    : QuadFormInt<Z,n>(B) {}
+  QuadFormInt(const SquareMatrixInt<Z,n> & B)
+    : R_QuadForm<Z,n>(B), _is_reduced(false), _num_aut(0), _num_aut_init(false)  {}
 
-  using QuadFormInt<Z,n>::operator==;
+  using R_QuadForm<Z,n>::operator==;
     
-  using QuadFormInt<Z,n>::discriminant;
+  using R_QuadForm<Z,n>::discriminant;
   
   W64 hashValue(void) const;
 
-  using QuadFormInt<Z,n>::evaluate;
-  using QuadFormInt<Z,n>::reduce;
+  using R_QuadForm<Z,n>::evaluate;
+  using R_QuadForm<Z,n>::generateOrbit;
+  using R_QuadForm<Z,n>::reduce;
   
   static Z_QuadForm<3> getQuadForm(const std::vector<Z_PrimeSymbol>& input);
-
-  using QuadFormInt<Z,n>::generateOrbit;
 
 };
 
