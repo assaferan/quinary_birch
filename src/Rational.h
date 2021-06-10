@@ -160,6 +160,9 @@ public:
 
   inline size_t valuation(const Integer<R>& p) const
   {return _num.valuation(p) - _denom.valuation(p);}
+
+  inline Rational<R> abs() const
+  {return (_num*_denom < 0) ? -(*this) : *this; }
   
 protected:
   Integer<R> _num;

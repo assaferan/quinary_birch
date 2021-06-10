@@ -87,10 +87,11 @@ public:
   inline bool operator<(const Isometry<R,n> & other) const
   {return (this->_a < other._a);}
 
-  SquareMatrixInt<R,n> _a;
+  inline Rational<R> determinant() const
+  {return _a.determinant() / (_scale^n); }
   
 protected:
- 
+  SquareMatrixInt<R,n> _a;
   Integer<R> _scale;
 };
 

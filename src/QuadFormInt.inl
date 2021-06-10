@@ -532,18 +532,22 @@ inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
   Integer<R> det = Integer<R>::zero();
   for (size_t i = 0; i < dim-1; i++)
     det += H_int(0,i)*q(i,0);
-  det = (det > 0) ?  det : -det;
+  det = det.abs();
   for (size_t i = 0; i < dim-1; i++) {
     Integer<R> tmp =  y_int[i] - det*voronoi[i];
-    x_min[i] = ((tmp >= 0) ? tmp+det-1 : tmp)/det;
+    // Check tht it now works normally with Integer<R>
+    // x_min[i] = ((tmp >= Integer<R>::zero()) ? tmp+det-1 : tmp)/det;
+    x_min[i] = tmp / det;
   }
   for (size_t i = 0; i < dim-1; i++) {
     Integer<R> tmp =  y_int[i] + det*voronoi[i];
-    x_max[i] = ((tmp >= 0) ? tmp : tmp-det+1)/det;
+    // Check tht it now works normally with Integer<R>
+    // x_max[i] = ((tmp >= 0) ? tmp : tmp-det+1)/det;
+    x_max[i] = (tmp+det-1)/det;
   }
   
   for (size_t i = 0; i < dim-1; i++)
-    x_num[i] = x_max[i] - x_min[i] + 1;
+    x_num[i] = x_max[i] - x_min[i] + Integer<R>::one();
   
   Integer<R> num_xs = Integer<R>::one();
   for (size_t i = 0; i < dim-1; i++)
@@ -879,7 +883,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
   bool is_reduced = true;
   std::vector< std::set< VectorInt<R,n> > > local_neighbors(1);
   Isometry<R,n> b0;
-  std::shared_ptr< IntegerRing<R> > ZZ = qf.baseRing();
+  std::shared_ptr< const IntegerRing<R> > ZZ = qf.baseRing();
   VectorInt<R,n> vec(ZZ);
   vec[0].makeOne();
   for (size_t i = 1; i < n; i++)
@@ -1010,7 +1014,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
       for (size_t j = 0; j < n; j++)
 	// note that we transpose
 	b0(i,j) = c[j][i];
-    if (b0.a.determinant().abs().isOne()) {
+    if (b0.determinant().abs().isOne()) {
       SquareMatrixInt<R,n> q0 = b0.transform(qf);
       Isometry<R,n> u;
       std::set< Isometry<R,n> > tmp_auts;
