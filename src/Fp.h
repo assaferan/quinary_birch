@@ -56,7 +56,7 @@ private:
   std::unique_ptr<std::mt19937> rng;
   std::unique_ptr<std::uniform_int_distribution<>> distr;
 
-  inline virtual R inv(R a) const;
+  virtual R inv(R a) const;
   void inverseLutPopulate(Z32 offset, Z32 len);
 
   void makeInverseLut(void);
@@ -77,7 +77,7 @@ public:
   inline R sub(R a, R b) const override
   { return ((a ^ b) & 1);}
 
-  inline R pow(R a, Z64 e) const override
+  inline R pow(R a, Z64 e) const
   { return e == 0 ? 1 : (a & 1);}
 
   inline R sqrt(R a) const override
