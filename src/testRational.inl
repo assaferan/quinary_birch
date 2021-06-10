@@ -31,9 +31,7 @@ void testRational<R>::testConstructor(const R & num, const R & denom)
 #ifdef DEBUG
   Rational<R> f(num, denom);
 #endif
-  assert(f.num().num() == num);
-  assert(f.denom().num() == denom);
-
+  assert(denom*f.num().num() == num*f.denom().num());
   return;
 }
 
