@@ -3,6 +3,7 @@
 // c-tors
 template<class R, class Parent, size_t n>
 QuadForm<R,Parent,n>::QuadForm(const typename QuadForm<R,Parent,n>::SymVec& coeffs)
+  : _B(coeffs.baseRing())
 {
   size_t idx = 0;
   for (size_t row = 0; row < n; row++)  {
