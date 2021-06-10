@@ -182,6 +182,13 @@ public:
   
   static Z_QuadForm<3> getQuadForm(const std::vector<Z_PrimeSymbol>& input);
 
+protected:
+
+  // we save these for quick access
+  bool _is_reduced;
+  size_t _num_aut;
+  bool _num_aut_init;
+
 };
 
 
