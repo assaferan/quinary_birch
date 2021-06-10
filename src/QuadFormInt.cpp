@@ -87,8 +87,8 @@ static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Z& p)
 template<>
 Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input)
 {
-  Z det = 1;
-  Z disc = 1;
+  Integer<Z> det = Z(1);
+  Integer<Z> disc = Z(1);
   bool two_specified = false;
 
   int num_ramified = 0;
@@ -147,14 +147,14 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
     }
 
   // The list of primes used in our factor baes.
-  std::vector<Z> fullbase;
+  std::vector<Integer<Z> > fullbase;
 
   // Create an std::vector consisting of GF(2)-vectors encoding Hilbert
   // symbol values.
   std::vector<W64> signs;
 
   // Add the relation for the infinite prime.
-  fullbase.push_back(-1);
+  fullbase.push_back(Z(-1));
   signs.push_back(signVector(-1, det, primes));
 
   for (const Z_PrimeSymbol& symb : primes)
@@ -163,7 +163,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
       fullbase.push_back(symb.p);
     }
 
-  Z p = 2;
+  Integer<Z> p = 2;
   W64 solution;
   bool done = false;
   bool added_to_end = false;
@@ -178,12 +178,12 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 	  if (solution)
             {
 	      W64 mask = 1LL << fullbase.size();
-	      Z b = -1;
-	      Z det2 = det;
+	      Integer<Z> b = Z(-1);
+	      Integer<Z> det2 = det;
 
 	      // Construct the quadratic space associated to the solution
 	      // we've found.
-	      for (const Z& q : fullbase)
+	      for (const Integer<Z>& q : fullbase)
                 {
 		  mask >>= 1;
 		  if (solution & mask)
@@ -207,7 +207,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
                 {
 		  mask >>= 1;
 		  int sign = (target & mask) ? -1 : 1;
-		  if (Integer<Z>::hilbertSymbolZ(-b, -disc, symb.p) != sign)
+		  if ((-b).hilbertSymbol(-disc, symb.p) != sign)
                     {
 		      throw std::runtime_error("Hilbert symbols do not check out. How did this happen?");
                     }
@@ -220,7 +220,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 	      int good = true;
 	      for (size_t n=primes.size()+1; n<fullbase.size(); n++)
                 {
-		  int sign = Integer<Z>::hilbertSymbolZ(-b, -disc, fullbase[n]);
+		  int sign = (-b).hilbertSymbol(-disc, fullbase[n]);
 		  if (sign == -1) good = false;
                 }
 
@@ -240,12 +240,15 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
       // break out of the factor base building loop.
       if (done) break;
 
+      Z pZ = p.num();
       // Get the next prime not dividing the discriminant...
-      mpz_nextprime(p.get_mpz_t(), p.get_mpz_t());
-      while (disc % p == 0)
+      mpz_nextprime(pZ.get_mpz_t(), pZ.get_mpz_t());
+      
+      while (disc % pZ == 0)
         {
-	  mpz_nextprime(p.get_mpz_t(), p.get_mpz_t());
+	  mpz_nextprime(pZ.get_mpz_t(), pZ.get_mpz_t());
         }
+      p = pZ;
 
       // If we've added a prime to the end of our factor base list, we
       // remove it if it didn't lead to a solution. This helps avoid the
@@ -259,14 +262,14 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
         }
 
       // ...and push it's sign vector onto the list.
-      signs.push_back(signVector(p, det, primes));
+      signs.push_back(signVector(p.num(), det, primes));
       fullbase.push_back(p);
       added_to_end = true;
     }
 
   // Construct the coefficients of the diagonalized quadratic space with
   // the desired signs.
-  Z b = -1;
+  Integer<Z> b = Z(-1);
   W64 mask = 1LL << fullbase.size();
 
   // Set up the base primes. These are primes which do not divide the
@@ -274,10 +277,10 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
   // the resulting quadratic space. We also include 2 in this list, as
   // additional powers of 2 can sometimes occur, even if 2 divides the
   // discriminant.
-  std::vector<Z> base;
+  std::vector< Integer<Z> > base;
   base.push_back(2);
 
-  for (const Z& p : fullbase)
+  for (const Integer<Z> & p : fullbase)
     {
       mask >>= 1;
       if (solution & mask)
@@ -302,7 +305,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
     {
       mask >>= 1;
       int sign = (target & mask) ? -1 : 1;
-      if (Integer<Z>::hilbertSymbolZ(-b, -disc, symb.p) != sign)
+      if ((-b).hilbertSymbol(-disc, symb.p) != sign)
         {
 	  throw std::runtime_error("Hilbert symbols do not check out. How did this happen?");
         }
@@ -310,41 +313,41 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 
   // Start by building a diagonal form.
   Z_QuadForm<3>::SymVec form;
-  Z a = 1;
-  Z c = det;
-  Z f = 0;
-  Z g = 0;
-  Z h = 0;
-  form[0] = Z(2*a);
+  Integer<Z> a = Z(1);
+  Integer<Z> c = det;
+  Integer<Z> f = Z(0);
+  Integer<Z> g = Z(0);
+  Integer<Z> h = Z(0);
+  form[0] = 2*a;
   form[1] = h;
-  form[2] = Z(2*b);
+  form[2] = 2*b;
   form[3] = g;
   form[4] = f;
-  form[5] = Z(2*c);
+  form[5] = 2*c;
   Z_QuadForm<3> q(form);
-  Z N = q.discriminant().num();
+  Integer<Z> N = q.discriminant();
 
   // Remove the prime squares from the discriminant for those primes not
   // dividing the intended discriminant.
-  for (const Z& p : base)
+  for (const Integer<Z>& p : base)
     {
-      Z pp = p*p;
+      Integer<Z> pp = p*p;
 
-      while (N % pp == 0)
+      while ((N % pp).isZero())
         {
 	  // Find an isotropic vector mod p^2, make it a basis vector,
 	  // and then divide p^2 out of the discriminant.
-	  Z_Vector<3> vec = ZisotropicMod_pp(q, p);
+	  Z_Vector<3> vec = ZisotropicMod_pp(q.num(), p.num());
 
-	  assert( q.evaluate(vec) % pp == 0 );
+	  assert( (q.evaluate(vec) % pp).isZero() );
 
 	  if (vec[0].isZero() && vec[1].isZero() && vec[2].isZero()) break;
 	  else if (vec[0].isZero() && vec[1].isZero())
             {
 	      assert( vec[2].isOne() );
-	      assert( g % p == 0 );
-	      assert( f % p == 0 );
-	      assert( c % pp == 0 );
+	      assert( (g % p).isZero() );
+	      assert( (f % p).isZero() );
+	      assert( (c % pp).isZero() );
 
 	      c /= pp;
 	      f /= p;
@@ -352,14 +355,14 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
             }
 	  else if (vec[0].isZero())
             {
-	      b += (c*vec[2]*vec[2] + f*vec[2]).num();
-	      f += (Z(2*c)*vec[2]).num();
-	      h += (g*vec[2]).num();
+	      b += c*vec[2]*vec[2] + f*vec[2];
+	      f += 2*c*vec[2];
+	      h += g*vec[2];
 
 	      assert( vec[1].isOne() );
-	      assert( b % pp == 0 );
-	      assert( f % p == 0 );
-	      assert( h % p == 0 );
+	      assert( (b % pp).isZero() );
+	      assert( (f % p).isZero() );
+	      assert( (h % p).isZero() );
 
 	      b /= pp;
 	      f /= p;
@@ -367,27 +370,27 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
             }
 	  else
             {
-	      a += (b*vec[1]*vec[1] + c*vec[2]*vec[2] + f*vec[1]*vec[2] + g*vec[2] + h*vec[1]).num();
+	      a += (b*vec[1]*vec[1] + c*vec[2]*vec[2] + f*vec[1]*vec[2] + g*vec[2] + h*vec[1]);
 	      g += 2*c*vec[2] + f*vec[1];
 	      h += 2*b*vec[1] + f*vec[2];
 
 	      assert( vec[0].isOne() );
-	      assert( a % pp == 0 );
-	      assert( g % p == 0 );
-	      assert( h % p == 0 );
+	      assert( (a % pp).isZero() );
+	      assert( (g % p).isZero() );
+	      assert( (h % p).isZero() );
 
 	      a /= pp;
 	      g /= p;
 	      h /= p;
             }
-	  form[0] = Z(2*a);
+	  form[0] = 2*a;
 	  form[1] = h;
-	  form[2] = Z(2*b);
+	  form[2] = 2*b;
 	  form[3] = g;
 	  form[4] = f;
-	  form[5] = Z(2*c);
+	  form[5] = 2*c;
 	  q = Z_QuadForm<3>(form);
-	  N = q.discriminant().num();
+	  N = q.discriminant();
         }
     }
 
@@ -395,7 +398,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
   // discriminant, then reduce again. The resulting form will have the
   // correct local behavior as well as the correct discriminant.
   Z_Isometry<3> s;
-  assert(q.bilinear_form().is_positive_definite());
+  assert(q.bilinearForm().isPositiveDefinite());
   q = Z_QuadForm<3>::reduce(q, s);
   for (const Z_PrimeSymbol& symb : primes)
     {
@@ -411,13 +414,13 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
   q = Z_QuadForm<3>::reduce(q, s);
 
   // Do one final verification that the symbols are correct.
-  Z x = (q._B(0,0) * q._B(1,1) - q._B(0,1) * q._B(1,0)).num();
+  Integer<Z> x = q._B(0,0) * q._B(1,1) - q._B(0,1) * q._B(1,0);
   mask = 1LL << primes.size();
   for (const Z_PrimeSymbol& symb : primes)
     {
       mask >>= 1;
       int sign = (target & mask) ? -1 : 1;
-      if (Integer<Z>::hilbertSymbolZ(-x, -disc, symb.p) != sign)
+      if ((-x).hilbertSymbol(-disc, symb.p) != sign)
         {
 	  throw std::runtime_error("Hilbert symbols do not check out. How did this happen?");
         }
