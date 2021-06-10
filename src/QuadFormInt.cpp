@@ -244,7 +244,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
       // Get the next prime not dividing the discriminant...
       mpz_nextprime(pZ.get_mpz_t(), pZ.get_mpz_t());
       
-      while (disc % pZ == 0)
+      while (disc.num() % pZ == 0)
         {
 	  mpz_nextprime(pZ.get_mpz_t(), pZ.get_mpz_t());
         }
