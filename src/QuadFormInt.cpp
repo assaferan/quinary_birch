@@ -278,7 +278,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
   // additional powers of 2 can sometimes occur, even if 2 divides the
   // discriminant.
   std::vector< Integer<Z> > base;
-  base.push_back(2);
+  base.push_back(Z(2));
 
   for (const Integer<Z> & p : fullbase)
     {
