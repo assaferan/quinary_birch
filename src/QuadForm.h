@@ -15,7 +15,8 @@ class QuadForm
   typedef R SymVec[n*(n+1)/2];
 
   // c-tors
-  QuadForm() {}
+  QuadForm(std::shared_ptr<const Parent > ring) : _B(ring) {}
+  
   // from a vector of n(n+1)/2 elements
   QuadForm(const SymVec& coeffs);
   QuadForm(const SquareMatrix<R,Parent,n> & B) : _B(B) {}
