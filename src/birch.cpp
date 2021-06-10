@@ -87,7 +87,7 @@ int main()
 	  Integer<Z64> det = q.invariants(F_64,I);
 	  std::cerr << "det = " << det << std::endl;
 	  std::cerr<< std::endl;
-	  for (Intger<Z64> f : F_64)
+	  for (Integer<Z64> f : F_64)
 	    std::cerr << f << " ";
 	  std::cerr<< std::endl << I << std::endl << std::endl;
 	  det = q.invariants(F_ext_64,I);
