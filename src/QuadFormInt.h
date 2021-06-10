@@ -1,6 +1,7 @@
 #ifndef __QUAD_FORM_INT_H_
 #define __QUAD_FORM_INT_H_
 
+#include <memory>
 #include <set>
 #include <unordered_map>
 #include <vector>
