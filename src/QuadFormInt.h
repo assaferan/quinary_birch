@@ -43,7 +43,7 @@ public:
   
   Integer<R> invariants(std::set< Integer<R> > &, size_t& ) const;
   
-  Integer<R> invariants(typename QFInv &, size_t& ) const;
+  Integer<R> invariants(QFInv &, size_t& ) const;
   
   jordan_data jordanDecomposition(const Integer<R> & p) const;
 
