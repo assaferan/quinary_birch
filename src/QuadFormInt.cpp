@@ -2,7 +2,7 @@
 #include <type_traits>
 
 #include "birch.h"
-#include "Isomtry.h"
+#include "Isometry.h"
 #include "QuadFormInt.h"
 
 template class Z_QuadForm<3>;
