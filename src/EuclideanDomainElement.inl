@@ -117,7 +117,6 @@ template<class Derived, class DerivedParent>
 Derived& EuclideanDomainElement<Derived, DerivedParent>::operator/= (const Derived& d)
 {
 #ifdef DEBUG
-  std::cerr<< "in operator /=" << std::endl;
   Derived before = *(this->getPtr());
 #endif
   
