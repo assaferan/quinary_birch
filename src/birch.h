@@ -141,6 +141,20 @@ typedef FpElement<W16,W32>  W16_FpElement;
 typedef FpElement<W32,W64>  W32_FpElement;
 typedef FpElement<W64,W128> W64_FpElement;
 
+/* Struct definitions */
+
+template<typename R>
+struct PrimeSymbol {
+    R p;
+    int power;
+    bool ramified;
+};
+
+// Prime symbols
+typedef PrimeSymbol<Z>   Z_PrimeSymbol;
+typedef PrimeSymbol<Z64> Z64_PrimeSymbol;
+typedef PrimeSymbol<Z128> Z128_PrimeSymbol;
+
 // There is no default operator<< for Z128
 std::ostream & operator<<(std::ostream & os, const Z128 & z);
 
