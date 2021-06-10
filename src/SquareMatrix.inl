@@ -24,7 +24,7 @@ SquareMatrix<R,Parent,n>::SquareMatrix(const R mat[n][n])
 template<class R, class Parent, size_t n>
 SquareMatrix<R,Parent,n>::SquareMatrix(const SquareMatrix<R,Parent,n> & other)
 {
-  deep_copy(other.mat);
+  deepCopy(other.mat);
   _base = other._base;
 }
 
