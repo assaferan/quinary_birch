@@ -321,7 +321,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
     form[4] = f;
     form[5] = Z(2*c);
     Z_QuadForm<3> q(form);
-    Z N = q.discriminant();
+    Z N = q.discriminant().num();
 
     // Remove the prime squares from the discriminant for those primes not
     // dividing the intended discriminant.
