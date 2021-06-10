@@ -82,15 +82,6 @@ class QuadFormFp;
 template<typename R, size_t n>
 class QuadFormInt;
 
-template<size_t n>
-class Z_QuadForm;
-
-template<size_t n>
-class Z64_QuadForm;
-
-template<size_t n>
-class Z128_QuadForm;
-
 // matrices
 template<class R, class Parent>
 class Matrix;
@@ -107,6 +98,15 @@ class Vector;
 // quadratic forms
 template<typename R, size_t n>
 using R_QuadForm = QuadForm<Integer<R>, IntegerRing<R>, n>;
+
+template<size_t n>
+using Z_QuadForm = QuadFormInt<Z,n>;
+
+template<size_t n>
+using Z64_QuadForm = QuadFormInt<Z64,n>;
+
+template<size_t n>
+using Z128_QuadForm = QuadFormInt<Z128,n>;
 
 // isometries
 template<size_t n>
