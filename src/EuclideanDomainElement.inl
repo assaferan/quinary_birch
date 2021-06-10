@@ -123,7 +123,7 @@ Derived& EuclideanDomainElement<Derived, DerivedParent>::operator/= (const Deriv
   
   Derived quo = this->operator/(d);
   assert(quo == before / d);
-  *this = quo;
+  *(this->getPtr()) = quo;
   assert(*(this->getPtr()) == quo);
   return *(this->getPtr());
 }
