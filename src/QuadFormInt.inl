@@ -193,7 +193,6 @@ template<typename R, size_t n>
 inline Integer<R>
 QuadFormInt<R,n>::invariants(std::set<Integer<R>> & F, size_t& I) const
 {
-  std::shared_ptr< const IntegerRing<R> > ZZ = IntegerRing<R>::getInstance().getPtr();
   VectorInt<R,n> D = this->orthogonalizeGram();
   std::set<Integer<R> > P;
   F.clear();
@@ -202,7 +201,7 @@ QuadFormInt<R,n>::invariants(std::set<Integer<R>> & F, size_t& I) const
   P.insert(R(2));
   for (size_t i = 0; i < n; i++)
     {
-      if (D[i] < ZZ->zero()) I++;
+      if (D[i] < Integer<R>::zero()) I++;
       typename Integer<R>::FactorData facs = D[i].factorization();
       for (std::pair<Integer<R>, size_t> fa : facs)
 	if (fa.second % 2 == 1)
@@ -211,7 +210,7 @@ QuadFormInt<R,n>::invariants(std::set<Integer<R>> & F, size_t& I) const
   for (Integer<R> p : P)
     if (hasse(D,p) == -1) F.insert(p);
 
-  Integer<R> prod = ZZ->one();
+  Integer<R> prod = Integer<R>::one();
   for (size_t i = 0; i < n; i++)
     prod *= D[i];
   
@@ -223,7 +222,6 @@ inline Integer<R>
 QuadFormInt<R,n>::invariants(typename QuadFormInt<R,n>::QFInv &F,
 			     size_t& I) const
 {
-  std::shared_ptr<const IntegerRing<R> > ZZ = IntegerRing<R>::getInstance().getPtr();
   VectorInt<R, n> D = this->orthogonalizeGram();
   std::set<Integer<R> > P;
   F.clear();
@@ -232,7 +230,7 @@ QuadFormInt<R,n>::invariants(typename QuadFormInt<R,n>::QFInv &F,
   P.insert(R(2));
   for (size_t i = 0; i < n; i++)
     {
-      if (D[i] < ZZ->zero()) I++;
+      if (D[i] < Integer<R>::zero()) I++;
       typename Integer<R>::FactorData facs = D[i].factorization();
       for (std::pair<Integer<R>, size_t> fa : facs)
 	  if (fa.second % 2 == 1)
@@ -241,7 +239,7 @@ QuadFormInt<R,n>::invariants(typename QuadFormInt<R,n>::QFInv &F,
   for (Integer<R> p : P)
     F.insert(std::make_pair(p, hasse(D,p)));
 
-  Integer<R> prod = ZZ->one();
+  Integer<R> prod = Integer<R>::one();
   for (size_t i = 0; i < n; i++)
     prod *= D[i];
   
@@ -526,7 +524,7 @@ inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
   VectorInt<R,n-1> x_closest;
 
   // This can be calculated more efficiently
-  Integer<R> det = ZZ->zero();
+  Integer<R> det = Integer<R>::zero();
   for (size_t i = 0; i < dim-1; i++)
     det += H_int(0,i)*q(i,0);
   det = (det > 0) ?  det : -det;
