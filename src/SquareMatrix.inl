@@ -427,7 +427,7 @@ void SquareMatrix<R,Parent,n>::swapRows(size_t row1, size_t row2)
 {
   assert((row1 < n) && (row2 < n));
   
-  Vector<R,Parent,n> temp_row;
+  Vector<R,Parent,n> temp_row(_base);
 
   for (size_t col = 0; col < n; col++)
     temp_row[col] = mat[row1][col];
@@ -446,7 +446,7 @@ void SquareMatrix<R,Parent,n>::swapCols(size_t col1, size_t col2)
 {
   assert((col1 < n) && (col2 < n));
 
-  Vector<R,Parent,n> temp_col;
+  Vector<R,Parent,n> temp_col(_base);
 
   for (size_t row = 0; row < n; row++)
     temp_col[row] = mat[row][col1];
