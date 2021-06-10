@@ -400,23 +400,23 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
     {
         for (int j=3; j<=symb.power; j+=2)
         {
-	  q.B_(0,2) *= symb.p;
-	  q.B_(2,0) *= symb.p;
-	  q.B_(1,2) *= symb.p;
-	  q.B_(2,1) *= symb.p;
-	  q.B_(2,2) *= symb.p * symb.p;
+	  q._B(0,2) *= symb.p;
+	  q._B(2,0) *= symb.p;
+	  q._B(1,2) *= symb.p;
+	  q._B(2,1) *= symb.p;
+	  q._B(2,2) *= symb.p * symb.p;
         }
     }
     q = Z_QuadForm<3>::reduce(q, s);
 
     // Do one final verification that the symbols are correct.
-    Z x = q.B_(0,0) * q.B_(1,1) - q.B_(0,1) * q.B_(1,0);
+    Z x = q._B(0,0) * q._B(1,1) - q._B(0,1) * q._B(1,0);
     mask = 1LL << primes.size();
     for (const Z_PrimeSymbol& symb : primes)
     {
         mask >>= 1;
         int sign = (target & mask) ? -1 : 1;
-        if (Z_Math::hilbert_symbol(-x, -disc, symb.p) != sign)
+        if (Integer<Z>::hilbertSymbolZ(-x, -disc, symb.p) != sign)
         {
             throw std::runtime_error("Hilbert symbols do not check out. How did this happen?");
         }
