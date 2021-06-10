@@ -67,7 +67,7 @@ int Integer<Z>::hilbertSymbol(const Integer<Z>& other, const Integer<Z>& p) cons
 
 
 template<>
-int Integer<Z64>::hilbertSymbol(const Integer<Z64> & b, const Integer<Z64>& p)
+int Integer<Z64>::hilbertSymbol(const Integer<Z64> & b, const Integer<Z64>& p) const
 {
   return hilbertSymbolZ(birch_util::convert_Integer<Z64,Z>(this->_num),
 			birch_util::convert_Integer<Z64,Z>(b._num),
@@ -75,7 +75,7 @@ int Integer<Z64>::hilbertSymbol(const Integer<Z64> & b, const Integer<Z64>& p)
 }
 
 template<>
-int Integer<Z128>::hilbert_symbol(const Integer<Z128> & b, const Integer<Z128>& p)
+int Integer<Z128>::hilbert_symbol(const Integer<Z128> & b, const Integer<Z128>& p) const
 {
   return hilbertSymbolZ(birch_util::convert_Integer<Z128,Z>(this->_num),
 			birch_util::convert_Integer<Z128,Z>(b._num),
