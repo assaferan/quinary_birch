@@ -219,7 +219,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
                 int good = true;
                 for (size_t n=primes.size()+1; n<fullbase.size(); n++)
                 {
-                    int sign = Z_Math::hilbert_symbol(-b, -disc, fullbase[n]);
+		  int sign = Integer<Z>::hilbertSymbolZ(-b, -disc, fullbase[n]);
                     if (sign == -1) good = false;
                 }
 
@@ -301,7 +301,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
     {
         mask >>= 1;
         int sign = (target & mask) ? -1 : 1;
-        if (Z_Math::hilbert_symbol(-b, -disc, symb.p) != sign)
+        if (Integer<Z>::hilbertSymbolZ(-b, -disc, symb.p) != sign)
         {
             throw std::runtime_error("Hilbert symbols do not check out. How did this happen?");
         }
