@@ -876,7 +876,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
   size_t num_free = 1;
   for (size_t i = 1; i < n; i++) {
     num_free *= 3;
-    std::set< Vector<R, n> > free_hood;
+    std::set< VectorInt<R,n> > free_hood;
     for (size_t x_idx = 0; x_idx < num_free; x_idx++) {
       size_t tmp = x_idx;
       VectorInt<R,n> x;
