@@ -2,85 +2,17 @@
 #include <type_traits>
 
 #include "birch.h"
-#include "Isometry.h"
 #include "QuadForm.h"
-#include "Math.h"
 
-template class QuadForm_Base<Z, 5>;
-template class QuadForm_Base<Z64, 5>;
-template class QuadForm_Base<Z128, 5>;
+template class Z_QuadForm<3>;
+template class Z64_QuadForm<3>;
+template class Z128_QuadForm<3>;
 
-template<typename R, size_t n>
-std::vector< QuadForm<R, 5> >
-QuadForm_Base<R, n>::nipp_to_forms(NippEntry entry)
-{
-  std::vector< QuadForm<R, 5> > forms;
-  size_t triangular[5];
-  for (size_t j = 0; j < 5; j++)
-    triangular[j] = j*(j-1)/2;
-  typename QuadForm<R,5>::SymVec form;
-  for (LatticeRecord lat : entry.lattices)
-    {
-      size_t form_idx = 0;
-      for (size_t col = 0; col < 5; col++)
-	{
-	  for (size_t row = 0; row < col; row++)
-	    {
-	      form[form_idx++] = lat.form[5+triangular[col]+row]; 
-	    }
-	  form[form_idx++] = 2*lat.form[col];
-	}
-      forms.push_back(form);
-    }
-  return forms;
-}
+template class Z_QuadForm<5>;
+template class Z64_QuadForm<5>;
+template class Z128_QuadForm<5>;
 
-template<typename R, size_t n>
-std::vector<std::vector< QuadForm<R, 5> > >
-QuadForm_Base<R,n>::get_quinary_forms(const R & disc)
-{
-  std::vector< std::vector< QuadForm<R, 5> > > all_forms;
-
-  std::vector<R> nipp_maxs = {0,256,270,300,322,345,400,440,480,500,513};
-  size_t table_idx = 0;
-  while (nipp_maxs[table_idx+1] < disc) table_idx++;
-  std::ostringstream nipp_fname;
-  nipp_fname << "lattice_db/nipp" << nipp_maxs[table_idx]+1 << "-";
-  nipp_fname << nipp_maxs[table_idx+1] << ".txt";
-  
-#ifdef DEBUG_LEVEL_FULL
-  std::cerr << "nipp_fname = " << nipp_fname.str() << std::endl;
-#endif
-  
-  std::vector<NippEntry> nipps =
-    ParseNipp::parseDisc(nipp_fname.str(),
-			 birch_util::convert_Integer<R, Z>(disc));
-  
-  for (NippEntry nipp : nipps)
-    {
-#ifdef DEBUG_LEVEL_FULL
-      std::cerr << "disc = " << nipp.disc << std::endl;
-      std::cerr << "genus = " << nipp.genus << std::endl;
-      std::cerr << "mass = " << nipp.mass[0] << "/" << nipp.mass[1] << std::endl;
-      std::cerr << "Hasse symbols = ";
-      for (short int symb : nipp.HasseSymb)
-	std::cerr << symb << " ";
-      std::cerr << std::endl;
-      std::cerr << "lattices = " << std::endl;
-      for (LatticeRecord lat : nipp.lattices)
-	{
-	  for (Z num : lat.form)
-	    std::cerr << num << " ";
-	  std::cerr << ";\t" << lat.numAut << std::endl; 
-	}
-#endif
-      all_forms.push_back(QuadForm<R, 5>::nipp_to_forms(nipp));
-    }
-  
-  return all_forms;
-}
-
-static W64 sign_vector(const Z& x, const Z& det,
+static W64 signVector(const Z& x, const Z& det,
 		       const std::vector<Z_PrimeSymbol>& primes)
 {
     W64 vec = (x == -1);
@@ -94,7 +26,7 @@ static W64 sign_vector(const Z& x, const Z& det,
 
 // A naive GF(2) solver that looks for solutions to a specific linear equation
 // from a specified starting point.
-static W64 GF2_solve_naive(const std::vector<W64>& vecs, W64 start, W64 target)
+static W64 GF2solveNaive(const std::vector<W64>& vecs, W64 start, W64 target)
 {
     W64 upper = 1LL << vecs.size();
     size_t num_vecs = vecs.size();
@@ -118,7 +50,7 @@ static W64 GF2_solve_naive(const std::vector<W64>& vecs, W64 start, W64 target)
 // rewritten to avoid an exhaustive search, but since we expect the primes to
 // be small, this should work for now.
 template<size_t n>
-static Z_Vector<n> Z_isotropic_mod_pp(const Z_QuadForm<n>& q, const Z& p)
+static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Z& p)
 {
     Z pp = p*p;
     Z_Vector<n> vec;
@@ -152,7 +84,7 @@ static Z_Vector<n> Z_isotropic_mod_pp(const Z_QuadForm<n>& q, const Z& p)
 }
 
 template<>
-Z_QuadForm<3> Z_QuadForm<3>::get_quad_form(const std::vector<Z_PrimeSymbol>& input)
+Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input)
 {
     Z det = 1;
     Z disc = 1;
@@ -222,11 +154,11 @@ Z_QuadForm<3> Z_QuadForm<3>::get_quad_form(const std::vector<Z_PrimeSymbol>& inp
 
     // Add the relation for the infinite prime.
     fullbase.push_back(-1);
-    signs.push_back(sign_vector(-1, det, primes));
+    signs.push_back(signVector(-1, det, primes));
 
     for (const Z_PrimeSymbol& symb : primes)
     {
-        signs.push_back(sign_vector(symb.p, det, primes));
+        signs.push_back(signVector(symb.p, det, primes));
         fullbase.push_back(symb.p);
     }
 
@@ -240,7 +172,7 @@ Z_QuadForm<3> Z_QuadForm<3>::get_quad_form(const std::vector<Z_PrimeSymbol>& inp
         solution = 0;
         do
         {
-            solution = GF2_solve_naive(signs, solution, target);
+            solution = GF2solveNaive(signs, solution, target);
 
             if (solution)
             {
@@ -326,7 +258,7 @@ Z_QuadForm<3> Z_QuadForm<3>::get_quad_form(const std::vector<Z_PrimeSymbol>& inp
         }
 
         // ...and push it's sign vector onto the list.
-        signs.push_back(sign_vector(p, det, primes));
+        signs.push_back(signVector(p, det, primes));
         fullbase.push_back(p);
         added_to_end = true;
     }
@@ -401,21 +333,17 @@ Z_QuadForm<3> Z_QuadForm<3>::get_quad_form(const std::vector<Z_PrimeSymbol>& inp
         {
             // Find an isotropic vector mod p^2, make it a basis vector,
             // and then divide p^2 out of the discriminant.
-	  Z_Vector<3> vec = Z_isotropic_mod_pp(q, p);
+	  Z_Vector<3> vec = ZisotropicMod_pp(q, p);
 
-            #ifdef DEBUG
             assert( q.evaluate(vec) % pp == 0 );
-            #endif
 
             if (vec[0] == 0 && vec[1] == 0 && vec[2] == 0) break;
             else if (vec[0] == 0 && vec[1] == 0)
             {
-                #ifdef DEBUG
                 assert( vec[2] == 1 );
                 assert( g % p == 0 );
                 assert( f % p == 0 );
                 assert( c % pp == 0 );
-                #endif
 
                 c /= pp;
                 f /= p;
@@ -427,12 +355,10 @@ Z_QuadForm<3> Z_QuadForm<3>::get_quad_form(const std::vector<Z_PrimeSymbol>& inp
                 f += (2*c*vec[2]);
                 h += (g*vec[2]);
 
-                #ifdef DEBUG
                 assert( vec[1] == 1 );
                 assert( b % pp == 0 );
                 assert( f % p == 0 );
                 assert( h % p == 0 );
-                #endif
 
                 b /= pp;
                 f /= p;
@@ -444,12 +370,10 @@ Z_QuadForm<3> Z_QuadForm<3>::get_quad_form(const std::vector<Z_PrimeSymbol>& inp
                 g += (2*c*vec[2] + f*vec[1]);
                 h += (2*b*vec[1] + f*vec[2]);
 
-                #ifdef DEBUG
                 assert( vec[0] == 1 );
                 assert( a % pp == 0 );
                 assert( g % p == 0 );
                 assert( h % p == 0 );
-                #endif
 
                 a /= pp;
                 g /= p;
@@ -470,9 +394,7 @@ Z_QuadForm<3> Z_QuadForm<3>::get_quad_form(const std::vector<Z_PrimeSymbol>& inp
     // discriminant, then reduce again. The resulting form will have the
     // correct local behavior as well as the correct discriminant.
     Z_Isometry<3> s;
-#ifdef DEBUG
     assert(q.bilinear_form().is_positive_definite());
-#endif
     q = Z_QuadForm<3>::reduce(q, s);
     for (const Z_PrimeSymbol& symb : primes)
     {

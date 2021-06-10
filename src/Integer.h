@@ -82,6 +82,14 @@ public:
 
   inline std::shared_ptr<const IntegerRing<R> > parent() const override
   {return IntegerRing<R>::getInstance().getPtr(); }
+
+  int hilbertSymbol(const Integer<R> & b, const Integer<R>& p) const;
+
+  typedef std::vector< std::pair<Integer<R>, size_t> > FactorData;
+
+  inline typename Integer<R>::FactorData factorization() const;
+  
+  inline size_t valuation(const Integer<R>& p) const;
   
 protected:
   R _num;

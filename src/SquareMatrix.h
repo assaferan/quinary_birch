@@ -2,9 +2,6 @@
 #define __SQUARE_MATRIX_H_
 
 #include "birch.h"
-#include "Rational.h"
-#include "RingElement.h"
-#include "Vector.h"
 
 // !! TODO - It might be useful to let SquareMatrix inherit
 // from Ring (as it is a ring), and implement the overrides ?
@@ -29,6 +26,8 @@ public:
   // access
   inline const R& operator()(size_t i, size_t j) const {return mat[i][j]; }
   inline R& operator()(size_t i, size_t j) {return mat[i][j];}
+
+  inline std::shared_ptr<const Parent> baseRing() const { return _base; };
 
   // return the i-th row
   inline Vector<R,Parent,n> operator[](size_t i) const;

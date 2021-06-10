@@ -90,3 +90,50 @@ Integer<R>::euclideanDivision(const Integer<R>& other) const
 	 
   return std::make_pair(q_int,r_int);
 }
+
+// We do only trial divison, since our numbers are always small enough
+// (in all our use cases, num will be in the order of 1000 at most)
+
+template <typename R>
+inline typename Integer<R>::FactorData Integer<R>::factorization() const
+{
+  Integer<R> num = *this;
+  assert(num < 10000);
+  typename Integer<R>::FactorData factors;
+  Integer<R> temp_num = num < 0 ? -num : num;
+  size_t exp;
+  Integer<R> a = 2;
+  while (temp_num != 1)
+    {
+      if (temp_num % a == 0)
+	{
+	  exp = 1; 
+	  temp_num /= a;
+	  while (temp_num % a == 0)
+	    {
+	      exp++;
+	      temp_num /= a;
+	    }
+	  factors.push_back(std::make_pair(a, exp));
+	}
+      a++;
+    }
+  return factors;
+}
+
+template <typename R>
+inline size_t Integer<R>::valuation(const Integer<R>& p) const
+{
+  assert(!(this->isZero()));
+  Integer<R> t = *this;
+  
+  size_t exp = 0;
+
+  while (t % p == 0)
+    {
+      exp++;
+      t /= p;
+    }
+
+  return exp;
+}

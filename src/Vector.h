@@ -1,11 +1,7 @@
 #ifndef __VECTOR_H_
 #define __VECTOR_H_
 
-#include "RingElement.h"
-
-// This is here for multiplication v*M
-template<class R, class Parent, size_t n>
-class SquareMatrix;
+#include "birch.h"
 
 template<class R, class Parent, size_t n>
 class Vector {
@@ -23,6 +19,8 @@ public:
   // access
   inline const R& operator[](size_t i) const {return v[i]; }
   inline R& operator[](size_t i) {return v[i];}
+  
+  inline std::shared_ptr<const Parent> baseRing() const { return _base; };
 
   // arithmetic
   inline Vector<R,Parent,n> operator-() const;
