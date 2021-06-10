@@ -689,7 +689,9 @@ inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
   bool is_reduced = true;
   std::map<Integer<R>, std::vector<size_t> > stable_sets;
   Isometry<R, n> s_final;
-  SquareMatrixInt<R,n> q0, q1;
+  std::shared_ptr<const IntegerRing<R> > ZZ = IntegerRing<R>::getInstance().getPtr();
+  SquareMatrixInt<R,n> q0(ZZ);
+  SquareMatrixInt<R,n> q1(ZZ);
   q0 = qf;
   
   for (size_t i = 0; i < n; i++) {
