@@ -5,7 +5,7 @@
 #include "Isometry.h"
 #include "QuadFormInt.h"
 
-template class Z64_QuadForm<3>;
+template class QuadFormZZ<Z64,3>;
 
 /*
 template class Z_QuadForm<3>;
