@@ -149,6 +149,11 @@ using W32_VectorFp = VectorFp< W32, W64, n>;
 template<size_t n>
 using W64_VectorFp = VectorFp< W64, W128, n>;
 
+// Matrices of finite field elements
+typedef MatrixFp< W16, W32> W16_MatrixFp;
+typedef MatrixFp< W32, W64> W32_MatrixFp;
+typedef MatrixFp< W64, W128> W64_MatrixFp;
+
 /* Struct definitions */
 
 template<typename R>
