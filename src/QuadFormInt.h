@@ -151,7 +151,6 @@ protected:
   signOrbit() const;
 };
 
-/*
 // Here we find that we must instantiate the following classes due to
 // partial template specilization of hashValue.
   
@@ -245,7 +244,6 @@ public:
   using QuadFormInt<Z128,n>::generateOrbit;
 
 };
-*/
 
 #include "QuadFormInt.inl"
 
