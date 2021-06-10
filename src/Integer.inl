@@ -103,7 +103,7 @@ inline typename Integer<R>::FactorData Integer<R>::factorization() const
   Integer<R> temp_num = num.abs();
   size_t exp;
   Integer<R> a = 2;
-  while (temp_num != 1)
+  while (!temp_num.isOne())
     {
       if (temp_num % a == 0)
 	{
