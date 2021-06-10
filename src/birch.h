@@ -135,6 +135,9 @@ using VectorFp = Vector< FpElement<R,S>, Fp<R,S>, n>;
 template<typename R, size_t n>
 using VectorInt = Vector< Integer<R>, IntegerRing<R>, n>;
 
+template<size_t n>
+using Z_Vector = VectorInt<Z, n>;
+
 // finite fields
 typedef Fp<W16,W32>  W16_Fp;
 typedef Fp<W32,W64>  W32_Fp;
