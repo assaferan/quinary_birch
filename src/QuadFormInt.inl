@@ -205,7 +205,7 @@ QuadFormInt<R,n>::invariants(std::set<Integer<R>> & F, size_t& I) const
       if (D[i] < ZZ->zero()) I++;
       typename Integer<R>::FactorData facs = D[i].factorization();
       for (std::pair<Integer<R>, size_t> fa : facs)
-	if ((fa.second % 2).isOne())
+	if (fa.second % 2 == 1)
 	  P.insert(fa.first);
     }
   for (Integer<R> p : P)
