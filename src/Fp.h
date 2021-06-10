@@ -19,24 +19,24 @@ public:
   inline const R& prime(void) const { return this->p; }
 
   template<typename T>
-  inline FpElement<R,S> mod(const T& a) const;
+  FpElement<R,S> mod(const T& a) const;
     
-  inline std::shared_ptr< const Fp<R, S> > getPtr() const override;
+  std::shared_ptr< const Fp<R, S> > getPtr() const override;
 
-  inline virtual R neg(R a) const;
-  inline virtual R mul(R a, R b) const;
-  inline virtual R add(R a, R b) const;
-  inline virtual R sub(R a, R b) const;
+  virtual R neg(R a) const;
+  virtual R mul(R a, R b) const;
+  virtual R add(R a, R b) const;
+  virtual R sub(R a, R b) const;
 
-  inline int legendre(R a) const;
+  int legendre(R a) const;
 
-  inline virtual R inverse(R a) const;
+  virtual R inverse(R a) const;
 
-  inline virtual R inverse(const Z& a) const;
+  virtual R inverse(const Z& a) const;
 
-  inline virtual R inverse(const Z64& a) const;
+  virtual R inverse(const Z64& a) const;
 
-  inline FpElement<R,S> random(void);
+  FpElement<R,S> random(void);
 
   inline FpElement<R,S> zero(void) const override
   {return FpElement<R,S>::zero(this->getPtr()); }
