@@ -155,7 +155,7 @@ protected:
 // partial template specilization of hashValue.
   
 template<size_t n>
-class Z_QuadForm<n> : public QuadFormInt<Z,n>
+class Z_QuadForm : public QuadFormInt<Z,n>
 {
 public:
   Z_QuadForm() : QuadFormInt<Z,n>() {}
@@ -185,7 +185,7 @@ public:
 };
 
 template<size_t n>
-class Z64_QuadForm<n> : public QuadFormInt<Z64,n>
+class Z64_QuadForm : public QuadFormInt<Z64,n>
 {
 public:
   Z64_QuadForm() : QuadFormInt<Z64,n>() {}
@@ -215,7 +215,7 @@ public:
 };
 
 template<size_t n>
-class Z128_QuadForm<n> : public QuadFormInt<Z128,n>
+class Z128_QuadForm : public QuadFormInt<Z128,n>
 {
 public:
   Z128_QuadForm() : QuadFormInt<Z128,n>() {}

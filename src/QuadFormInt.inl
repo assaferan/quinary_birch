@@ -1,3 +1,4 @@
+#include "birch_util.h"
 #include "ParseNipp.h"
 
 template<typename R, size_t n>
