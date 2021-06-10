@@ -67,7 +67,7 @@ int main()
     vec_128 = Z128_QuadForm<5>::getQuinaryForms(61);
     
   std::vector<std::vector<Z_QuadForm<5> > >
-    vec = Z_QuadForm<5>::getQuinaryForms(61);
+    vec = Z_QuadForm<5>::getQuinaryForms(Z(61));
 
   return 0;
 }
