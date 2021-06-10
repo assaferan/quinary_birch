@@ -155,11 +155,11 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 
   // Add the relation for the infinite prime.
   fullbase.push_back(Z(-1));
-  signs.push_back(signVector(-1, det, primes));
+  signs.push_back(signVector(-1, det.num(), primes));
 
   for (const Z_PrimeSymbol& symb : primes)
     {
-      signs.push_back(signVector(symb.p, det, primes));
+      signs.push_back(signVector(symb.p, det.num(), primes));
       fullbase.push_back(symb.p);
     }
 
