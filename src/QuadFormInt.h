@@ -151,6 +151,7 @@ protected:
   signOrbit() const;
 };
 
+/*
 // Here we find that we must instantiate the following classes due to
 // partial template specilization of hashValue.
   
@@ -184,7 +185,7 @@ public:
 
 };
 
-/*
+
 template<size_t n>
 class Z64_QuadForm : public QuadFormInt<Z64,n>
 {
