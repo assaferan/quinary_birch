@@ -228,7 +228,7 @@ QuadFormInt<R,n>::invariants(typename QuadFormInt<R,n>::QFInv &F,
   F.clear();
   I = 0;
   
-  P.insert(2);
+  P.insert(R(2));
   for (size_t i = 0; i < n; i++)
     {
       if (D[i] < 0) I++;
