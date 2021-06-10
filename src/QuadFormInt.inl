@@ -209,7 +209,7 @@ QuadFormInt<R,n>::invariants(std::set<Integer<R>> & F, size_t& I) const
 	  P.insert(fa.first);
     }
   for (Integer<R> p : P)
-    if ((-hasse(D,p)).isOne()) F.insert(p);
+    if (hasse(D,p) == -1) F.insert(p);
 
   Integer<R> prod = ZZ->one();
   for (size_t i = 0; i < n; i++)
