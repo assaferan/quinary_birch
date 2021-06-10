@@ -829,7 +829,7 @@ inline bool QuadFormInt<R,n>::signNormalizationSlow(SquareMatrixInt<R,n> & qf,
       auts.insert(isom*s*isom.inverse());
       is_reduced = true;
       // to be compatible with magma implementation for debugging
-      for (size_t i = 0; i < n; i++) s(i,i) = Integer<R>::one();
+      for (size_t i = 0; i < n; i++) s(i,i).makeOne();
     }
   }
   qf = s.transform(qf);
