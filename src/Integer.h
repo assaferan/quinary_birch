@@ -103,6 +103,10 @@ protected:
 
 };
 
+template<typename R>
+inline Integer<R>  operator*(const R& a,const Integer<R> &b)
+{return b*a;}
+
 #include "Integer.inl"
 
 #endif //__INTEGER_H_
