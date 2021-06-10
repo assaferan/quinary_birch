@@ -48,25 +48,25 @@ int main()
   Z64_QuadForm<3> q0_64(coeffs_64);
     
 #ifdef DEBUG
-  const Z64_SquareMatrix<3> & B_64 = q0_64.bilinear_form();
+  const Z64_SquareMatrix<3> & B_64 = q0_64.bilinearForm();
   std::cerr << "B_64 = " << B_64 << std::endl;
 #endif
     
   Z_QuadForm<3> q0(coeffs);
     
 #ifdef DEBUG
-  const Z_SquareMatrix<3> & B = q0.bilinear_form();
+  const Z_SquareMatrix<3> & B = q0.bilinearForm();
   std::cerr << "B = " << B << std::endl;
 #endif
     
   std::vector<std::vector<Z64_QuadForm<5> > >
-    vec_64 = Z64_QuadForm<5>::get_quinary_forms(61);
+    vec_64 = Z64_QuadForm<5>::getQuinaryForms(61);
 
   std::vector<std::vector<Z128_QuadForm<5> > >
-    vec_128 = Z128_QuadForm<5>::get_quinary_forms(61);
+    vec_128 = Z128_QuadForm<5>::getQuinaryForms(61);
     
   std::vector<std::vector<Z_QuadForm<5> > >
-    vec = Z_QuadForm<5>::get_quinary_forms(61);
+    vec = Z_QuadForm<5>::getQuinaryForms(61);
 
   return 0;
 }
