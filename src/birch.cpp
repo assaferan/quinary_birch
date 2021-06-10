@@ -34,14 +34,14 @@ int main()
   Vector< W16_FpElement, W16_Fp, 5> vec_fp(GF);
   SquareMatrix< W16_FpElement, W16_Fp, 5> sq_mat(GF);
 
-  /*
+  
   std::vector<Z64_PrimeSymbol> symbols_64;
   Z64_PrimeSymbol p_64;
   std::vector<Z_PrimeSymbol> symbols;
   Z_PrimeSymbol p;
   std::vector<Z128_PrimeSymbol> symbols_128;
   Z128_PrimeSymbol p_128;
-  */
+  
   
   Z64_QuadForm<3>::SymVec coeffs_64 = {2,1,2,1,1,2};
   Z_QuadForm<3>::SymVec coeffs = {Z(2),Z(1),Z(2),Z(1),Z(1),Z(2)};
@@ -69,5 +69,70 @@ int main()
   std::vector<std::vector<Z_QuadForm<5> > >
     vec = Z_QuadForm<5>::getQuinaryForms(61);
 
+  std::set<Z64> F_64;
+  std::set<std::pair<Z64, int> > F_ext_64;
+    
+  std::set<Z> F;
+  std::set<std::pair<Z, int> > F_ext;
+    
+#ifdef DEBUG
+  size_t I;
+
+  for (std::vector<Z64_QuadForm<5> > genus : vec_64)
+    {
+      for (Z64_QuadForm<5> q : genus)
+	{
+	  std::cerr << q << std::endl;
+	  std::cerr << q.discriminant() << std::endl;
+	  Z64 det = q.invariants(F_64,I);
+	  std::cerr << "det = " << det << std::endl;
+	  std::cerr<< std::endl;
+	  for (Z64 f : F_64)
+	    std::cerr << f << " ";
+	  std::cerr<< std::endl << I << std::endl << std::endl;
+	  det = q.invariants(F_ext_64,I);
+	  for (std::pair<Z64,int> f : F_ext_64)
+	    std::cerr << "Hasse(" << f.first << ") =  " << f.second << " ";
+	  std::cerr << std::endl;
+	}
+    }
+    
+  for (std::vector<Z_QuadForm<5> > genus : vec)
+    {
+
+      for (Z_QuadForm<5> q : genus)
+	{
+	  std::cerr << q << std::endl;
+	  std::cerr << q.discriminant() << std::endl;
+	  Z det = q.invariants(F,I);
+	  std::cerr << "det = " << det << std::endl;
+	  std::cerr<< std::endl;
+	  for (Z f : F)
+	    std::cerr << f << " ";
+	  std::cerr<< std::endl << I << std::endl << std::endl;
+	  det = q.invariants(F_ext,I);
+	  for (std::pair<Z,int> f : F_ext)
+	    std::cerr << "Hasse(" << f.first << ") =  " << f.second << " ";
+	  std::cerr << std::endl;
+	}
+
+    }
+#endif
+    
+  p_64.p = 61;
+  p_64.power = 1;
+  p_64.ramified = true;
+  symbols_64.push_back(p_64);
+
+  p_128.p = 61;
+  p_128.power = 1;
+  p_128.ramified = true;
+  symbols_128.push_back(p_128);
+    
+  p.p = 61;
+  p.power = 1;
+  p.ramified = true;
+  symbols.push_back(p);
+  
   return 0;
 }
