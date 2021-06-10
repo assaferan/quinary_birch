@@ -5,6 +5,9 @@
 #include "Isometry.h"
 #include "QuadFormInt.h"
 
+template class QuadFormInt<Z,3>;
+
+/*
 template class Z_QuadForm<3>;
 template class Z64_QuadForm<3>;
 template class Z128_QuadForm<3>;
@@ -12,6 +15,7 @@ template class Z128_QuadForm<3>;
 template class Z_QuadForm<5>;
 template class Z64_QuadForm<5>;
 template class Z128_QuadForm<5>;
+*/
 
 static W64 signVector(const Z& x, const Z& det,
 		      const std::vector<Z_PrimeSymbol>& primes)
