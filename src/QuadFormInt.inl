@@ -898,9 +898,9 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
 	x[j]--;
 	tmp /= 3;
       }
-      x[i] = 1;
+      x[i].makeOne();
       for (size_t j = i+1; j < n; j++)
-	x[j] = 0;
+	x[j].makeZero();
       Integer<R> norm = VectorInt<R,n>::innerProduct(x*qf, x);
       if (norm < qf(i,i)) {
 	// !! TODO - this doesn't really happen
