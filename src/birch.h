@@ -108,6 +108,10 @@ class Vector;
 template<typename R, size_t n>
 using R_QuadForm = QuadForm<Integer<R>, IntegerRing<R>, n>;
 
+// isometries
+template<size_t n>
+using Z_Isometry = Isometry<Z, n>;
+
 // matrices
 template<typename R, typename S>
 using MatrixFp = Matrix< FpElement<R,S>, Fp<R,S> >;
