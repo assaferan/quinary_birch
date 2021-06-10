@@ -74,7 +74,7 @@ template<typename R, size_t n>
 inline std::vector<std::vector< QuadFormZZ<R,5> > >
 QuadFormInt<R,n>::getQuinaryForms(const R & disc)
 {
-  std::vector< std::vector< QuadFormInt<R,5> > > all_forms;
+  std::vector< std::vector< QuadFormZZ<R,5> > > all_forms;
 
   std::vector<R> nipp_maxs = {0,256,270,300,322,345,400,440,480,500,513};
   size_t table_idx = 0;
