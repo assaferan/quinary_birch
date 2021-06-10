@@ -55,30 +55,30 @@ static W64 GF2solveNaive(const std::vector<W64>& vecs, W64 start, W64 target)
 // rewritten to avoid an exhaustive search, but since we expect the primes to
 // be small, this should work for now.
 template<size_t n>
-static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Z& p)
+static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Integer<Z>& p)
 {
   std::shared_ptr<const IntegerRing<Z> > ZZ = IntegerRing<Z>::getInstance().getPtr();
-  Z pp = p*p;
+  Integer<Z> pp = p*p;
   Z_Vector<n> vec(ZZ);
-  vec[n-1] = 1;
+  vec[n-1] = ZZ->one();
 
   // Try (0 0 ... 0 1) first.
   if (q.evaluate(vec) % pp == 0)
     return vec;
 
   // Try (0 0 .... 0 1 x) next.
-  vec[n-2] = 1;
-  for (Z x = 0; x < pp; x++) {
+  vec[n-2] = ZZ->one();
+  for (Integer<Z> x = ZZ->zero(); x < pp; x++) {
     vec[n-1] = x;
     if (q.evaluate(vec) % pp == 0)
       return vec;
   }
     
   // Lastly, try (0 0 .... 0 1 x y).
-  vec[n-3] = 1;
-  for (Z x = 0; x < pp; x++) {
+  vec[n-3] = ZZ->one();
+  for (Integer<Z> x = ZZ->zero(); x < pp; x++) {
     vec[n-2] = x;
-    for (Z y = 0; y < pp; y++) {
+    for (Integer<Z> y = ZZ->zero(); y < pp; y++) {
       vec[n-1] = y;
       if (q.evaluate(vec) % pp == 0)
 	return vec;
