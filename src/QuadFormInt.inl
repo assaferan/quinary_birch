@@ -875,9 +875,9 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
   Isometry<R,n> b0;
   std::shared_ptr< IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
   VectorInt<R,n> vec(ZZ);
-  vec[0] = 1;
+  vec[0].makeOne();
   for (size_t i = 1; i < n; i++)
-    vec[i] = 0;
+    vec[i].makeZero();
   local_neighbors[0].insert(vec);
   size_t num_free = 1;
   for (size_t i = 1; i < n; i++) {
