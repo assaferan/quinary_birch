@@ -98,6 +98,7 @@ public:
   {return ((_denom.isOne()) || ((-_denom).isOne())); }
 
   // other
+  /*
   inline friend Rational<R> operator*(const Integer<R> & b, const Rational<R> & r)
   { return r*b; }
 
@@ -115,7 +116,8 @@ public:
     Rational<R> b_rat(b);
     return b_rat/r;
   }
-
+  */
+  
   inline void print(std::ostream & os) const
   {
     if (_denom.isOne())
