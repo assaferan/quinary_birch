@@ -352,9 +352,9 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
             }
 	  else if (vec[0].isZero())
             {
-	      b += c*vec[2]*vec[2] + f*vec[2];
-	      f += 2*c*vec[2];
-	      h += g*vec[2];
+	      b += (c*vec[2]*vec[2] + f*vec[2]).num();
+	      f += (2*c*vec[2]).num();
+	      h += (g*vec[2]).num();
 
 	      assert( vec[1].isOne() );
 	      assert( b % pp == 0 );
