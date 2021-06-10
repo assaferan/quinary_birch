@@ -83,7 +83,7 @@ template<typename R, size_t n>
 class QuadFormInt;
 
 template<size_t n>
-class Z_QuadForm;
+using Z_QuadForm = QuadFormInt<Z,n>;
 
 template<size_t n>
 class Z64_QuadForm;
