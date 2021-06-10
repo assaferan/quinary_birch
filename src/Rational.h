@@ -162,7 +162,7 @@ public:
   {return _num.valuation(p) - _denom.valuation(p);}
 
   inline Rational<R> abs() const
-  {return (_num*_denom < 0) ? -(*this) : *this; }
+  {return (_num*_denom < Integer<R>::zero()) ? -(*this) : *this; }
   
 protected:
   Integer<R> _num;
