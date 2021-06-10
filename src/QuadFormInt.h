@@ -184,6 +184,7 @@ public:
 
 };
 
+/*
 template<size_t n>
 class Z64_QuadForm : public QuadFormInt<Z64,n>
 {
@@ -243,6 +244,7 @@ public:
   using QuadFormInt<Z128,n>::generateOrbit;
 
 };
+*/
 
 #include "QuadFormInt.inl"
 
