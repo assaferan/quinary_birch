@@ -110,12 +110,12 @@ public:
     return b_rat-r;
   }
 
-  inline friend Rational<R> operator+(const Integer<R> b &, const Rational<R> & r) {
+  inline friend Rational<R> operator+(const Integer<R> & b, const Rational<R> & r) {
     Rational<R> b_rat(b);
     return b_rat+r;
   }
 
-  inline friend Rational<R> operator/(const Integer<R> b &, const Rational<R> & r) {
+  inline friend Rational<R> operator/(const Integer<R> & b, const Rational<R> & r) {
     Rational<R> b_rat(b);
     return b_rat/r;
   }
