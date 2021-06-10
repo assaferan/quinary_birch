@@ -33,6 +33,9 @@ public:
   // assignment
   Integer<R> & operator=(const Integer<R> & b);
 
+  // conversion
+  inline operator R() const { return this->_num; }
+  
   // access
   inline const R & num(void) const { return this->_num; }
   
