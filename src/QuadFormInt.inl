@@ -112,7 +112,7 @@ QuadFormInt<R,n>::getQuinaryForms(const Integer<R> & disc)
 template<typename R, size_t n>
 inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram() const
 {
-  std::shared_ptr<const IntegerRing<R> > ring = _B.baseRing();
+  std::shared_ptr<const IntegerRing<R> > ring = this->baseRing();
   VectorInt<R,n> D(ring);
   SquareMatrixInt<R,n> L(ring);
   Integer<R> prod_diag = ring->one();
