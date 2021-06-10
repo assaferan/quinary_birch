@@ -866,7 +866,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
   Isometry<R,n> isom_orig = isom;
 #endif
   bool is_reduced = true;
-  std::vector< std::set< Vector<Integer<R>, n> > > local_neighbors(1);
+  std::vector< std::set< VectorInt<R,n> > > local_neighbors(1);
   Isometry<R,n> b0;
   VectorInt<R,n> vec;
   vec[0] = 1;
