@@ -196,7 +196,7 @@ QuadFormInt<R,n>::invariants(std::set<Integer<R>> & F, size_t& I) const
   F.clear();
   I = 0;
   
-  P.insert(2);
+  P.insert(R(2));
   for (size_t i = 0; i < n; i++)
     {
       if (D[i] < 0) I++;
