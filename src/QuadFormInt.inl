@@ -5,6 +5,8 @@
 #include "birch_util.h"
 #include "Fp.h"
 #include "FpElement.h"
+#include "Integer.h"
+#include "Rational.h"
 #include "ParseNipp.h"
 #include "Matrix.h"
 #include "SquareMatrix.h"
