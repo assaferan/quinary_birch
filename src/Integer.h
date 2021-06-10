@@ -1,6 +1,8 @@
 #ifndef __INTEGER_H_
 #define __INTEGER_H_
 
+#include <vector>
+
 #include "IntegerRing.h"
 #include "EuclideanDomainElement.h"
 
