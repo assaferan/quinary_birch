@@ -115,9 +115,13 @@ Derived EuclideanDomainElement<Derived,DerivedParent>::operator/ (const Derived&
 template<class Derived, class DerivedParent>
 Derived& EuclideanDomainElement<Derived, DerivedParent>::operator/= (const Derived& d)
 {
+  std::cerr<< "in operator /=" << std::endl;
+  Derived before = *(this->getPtr());
   Derived quo = this->operator/(d);
+  assert(quo == before / d);
   *this = quo;
- return *(this->getPtr());
+  assert(*(this->getPtr()) == quo);
+  return *(this->getPtr());
 }
 
 /**
