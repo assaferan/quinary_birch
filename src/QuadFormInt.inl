@@ -1068,9 +1068,9 @@ inline std::set<Isometry<R,n>> QuadFormInt<R,n>::properAutomorphisms() const
 }
 
 template<typename R, size_t n>
-inline QuadFormInt<R,n> QuadFormInt<R,n>::reduce(const QuadFormInt<R,n> & q,
-					  Isometry<R,n> & isom,
-					  bool calc_aut)
+inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
+						Isometry<R,n> & isom,
+						bool calc_aut)
 {
   assert(q.bilinearForm().isPositiveDefinite());
 
@@ -1355,7 +1355,7 @@ bool QuadFormInt<R,n>::signNormalizationFast(SquareMatrixInt<R,n> & qf,
 }
 
 template<typename R, size_t n>
-inline std::unordered_map<QuadFormInt<R,n>, Isometry<R,n> >
+inline std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >
 QuadFormInt<R,n>::generateOrbit() const
 {
   Isometry<R,n> s;
@@ -1436,7 +1436,7 @@ QuadFormInt<R,n>::permutationOrbit() const
 }
 
 template<typename R, size_t n>
-inline std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> >
+inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
 QuadFormInt<R,n>::signOrbit() const
 {
   std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > orbit;
