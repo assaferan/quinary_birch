@@ -318,12 +318,12 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
   Integer<Z> f = Z(0);
   Integer<Z> g = Z(0);
   Integer<Z> h = Z(0);
-  form[0] = 2*a;
+  form[0] = Z(2)*a;
   form[1] = h;
-  form[2] = 2*b;
+  form[2] = Z(2)*b;
   form[3] = g;
   form[4] = f;
-  form[5] = 2*c;
+  form[5] = Z(2)*c;
   Z_QuadForm<3> q(form);
   Integer<Z> N = q.discriminant();
 
@@ -356,7 +356,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 	  else if (vec[0].isZero())
             {
 	      b += c*vec[2]*vec[2] + f*vec[2];
-	      f += 2*c*vec[2];
+	      f += Z(2)*c*vec[2];
 	      h += g*vec[2];
 
 	      assert( vec[1].isOne() );
@@ -371,8 +371,8 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 	  else
             {
 	      a += (b*vec[1]*vec[1] + c*vec[2]*vec[2] + f*vec[1]*vec[2] + g*vec[2] + h*vec[1]);
-	      g += 2*c*vec[2] + f*vec[1];
-	      h += 2*b*vec[1] + f*vec[2];
+	      g += Z(2)*c*vec[2] + f*vec[1];
+	      h += Z(2)*b*vec[1] + f*vec[2];
 
 	      assert( vec[0].isOne() );
 	      assert( (a % pp).isZero() );
@@ -383,12 +383,12 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 	      g /= p;
 	      h /= p;
             }
-	  form[0] = 2*a;
+	  form[0] = Z(2)*a;
 	  form[1] = h;
-	  form[2] = 2*b;
+	  form[2] = Z(2)*b;
 	  form[3] = g;
 	  form[4] = f;
-	  form[5] = 2*c;
+	  form[5] = Z(2)*c;
 	  q = Z_QuadForm<3>(form);
 	  N = q.discriminant();
         }
