@@ -865,7 +865,7 @@ inline bool QuadFormInt<R,n>::normEchelon(SquareMatrixInt<R,n> & qf,
     }
   }
   if (!u0.isOne())
-    is_reduced = (is_reduced) && norm_echelon(qf, isom);
+    is_reduced = (is_reduced) && normEchelon(qf, isom);
   isom = isom*u0;
   return is_reduced;
 }
