@@ -584,8 +584,8 @@ inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
 // All containers will have size n, but we will only use dim entries
 template<typename R, size_t n>
 inline void QuadFormInt<R,n>::greedy(SquareMatrixInt<R,n>& gram,
-			      Isometry<R,n>& s,
-			      size_t dim)
+				     Isometry<R,n>& s,
+				     size_t dim)
 {
 
 #ifdef DEBUG_LEVEL_FULL
