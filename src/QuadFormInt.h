@@ -22,11 +22,11 @@ public:
   QuadFormInt(const typename R_QuadForm<R,n>::SymVec& coeffs)
     : R_QuadForm<R,n>(coeffs), _is_reduced(false), _num_aut(0), _num_aut_init(false) {}
 
-  QuadForm(const SquareMatrixInt<R,n> & B)
+  QuadFormInt(const SquareMatrixInt<R,n> & B)
     : R_QuadForm<R,n>(B), _is_reduced(false), _num_aut(0), _num_aut_init(false)  {}
 
   // assignment
-  inline QuadFormInt<R,n>& operator=(const QuadFormInt<R,n> &);
+  QuadFormInt<R,n>& operator=(const QuadFormInt<R,n> &);
     
   using R_QuadForm<R,n>::discriminant;
   using R_QuadForm<R,n>::evaluate;
@@ -41,35 +41,33 @@ public:
 
   typedef std::set<std::pair<Integer<R>, int> > QFInv;
   
-  inline Integer<R> invariants(std::set< Integer<R> > &, size_t& ) const;
+  Integer<R> invariants(std::set< Integer<R> > &, size_t& ) const;
   
-  inline Integer<R> invariants(typename QFInv &, size_t& ) const;
+  Integer<R> invariants(typename QFInv &, size_t& ) const;
   
-  inline jordan_data jordanDecomposition(const Integer<R> & p) const;
+  jordan_data jordanDecomposition(const Integer<R> & p) const;
 
   template<typename S, typename T>
-  inline std::shared_ptr< QuadFormFp<S,T,n> > mod(std::shared_ptr< Fp<S,T> >) const;
+  std::shared_ptr< QuadFormFp<S,T,n> > mod(std::shared_ptr< Fp<S,T> >) const;
 
-  inline VectorInt<R,n> orthogonalizeGram() const;
+  VectorInt<R,n> orthogonalizeGram() const;
 
-  inline static QuadFormInt<R,n> reduce(const QuadFormInt<R,n> & q,
-					Isometry<R,n> & isom,
-					bool calc_aut = false);
+  static QuadFormInt<R,n> reduce(const QuadFormInt<R,n> & q,
+				 Isometry<R,n> & isom,
+				 bool calc_aut = false);
 
-  inline std::set<Isometry<R,n>> properAutomorphisms() const;
+  std::set<Isometry<R,n>> properAutomorphisms() const;
 
-  inline static std::vector< QuadFormInt<R,5> > nippToForms(NippEntry entry);
+  static std::vector< QuadFormInt<R,5> > nippToForms(NippEntry entry);
   
-  // !! TODO - get_quinary_forms and nipp_to_forms should also work for
-  // arbitrary R, no reason to restrict to Z, I think
-  inline static std::vector<std::vector< QuadFormInt<R,5> > >
+  static std::vector<std::vector< QuadFormInt<R,5> > >
   getQuinaryForms(const Integer<R> & disc);
 
-  inline static void greedy(SquareMatrixInt<R,n>& q, Isometry<R,n>& s, size_t dim = n);
+  static void greedy(SquareMatrixInt<R,n>& q, Isometry<R,n>& s, size_t dim = n);
 
-  inline std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > generateOrbit() const;
+  std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > generateOrbit() const;
 
-  inline inline bool isReduced() const { return this->_is_reduced; }
+  inline bool isReduced() const { return this->_is_reduced; }
 
   size_t numAutomorphisms() const;
 
