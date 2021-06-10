@@ -102,7 +102,7 @@ inline typename Integer<R>::FactorData Integer<R>::factorization() const
   typename Integer<R>::FactorData factors;
   Integer<R> temp_num = num.abs();
   size_t exp;
-  Integer<R> a = 2;
+  Integer<R> a = R(2);
   while (!temp_num.isOne())
     {
       if ((temp_num % a).isZero())
