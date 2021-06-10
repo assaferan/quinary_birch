@@ -473,22 +473,24 @@ template<typename R, size_t n>
 inline VectorInt<R,n-1> QuadFormInt<R,n>::voronoiBounds(size_t dim)
 {
   // !! TODO - check what the real bounds are !!
-  VectorInt<R,n-1> bounds;
+  std::shared_ptr<const IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
+  VectorInt<R,n-1> bounds(ZZ);
   for (size_t i = 0; i < dim; i++)
-    bounds[i] = 1;
+    bounds[i].makeOne();
   return bounds;
 }
 
 template<typename R, size_t n>
 inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
-					    Isometry<R,n> & iso,
-					    size_t dim)
+						   Isometry<R,n> & iso,
+						   size_t dim)
 {
+  std::shared_ptr<const IntegerRing<R> > ZZ = q.baseRing();
+  
   Isometry<R,n> g, min_g;
-  SquareMatrixInt<R,n> x_gram;
-  SquareMatrixInt<R,n-1> H_int;
-  VectorInt<R,n-1> v_int;
-  std::shared_ptr< const IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
+  SquareMatrixInt<R,n> x_gram(ZZ);
+  SquareMatrixInt<R,n-1> H_int(ZZ);
+  VectorInt<R,n-1> v_int(ZZ);
 
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "finding closest_lattice_vector with gram:" << std::endl;
@@ -520,8 +522,11 @@ inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
 #endif
   
   VectorInt<R,n-1> voronoi = voronoiBounds(dim-1);
-  VectorInt<R,n-1> x, x_min, x_max, x_num;
-  VectorInt<R,n-1> x_closest;
+  VectorInt<R,n-1> x(ZZ);
+  VectorInt<R,n-1> x_min(ZZ);
+  VectorInt<R,n-1> x_max(ZZ);
+  VectorInt<R,n-1> x_num(ZZ);
+  VectorInt<R,n-1> x_closest(ZZ);
 
   // This can be calculated more efficiently
   Integer<R> det = Integer<R>::zero();
@@ -539,7 +544,8 @@ inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
   
   for (size_t i = 0; i < dim-1; i++)
     x_num[i] = x_max[i] - x_min[i] + 1;
-  Integer<R> num_xs = 1;
+  
+  Integer<R> num_xs = Integer<R>::one();
   for (size_t i = 0; i < dim-1; i++)
     num_xs *= x_num[i];
   // This should be infinity
@@ -690,7 +696,7 @@ inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
   bool is_reduced = true;
   std::map<Integer<R>, std::vector<size_t> > stable_sets;
   Isometry<R, n> s_final;
-  std::shared_ptr<const IntegerRing<R> > ZZ_R = std::make_shared< IntegerRing<R> >();
+  std::shared_ptr<const IntegerRing<R> > ZZ_R = qf.baseRing();
   std::shared_ptr<const IntegerRing<size_t> >
     ZZ_uint = std::make_shared< IntegerRing<size_t> >();
   SquareMatrixInt<R,n> q0(ZZ_R);
@@ -741,8 +747,8 @@ inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
 
 template<typename R, size_t n>
 inline bool QuadFormInt<R,n>::signNormalizationSlow(SquareMatrixInt<R,n> & qf,
-					     Isometry<R,n> & isom,
-					     std::set< Isometry<R,n> > & auts)
+						    Isometry<R,n> & isom,
+						    std::set< Isometry<R,n> > & auts)
 {
   bool is_reduced = true;
   W16 prime = 2;
@@ -854,7 +860,7 @@ inline bool QuadFormInt<R,n>::normEchelon(SquareMatrixInt<R,n> & qf,
       is_reduced = false;
     }
   }
-  if (u0.a != SquareMatrixInt<R,n>::identity())
+  if (u0.a != SquareMatrixInt<R,n>::identity(qf.baseRing()))
     is_reduced = (is_reduced) && norm_echelon(qf, isom);
   isom = isom*u0;
   return is_reduced;
@@ -873,7 +879,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
   bool is_reduced = true;
   std::vector< std::set< VectorInt<R,n> > > local_neighbors(1);
   Isometry<R,n> b0;
-  std::shared_ptr< IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
+  std::shared_ptr< IntegerRing<R> > ZZ = qf.baseRing();
   VectorInt<R,n> vec(ZZ);
   vec[0].makeOne();
   for (size_t i = 1; i < n; i++)
@@ -1403,7 +1409,7 @@ QuadFormInt<R,n>::permutationOrbit() const
   std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > orbit; 
   std::map<R, std::vector<size_t> > stable_sets;
   
-  SquareMatrixInt<R,n> q1;
+  SquareMatrixInt<R,n> q1(this->baseRing());
   
   for (size_t i = 0; i < n; i++) {
     Integer<R> val = this->bilinearForm()(i,i);
@@ -1414,14 +1420,15 @@ QuadFormInt<R,n>::permutationOrbit() const
     }
     stable_sets[val].push_back(i);
   }
-  
+
+  std::shared_ptr<const IntegerRing<size_t> > ZZ = std::make_shared< IntegerRing<size_t> >();
   typename std::map<Integer<R>, std::vector<size_t> >::const_iterator iter;
   for (iter = stable_sets.begin(); iter != stable_sets.end(); iter++) {
     std::vector<size_t> value = iter->second;
     std::vector< std::vector<size_t> > val_perms =
       QuadFormInt<R,n>::allPerms(value.size());
     for (std::vector<size_t> perm : val_perms) {
-      VectorInt<size_t,n> large_perm;
+      VectorInt<size_t,n> large_perm(ZZ);
       for (size_t k = 0; k < n; k++)
 	large_perm[k] = k;
       for (size_t idx = 0; idx < value.size(); idx++) {
@@ -1447,7 +1454,7 @@ QuadFormInt<R,n>::signOrbit() const
 {
   std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > orbit;
   Isometry<R,n> s;
-  SquareMatrixInt<R,n> q;
+  SquareMatrixInt<R,n> q(this->baseRing());
   
   for (size_t signs = 0; signs < (1 << n); signs++) {
     size_t tmp = signs;
