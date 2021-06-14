@@ -133,12 +133,12 @@ inline std::vector< UnivariatePolyInt<R> >
 UnivariatePolyInt<R>::_henselLift(const std::vector<UnivariatePolyFp<S,T> > & g,
 				  size_t a) const
 {
-  R p = g[0].parent()->prime();
+  R p = g[0].baseRing()->prime();
   std::vector< UnivariatePolyInt<R> > u, v;
   std::vector< UnivariatePolyFp<S,T> > v_bar;
   UnivariatePolyFp<S,T> t(g[0].parent());
   UnivariatePolyFp<S,T> prod = g[0];
-  FpElement<S,T> one(g[0].parent(), Integer<S>::one());
+  FpElement<S,T> one(g[0].baseRing(), Integer<S>::one());
   
   if (g.size() == 1) {
     u.push_back(*this);
@@ -168,7 +168,7 @@ UnivariatePolyInt<R>::_henselLift(const std::vector<UnivariatePolyFp<S,T> > & g,
   }
 
   for (size_t i = 1; i < a; i++) {
-    this->_henselStep(u, v, g[0].parent(), i);
+    this->_henselStep(u, v, g[0].baseRing(), i);
   }
 
   return u;
