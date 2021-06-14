@@ -138,7 +138,7 @@ UnivariatePolyInt<R>::_henselLift(const std::vector<UnivariatePolyFp<S,T> > & g,
   std::vector< UnivariatePolyFp<S,T> > v_bar;
   UnivariatePolyFp<S,T> t(g[0].baseRing());
   UnivariatePolyFp<S,T> prod = g[0];
-  FpElement<S,T> one(g[0].baseRing(), Integer<S>::one());
+  FpElement<S,T> one = g[0].baseRing()->one();
   
   if (g.size() == 1) {
     u.push_back(*this);
