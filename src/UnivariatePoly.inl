@@ -1,3 +1,5 @@
+#include "birch_util.h"
+
 // create the constant polynomial
 template<class R, class Parent>
 UnivariatePoly<R,Parent>::UnivariatePoly(const R & a)
