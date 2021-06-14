@@ -28,6 +28,8 @@ public:
   // hash
   W64 hashValue(void) const;
 
+  using UnivariatePoly< Integer<R>, IntegerRing<R> >::operator/;
+
 protected:
   // these helper methods are needed for factorization
   
