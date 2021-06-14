@@ -1,3 +1,4 @@
+#include <set>
 
 template<typename R>
 template<typename S, typename T>
@@ -51,7 +52,7 @@ inline Integer<R> UnivariatePolyInt<R>::_landauMignotte(void) const
     norm += this->coefficient(i)*this->coefficient(i);
 
   // we might need ceiling here
-  norm = (d-1).binomial_coefficient(d/2)*sqrt(norm.num());
+  norm = (d-1).binomialCoefficient(d/2)*sqrt(norm.num());
 
   return B + norm;
 }
