@@ -90,8 +90,8 @@ public:
   bool operator!=(const R & ) const;
 
   // zero and one
-  void makeZero(void);
-  void makeOne(void);
+  UnivariatePoly<R,Parent> & makeZero(void);
+  UnivariatePoly<R,Parent> & makeOne(void);
   
   // algorithms
   UnivariatePoly<R,Parent> derivative(void) const;
