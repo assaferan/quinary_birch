@@ -180,7 +180,7 @@ inline int Integer<R>::kroneckerSymbol(const Integer<R> & n) const
   // now we may also assume a ge n
 
   // if n = 2 mod 4, we can't reduce, use multiplicativity again
-  if (n.num() % 4 == 2) return kroneckerSymbol(n/2)*kroneckerSymbol(2);
+  if (n.num() % 4 == 2) return kroneckerSymbol(n/R(2))*kroneckerSymbol(2);
   // now we can reduce
   return (a % n).kroneckerSymbol(n);
 }
