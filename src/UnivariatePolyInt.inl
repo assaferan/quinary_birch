@@ -166,7 +166,7 @@ UnivariatePolyInt<R>::_henselLift(const std::vector<UnivariatePolyFp<S,T> > & g,
   }
 
   for (size_t i = 1; i < a; i++) {
-    this->_henselStep(u, v, g[0].field(), i);
+    this->_henselStep(u, v, g[0].parent(), i);
   }
 
   return u;
