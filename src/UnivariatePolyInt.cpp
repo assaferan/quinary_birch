@@ -27,8 +27,8 @@ UnivariatePolyInt<Z>::factor(void) const
     UnivariatePolyInt<Z> f = sqf[i];
     if (f == Integer<Z>::one()) continue;
     
-    Integer<Z> p = 3;
-    W16 p_16 = birch_util::convert_Integer<Z, W16>(p);
+    Integer<Z> p = Z(3);
+    W16 p_16 = birch_util::convert_Integer<Z,W16>(p);
     std::shared_ptr< const W16_Fp > GF
       = std::make_shared< W16_Fp >(p_16,seed);
     UnivariatePolyFp<W16,W32> f_p = f.mod(GF);
