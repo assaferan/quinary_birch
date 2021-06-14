@@ -34,7 +34,7 @@ UnivariatePolyInt<R>::_squarefreeFactor(void) const
   d = f_prime;
    
   while (b != Integer<R>::one()) {
-    a = b.gcd(d);
+    a = gcd(b,d);
     if (a == -Integer<R>::one())
       a = Integer<R>::one();
     fac.push_back(a);
