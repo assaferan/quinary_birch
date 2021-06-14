@@ -215,7 +215,7 @@ inline Integer<R> Integer<R>::binomialCoefficient(const Integer<R> & k) const
   Integer<R> res = Integer<R>::one();
   if (k > n - k)
     return n.binomialCoefficient(n-k);
-  for (Integer<R> i = 0; i < k; i++) {
+  for (Integer<R> i = Integer<R>::zero(); i < k; i++) {
     res *= (n-i);
     res /= (i+Integer<R>::one());
   }
