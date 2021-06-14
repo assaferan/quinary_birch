@@ -45,7 +45,7 @@ UnivariatePolyInt<Z>::factor(void) const
     std::vector< UnivariatePolyFp<W16,W32> > fac_p = f_p._sqfFactor();
     Integer<Z> L = f._landauMignotte();
     size_t a = 1;
-    Z p_a = p;
+    Integer<Z> p_a = p;
     while (p_a <= L+L) {
       a++;
       p_a *= p;
