@@ -69,7 +69,7 @@ inline void UnivariatePolyInt<R>::_henselStep(std::vector<UnivariatePolyInt<R> >
 {
   Integer<R> p = GF->prime();
   Integer<R> p_i = p^i;
-  UnivariatePoly<R> prod = this->_base->one();
+  UnivariatePolyInt<R> prod = this->_base->one();
   for (size_t j = 0; j < u.size(); j++) {
     prod *= u[j];
   }
