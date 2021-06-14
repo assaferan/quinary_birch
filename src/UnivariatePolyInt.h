@@ -56,6 +56,18 @@ protected:
   _subsets(const std::set<size_t> & S, size_t k);
 };
 
-#include "UnivariatePoly.inl"
+namespace std
+{
+  template<typename R>
+  struct hash< UnivariatePolyInt<R> >
+  {
+    Z64 operator()(const UnivariatePolyInt<R>& p) const
+    {
+      return p.hashValue();
+    }
+  };
+}
+
+#include "UnivariatePolyInt.inl"
 
 #endif // __UNIVARIATE_POLY_INT_H_

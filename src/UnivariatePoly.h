@@ -115,18 +115,6 @@ UnivariatePoly<R,Parent> operator*(const R & a,
 template<class R, class Parent>
 std::ostream& operator<<(std::ostream&, const UnivariatePoly<R, Parent> &);
 
-namespace std
-{
-  template<typename R>
-  struct hash< UnivariatePoly<R,Parent> >
-  {
-    Z64 operator()(const UnivariatePoly<R,Parent>& p) const
-    {
-      return p.hashValue();
-    }
-  };
-}
-
 #include "UnivariatePoly.inl"
 
 #endif // __UNIVARIATE_POLY_H

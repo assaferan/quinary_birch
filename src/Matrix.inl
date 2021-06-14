@@ -14,10 +14,9 @@ Matrix<R,Parent>::Matrix(const R data[n][n])
     _base = data[0][0].parent();
 }
 
-/*
 template<class R, class Parent>
 template <size_t n>
-Matrix<R,Parent>::Matrix(const SquareMatrix<R, n> & mat)
+Matrix<R,Parent>::Matrix(const SquareMatrix<R,Parent,n> & mat)
   : _nrows(n), _ncols(n), _data(n*n)
 {
   size_t idx = 0;
@@ -25,7 +24,6 @@ Matrix<R,Parent>::Matrix(const SquareMatrix<R, n> & mat)
     for (size_t col = 0; col < _ncols; col++)
       _data[idx++] = mat(row, col);
 }
-*/
 
 // return the i-th row
 template<class R, class Parent>
@@ -167,14 +165,14 @@ inline UnivariatePolyInt<Z> Matrix<R,Parent>::charPoly(void) const
   assert(this->nrows() == this->ncols());
 
   size_t n = this->nrows();
-  std::vector<Z> c(n+1);
+  std::vector< Integer<Z> > c(n+1);
   MatrixInt<Z> z(n,n);
-  MatrixInt<Z> I = MatrixInt<Z>::identity(n);
+  MatrixInt<Z> I = MatrixInt<Z>::identity(this->_base,n);
   std::vector< MatrixInt<Z> > M(n+1, z);
   MatrixInt<Z> A(n,n);
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
-      A(row,col) = birch_util::convert_Integer<R, Z>((*this)(row,col));
+      A(row,col) = birch_util::convert_Integer<R,Z>((*this)(row,col));
 
   c[n] = this->_base->one();
   for (size_t k = 1; k <= n; k++) {

@@ -6,8 +6,7 @@
 #include <vector>
 
 #include "birch.h"
-
-#include "UnivariatePoly.h"
+#include "UnivariatePolyInt.h"
 
 // R should be a ring element,
 // Parent the parent ring class

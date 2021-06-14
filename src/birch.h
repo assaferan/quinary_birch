@@ -157,7 +157,7 @@ using Z128_SquareMatrix = SquareMatrixInt<Z128, n>;
 
 // polynomials
 template<typename R>
-using UnivariatePolyRat = UnivariatePoly< Rationals<R>, RationalField<R> >;
+using UnivariatePolyRat = UnivariatePoly< Rational<R>, RationalField<R> >;
 
 // vectors
 template<typename R, typename S, size_t n>
