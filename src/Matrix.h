@@ -32,10 +32,8 @@ public:
   template <size_t n>
   Matrix(const R data[n][n]);
   
-  /*
   template <size_t n>
-  Matrix(const SquareMatrix<R, n> &);
-  */
+  Matrix(const SquareMatrix<R,Parent,n> &);
   
   Matrix(std::shared_ptr<const Parent> base_ring, size_t nrows, size_t ncols)
     : _nrows(nrows),
