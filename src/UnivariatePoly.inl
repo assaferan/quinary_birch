@@ -415,7 +415,7 @@ inline void UnivariatePoly<R,Parent>::divRem(const UnivariatePoly<R,Parent> & f,
 
   while ((!r.isZero()) && (r.degree() >= g.degree())) {
     R lc = r.lead() / g.lead();
-    t = lc * x(r.degree()-g.degree());
+    t = lc * UnivariatePoly<R,Parent>::x(f.baseRing(),r.degree()-g.degree());
     q += t;
     r -= t*g;
   }
