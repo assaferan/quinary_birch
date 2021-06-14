@@ -46,7 +46,7 @@ UnivariatePolyInt<Z>::factor(void) const
     Integer<Z> L = f._landauMignotte();
     size_t a = 1;
     Integer<Z> p_a = p;
-    while (p_a <= L+L) {
+    while (p_a <= (L+L)) {
       a++;
       p_a *= p;
     }
