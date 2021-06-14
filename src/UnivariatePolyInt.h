@@ -14,11 +14,21 @@ template<typename R>
 class UnivariatePolyInt : public UnivariatePoly< Integer<R>, IntegerRing<R> >
 {
 public:
-  UnivariatePolyInt() : UnivariatePoly< Integer<R>, IntegerRing<R> >(std::make_shared< IntegerRing<R> >()) {}
+  UnivariatePolyInt()
+    : UnivariatePoly< Integer<R>, IntegerRing<R> >(std::make_shared< IntegerRing<R> >())
+  {}
   
-  UnivariatePolyInt(const Integer<R> & a) : UnivariatePoly< Integer<R>, IntegerRing<R> >(a) {}
+  UnivariatePolyInt(const Integer<R> & a)
+    : UnivariatePoly< Integer<R>, IntegerRing<R> >(a)
+  {}
 
-  UnivariatePolyInt(const std::vector< Integer<R> > & v) : UnivariatePoly< Integer<R>, IntegerRing<R> >(v) {}
+  UnivariatePolyInt(const std::vector< Integer<R> > & v)
+    : UnivariatePoly< Integer<R>, IntegerRing<R> >(v)
+  {}
+  
+  UnivariatePolyInt(const UnivariatePoly< Integer<R>, IntegerRing<R> > & other)
+    : UnivariatePoly< Integer<R>, IntegerRing<R> >(other)
+  {}
 
   template<typename S, typename T>
   UnivariatePolyFp<S,T> mod(std::shared_ptr< const Fp<S, T> >) const;
