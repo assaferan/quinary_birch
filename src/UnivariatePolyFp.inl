@@ -260,7 +260,7 @@ inline void UnivariatePolyFp<R,S>::divRem(const UnivariatePolyFp<R,S> & f,
 
   while ((!r.isZero()) && (r.degree() >= g.degree())) {
     FpElement<R,S> lc = r.lead() / g.lead();
-    t = lc * x(f.baseRing(), r.degree()-g.degree());
+    t = lc * UnivariatePolyFp<R,S>::x(f.baseRing(), r.degree()-g.degree());
     q += t;
     r -= t*g;
   }
