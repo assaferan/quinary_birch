@@ -44,6 +44,9 @@ public:
   // arithmetic
   using UnivariatePoly< Integer<R>, IntegerRing<R> >::operator/;
 
+  // algorithms
+  using UnivariatePoly< Integer<R>, IntegerRing<R> >::gcd;
+
 protected:
   // these helper methods are needed for factorization
   
