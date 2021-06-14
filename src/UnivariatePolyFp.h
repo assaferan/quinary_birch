@@ -17,7 +17,7 @@ public:
   
   // create polynomial from coefficients
   UnivariatePolyFp(const std::vector< FpElement<R,S> > & v)
-    : UnivariatePoly< FpElement<R,S>, F<R,S> >(v) {}
+    : UnivariatePoly< FpElement<R,S>, Fp<R,S> >(v) {}
   
   std::vector< UnivariatePolyFp<R,S> > _sqfFactor(void) const;
 
