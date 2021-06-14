@@ -162,9 +162,9 @@ inline int Integer<R>::kroneckerSymbol(const Integer<R> & n) const
     return (((n^2) / R(8)) % R(2)).isZero() ? 1 : -1;
   }
   // multiplicativity
-  if (n < Integer<R>::zero()) return kroneckerSymbol(-1)*kronecker_symbol(-n);
-  if ((*this) < Integer<R>::zero())
-    return (-Integer<R>::one()).kroneckerSymbol(n)*(-a).kronecker_symbol(n);
+  if (n < Integer<R>::zero()) return this->kroneckerSymbol(-1)*this->kroneckerSymbol(-n);
+  if (a < Integer<R>::zero())
+    return (-Integer<R>::one()).kroneckerSymbol(n)*(-a).kroneckerSymbol(n);
 
   // now may assume n >= 3, a >= 0
  
@@ -201,8 +201,9 @@ inline bool Integer<R>::isLocalSquare(const Integer<R>& p) const
   size_t ee = 2;
 
   while ((w < ee) && (w % 2 == 0)) {
-    a0 /= R(1+ (1<< (w/2)))*(1+ (1<< (w/2)));
-    w = (a0-1).valuation(p);
+    R ww = (1+ (1<< (w/2)))*(1+ (1<< (w/2)));
+    a0 /= ww;
+    w = (a0-Integer<R>::one()).valuation(p);
   }
   return ((w > ee) || ((w == ee) && (a0 % R(8)).isOne()));
 }
@@ -213,10 +214,10 @@ inline Integer<R> Integer<R>::binomialCoefficient(const Integer<R> & k) const
   const Integer<R> & n = *this;
   Integer<R> res = Integer<R>::one();
   if (k > n - k)
-    return Integer<R>::binomialCoefficient(n, n-k);
+    return n.inomialCoefficient(n-k);
   for (Integer<R> i = 0; i < k; i++) {
     res *= (n-i);
-    res /= (i+1);
+    res /= (i+Integer<R>::one());
   }
   return res;
 }
