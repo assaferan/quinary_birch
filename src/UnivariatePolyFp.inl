@@ -255,8 +255,7 @@ inline void UnivariatePolyFp<R,S>::divRem(const UnivariatePolyFp<R,S> & f,
   assert(!g.isZero());
 
   UnivariatePolyFp<R,S> t(f.baseRing());
-  FpElement<R,S> zero = f.baseRing()->zero();
-  q = zero;
+  q.makeZero();
   r = f;
 
   while ((!r.isZero()) && (r.degree() >= g.degree())) {
