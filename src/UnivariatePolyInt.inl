@@ -86,16 +86,16 @@ inline void UnivariatePolyInt<R>::_henselStep(std::vector<UnivariatePolyInt<R> >
   UnivariatePolyInt<R> sum = this->_base->zero();
   
 #ifdef DEBUG
-  assert(this->lead() % p != 0);
-  assert((this->lead() - u[0].lead()) % p_i == 0);
+  assert(!(this->lead() % p).isZero());
+  assert(((this->lead() - u[0].lead()) % p_i).isZero());
   assert(u.size() == v.size());
   UnivariatePolyInt<R> sum2 = this->_base->zero();
   for (size_t j = 0; j < u.size(); j++) {
     sum2 += (prod / u[j])*v[j];
     if (j > 0)
-      assert(u[j].lead() == this->_base->one());
+      assert(u[j].lead().isOne());
   }
-  assert( ((*this)-prod) % p_i == 0);
+  assert( (((*this)-prod) % p_i).isZero());
 #endif  
 
   // step 1 - lift the u_j
