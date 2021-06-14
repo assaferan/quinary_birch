@@ -1,4 +1,6 @@
+
 #include "birch_util.h"
+#include "Integer.h"
 
 // create the constant polynomial
 template<class R, class Parent>
