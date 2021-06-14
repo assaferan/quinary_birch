@@ -80,7 +80,7 @@ template<class R, class Parent>
 inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::operator-() const
 {
   UnivariatePoly<R,Parent> neg(this->_base);
-  neg.coeffs.resize(this->_coeffs.size());
+  neg._coeffs.resize(this->_coeffs.size());
   for (size_t i = 0; i < this->_coeffs.size(); i++)
     neg._coeffs[i] = -this->_coeffs[i];
   return neg;
