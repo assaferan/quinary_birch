@@ -14,7 +14,7 @@ Fp<R,S>::Fp(const R& p, W64 seed, bool use_inverse_lut)
   if (this->_p != 2)
     {
       this->_kp = (((R)-1)/p)*p;
-      this->_kp_inv = ((S)-1)/kp;
+      this->_kp_inv = ((S)-1)/(this->_kp);
       this->_use_inverse_lut = use_inverse_lut;
       if (use_inverse_lut) this->_makeInverseLut();
     }
@@ -46,7 +46,7 @@ template<typename R, typename S>
 inline R Fp<R,S>::mul(R a, R b) const
 {
   S rem = ((S)a)*b;
-  R hi = rem >> bits;
+  R hi = rem >> _bits;
   R t = (((S)hi*(S)this->_kp_inv) >> _bits) + hi;
   rem -= (S)t * this->_kp;
   rem = (rem >= this->_kp) ? rem-this->_kp : rem;
