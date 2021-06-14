@@ -8,7 +8,7 @@ W64 UnivariatePolyInt<Z>::hashValue(void) const
 {
   W64 fnv = FNV_OFFSET;
   for (size_t i = 0; i < this->coefficients().size(); i++)
-    fnv = (fnv ^ mpz_get_si(this->coefficient(i).get_mpz_t())) * FNV_PRIME;
+    fnv = (fnv ^ mpz_get_si(this->coefficient(i).num().get_mpz_t())) * FNV_PRIME;
   return fnv;
 }
 
