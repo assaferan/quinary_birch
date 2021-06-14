@@ -2,10 +2,12 @@
 template<typename R, typename S>
 inline UnivariatePolyInt<R> UnivariatePolyFp<R,S>::lift(void) const
 {
-  UnivariatePolyInt<R> ret;
+  std::vector< Integer<R> > vec;
   for (size_t i = 0; i < this->_coeffs.size(); i++)
-    ret._coeffs[i] = this->coefficient(i).lift();
+    vec.push_back(this->coefficient(i).lift());
 
+  UnivariatePolyInt<R> ret(vec);
+  
   return ret;
 }
 
