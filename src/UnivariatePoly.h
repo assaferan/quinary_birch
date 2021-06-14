@@ -104,8 +104,8 @@ public:
 				       UnivariatePoly<R,Parent> & t);
   
 protected:
-  std::vector<R> _coeffs;
   std::shared_ptr< const Parent > _base;
+  std::vector<R> _coeffs;
 
   void _eliminateDeg(void);
  
