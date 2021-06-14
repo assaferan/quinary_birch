@@ -20,6 +20,9 @@ public:
   // create polynomial from coefficients
   UnivariatePolyFp(const std::vector< FpElement<R,S> > & v)
     : UnivariatePoly< FpElement<R,S>, Fp<R,S> >(v) {}
+
+  UnivariatePolyFp(const UnivariatePoly< FpElement<R,S>, Fp<R,S> > & other)
+    : UnivariatePoly< FpElement<R,S>, Fp<R,S> >(other) {}
   
   std::vector< UnivariatePolyFp<R,S> > _sqfFactor(void) const;
 
@@ -30,6 +33,7 @@ public:
 
   // assignment and conversion
   UnivariatePolyFp<R,S> & operator=(const UnivariatePoly< FpElement<R,S>, Fp<R,S> > &);
+  
   
   
   // !! TODO -  make it work with inheritance
