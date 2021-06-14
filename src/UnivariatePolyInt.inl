@@ -76,7 +76,7 @@ inline void UnivariatePolyInt<R>::_henselStep(std::vector<UnivariatePolyInt<R> >
 					      std::shared_ptr< const Fp<S,T> > GF,
 					      size_t i) const
 {
-  Integer<R> p = birch_util::convertInteger<S,R>(GF->prime());
+  Integer<R> p = birch_util::convert_Integer<S,R>(GF->prime());
   Integer<R> p_i = p^i;
   UnivariatePolyInt<R> prod = this->_base->one();
   for (size_t j = 0; j < u.size(); j++) {
