@@ -83,11 +83,15 @@ public:
   Matrix<S,SParent> evaluate(const Matrix<S,SParent> &) const;
 
   // booleans
-  bool isZero() const {return this->_coeffs.empty();}
+  inline bool isZero(void) const {return this->_coeffs.empty();}
   bool operator==(const UnivariatePoly<R,Parent> & ) const;
   bool operator!=(const UnivariatePoly<R,Parent> & ) const;
   bool operator==(const R & ) const;
   bool operator!=(const R & ) const;
+
+  // zero and one
+  void makeZero(void);
+  void makeOne(void);
   
   // algorithms
   UnivariatePoly<R,Parent> derivative(void) const;
