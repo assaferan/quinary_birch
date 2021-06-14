@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "birch.h"
 #include "IntegerRing.h"
 #include "EuclideanDomainElement.h"
 
