@@ -58,7 +58,7 @@ inline Integer<R> UnivariatePolyInt<R>::_landauMignotte(void) const
     norm += this->coefficient(i)*this->coefficient(i);
 
   // we might need ceiling here
-  norm = (d-1).binomialCoefficient(d/R(2))*sqrt(norm.num());
+  norm = (d-Integer<R>::one()).binomialCoefficient(d/R(2))*sqrt(norm.num());
 
   return B + norm;
 }
