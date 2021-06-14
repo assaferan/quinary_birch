@@ -28,6 +28,10 @@ public:
   // hash
   W64 hashValue(void) const;
 
+  // assignment and converstion
+  using UnivariatePoly< Integer<R>, IntegerRing<R> >::operator=;
+
+  // arithmetic
   using UnivariatePoly< Integer<R>, IntegerRing<R> >::operator/;
 
 protected:
