@@ -121,7 +121,7 @@ UnivariatePolyFp<R,S>::_czDistinctDegFactor(void) const
   UnivariatePolyFp<R,S> diff(this->baseRing());
   
   for (size_t i = 0; i <= m; i++) {
-    prod = one;
+    prod.makeOne();
     for (size_t j = 0; j < l; j++) {
       diff = H[i]-h[j];
       mul = prod*diff;
