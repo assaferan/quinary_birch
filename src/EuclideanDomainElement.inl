@@ -122,7 +122,8 @@ template<class Derived, class DerivedParent>
 inline Derived&
 EuclideanDomainElement<Derived, DerivedParent>::operator/= (const Derived& d)
 {
-  return (*(this->getPtr()) = this->operator/(d));
+  *(this->getPtr()) = this->operator/(d);
+  return *(this->getPtr());
 }
 
 /**
