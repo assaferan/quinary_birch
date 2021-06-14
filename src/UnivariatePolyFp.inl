@@ -46,7 +46,7 @@ UnivariatePolyFp<R,S>::_czEqDegPartialFactor(size_t r) const
     b._eliminateDeg();
     
     Integer<R> p_r = this->baseRing()->prime()^r;
-    size_t m = (birch_util::convert_Integer<R, size_t>(p_r) - 1) / 2;
+    size_t m = (birch_util::convert_Integer<R,size_t>(p_r.num()) - 1) / 2;
 
     UnivariatePolyFp<R,S> b_m = b.powMod(m, *this);
     UnivariatePolyFp<R,S> factor(this->baseRing());
