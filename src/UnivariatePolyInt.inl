@@ -215,7 +215,7 @@ inline R _balance(const R & a, const R & n)
 template<typename R>
 inline void
 UnivariatePolyInt<R>::_findTrialFactor(const std::vector< UnivariatePolyInt<R> > & u,
-				       const R & N,
+				       const Integer<R> & N,
 				       size_t & j,
 				       std::set<size_t> & C,
 				       size_t & s,
@@ -249,7 +249,7 @@ UnivariatePolyInt<R>::_findTrialFactor(const std::vector< UnivariatePolyInt<R> >
 template<typename R>
 inline std::vector< UnivariatePolyInt<R> >
 UnivariatePolyInt<R>::_trialFactor(const std::vector< UnivariatePolyInt<R> > & u,
-				   const R & N) const
+				   const Integer<R> & N) const
 {
   UnivariatePolyInt<R> h = *this;
   size_t r = u.size();
