@@ -1,6 +1,6 @@
 #include "UnivariatePolyInt.h"
 
-template class UnivariatePoly<Z>;
+template class UnivariatePolyInt<Z>;
 
 template<>
 W64 UnivariatePolyInt<Z>::hashValue(void) const
