@@ -22,7 +22,7 @@ UnivariatePoly<R,Parent>::UnivariatePoly(const std::vector<R> & vec)
 
 // create the polynomial x^i
 template<class R, class Parent>
-inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::x(std::shared_ptr<const Parent> base_ring, size_t i)
+inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::x(std::shared_ptr<Parent> base_ring, size_t i)
 {
   UnivariatePoly<R,Parent> p(base_ring);
   p._coeffs.resize(i+1);

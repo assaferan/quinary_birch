@@ -62,6 +62,7 @@ protected:
   std::vector< UnivariatePolyFp<R,S> >
   _czEqDegPartialFactor(size_t r) const;
 
+  // this is not const because it uses the rng, which changes the internal state of the field
   std::vector< UnivariatePolyFp<R,S> > _czEqDegFactor(size_t r) const;
 
   std::vector< UnivariatePolyFp<R,S> > _czDistinctDegFactor() const;

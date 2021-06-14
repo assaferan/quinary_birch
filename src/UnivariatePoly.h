@@ -10,6 +10,8 @@
 // !! TODO - make UnivariatePoly inherit from RingElement
 // This will make some of the methods here redundant, and avoid code duplication.
 
+// Here the pointer to the parent is not constant since we might want to use the rng in factorization
+
 template<class R, class Parent>
 class UnivariatePoly
 {
@@ -18,7 +20,7 @@ class UnivariatePoly
   static_assert(std::is_base_of<Ring<Parent,R>,Parent>::value);
 public:
   // create the zero polynomial
-  UnivariatePoly(std::shared_ptr<const Parent> base_ring) : _base(base_ring) {}
+  UnivariatePoly(std::shared_ptr<Parent> base_ring) : _base(base_ring) {}
   // create the constant polynomial
   UnivariatePoly(const R &);
 
@@ -26,7 +28,7 @@ public:
   UnivariatePoly(const std::vector<R> &);
 
   // create the polynomial x^i
-  static UnivariatePoly<R,Parent> x(std::shared_ptr<const Parent> base_ring, size_t i = 1);
+  static UnivariatePoly<R,Parent> x(std::shared_ptr<Parent> base_ring, size_t i = 1);
   
   // access
   // get methods
@@ -44,7 +46,7 @@ public:
   // if poly == 0, returns -1
   int degree(void) const {return this->_coeffs.size()-1; }
 
-  inline std::shared_ptr<const Parent> baseRing(void) const
+  inline std::shared_ptr<Parent> baseRing(void) const
   { return this->_base; }
   
   R content(void) const;
@@ -104,7 +106,7 @@ public:
 				       UnivariatePoly<R,Parent> & t);
   
 protected:
-  std::shared_ptr< const Parent > _base;
+  std::shared_ptr<Parent> _base;
   std::vector<R> _coeffs;
 
   void _eliminateDeg(void);
