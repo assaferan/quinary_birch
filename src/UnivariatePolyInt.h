@@ -39,6 +39,8 @@ public:
   W64 hashValue(void) const;
 
   // assignment and converstion
+  template<class T>
+  UnivariatePolyInt<R> & operator=(const UnivariatePolyInt<T> & );
   using UnivariatePoly< Integer<R>, IntegerRing<R> >::operator=;
 
   // arithmetic
