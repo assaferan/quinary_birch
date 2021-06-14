@@ -491,6 +491,19 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
   return r_minus;
 }
 
+template<class R, class Parent>
+inline UnivariatePoly<R,Parent> &  UnivariatePoly<R,Parent>::makeZero(void)
+{
+  this->_coeffs.clear();
+  return *this;
+}
 
+template<class R, class Parent>
+inline UnivariatePoly<R,Parent> & UnivariatePoly<R,Parent>::makeOne(void)
+{
+  this->_coeffs.resize(1);
+  this->_coeffs[0] = this->_base->one();
+  return *this;
+}
 
 
