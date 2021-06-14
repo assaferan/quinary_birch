@@ -2,6 +2,8 @@
 #define __UNIVARIATE_POLY_FP_H_
 
 #include "birch.h"
+#include "Fp.h"
+#include "FpElement.h"
 #include "UnivariatePoly.h"
 
 template<typename R, typename S>
