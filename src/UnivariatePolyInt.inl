@@ -1,9 +1,10 @@
+#include <memory>
 #include <set>
 
 template<typename R>
 template<typename S, typename T>
-inline UnivariatePolyFp<S, T>
-UnivariatePolyInt<R>::mod(std::shared_ptr< const Fp<S, T> > GF) const
+inline UnivariatePolyFp<S,T>
+UnivariatePolyInt<R>::mod(std::shared_ptr< const Fp<S,T> > GF) const
 {
   UnivariatePolyFp<S,T> ret(GF);
   for (size_t i = 0; i < this->_coeffs.size(); i++)
