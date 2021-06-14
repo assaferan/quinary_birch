@@ -54,16 +54,16 @@ public:
   inline bool isOne(void) const override
   {return (this->_val % this->_GF->prime() == 1);}
   
-  inline bool operator==(const FpElement<R, S> &other) const override;
+  inline bool operator==(const FpElement<R,S> &other) const override;
   using RingElement< FpElement<R,S>, Fp<R,S> >::operator!=;
   
   // This is for sorting, we use the lift for that
   // !! TODO - Is it useful in anyway? shoul we get rid fof that
-  inline bool operator<(const FpElement<R, S> &other) const
+  inline bool operator<(const FpElement<R,S> &other) const
   { return (this->_val < other._val); }
-  inline bool operator>(const FpElement<R, S> &other) const
+  inline bool operator>(const FpElement<R,S> &other) const
   { return (this->_val > other._val); }
-  inline bool operator>=(const FpElement<R, S> &other) const
+  inline bool operator>=(const FpElement<R,S> &other) const
   { return (this->_val >= other._val); }
   
   inline bool operator==(const R &other) const;
