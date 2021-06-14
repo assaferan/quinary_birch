@@ -29,9 +29,11 @@ UnivariatePolyFp<R,S>::powMod(size_t m, const UnivariatePolyFp<R,S> & f) const
   return res;
 }
 
+// this is not const because it uses the rng, which changes the internal state of the field
+
 template<typename R, typename S>
 inline std::vector< UnivariatePolyFp<R,S> >
-UnivariatePolyFp<R,S>::_czEqDegPartialFactor(size_t r) const
+UnivariatePolyFp<R,S>::_czEqDegPartialFactor(size_t r)
 {
   
   if (this->degree() == static_cast<int>(r)) {
