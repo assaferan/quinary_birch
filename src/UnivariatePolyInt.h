@@ -53,7 +53,7 @@ protected:
   template<typename S, typename T>
   void _henselStep(std::vector<UnivariatePolyInt<R> > & u,
 		   std::vector<UnivariatePolyInt<R> > & v,
-		   std::shared_ptr< const Fp<S,T> > GF,
+		   std::shared_ptr< Fp<S,T> > GF,
 		   size_t i) const;
 
   template<typename S, typename T>
