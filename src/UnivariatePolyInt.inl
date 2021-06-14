@@ -51,7 +51,7 @@ template<typename R>
 inline Integer<R> UnivariatePolyInt<R>::_landauMignotte(void) const
 {
   Integer<R> d = this->degree() / R(2);
-  Integer<R> B = (d-1).binomial_coefficient(d/2-1);
+  Integer<R> B = (d-Integer<R>::one()).binomial_coefficient(d/R(2)-Integer<R>::one());
 
   Integer<R> norm = this->_base->zero();
   for (size_t i = 0; i < this->_coeffs.size(); i++)
