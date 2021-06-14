@@ -11,9 +11,11 @@ template<typename S, typename T>
 inline UnivariatePolyFp<S,T>
 UnivariatePolyInt<R>::mod(std::shared_ptr< const Fp<S,T> > GF) const
 {
-  UnivariatePolyFp<S,T> ret(GF);
+  std::vector< FpElement<S,T> > vec;
   for (size_t i = 0; i < this->_coeffs.size(); i++)
-    ret._coeffs.push_back(GF->mod(this->_coeffs[i]));
+    vec.push_back(GF->mod(this->_coeffs[i]));
+
+  UnivariatePolyFp<S,T> ret(vec);
   
   return ret;
 }
