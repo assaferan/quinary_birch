@@ -50,15 +50,15 @@ protected:
 
   std::vector< UnivariatePolyInt<R> >
   _trialFactor(const std::vector<UnivariatePolyInt<R> > & u,
-	       const R & N) const;
+	       const Integer<R> & N) const;
 
   void
   _findTrialFactor(const std::vector< UnivariatePolyInt<R> > & u,
-		    const R & N,
-		    size_t & j,
-		    std::set<size_t> & C,
-		    size_t & s,
-		    std::vector< UnivariatePolyInt<R> > & gs);
+		   const Integer<R> & N,
+		   size_t & j,
+		   std::set<size_t> & C,
+		   size_t & s,
+		   std::vector< UnivariatePolyInt<R> > & gs);
 
   Integer<R> _landauMignotte(void) const;
 
