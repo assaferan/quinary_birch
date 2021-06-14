@@ -269,3 +269,13 @@ inline void UnivariatePolyFp<R,S>::divRem(const UnivariatePolyFp<R,S> & f,
 
   return;
 }
+
+template<typename R, typename S>
+inline UnivariatePolyFp<R,S> &
+UnivariatePolyFp<R,S>::operator=(const UnivariatePoly< FpElement<R,S>, Fp<R,S> > & other)
+{
+  if (this != &other) {
+    UnivariatePoly< FpElement<R,S>, Fp<R,S> >::operator=(other);
+  }
+  return *this;
+}
