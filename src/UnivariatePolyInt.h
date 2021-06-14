@@ -1,6 +1,8 @@
 #ifndef __UNIVARIATE_POLY_INT_H_
 #define __UNIVARIATE_POLY_INT_H_
 
+#include <unordered_map>
+
 #include "birch.h"
 #include "UnivariatePoly.h"
 
