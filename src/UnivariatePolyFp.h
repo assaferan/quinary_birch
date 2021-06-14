@@ -23,6 +23,8 @@ public:
 
   UnivariatePolyFp(const UnivariatePoly< FpElement<R,S>, Fp<R,S> > & other)
     : UnivariatePoly< FpElement<R,S>, Fp<R,S> >(other) {}
+
+  using UnivariatePoly< FpElement<R,S>, Fp<R,S> >::x;
   
   std::vector< UnivariatePolyFp<R,S> > _sqfFactor(void) const;
 
@@ -33,7 +35,6 @@ public:
 
   // assignment and conversion
   UnivariatePolyFp<R,S> & operator=(const UnivariatePoly< FpElement<R,S>, Fp<R,S> > &);
-  
   
   
   // !! TODO -  make it work with inheritance
