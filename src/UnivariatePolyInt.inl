@@ -33,8 +33,8 @@ UnivariatePolyInt<R>::_squarefreeFactor(void) const
    
   while (b != Integer<R>::one()) {
     a = b.gcd(d);
-    if (a == -1)
-      a = 1;
+    if (a == -Integer<R>::one())
+      a = Integer<R>::one();
     fac.push_back(a);
     b /= a;
     c = d / a;
