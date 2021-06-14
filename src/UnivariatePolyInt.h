@@ -3,6 +3,7 @@
 
 #include <set>
 #include <unordered_map>
+#include <vector>
 
 #include "birch.h"
 #include "UnivariatePoly.h"
