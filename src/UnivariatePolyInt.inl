@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Integer.h"
+#include "UnivariatePolyFp.h"
 
 template<typename R>
 template<typename S, typename T>
