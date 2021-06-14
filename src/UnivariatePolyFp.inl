@@ -208,18 +208,16 @@ UnivariatePolyFp<R,S>::xgcd(const UnivariatePolyFp<R,S> & f,
   UnivariatePolyFp<R,S> t_minus(f.baseRing());
   UnivariatePolyFp<R,S> t_plus(f.baseRing());
   
-  FpElement<R,S> zero = f.baseRing()->zero();
-  FpElement<R,S> one = f.baseRing()->one();
-  s = zero;
-  s_minus = one;
-  t = one;
-  t_minus = zero;
+  s.makeZero();
+  s_minus.makeOne();
+  t.makeOne();
+  t_minus.makeZero();
   
   r_minus = f;
   r = g;
   
-  while (r != zero) {
-    div_rem(r_minus, r, q, r_plus);
+  while (!r.isZero()) {
+    divRem(r_minus, r, q, r_plus);
 
     assert(r_minus == q*r+r_plus);
     assert(s*f + t*g == r);
