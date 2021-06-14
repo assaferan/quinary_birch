@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "birch.h"
+#include "Integer.h"
 #include "UnivariatePoly.h"
 
 template<typename R>
