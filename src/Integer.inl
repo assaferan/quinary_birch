@@ -1,6 +1,7 @@
 // implementation of methods for Integer<R>
-
 #include <cassert>
+
+#include "birch_util.h"
 
 // assignment
 template<typename R>
