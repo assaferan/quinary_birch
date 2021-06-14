@@ -103,7 +103,7 @@ inline R Fp<R,S>::inverse(const Z64& a) const
 template<typename R, typename S>
 inline FpElement<R, S> Fp<R,S>::random(void) const
 {
-  return FpElement<R,S>(this->getptr(), (R)(*this->distr)(*this->rng));
+  return FpElement<R,S>(this->getPtr(), (R)(*this->distr)(*this->rng));
 }
 
 template<typename R, typename S>
