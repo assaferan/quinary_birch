@@ -16,7 +16,7 @@ class Fp : public virtual Ring< Fp<R,S>, FpElement<R,S> >
 public:
   Fp(const R& p, W64 seed, bool use_inverse_lut=false);
 
-  inline const R& prime(void) const { return this->p; }
+  inline const R& prime(void) const { return this->_p; }
 
   template<typename T>
   FpElement<R,S> mod(const T& a) const;
@@ -45,21 +45,21 @@ public:
   {return FpElement<R,S>::one(this->getPtr()); }
 
 private:
-  R p;
-  R kp;
-  R kp_inv;
-  static constexpr int bits = 8 * sizeof(R);
-  bool use_inverse_lut;
-  std::vector<R> inverse_lut;
+  R _p;
+  R _kp;
+  R _kp_inv;
+  static constexpr int _bits = 8 * sizeof(R);
+  bool _use_inverse_lut;
+  std::vector<R> _inverse_lut;
 
   // Random number generator.
-  std::unique_ptr<std::mt19937> rng;
-  std::unique_ptr<std::uniform_int_distribution<>> distr;
+  std::unique_ptr<std::mt19937> _rng;
+  std::unique_ptr<std::uniform_int_distribution<>> _distr;
 
-  virtual R inv(R a) const;
-  void inverseLutPopulate(Z32 offset, Z32 len);
+  virtual R _inv(R a) const;
+  void _inverseLutPopulate(Z32 offset, Z32 len);
 
-  void makeInverseLut(void);
+  void _makeInverseLut(void);
 };
 
 template<typename R, typename S>
@@ -96,7 +96,7 @@ public:
   { return (a & 1);}
   
 private:
-  inline R inv(R a) const override
+  inline R _inv(R a) const override
   { return (a & 1); }
 };
 
