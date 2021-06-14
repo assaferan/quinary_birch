@@ -1,4 +1,4 @@
-#Ifndef __UNIVARIATE_POLY_H_
+#ifndef __UNIVARIATE_POLY_H_
 #define __UNIVARIATE_POLY_H_
 
 #include "birch.h"
@@ -11,7 +11,7 @@ class UnivariatePoly
 {
   // We would want R to be a Euclidean domain, to be able to perform things such as gcd and reduction
   static_assert(std::is_base_of<EuclideanDomainElement<R,Parent>,R>::value);
-  static_assert(std::is_base_of<EuclideanDomain<Parent,R>,Parent>::value);
+  static_assert(std::is_base_of<Ring<Parent,R>,Parent>::value);
 public:
   // create the zero polynomial
   UnivariatePoly(std::shared_ptr<const Parent> base_ring) : _base(base_ring) {}

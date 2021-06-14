@@ -101,6 +101,19 @@ class Matrix;
 template<class R, class Parent, size_t n>
 class SquareMatrix;
 
+// polynomials
+template<class R, class Parent>
+class UnivariatePoly;
+
+template<typename R>
+class UnivariatePolyInt;
+
+template<typename R, typename S>
+class UnivariatePolyFp;
+
+template<typename R, typename S>
+class PolynomialFp;
+
 // vectors
 template<class R, class Parent, size_t n>
 class Vector;
@@ -141,6 +154,10 @@ template<size_t n>
 using Z64_SquareMatrix = SquareMatrixInt<Z64, n>;
 template<size_t n>
 using Z128_SquareMatrix = SquareMatrixInt<Z128, n>;
+
+// polynomials
+template<typename R>
+using UnivariatePolyRat = UnivariatePoly< Rationals<R>, RationalField<R> >;
 
 // vectors
 template<typename R, typename S, size_t n>

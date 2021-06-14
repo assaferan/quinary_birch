@@ -108,7 +108,7 @@ inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n, const Inte
     {
       int chi_a = a.kroneckerSymbol(n);      
       Integer<R> a_pow = Integer<R>::one();
-      Rational<R> s = Math<R>::zero();
+      Rational<R> s = Rational<R>::zero();
       for (size_t k = 0; k <= n; k++)
 	{
 	  d_pow /= d;

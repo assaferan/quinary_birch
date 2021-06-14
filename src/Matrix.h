@@ -114,10 +114,10 @@ public:
     return;
   }
 
-  bool isZero() const;
-  bool isOne() const;
+  bool isZero(void) const;
+  bool isOne(void) const;
 
-  Matrix<R,Parent>& makeZero();
+  Matrix<R,Parent>& makeZero(void);
   
 protected:
   size_t _nrows;

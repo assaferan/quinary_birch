@@ -95,7 +95,7 @@ Integer<R>::euclideanDivision(const Integer<R>& other) const
 // (in all our use cases, num will be in the order of 1000 at most)
 
 template <typename R>
-inline typename Integer<R>::FactorData Integer<R>::factorization() const
+inline typename Integer<R>::FactorData Integer<R>::factorization(void) const
 {
   Integer<R> num = *this;
   assert(num < R(10000));
@@ -141,6 +141,7 @@ inline size_t Integer<R>::valuation(const Integer<R>& p) const
 template <typename R>
 inline int Integer<R>::kroneckerSymbol(const Integer<R> & n) const
 {
+  const Integer<R> & a = *this;
   // extremal cases
   if (n.isZero()) return (this->abs().isOne()) ? 1 : 0;
   if ((-n).isOne()) return (*this < Integer<R>::zero()) ? -1 : 1;
@@ -152,7 +153,7 @@ inline int Integer<R>::kroneckerSymbol(const Integer<R> & n) const
       return 1;
     return -1;
   }
-  if ((-(*this)).isOne()) {
+  if ((-a).isOne()) {
     R n_prime = n.num();
     while (n_prime % 2 == 0) n_prime /= 2;
     return ((n_prime / 2) % 2 == 0) ? 1 : -1;
@@ -163,7 +164,7 @@ inline int Integer<R>::kroneckerSymbol(const Integer<R> & n) const
   // multiplicativity
   if (n < Integer<R>::zero()) return kroneckerSymbol(-1)*kronecker_symbol(-n);
   if ((*this) < Integer<R>::zero())
-    return (-Integer<R>::one()).kroneckerSymbol(n)*(-(*this)).kronecker_symbol(n);
+    return (-Integer<R>::one()).kroneckerSymbol(n)*(-a).kronecker_symbol(n);
 
   // now may assume n >= 3, a >= 0
  
@@ -207,7 +208,7 @@ inline bool Integer<R>::isLocalSquare(const Integer<R>& p) const
 }
 
 template<typename R>
-inline Integer<R> Integer<R>::binomialCoefficient(const Integer<R> & k) const;
+inline Integer<R> Integer<R>::binomialCoefficient(const Integer<R> & k) const
 {
   const Integer<R> & n = *this;
   Integer<R> res = Integer<R>::one();
@@ -221,7 +222,7 @@ inline Integer<R> Integer<R>::binomialCoefficient(const Integer<R> & k) const;
 }
 
 template <typename R>
-inline Integer<R> Integer<R>::nextPrime() const
+inline Integer<R> Integer<R>::nextPrime(void) const
 {
   Z p = birch_util::convertInteger<R,Z>(a.num());
   mpz_nextprime(p.get_mpz_t(), p.get_mpz_t());

@@ -63,7 +63,7 @@ UnivariatePoly<R,Parent>::operator=(const UnivariatePoly<T,TParent> & other)
 template<class R, class Parent>
 inline UnivariatePoly<R,Parent> & UnivariatePoly<R,Parent>::operator=(const R & a)
 {
-  this->-coeffs.clear();
+  this->_coeffs.clear();
   if (!a.isZero())
     this->_coeffs.push_back(a);
 

@@ -29,7 +29,7 @@ Matrix<R,Parent>::Matrix(const SquareMatrix<R, n> & mat)
 
 // return the i-th row
 template<class R, class Parent>
-std::vector<R> Matrix<R,Parent>::operator[](size_t i) const
+inline std::vector<R> Matrix<R,Parent>::operator[](size_t i) const
 {
   assert(i < _nrows);
 
@@ -40,7 +40,7 @@ std::vector<R> Matrix<R,Parent>::operator[](size_t i) const
 }
 
 template<class R, class Parent>
-R Matrix<R,Parent>::determinant() const
+inline R Matrix<R,Parent>::determinant(void) const
 {		
   assert(_nrows == _ncols);
   size_t n = _nrows;
@@ -60,7 +60,7 @@ R Matrix<R,Parent>::determinant() const
 }
 
 template<class R, class Parent>
-void Matrix<R,Parent>::swapRows(size_t row1, size_t row2)
+inline void Matrix<R,Parent>::swapRows(size_t row1, size_t row2)
 {
   R tmp = _base->zero();
   for (size_t col = 0; col < this->_ncols; col++) {
@@ -73,7 +73,7 @@ void Matrix<R,Parent>::swapRows(size_t row1, size_t row2)
 
 // in place echelon form, returns the rank and trans is the transformation
 template<class R, class Parent>
-size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,Parent>& trans)
+inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,Parent>& trans)
 {
   // This one assumes R is a field
   // !! TODO - think how to make this method appear only for fields
@@ -119,7 +119,7 @@ size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,Parent>
 }
 
 template<class R, class Parent>
-size_t Matrix<R,Parent>::rank(void) const
+inline size_t Matrix<R,Parent>::rank(void) const
 {  
   Matrix<R,Parent> echelon((*this));
   Matrix<R,Parent> trans(_base, echelon.nrows(), echelon.nrows());
@@ -127,12 +127,12 @@ size_t Matrix<R,Parent>::rank(void) const
 }
 
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::kernel(void) const {
+inline Matrix<R,Parent> Matrix<R,Parent>::kernel(void) const {
   return this->transpose().leftKernel();
 }
 
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::leftKernel(void) const {
+inline Matrix<R,Parent> Matrix<R,Parent>::leftKernel(void) const {
   Matrix<R,Parent> echelon((*this));
   Matrix<R,Parent> trans(_base, _nrows, _nrows);
   size_t rank = Matrix<R,Parent>::rowEchelon(echelon, trans);
@@ -145,7 +145,7 @@ Matrix<R,Parent> Matrix<R,Parent>::leftKernel(void) const {
 }
 
 template<class R, class Parent>
-R Matrix<R,Parent>::trace(void) const
+inline R Matrix<R,Parent>::trace(void) const
 {
   // can only take trace of a square matrix
   assert(this->nrows() == this->ncols());
@@ -161,7 +161,7 @@ R Matrix<R,Parent>::trace(void) const
 // not expected to be a bottleneck
 
 template<class R, class Parent>
-UnivariatePolyInt<Z> Matrix<R,Parent>::charPoly(void) const
+inline UnivariatePolyInt<Z> Matrix<R,Parent>::charPoly(void) const
 {
   // can only compute characteristic polynomial for a square matrix
   assert(this->nrows() == this->ncols());
@@ -186,10 +186,9 @@ UnivariatePolyInt<Z> Matrix<R,Parent>::charPoly(void) const
   UnivariatePolyInt<Z> p(c);
   return p;
 }
-*
 
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basis) const
+inline Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basis) const
 {
   assert(basis.nrows() == basis.rank());
   
@@ -201,7 +200,7 @@ Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basis) cons
 }
 
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::diagonalJoin(const std::vector< Matrix<R,Parent> > & mats)
+inline Matrix<R,Parent> Matrix<R,Parent>::diagonalJoin(const std::vector< Matrix<R,Parent> > & mats)
 {
   size_t nrows = 0;
   size_t ncols = 0;
@@ -224,7 +223,7 @@ Matrix<R,Parent> Matrix<R,Parent>::diagonalJoin(const std::vector< Matrix<R,Pare
 }
 
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::identity(std::shared_ptr< const Parent > ring, size_t n) {
+inline Matrix<R,Parent> Matrix<R,Parent>::identity(std::shared_ptr< const Parent > ring, size_t n) {
   Matrix<R,Parent> id(ring, n,n);
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
@@ -234,7 +233,7 @@ Matrix<R,Parent> Matrix<R,Parent>::identity(std::shared_ptr< const Parent > ring
 
 // TODO - just change access resolution to the same vector instead
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::transpose() const
+inline Matrix<R,Parent> Matrix<R,Parent>::transpose(void) const
 {
   std::vector<R> _datat(_nrows*_ncols, _base->zero());
   size_t idx = 0;
@@ -246,7 +245,7 @@ Matrix<R,Parent> Matrix<R,Parent>::transpose() const
 }
 
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::operator*(const Matrix<R,Parent> & other) const
+inline Matrix<R,Parent> Matrix<R,Parent>::operator*(const Matrix<R,Parent> & other) const
 {
   size_t nrows = this->_nrows;
   size_t ncols = other._ncols;
@@ -263,7 +262,7 @@ Matrix<R,Parent> Matrix<R,Parent>::operator*(const Matrix<R,Parent> & other) con
 }
 
 template<class R, class Parent>
-Matrix<R,Parent>& Matrix<R,Parent>::operator+=(const Matrix<R,Parent> & other)
+inline Matrix<R,Parent>& Matrix<R,Parent>::operator+=(const Matrix<R,Parent> & other)
 {
   for (size_t row = 0; row < this->nrows(); row++)
     for (size_t col = 0; col < this->ncols(); col++)
@@ -273,7 +272,7 @@ Matrix<R,Parent>& Matrix<R,Parent>::operator+=(const Matrix<R,Parent> & other)
 }
 
 template<class R, class Parent>
-Matrix<R,Parent>& Matrix<R,Parent>::operator-=(const Matrix<R,Parent> & other)
+inline Matrix<R,Parent>& Matrix<R,Parent>::operator-=(const Matrix<R,Parent> & other)
 {
   for (size_t row = 0; row < this->nrows(); row++)
     for (size_t col = 0; col < this->ncols(); col++)
@@ -283,7 +282,7 @@ Matrix<R,Parent>& Matrix<R,Parent>::operator-=(const Matrix<R,Parent> & other)
 }
 
 template<class R, class Parent>
-Matrix<R,Parent>& Matrix<R,Parent>::operator*=(const Matrix<R,Parent> & other)
+inline Matrix<R,Parent>& Matrix<R,Parent>::operator*=(const Matrix<R,Parent> & other)
 {
   (*this) = (*this)*other;
   
@@ -291,7 +290,7 @@ Matrix<R,Parent>& Matrix<R,Parent>::operator*=(const Matrix<R,Parent> & other)
 }
 
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::operator*(const R & a) const
+inline Matrix<R,Parent> Matrix<R,Parent>::operator*(const R & a) const
 {
   Matrix<R,Parent> prod(this->_base, this->nrows(), this->ncols());
   for (size_t row = 0; row < this->nrows(); row++)
@@ -302,7 +301,7 @@ Matrix<R,Parent> Matrix<R,Parent>::operator*(const R & a) const
 }
 
 template<class R, class Parent>
-bool Matrix<R,Parent>::isZero() const
+inline bool Matrix<R,Parent>::isZero(void) const
 {
   for (size_t i = 0; i < _data.size(); i++)
     if (!_data[i].isZero())
@@ -311,7 +310,7 @@ bool Matrix<R,Parent>::isZero() const
 }
 
 template<class R, class Parent>
-bool Matrix<R,Parent>::isOne() const
+inline bool Matrix<R,Parent>::isOne(void) const
 {
   if (_nrows != _ncols) return false;
   for (size_t row = 0; row < _nrows; row++)
@@ -333,7 +332,7 @@ bool Matrix<R,Parent>::isOne() const
 }
 
 template<class R, class Parent>
-Matrix<R,Parent>& Matrix<R,Parent>::makeZero()
+inline Matrix<R,Parent>& Matrix<R,Parent>::makeZero(void)
 {
   for (size_t i = 0; i < _data.size(); i++)
     _data[i].makeZero();

@@ -128,7 +128,7 @@ public:
    *
    * returns true iff equal
    */
-  inline virtual bool operator== (const Derived&) const
+  inline virtual bool operator== (const Derived& other) const
   { return ((*this)-other).isZero();}
 
   /**

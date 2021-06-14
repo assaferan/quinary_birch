@@ -58,18 +58,18 @@ public:
 
   // global constants
 
-  inline bool isZero() const { return (_num == 0); }
+  inline bool isZero(void) const { return (_num == 0); }
 
   // assign zero
-  inline Integer<R> & makeZero() { _num = 0; return (*this); }
+  inline Integer<R> & makeZero(void) { _num = 0; return (*this); }
 
-  inline bool isOne() const { return (_num == 1); }
+  inline bool isOne(void) const { return (_num == 1); }
 
   // assign to one
-  inline Integer<R> & makeOne() { _num = 1; return (*this); }
+  inline Integer<R> & makeOne(void) { _num = 1; return (*this); }
 
-  inline static Integer<R> zero() { Integer<R> a; return a.makeZero(); }
-  inline static Integer<R> one() { Integer<R> a; return a.makeOne(); }
+  inline static Integer<R> zero(void) { Integer<R> a; return a.makeZero(); }
+  inline static Integer<R> one(void) { Integer<R> a; return a.makeOne(); }
   
   // euclidean division
 
@@ -82,11 +82,11 @@ public:
 
   void print(std::ostream&) const;
 
-  inline Integer<R>* getPtr() { return this; }
+  inline Integer<R>* getPtr(void) { return this; }
 
-  inline const Integer<R>* getPtr() const { return this; }
+  inline const Integer<R>* getPtr(void) const { return this; }
 
-  inline std::shared_ptr<const IntegerRing<R> > parent() const override
+  inline std::shared_ptr<const IntegerRing<R> > parent(void) const override
   {return std::make_shared< IntegerRing<R> >(); }
 
   int hilbertSymbol(const Integer<R> & b, const Integer<R>& p) const;
@@ -96,7 +96,7 @@ public:
 
   typedef std::vector< std::pair<Integer<R>, size_t> > FactorData;
 
-  typename Integer<R>::FactorData factorization() const;
+  typename Integer<R>::FactorData factorization(void) const;
   
   size_t valuation(const Integer<R>& p) const;
 
@@ -108,7 +108,7 @@ public:
 
   Integer<R> binomialCoefficient(const Integer<R> & k) const;
 
-  Integer<R> nextprime() const;
+  Integer<R> nextPrime(void) const;
   
 protected:
   R _num;
