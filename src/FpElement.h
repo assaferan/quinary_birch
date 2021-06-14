@@ -55,6 +55,7 @@ public:
   {return (this->_val % this->_GF->prime() == 1);}
   
   inline bool operator==(const FpElement<R, S> &other) const override;
+  using RingElement< FpElement<R,S>, Fp<R,S> >::operator!=;
   
   // This is for sorting, we use the lift for that
   // !! TODO - Is it useful in anyway? shoul we get rid fof that
