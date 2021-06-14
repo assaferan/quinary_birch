@@ -2,6 +2,7 @@
 #define __UNIVARIATE_POLY_H_
 
 #include "birch.h"
+#include "EuclideanDomainElement.h"
 
 // !! TODO - make UnivariatePoly inherit from RingElement
 // This will make some of the methods here redundant, and avoid code duplication.
