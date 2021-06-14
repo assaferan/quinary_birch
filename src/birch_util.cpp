@@ -107,7 +107,8 @@ namespace birch_util
   Z128 convert_Integer<Z>(const Z& x)
   {
     Z high = x >> 64;
-    Z128 res = mpz_get_si(high.get_mpz_t()) << 64;
+    Z128 res = mpz_get_si(high.get_mpz_t());
+    res <<= 64;
     Z low = abs(x) - (high << 64);
     res |= mpz_get_ui(low.get_mpz_t());
     return res;
