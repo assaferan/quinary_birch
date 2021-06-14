@@ -13,7 +13,7 @@ UnivariatePolyInt<R>::mod(std::shared_ptr< const Fp<S,T> > GF) const
 {
   std::vector< FpElement<S,T> > vec;
   for (size_t i = 0; i < this->_coeffs.size(); i++)
-    vec.push_back(GF->mod(this->_coeffs[i]));
+    vec.push_back(GF->mod(this->_coeffs[i].num()));
 
   UnivariatePolyFp<S,T> ret(vec);
   
