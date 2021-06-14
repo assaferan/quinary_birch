@@ -162,7 +162,7 @@ inline int Integer<R>::kroneckerSymbol(const Integer<R> & n) const
     return (((n^2) / R(8)) % R(2)).isZero() ? 1 : -1;
   }
   // multiplicativity
-  if (n < Integer<R>::zero()) return this->kroneckerSymbol(-1)*this->kroneckerSymbol(-n);
+  if (n < Integer<R>::zero()) return this->kroneckerSymbol(-Integer<R>::one())*this->kroneckerSymbol(-n);
   if (a < Integer<R>::zero())
     return (-Integer<R>::one()).kroneckerSymbol(n)*(-a).kroneckerSymbol(n);
 
