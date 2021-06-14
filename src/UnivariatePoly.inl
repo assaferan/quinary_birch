@@ -1,5 +1,6 @@
 
 #include "birch_util.h"
+#include "FpElement.h"
 #include "Integer.h"
 
 // create the constant polynomial
