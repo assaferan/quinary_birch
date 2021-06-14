@@ -60,7 +60,7 @@ UnivariatePoly<R,Parent>::operator=(const UnivariatePoly<T,TParent> & other)
   
   this->_coeffs.resize(other.degree()+1);
   for (int i = 0; i <= other.degree(); i++) 
-    this->_coeffs[i] = birch_util::convert_Integer<T,R>(other.coefficient(i));
+    this->_coeffs[i] = birch_util::convert_Integer<T,R>(other.coefficient(i).num());
   
   return (*this); 
 }
