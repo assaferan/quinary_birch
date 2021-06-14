@@ -366,7 +366,7 @@ inline std::ostream& operator<<(std::ostream& os, const UnivariatePoly<R,Parent>
     R coeff = p.coefficient(i-1);
     if (!coeff.isZero()) {
       if ((i <= deg) && (coeff > p.baseRing()->zero()))
-	os << "+";
+	os << '+';
       if (coeff != p.baseRing()->one())
 	os << coeff;
       if (i > 1)
