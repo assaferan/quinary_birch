@@ -2,6 +2,8 @@
 #include <set>
 #include <vector>
 
+#include "Integer.h"
+
 template<typename R>
 template<typename S, typename T>
 inline UnivariatePolyFp<S,T>
