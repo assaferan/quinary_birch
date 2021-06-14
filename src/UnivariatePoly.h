@@ -1,6 +1,9 @@
 #ifndef __UNIVARIATE_POLY_H_
 #define __UNIVARIATE_POLY_H_
 
+#include <memory>
+#include <vector>
+
 #include "birch.h"
 #include "EuclideanDomainElement.h"
 
