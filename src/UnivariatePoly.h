@@ -20,7 +20,7 @@ class UnivariatePoly
   static_assert(std::is_base_of<Ring<Parent,R>,Parent>::value);
 public:
   // create the zero polynomial
-  UnivariatePoly(std::shared_ptr<Parent> base_ring) : _base(base_ring) {}
+  UnivariatePoly(std::shared_ptr<const Parent> base_ring) : _base(base_ring) {}
   // create the constant polynomial
   UnivariatePoly(const R &);
 
