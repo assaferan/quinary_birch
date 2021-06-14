@@ -2,6 +2,7 @@
 #include <set>
 #include <vector>
 
+#include "Fp.h"
 #include "Integer.h"
 #include "UnivariatePolyFp.h"
 
@@ -130,12 +131,12 @@ inline std::vector< UnivariatePolyInt<R> >
 UnivariatePolyInt<R>::_henselLift(const std::vector<UnivariatePolyFp<S,T> > & g,
 				  size_t a) const
 {
-  R p = g[0].field()->prime();
+  R p = g[0].parent()->prime();
   std::vector< UnivariatePolyInt<R> > u, v;
   std::vector< UnivariatePolyFp<S,T> > v_bar;
-  UnivariatePolyFp<S,T> t(g[0].field());
+  UnivariatePolyFp<S,T> t(g[0].parent());
   UnivariatePolyFp<S,T> prod = g[0];
-  FpElement<S,T> one(g[0].field(), Integer<S>::one());
+  FpElement<S,T> one(g[0].parent(), Integer<S>::one());
   
   if (g.size() == 1) {
     u.push_back(*this);
