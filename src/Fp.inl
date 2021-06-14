@@ -6,17 +6,17 @@ template<typename R, typename S>
 Fp<R,S>::Fp(const R& p, W64 seed, bool use_inverse_lut)
 {
   std::random_device rd;
-  this->rng = std::unique_ptr<std::mt19937>( new std::mt19937(seed) );
-  this->distr = std::unique_ptr<std::uniform_int_distribution<>>
+  this->_rng = std::unique_ptr<std::mt19937>( new std::mt19937(seed) );
+  this->_distr = std::unique_ptr<std::uniform_int_distribution<>>
     (new std::uniform_int_distribution<>(0, p-1));
 
-  this->p = p;
-  if (this->p != 2)
+  this->_p = p;
+  if (this->_p != 2)
     {
-      this->kp = (((R)-1)/p)*p;
-      this->kp_inv = ((S)-1)/kp;
-      this->use_inverse_lut = use_inverse_lut;
-      if (use_inverse_lut) this->makeInverseLut();
+      this->_kp = (((R)-1)/p)*p;
+      this->_kp_inv = ((S)-1)/kp;
+      this->_use_inverse_lut = use_inverse_lut;
+      if (use_inverse_lut) this->_makeInverseLut();
     }
 }
 
@@ -26,8 +26,8 @@ inline FpElement<R,S> Fp<R,S>::mod(const T& a) const
 {
   // we relax this for now to enable Z128 support
   //        static_assert(std::is_integral<T>::value, "Undefined type.");
-  T value = (T)a % this->p;
-  R r_val = (value < 0) ? (R)(value+this->p) : (R)value;
+  T value = (T)a % this->_p;
+  R r_val = (value < 0) ? (R)(value+this->_p) : (R)value;
   return FpElement<R,S>(this->getPtr(), r_val);
 }
 
@@ -39,7 +39,7 @@ std::shared_ptr< const Fp<R, S> > Fp<R,S>::getPtr() const {
 template<typename R, typename S>
 inline R Fp<R,S>::neg(R a) const
 {
-  return this->kp-a;
+  return this->_kp-a;
 }
 
 template<typename R, typename S>
@@ -47,13 +47,13 @@ inline R Fp<R,S>::mul(R a, R b) const
 {
   S rem = ((S)a)*b;
   R hi = rem >> bits;
-  R t = (((S)hi*(S)this->kp_inv) >> bits) + hi;
-  rem -= (S)t * this->kp;
-  rem = (rem >= this->kp) ? rem-this->kp : rem;
-  rem = (rem >= this->kp) ? rem-this->kp : rem;
-  rem = (rem >= this->kp) ? rem-this->kp : rem;
+  R t = (((S)hi*(S)this->_kp_inv) >> _bits) + hi;
+  rem -= (S)t * this->_kp;
+  rem = (rem >= this->_kp) ? rem-this->_kp : rem;
+  rem = (rem >= this->_kp) ? rem-this->_kp : rem;
+  rem = (rem >= this->_kp) ? rem-this->_kp : rem;
 
-  assert( ((S)a*(S)b)%p == rem%p );
+  assert( ((S)a*(S)b)%(this->_p) == rem%(this->_p) );
 
   return rem;
 }
@@ -61,29 +61,29 @@ inline R Fp<R,S>::mul(R a, R b) const
 template<typename R, typename S>
 inline R Fp<R,S>::add(R a, R b) const
 {
-  R neg = this->kp-a;
-  return (b >= neg) ? b-neg : this->kp-(neg-b);
+  R neg = this->_kp-a;
+  return (b >= neg) ? b-neg : this->_kp-(neg-b);
 }
 
 template<typename R, typename S>
 inline R Fp<R,S>::sub(R a, R b) const
 {
-  return add(a, this->kp-b);
+  return add(a, this->_kp-b);
 }
 
 template<typename R, typename S>
 inline int Fp<R,S>::legendre(R a) const
 {
   Z aa(a);
-  Z pp(p);
+  Z pp(this->_p);
   return mpz_legendre(aa.get_mpz_t(), pp.get_mpz_t());
 }
 
 template<typename R, typename S>
 inline R Fp<R,S>::inverse(R a) const
 {
-  if (this->use_inverse_lut) return this->inverse_lut[a];
-  else return this->inv(a);
+  if (this->_use_inverse_lut) return this->_inverse_lut[a];
+  else return this->_inv(a);
 }
 
 template<typename R, typename S>
@@ -103,61 +103,61 @@ inline R Fp<R,S>::inverse(const Z64& a) const
 template<typename R, typename S>
 inline FpElement<R, S> Fp<R,S>::random(void) const
 {
-  return FpElement<R,S>(this->getPtr(), (R)(*this->distr)(*this->rng));
+  return FpElement<R,S>(this->getPtr(), (R)(*this->_distr)(*this->_rng));
 }
 
 template<typename R, typename S>
-inline R Fp<R,S>::inv(R a) const
+inline R Fp<R,S>::_inv(R a) const
 {
   if (a == 0) return 0;
   Z aa(a);
-  Z pp(p);
+  Z pp(this->_p);
   mpz_invert(aa.get_mpz_t(), aa.get_mpz_t(), pp.get_mpz_t());
   R ainv = mpz_get_ui(aa.get_mpz_t());
 
-  assert( ((S)a * (S)ainv) % p == 1 );
+  assert( ((S)a * (S)ainv) % (this->_p) == 1 );
 
   return ainv;
 }
 
 template<typename R, typename S>
-void Fp<R,S>::inverseLutPopulate(Z32 offset, Z32 len)
+inline void Fp<R,S>::_inverseLutPopulate(Z32 offset, Z32 len)
 {
   Z32 datalen = len<<1;
 
   // Set the initial values.
-  std::iota(this->inverse_lut.begin()+offset,
-	    this->inverse_lut.begin()+offset+len, offset);
+  std::iota(this->_inverse_lut.begin()+offset,
+	    this->_inverse_lut.begin()+offset+len, offset);
 
   // Multiply up to the root node...
   for (Z32 i=0, j=len; i<j; i+=2, j++)
     {
-      R a = this->inverse_lut[offset+i];
-      R b = this->inverse_lut[offset+i+1];
-      this->inverse_lut[offset+j] = this->mul(a, b);
+      R a = this->_inverse_lut[offset+i];
+      R b = this->_inverse_lut[offset+i+1];
+      this->_inverse_lut[offset+j] = this->mul(a, b);
     }
 
   // ...invert the root node...
-  R ainv = this->inv(this->inverse_lut[offset+datalen-2]);
-  this->inverse_lut[offset+datalen-2] = ainv;
+  R ainv = this->_inv(this->_inverse_lut[offset+datalen-2]);
+  this->_inverse_lut[offset+datalen-2] = ainv;
 
   // ...and then backtrack to the inverse.
   for (Z32 i=datalen-4, j=datalen-2; i>=0; i-=2, --j)
     {
-      R temp = this->inverse_lut[offset+i];
-      R a = this->inverse_lut[offset+i+1];
-      R b = this->inverse_lut[offset+j];
-      this->inverse_lut[offset+i] = this->mul(a, b);
-      this->inverse_lut[offset+i+1] = this->mul(temp, b);
+      R temp = this->_inverse_lut[offset+i];
+      R a = this->_inverse_lut[offset+i+1];
+      R b = this->_inverse_lut[offset+j];
+      this->_inverse_lut[offset+i] = this->mul(a, b);
+      this->_inverse_lut[offset+i+1] = this->mul(temp, b);
     }
 }
 
 template<typename R, typename S>
-void Fp<R,S>::makeInverseLut(void)
+inline void Fp<R,S>::_makeInverseLut(void)
 {
   // TODO: The following could probably be replaced with clz.
   Z32 len = 1;
-  R q = p;
+  R q = this->_p;
   while (q != 1)
     {
       len <<= 1;
@@ -165,13 +165,13 @@ void Fp<R,S>::makeInverseLut(void)
     }
 
   // Make enough room in the lut to grow the tree.
-  inverse_lut.resize(1+(len<<1));
+  _inverse_lut.resize(1+(len<<1));
 
   Z32 offset = 1;
-  q = p;
+  q = this->_p;
   while (q > 1)
     {
-      this->inverseLutPopulate(offset, len);
+      this->_inverseLutPopulate(offset, len);
 
       offset |= len;
       q ^= len;
@@ -186,10 +186,10 @@ void Fp<R,S>::makeInverseLut(void)
     }
 
   // Shrink the lut to the appropriate size.
-  this->inverse_lut.resize(p);
+  this->_inverse_lut.resize(this->_p);
 
-  for (Z32 i=1; i<p; i++)
+  for (Z32 i=1; i<(this->_p); i++)
     {
-      assert( this->mul(i, this->inverse_lut[i]) % p == 1 );
+      assert( this->mul(i, this->_inverse_lut[i]) % (this->_p) == 1 );
     }
 }
