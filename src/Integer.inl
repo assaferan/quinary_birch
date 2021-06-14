@@ -159,7 +159,7 @@ inline int Integer<R>::kroneckerSymbol(const Integer<R> & n) const
     return ((n_prime / 2) % 2 == 0) ? 1 : -1;
   }
   if ((this->num() == 2) && ((n % R(2)).isOne())) {
-    return ((n^2 / R(8)) % R(2)).isZero() ? 1 : -1;
+    return (((n^2) / R(8)) % R(2)).isZero() ? 1 : -1;
   }
   // multiplicativity
   if (n < Integer<R>::zero()) return kroneckerSymbol(-1)*kronecker_symbol(-n);
