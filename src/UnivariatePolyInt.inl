@@ -1,5 +1,6 @@
 #include <memory>
 #include <set>
+#include <vector>
 
 template<typename R>
 template<typename S, typename T>
