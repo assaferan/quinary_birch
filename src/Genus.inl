@@ -1,12 +1,13 @@
 #include <cassert>
+#include <random>
 #include <unordered_set>
 
 // implementation file for header Genus.h
 
 template<typename R, size_t dim>
 inline std::set< Integer<R> >
-Genus<R, dim>::wittToHasse(const Integer<R>& det,
-			   const std::set<std::pair<Integer<R>, int> > & finite)
+Genus<R,dim>::_wittToHasse(const Integer<R>& det,
+			   const std::set<std::pair<Integer<R>,int> > & finite)
 {
   std::set< Integer<R> > hasse;
   int c_table[8] = {2, 1, 1, -2, -2, -1, -1, 2};
@@ -14,7 +15,7 @@ Genus<R, dim>::wittToHasse(const Integer<R>& det,
   Integer<R> c = R((c_mask / 2)*det + c_mask % 2);
   Integer<R> minus_one = -Integer<R>::one();
 
-  for (std::pair<Integer<R>, int> x : finite)
+  for (std::pair<Integer<R>,int> x : finite)
     if (x.second != minus_one.hilbertSymbol(c, x.first))
       hasse.insert(x.first);
   
@@ -22,12 +23,12 @@ Genus<R, dim>::wittToHasse(const Integer<R>& det,
 }
 
 template<typename R, size_t n>
-inline Rational<Z> Genus<R, n>::local_factor(const MatrixRat<R> & g,
-					     const R & p)
+inline Rational<Z> Genus<R,n>::_localFactor(const MatrixRat<R> & g,
+					    const Integer<R> & p)
 {
   size_t m = g.ncols();
   Integer<Z> one = Integer<Z>::one();
-  Integer<Z> p_sqr = birch_util::convert_Integer<R, Z>(p*p);
+  Integer<Z> p_sqr = birch_util::convert_Integer<R,Z>((p*p).num());
   Rational<Z> f = one;
   Rational<Z> p_i(one, p_sqr);
   for (size_t i = 2; i+2 <= m; i+= 2)
@@ -45,7 +46,7 @@ inline Rational<Z> Genus<R, n>::local_factor(const MatrixRat<R> & g,
   
   if (((d.valuation(p)) % 2) == 0) {
     p_i = one;
-    for (size_t i = 0; i < r; i++) p_i /= birch_util::convert_Integer<R,Z>(p);
+    for (size_t i = 0; i < r; i++) p_i /= birch_util::convert_Integer<R,Z>(p.num());
     if (d.isLocalSquare(p))
       f *= one - p_i;
     else
@@ -55,11 +56,11 @@ inline Rational<Z> Genus<R, n>::local_factor(const MatrixRat<R> & g,
 }
 
 template<typename R, size_t n>
-Rational<Z> Genus<R,n>::combine(const QuadFormZZ<R,n>& q,
-				const R & p)
+inline Rational<Z> Genus<R,n>::_combine(const QuadFormZZ<R,n>& q,
+					const Integer<R> & p)
 {
-  assert(p != 2);
-  typename QuadFormZZ<R,n>::jordan_data jordan = q.jordan_decomposition(p);
+  assert(p.num() != 2);
+  typename QuadFormZZ<R,n>::jordan_data jordan = q.jordanDecomposition(p);
   Integer<Z> one = Integer<Z>::one();
   Rational<Z> f = one;
   Rational<Z64> e = 0;
@@ -74,7 +75,7 @@ Rational<Z> Genus<R,n>::combine(const QuadFormZZ<R,n>& q,
     Rational<Z64> tmp1((jordan.exponents[i]-t)*(m+1)*m,2);
     Rational<Z64> tmp2(jordan.exponents[i]*(n+1)*ms[i],2);
     e += tmp1-tmp2;
-    f *= localFactor(jordan.grams[i], p);
+    f *= Genus<R,n>::_localFactor(jordan.grams[i], p);
     m -= ms[i];
   }
   // !! We might run into trouble at 2 here
@@ -87,18 +88,18 @@ Rational<Z> Genus<R,n>::combine(const QuadFormZZ<R,n>& q,
     e += (n_rat-1)/2;
   }
   assert(e.isIntegral());
-  Integer<Z> p_Z = birch_util::convert_Integer<R, Z>(p);
+  Integer<Z> p_Z = birch_util::convert_Integer<R, Z>(p.num());
   Rational<Z> p_e = p_Z^(e.floor());
 
   Z pow2 = 1 << (jordan.grams.size()-1);
   Rational<Z> denom = pow2 * f * p_e;
   MatrixRat<R> diag = MatrixRat<R>::diagonalJoin(jordan.grams);
-  return localFactor(diag, p) / denom;
+  return Genus<R,n>::_localFactor(diag, p) / denom;
 }
 
 template<typename R, size_t m>
-Rational<Z> Genus<R,m>::getMass(const QuadFormZZ<R,m>& q,
-				const std::vector<PrimeSymbol<R>>& symbols)
+Rational<Z> Genus<R,m>::_getMass(const QuadFormZZ<R,m>& q,
+				 const std::vector<PrimeSymbol<R>>& symbols)
 {
   size_t r = m / 2;
 
@@ -106,7 +107,7 @@ Rational<Z> Genus<R,m>::getMass(const QuadFormZZ<R,m>& q,
   // do we need the dummy? We could probably let it go
   size_t dummy;
   Integer<R> det = q.invariants(hasse, dummy);
-  std::set<Integer<R> > witt = wittToHasse(det, hasse);
+  std::set<Integer<R> > witt = Genus<R,N>::_wittToHasse(det, hasse);
   std::vector< std::pair<Integer<R>, size_t> > fac = det.factorization();
   std::set<Integer<R> > B;
   // TODO - replace these by set_union, set_difference ?
@@ -147,9 +148,9 @@ Rational<Z> Genus<R,m>::getMass(const QuadFormZZ<R,m>& q,
       else
 	{
 	  Integer<Z> disc_z = birch_util::convert_Integer<R, Z>(disc);
-	  mass *= -Math<Z>::bernoulli_number(r, disc_z) / r;
+	  mass *= -Rational<Z>::bernoulliNumber(r, disc_z) / r;
 	  if (r % 2 == 0)
-	    mass *= -Math<Z>::bernoulli_number(r) / r;
+	    mass *= -Rational<Z>::bernoulliNumber(r) / r;
 	  if (val2 % 2 == 1)
 	    {
 	      mass /= 2;
@@ -168,15 +169,15 @@ Rational<Z> Genus<R,m>::getMass(const QuadFormZZ<R,m>& q,
 	}
     }
   // odd places which are not unimodular or have Witt invariant -1.
-  for (R p : B)
-    mass *= combine(q,p);
+  for (Integer<R> p : B)
+    mass *= Genus<R,n>::_combine(q,p);
      
-  return abs(mass);
+  return mass.abs();
 }
 
 template<typename R, size_t n>
-Genus<R, n>::Genus(const QuadForm<R, n>& q,
-		   const std::vector<PrimeSymbol<R>>& symbols, W64 seed)
+Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
+		  const std::vector<PrimeSymbol<R>>& symbols, W64 seed)
 {
   if (seed == 0)
     {
@@ -185,15 +186,15 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
     }
   
   this->disc = q.discriminant();
-  this->seed_ = seed;
+  this->_seed = seed;
   
-  this->prime_divisors.reserve(symbols.size());
+  this->_prime_divisors.reserve(symbols.size());
   for (const PrimeSymbol<R>& symb : symbols)
     {
-      this->prime_divisors.push_back(symb.p);
+      this->_prime_divisors.push_back(symb.p);
     }
   
-  Spinor<R> *spin = new Spinor<R>(this->prime_divisors);
+  Spinor<R> *spin = new Spinor<R>(this->_prime_divisors);
   this->spinor = std::unique_ptr<Spinor<R>>(spin);
   
   if (symbols.size() > 63)
@@ -203,8 +204,8 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
   
   size_t num_conductors = 1LL << symbols.size();
   
-  this->conductors.reserve(num_conductors);
-  this->conductors.push_back(1);
+  this->_conductors.reserve(num_conductors);
+  this->_conductors.push_back(1);
   
   size_t bits = 0;
   size_t mask = 1;
@@ -215,30 +216,30 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
 	  ++bits;
 	  mask = 1LL << bits;
 	}
-      R value = this->prime_divisors[bits] * this->conductors[c ^ mask];
-      this->conductors.push_back(value);
+      R value = this->_prime_divisors[bits] * this->_conductors[c ^ mask];
+      this->_conductors.push_back(value);
     }
 
   // Set the mass. This value is used to determine
   // when the genus has been fully populated.
-  this->mass = this->get_mass(q, symbols);
+  this->_mass = this->_getMass(q, symbols);
 
   // The mass provides a reasonable estimate for the size of the genus.
-  Z64 estimated_size = mpz_get_si(this->mass.ceiling().get_mpz_t());
+  Z64 estimated_size = mpz_get_si(this->_mass.ceiling().get_mpz_t());
 
   // Should this be 1/#aut or 2/#aut? probably depends if this is SO or O
-  GenusRep<R, n> rep;
-  Isometry<R, n> s;
-  rep.q = QuadForm<R, n>::reduce(q, s);
-  Z num_aut = rep.q.num_automorphisms();
+  GenusRep<R,n> rep;
+  Isometry<R,n> s;
+  rep.q = QuadFormZZ<R,n>::reduce(q,s);
+  Z num_aut = rep.q.numAutomorphisms();
   Rational<Z> sum_mass(1, num_aut);
   
   rep.p = 1;
   rep.parent = -1;
 
   auto *ptr = new HashMap<GenusRep<R,n>>(estimated_size);
-  this->hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(ptr);
-  this->hash->add(rep);
+  this->_hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(ptr);
+  this->_hash->add(rep);
 
   // A temporary placeholder for the genus representatives before they
   // are fully built.
@@ -247,31 +248,31 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
   foo.parent = -1;
   
   auto *inv_ptr = new HashMap<GenusRep<R,n>>(estimated_size);
-  this->inv_hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(inv_ptr);
+  this->_inv_hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(inv_ptr);
 
   // add the orbit representatives to the invariants
-  std::unordered_map< QuadForm<R, n>, Isometry<R, n> > q_orbit;
-  q_orbit = rep.q.generate_orbit();
-  typename std::unordered_map<QuadForm<R, n>, Isometry<R, n> >::const_iterator
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > q_orbit;
+  q_orbit = rep.q.generateOrbit();
+  typename std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >::const_iterator
     iter;
 
   for (iter = q_orbit.begin(); iter != q_orbit.end(); iter++) {
     foo.q = iter->first;
     foo.s = iter->second;
-    this->inv_hash->add(foo);
-    this->inv_map[this->inv_hash->indexof(foo)] =
-      this->hash->indexof(rep);
+    this->_inv_hash->add(foo);
+    this->_inv_map[this->_inv_hash->indexof(foo)] =
+      this->_hash->indexof(rep);
   }
   
   // The spinor primes hash table, used to identify the primes used in
   // constructing the genus representatives.
   auto *ptr2 = new HashMap<W16>();
-  this->spinor_primes = std::unique_ptr<HashMap<W16>>(ptr2);
+  this->_spinor_primes = std::unique_ptr<HashMap<W16>>(ptr2);
   
   Z p = 1;
   W16 prime = 1;
 
-  bool done = (sum_mass == this->mass);
+  bool done = (sum_mass == this->_mass);
   while (!done)
     {
       // !! TODO - we don't really need to restrict to good primes here,
@@ -282,46 +283,41 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
 	  mpz_nextprime(p.get_mpz_t(), p.get_mpz_t());
 	  prime = mpz_get_ui(p.get_mpz_t());
 	}
-      while (this->disc % prime == 0);
+      while (this->_disc % prime == 0);
       std::shared_ptr<W16_Fp> GF;
       if (prime == 2)
-	GF = std::make_shared<W16_F2>(prime, this->seed_);
+	GF = std::make_shared<W16_F2>(prime, this->_seed);
       else
-	GF = std::make_shared<W16_Fp>(prime, this->seed_, true);
+	GF = std::make_shared<W16_Fp>(prime, this->_seed, true);
       
       size_t current = 0;
-      while (!done && current < this->hash->size())
+      while (!done && current < this->_hash->size())
 	{
 	  // Get the current quadratic form and build the neighbor manager.
-	  const QuadForm<R, n>& mother = this->hash->get(current).q;
+	  const QuadFormZZ<R,n>& mother = this->_hash->get(current)._q;
 	  NeighborManager<W16,W32,R,n> manager(mother, GF);
 
 #ifdef DEBUG
 	  // Build the affine quadratic form for debugging purposes.
 	  std::shared_ptr< W16_QuadForm<n> > qp = mother.mod(GF);
 #endif
-	  manager.get_next_neighbor();
-	  bool prime_done = manager.get_isotropic_subspace().empty();
+	  manager.getNextNeighbor();
+	  bool prime_done = manager.getIsotropicSubspace().empty();
 	  while ((!done) && (!prime_done))
-	    {
-	      
-#ifdef DEBUG
+	    {     
 	      // Verify that the appropriate vector is isotropic.
-	      assert(!manager.get_isotropic_subspace().empty());
-	      assert( mother.evaluate(manager.get_isotropic_subspace()[0]) % prime == 0 );
-#endif
+	      assert(!manager.getIsotropicSubspace().empty());
+	      assert( mother.evaluate(manager.getIsotropicSubspace()[0]) % prime == 0 );
 	      
 	      // Construct the neighbor, the isometry is stored in s.
-	      foo.s.set_identity();
-	      foo.q = manager.build_neighbor(foo.s);
+	      foo.s.setIdentity();
+	      foo.q = manager.buildNeighbor(foo.s);
 	      
-#ifdef DEBUG
 	      // Verify neighbor discriminant matches.
 	      assert( foo.q.discriminant() == mother.discriminant() );
 	      // Verify the isometry indeed constructs the neighbor
-	      assert( foo.s.transform(mother.bilinear_form()) ==
-		      foo.q.bilinear_form() );
-#endif
+	      assert( foo.s.transform(mother.bilinearForm()) ==
+		      foo.q.bilinearForm() );
 
 	      // Reduce the neighbor to its Eisenstein form and add it to
 	      // the hash table.
@@ -330,87 +326,87 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
 	      // !!TODO - ?? Do we want this ??
 	      // We can compute it only if we need to add it.
 	      
-	      foo.q = QuadForm<R,n>::reduce(foo.q, foo.s, true);
-#ifdef DEBUG
-	      assert( foo.s.transform(mother.bilinear_form()) ==
-		      foo.q.bilinear_form() );
-#endif
+	      foo.q = QuadFormZZ<R,n>::reduce(foo.q, foo.s, true);
+
+	      assert( foo.s.transform(mother.bilinearForm()) ==
+		      foo.q.bilinearForm() );
+
 	      foo.p = prime;
 	      foo.parent = current;
 
-	      bool added = this->hash->add(foo);
+	      bool added = this->_hash->add(foo);
 	      if (added)
 		{
-		  const GenusRep<R,n>& temp = this->hash->last();
-		  Z num_aut = temp.q.num_automorphisms();
+		  const GenusRep<R,n>& temp = this->_hash->last();
+		  Z num_aut = temp.q.numAutomorphisms();
 		  Rational<Z> q_mass(1, num_aut);
 		  sum_mass += q_mass;
 		  done = (sum_mass == this->mass);
-#ifdef DEBUG
+
 		  assert(sum_mass <= this->mass);
-#endif
-		  this->spinor_primes->add(prime);
+		  
+		  this->_spinor_primes->add(prime);
 
 		  // add the orbit representatives to the invariants
-		  q_orbit = temp.q.generate_orbit();		  
-#ifdef DEBUG
+		  q_orbit = temp.q.generateOrbit();		  
+
 		  assert(q_orbit.find(temp.q) != q_orbit.end());
-#endif
+
 		  for (iter = q_orbit.begin(); iter != q_orbit.end(); iter++) {
-#ifdef DEBUG
-		    assert(iter->second.is_isometry(temp.q, iter->first));
-#endif
+
+		    assert(iter->second.isIsometry(temp.q, iter->first));
+
 		    foo.q = iter->first;
 		    foo.s = temp.s * iter->second;
 		    foo.parent = temp.parent;
-#ifdef DEBUG
-		    assert(foo.s.is_isometry(this->hash->at(temp.parent).q,
+
+		    assert(foo.s.isIsometry(this->_hash->at(temp.parent).q,
 					     foo.q));
-#endif
-		    this->inv_hash->add(foo);
-		    this->inv_map[this->inv_hash->indexof(foo)] =
-		      this->hash->indexof(temp);
+
+		    this->_inv_hash->add(foo);
+		    this->_inv_map[this->_inv_hash->indexof(foo)] =
+		      this->_hash->indexof(temp);
 		  }
 		}
-	      manager.get_next_neighbor();
-	      prime_done = manager.get_isotropic_subspace().empty();
+	      manager.getNextNeighbor();
+	      prime_done = manager.getIsotropicSubspace().empty();
 	    }
 	  ++current;
 	}
     }
   
   // Initialize the dimensions to zero, we will compute these values below.
-  this->dims.resize(num_conductors, 0);
+  this->_dims.resize(num_conductors, 0);
   
   // Create the lookup table values for each genus rep at each conductor.
-  size_t genus_size = this->hash->size();
-  this->lut_positions.resize(num_conductors, std::vector<int>(genus_size, -1));
-  this->num_auts.resize(num_conductors);
+  size_t genus_size = this->_hash->size();
+  this->_lut_positions.resize(num_conductors, std::vector<int>(genus_size, -1));
+  this->_num_auts.resize(num_conductors);
 
+  assert(this->_hash->size() > 0);
+  
 #ifdef DEBUG
-  assert(this->hash->size() > 0);
-  GenusRep<R,n>& mother = this->hash->at(0);
+  GenusRep<R,n>& mother = this->_hash->at(0);
 #endif
   
   // The genus rep isometries were initialized only to contain the
   // isometry between the parent and its child, we now want to update
   // these isometries so that they are rational isometries between the
   // "mother" quadratic form and the genus rep.
-  for (size_t idx=0; idx<this->hash->size(); idx++)
+  for (size_t idx=0; idx<this->_hash->size(); idx++)
     {
-      GenusRep<R,n>& rep = this->hash->at(idx);
+      GenusRep<R,n>& rep = this->_hash->at(idx);
       
       // Only compute composite isometries if we are not considering the
       // mother form.
       if (idx)
 	{
-	  GenusRep<R,n>& parent = this->hash->at(rep.parent);
-#ifdef DEBUG
-	  assert( rep.s.transform(parent.q.bilinear_form()) ==
-		  rep.q.bilinear_form() );
-	  assert( parent.s.transform(mother.q.bilinear_form()) ==
-		  parent.q.bilinear_form() );  
-#endif	  
+	  GenusRep<R,n>& parent = this->_hash->at(rep.parent);
+	  assert( rep.s.transform(parent.q.bilinearForm()) ==
+		  rep.q.bilinearForm() );
+	  assert( parent.s.transform(mother.q.bilinearForm()) ==
+		  parent.q.bilinearForm() );  
+
 	  // Construct the isometries to/from the mother quadratic form.
 	  rep.sinv = rep.s.inverse();
 	  rep.sinv = rep.sinv * parent.sinv;
@@ -420,23 +416,22 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
 	  rep.es = parent.es;
 	  ++rep.es[rep.p];
 
-#ifdef DEBUG
 	  // Verify that s is an isometry from the mother form to the rep,
 	  // and that sinv is an isometry from the rep to the mother form.
-	  assert( rep.s.transform(mother.q.bilinear_form()) ==
-		  rep.q.bilinear_form() );
-	  assert( rep.s.is_isometry(mother.q, rep.q) );
-	  assert( rep.sinv.is_isometry(rep.q, mother.q) );
-#endif
+	  assert( rep.s.transform(mother.q.bilinearForm()) ==
+		  rep.q.bilinearForm() );
+	  assert( rep.s.isIsometry(mother.q, rep.q) );
+	  assert( rep.sinv.isIsometry(rep.q, mother.q) );
+
 	}
       
       // Determine which subspaces this representative contributes.
-      std::set<Isometry<R, n>> auts = rep.q.proper_automorphisms();
+      std::set<Isometry<R,n>> auts = rep.q.properAutomorphisms();
 
-      std::vector<bool> ignore(this->conductors.size(), false);
+      std::vector<bool> ignore(this->_conductors.size(), false);
       for (const Isometry<R,n>& s : auts)
 	{
-	  Z64 vals = this->spinor->norm(rep.q, s, 1);
+	  Z64 vals = this->_spinor->norm(rep.q, s, 1);
 	  
 	  for (size_t k=0; k<num_conductors; k++)
 	    {
@@ -447,34 +442,34 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
 	    }
 	}
       
-      int num = rep.q.num_automorphisms();
+      int num = rep.q.numAutomorphisms();
       for (size_t k=0; k<num_conductors; k++)
 	{
 	  if (!ignore[k])
 	    {
-	      this->lut_positions[k][idx] = this->dims[k];
-	      this->num_auts[k].push_back(num);
+	      this->_lut_positions[k][idx] = this->-dims[k];
+	      this->_num_auts[k].push_back(num);
 	    }
-	  this->dims[k] += (ignore[k] ? 0 : 1);
+	  this->_dims[k] += (ignore[k] ? 0 : 1);
 	}
     }
 
   // Do the same for the inv_hash
-  for (size_t idx=0; idx<this->inv_hash->size(); idx++)
+  for (size_t idx=0; idx<this->_inv_hash->size(); idx++)
     {
-      GenusRep<R,n>& rep = this->inv_hash->at(idx);
+      GenusRep<R,n>& rep = this->_inv_hash->at(idx);
       
       // Only compute composite isometries if we are not considering the
       // mother form.
       if (rep.parent != -1)
 	{
-	  GenusRep<R,n>& parent = this->hash->at(rep.parent);
-#ifdef DEBUG
-	  assert( rep.s.transform(parent.q.bilinear_form()) ==
-		  rep.q.bilinear_form() );
-	  assert( parent.s.transform(mother.q.bilinear_form()) ==
-		  parent.q.bilinear_form() );  
-#endif	  
+	  GenusRep<R,n>& parent = this->_hash->at(rep.parent);
+
+	  assert( rep.s.transform(parent.q.bilinearForm()) ==
+		  rep.q.bilinearForm() );
+	  assert( parent.s.transform(mother.q.bilinearForm()) ==
+		  parent.q.bilinearForm() );  
+
 	  // Construct the isometries to/from the mother quadratic form.
 	  rep.sinv = rep.s.inverse();
 	  rep.sinv = rep.sinv * parent.sinv;
@@ -484,14 +479,13 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
 	  rep.es = parent.es;
 	  ++rep.es[rep.p];
 
-#ifdef DEBUG
 	  // Verify that s is an isometry from the mother form to the rep,
 	  // and that sinv is an isometry from the rep to the mother form.
-	  assert( rep.s.transform(mother.q.bilinear_form()) ==
-		  rep.q.bilinear_form() );
+	  assert( rep.s.transform(mother.q.bilinearForm()) ==
+		  rep.q.bilinearForm() );
 	  assert( rep.s.is_isometry(mother.q, rep.q) );
 	  assert( rep.sinv.is_isometry(rep.q, mother.q) );
-#endif
+
 	}
       
     }
@@ -499,85 +493,85 @@ Genus<R, n>::Genus(const QuadForm<R, n>& q,
 
 template<typename R, size_t n>
 template<typename T>
-Genus<R, n>::Genus(const Genus<T, n>& src)
+Genus<R,n>::Genus(const Genus<T,n>& src)
 {
   // Convert the discriminant.
-  this->disc = birch_util::convert_Integer<T,R>(src.disc);
+  this->_disc = birch_util::convert_Integer<T,R>(src._disc);
 
   // Convert the prime divisors.
-  for (const T& p : src.prime_divisors)
+  for (const T& p : src._prime_divisors)
     {
-      this->prime_divisors.push_back(birch_util::convert_Integer<T,R>(p));
+      this->_prime_divisors.push_back(birch_util::convert_Integer<T,R>(p));
     }
 
   // Convert the conductors.
-  for (const T& cond : src.conductors)
+  for (const T& cond : src._conductors)
     {
-      this->conductors.push_back(birch_util::convert_Integer<T,R>(cond));
+      this->_conductors.push_back(birch_util::convert_Integer<T,R>(cond));
     }
 
   // Copy dimensions.
-  this->dims = src.dims;
+  this->_dims = src._dims;
 
   // Copy automorphisms counts.
-  this->num_auts = src.num_auts;
+  this->_num_auts = src._num_auts;
 
   // Copy lookup table dimensions.
-  this->lut_positions = src.lut_positions;
+  this->_lut_positions = src._lut_positions;
 
   // Copy mass.
-  this->mass = src.mass;
+  this->_mass = src._mass;
 
   // Build a copy of the spinor primes hash table.
-  this->spinor_primes = std::unique_ptr<HashMap<W16>>(new HashMap<W16>(src.spinor_primes->size()));
-  for (W16 x : src.spinor_primes->keys())
+  this->_spinor_primes = std::unique_ptr<HashMap<W16>>(new HashMap<W16>(src._spinor_primes->size()));
+  for (W16 x : src._spinor_primes->keys())
     {
-      this->spinor_primes->add(x);
+      this->_spinor_primes->add(x);
     }
   
   // Build a copy of the genus representatives hash table.
-  this->hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(new HashMap<GenusRep<R,n>>(src.hash->size()));
+  this->_hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(new HashMap<GenusRep<R,n>>(src._hash->size()));
   
-  for (const GenusRep<T, n>& rep : src.hash->keys())
+  for (const GenusRep<T, n>& rep : src._hash->keys())
     {
-      this->hash->add(birch_util::convert_GenusRep<T,R>(rep));
+      this->_hash->add(birch_util::convert_GenusRep<T,R>(rep));
     }
 
-  this->inv_hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(new HashMap<GenusRep<R,n>>(src.inv_hash->size()));
+  this->_inv_hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(new HashMap<GenusRep<R,n>>(src._inv_hash->size()));
   
-  for (const GenusRep<T, n>& rep : src.inv_hash->keys())
+  for (const GenusRep<T, n>& rep : src._inv_hash->keys())
     {
-      this->inv_hash->add(birch_util::convert_GenusRep<T,R>(rep));
+      this->_inv_hash->add(birch_util::convert_GenusRep<T,R>(rep));
     }
 
-  for (std::pair<size_t,size_t> element : src.inv_map) {
-    this->inv_map[element.first] = element.second;
+  for (std::pair<size_t,size_t> element : src._inv_map) {
+    this->_inv_map[element.first] = element.second;
   }
 
   // Create Spinor class.
   std::vector<R> primes;
-  primes.reserve(src.spinor->primes().size());
-  for (const T& p : src.spinor->primes())
+  primes.reserve(src._spinor->primes().size());
+  for (const T& p : src._spinor->primes())
     {
       primes.push_back(birch_util::convert_Integer<T,R>(p));
     }
-  this->spinor = std::unique_ptr<Spinor<R>>(new Spinor<R>(primes));
+  this->_spinor = std::unique_ptr<Spinor<R>>(new Spinor<R>(primes));
   
   // Copy seed.
-  this->seed_ = src.seed_;
+  this->_seed = src._seed;
 }
 
 template<typename R, size_t n>
 Eigenvector<R> Genus<R,n>::eigenvector(const std::vector<Z32>& vec,
-					  const R& conductor) const
+				       const R& conductor) const
 {
-  size_t num_conductors = this->conductors.size();
+  size_t num_conductors = this->_conductors.size();
   bool found = false;
 
   size_t k;
   for (k=0; k<num_conductors; k++)
     {
-      if (this->conductors[k] == conductor)
+      if (this->_conductors[k] == conductor)
 	{
 	  found = true;
 	  break;
@@ -589,7 +583,7 @@ Eigenvector<R> Genus<R,n>::eigenvector(const std::vector<Z32>& vec,
       throw std::invalid_argument("Invalid conductor.");
     }
 
-  size_t dim = this->dims[k];
+  size_t dim = this->_dims[k];
   if (dim != vec.size())
     {
       throw std::invalid_argument("Eigenvector has incorrect dimension.");
@@ -598,7 +592,7 @@ Eigenvector<R> Genus<R,n>::eigenvector(const std::vector<Z32>& vec,
   size_t fulldim = this->size();
 
   std::vector<Z32> temp(this->size());
-  const std::vector<int>& lut = this->lut_positions[k];
+  const std::vector<int>& lut = this->_lut_positions[k];
   
   for (size_t idx=0; idx<fulldim; idx++)
     {
@@ -613,8 +607,8 @@ Eigenvector<R> Genus<R,n>::eigenvector(const std::vector<Z32>& vec,
 
 template<typename R, size_t n>
 std::vector<Z32>
-Genus<R, n>::eigenvalues(EigenvectorManager<R, n>& vector_manager,
-			    const R& p) const
+Genus<R,n>::eigenvalues(EigenvectorManager<R,n>& vector_manager,
+			const R& p) const
 {
   R bits16 = birch_util::convert_Integer<Z64,R>(1LL << 16);
   R bits32 = birch_util::convert_Integer<Z64,R>(1LL << 32);
@@ -649,41 +643,41 @@ template<typename R, size_t n>
 template<typename S, typename T>
 std::vector<Z32>
 Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
-			     std::shared_ptr<Fp<S,T>> GF, const R& p) const
+			  std::shared_ptr<Fp<S,T>> GF, const R& p) const
 {
   std::vector<Z32> eigenvalues(vector_manager.size());
 
   S prime = GF->prime();
 
-  const GenusRep<R,n>& mother = this->hash->get(0);
+  const GenusRep<R,n>& mother = this->_hash->get(0);
 
-  const Z32 *stride_ptr = vector_manager.strided_eigenvectors.data();
+  const Z32 *stride_ptr = vector_manager._strided_eigenvectors.data();
 
-  size_t num_indices = vector_manager.indices.size();
+  size_t num_indices = vector_manager._indices.size();
   for (size_t index=0; index<num_indices; index++)
     {
-      size_t npos = static_cast<size_t>(vector_manager.indices[index]);
-      const GenusRep<R,n>& cur = this->hash->get(npos);
+      size_t npos = static_cast<size_t>(vector_manager._indices[index]);
+      const GenusRep<R,n>& cur = this->_hash->get(npos);
       NeighborManager<S,T,R,n> neighbor_manager(cur.q, GF);
-      neighbor_manager.get_next_neighbor();
-      bool done = neighbor_manager.get_isotropic_subspace().empty();
+      neighbor_manager.getNextNeighbor();
+      bool done = neighbor_manager.getIsotropicSubspace().empty();
       //for (W64 t=0; t<=prime; t++)
       while (!done)
 	{
-	  GenusRep<R,n> foo = neighbor_manager.get_reduced_neighbor_rep();
+	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep();
 	  
-	  size_t rpos = this->hash->indexof(foo);
-	  size_t offset = vector_manager.stride * rpos;
+	  size_t rpos = this->_hash->indexof(foo);
+	  size_t offset = vector_manager._stride * rpos;
 	  __builtin_prefetch(stride_ptr + offset, 0, 0);
 
 	  W64 spin_vals;
 	  if (unlikely(rpos == npos))
 	    {
-	      spin_vals = this->spinor->norm(foo.q, foo.s, p);
+	      spin_vals = this->_spinor->norm(foo.q, foo.s, p);
 	    }
 	  else
 	    {
-	      const GenusRep<R,n>& rep = this->hash->get(rpos);
+	      const GenusRep<R,n>& rep = this->_hash->get(rpos);
 	      foo.s = cur.s * foo.s;
 	      R scalar = p;
 	      
@@ -692,29 +686,29 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	      scalar *= birch_util::my_pow(cur.es);
 	      scalar *= birch_util::my_pow(rep.es);
 	      
-	      spin_vals = this->spinor->norm(mother.q, foo.s, scalar);
+	      spin_vals = this->_spinor->norm(mother.q, foo.s, scalar);
 	    }
 	  
-	  for (Z64 vpos : vector_manager.position_lut[index])
+	  for (Z64 vpos : vector_manager._position_lut[index])
 	    {
-	      W64 cond = vector_manager.conductors[vpos];
+	      W64 cond = vector_manager._conductors[vpos];
 	      Z32 value = birch_util::char_val(spin_vals & cond);
-	      Z32 coord = vector_manager.strided_eigenvectors[offset + vpos];
+	      Z32 coord = vector_manager._strided_eigenvectors[offset + vpos];
 	      if (likely(coord))
 		{
 		  eigenvalues[vpos] += (value * coord);
 		}
 	    }
-	  neighbor_manager.get_next_neighbor();
-	  done = neighbor_manager.get_isotropic_subspace().empty();
+	  neighbor_manager.getNextNeighbor();
+	  done = neighbor_manager.getIsotropicSubspace().empty();
 	}
       
       // Divide out the coordinate associated to the eigenvector to
       // recover the actual eigenvalue.
-      for (Z64 vpos : vector_manager.position_lut[index])
+      for (Z64 vpos : vector_manager._position_lut[index])
 	{
-	  size_t offset = vector_manager.stride * npos;
-	  Z32 coord = vector_manager.strided_eigenvectors[offset + vpos];
+	  size_t offset = vector_manager._stride * npos;
+	  Z32 coord = vector_manager._strided_eigenvectors[offset + vpos];
 	  assert( eigenvalues[vpos] % coord == 0 );
 	  eigenvalues[vpos] /= coord;
 	}
@@ -724,11 +718,11 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 }
 
 template<typename R, size_t n>
-std::map<R,std::vector<std::vector<int>>>
-Genus<R, n>::hecke_matrix_sparse_internal(const R& p) const
+inline std::map<R,std::vector<std::vector<int>>>
+Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 {
-  size_t num_conductors = this->conductors.size();
-  size_t num_primes = this->prime_divisors.size();
+  size_t num_conductors = this->_conductors.size();
+  size_t num_primes = this->_prime_divisors.size();
 
   std::vector<std::vector<int>> data(num_conductors);
   std::vector<std::vector<int>> indptr;
@@ -746,71 +740,63 @@ Genus<R, n>::hecke_matrix_sparse_internal(const R& p) const
   all_spin_vals.reserve(prime+1);
 
   std::vector<std::vector<int>> rowdata;
-  for (int dim : this->dims)
+  for (int dim : this->_dims)
     {
       rowdata.push_back(std::vector<int>(dim));
       indptr.push_back(std::vector<int>(dim+1, 0));
     }
 
-  const GenusRep<R,n>& mother = this->hash->keys()[0];
+  const GenusRep<R,n>& mother = this->_hash->keys()[0];
   size_t num_reps = this->size();
   for (size_t idx=0; idx<num_reps; idx++)
     {
-      const GenusRep<R,n>& cur = this->hash->get(idx);
+      const GenusRep<R,n>& cur = this->_hash->get(idx);
       NeighborManager<W16,W32,R,n> manager(cur.q, GF);
 
-      manager.get_next_neighbor();
-      bool done = manager.get_isotropic_subspace().empty();
-      //for (W16 t=0; t<=prime; t++)
+      manager.getNextNeighbor();
+      bool done = manager.getIsotropicSubspace().empty();
+
       while (!done)
 	{
-	  GenusRep<R,n> foo = manager.get_reduced_neighbor_rep();
+	  GenusRep<R,n> foo = manager.getReducedNeighborRep();
 
-#ifdef DEBUG
-	  assert( foo.s.is_isometry(cur.q, foo.q) );
-#endif
+	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
-	  size_t r = this->hash->indexof(foo);
+	  size_t r = this->_hash->indexof(foo);
 
-#ifdef DEBUG
 	  assert( r < this->size() );
-#endif
 
 	  W64 spin_vals;
 	  if (r == idx)
 	    {
-	      spin_vals = this->spinor->norm(foo.q, foo.s, p);
+	      spin_vals = this->_spinor->norm(foo.q, foo.s, p);
 	    }
 	  else
 	    {
-	      const GenusRep<R,n>& rep = this->hash->get(r);
+	      const GenusRep<R,n>& rep = this->_hash->get(r);
 	      foo.s = cur.s * foo.s;
 	      R scalar = p;
 
-#ifdef DEBUG
-	      assert( foo.s.is_isometry(mother.q, foo.q) );
-#endif
+	      assert( foo.s.isIsometry(mother.q, foo.q) );
 
 	      foo.s = foo.s * rep.sinv;
 
-#ifdef DEBUG
-	      assert( foo.s.is_isometry(mother.q, mother.q) );
-#endif
+	      assert( foo.s.isIsometry(mother.q, mother.q) );
 
 	      scalar *= birch_util::my_pow(cur.es);
 	      scalar *= birch_util::my_pow(rep.es);
 
-	      spin_vals = this->spinor->norm(mother.q, foo.s, scalar);
+	      spin_vals = this->_spinor->norm(mother.q, foo.s, scalar);
 	    }
 
 	  all_spin_vals.push_back((r << num_primes) | spin_vals);
-	  manager.get_next_neighbor();
-	  done = manager.get_isotropic_subspace().empty();
+	  manager.getNextNeighbor();
+	  done = manager.getIsotropicSubspace().empty();
 	}
 
       for (size_t k=0; k<num_conductors; k++)
 	{
-	  const std::vector<int>& lut = this->lut_positions[k];
+	  const std::vector<int>& lut = this->_lut_positions[k];
 	  int npos = lut[idx];
 	  if (npos == -1) continue;
 
@@ -853,7 +839,7 @@ Genus<R, n>::hecke_matrix_sparse_internal(const R& p) const
   std::map<R,std::vector<std::vector<int>>> csr_matrices;
   for (size_t k=0; k<num_conductors; k++)
     {
-      const R& cond = this->conductors[k];
+      const R& cond = this->_conductors[k];
       csr_matrices[cond] = std::vector<std::vector<int>>();
       csr_matrices[cond].push_back(data[k]);
       csr_matrices[cond].push_back(indices[k]);
@@ -863,11 +849,11 @@ Genus<R, n>::hecke_matrix_sparse_internal(const R& p) const
 }
 
 template<typename R, size_t n>
-std::map<R,std::vector<int>>
-Genus<R, n>::hecke_matrix_dense_internal(const R& p) const
+inline std::map<R,std::vector<int>>
+Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 {
-  size_t num_conductors = this->conductors.size();
-  size_t num_primes = this->prime_divisors.size();
+  size_t num_conductors = this->_conductors.size();
+  size_t num_primes = this->_prime_divisors.size();
 
   // Allocate memory for the Hecke matrices and create a vector to store
   // pointers to the raw matrix data.
@@ -876,7 +862,7 @@ Genus<R, n>::hecke_matrix_dense_internal(const R& p) const
   std::vector<std::vector<int>> hecke_matrices;
   for (size_t k=0; k<num_conductors; k++)
     {
-      size_t dim = this->dims[k];
+      size_t dim = this->_dims[k];
       hecke_matrices.push_back(std::vector<int>(dim * dim));
       hecke_ptr.push_back(hecke_matrices.back().data());
     }
@@ -891,7 +877,7 @@ Genus<R, n>::hecke_matrix_dense_internal(const R& p) const
   else
     GF = std::make_shared<W16_Fp>((W16)prime, this->seed(), true);
 
-  const GenusRep<R,n>& mother = this->hash->keys()[0];
+  const GenusRep<R,n>& mother = this->_hash->keys()[0];
   size_t num_reps = this->size();
 
   // Create hash tables for storing isotropic vectors to be skipped
@@ -900,21 +886,21 @@ Genus<R, n>::hecke_matrix_dense_internal(const R& p) const
 
   for (size_t idx=0; idx<num_reps; idx++)
     {
-      const GenusRep<R,n>& cur = this->hash->get(idx);
+      const GenusRep<R,n>& cur = this->_hash->get(idx);
       NeighborManager<W16,W32,R,n> manager(cur.q, GF);
 
-      manager.get_next_neighbor();
-      bool done = manager.get_isotropic_subspace().empty();
-      //for (W16 t=0; t<=prime; t++)
+      manager.getNextNeighbor();
+      bool done = manager.getIsotropicSubspace().empty();
+
       while (!done)
 	{
 	  GenusRep<R,n> foo;
 	  
 	  W16_Vector<n> vec;
 	  for (size_t i = 0; i < n; i++)
-	    vec[i] = GF->mod(manager.get_isotropic_subspace()[0][i]).lift();
+	    vec[i] = GF->mod(manager.getIsotropicSubspace()[0][i]).lift();
 
-	  // We skip this part for now
+	  // !! TODO - this stopped working when we started storing orbits - fix this. We skip this part for now
 	  /*
 	  // If this vector has already been identified, skip it. This
 	  // avoids unnecessarily computing the neighbor, reducing it,
@@ -929,82 +915,67 @@ Genus<R, n>::hecke_matrix_dense_internal(const R& p) const
 	  }
 	  */
 	  // Build the neighbor and reduce it.
-	  foo.q = manager.build_neighbor(foo.s);
-	  SquareMatrix<R, n> qf = foo.q.bilinear_form();
-	  QuadForm<R,n>::greedy(qf, foo.s);
-	  QuadForm<R,n> qred(qf);
+	  foo.q = manager.buildNeighbor(foo.s);
+	  SquareMatrix<R, n> qf = foo.q.bilinearForm();
+	  QuadFormZZ<R,n>::greedy(qf, foo.s);
+	  QuadFormZZ<R,n> qred(qf);
 	  foo.q = qred;
-	  // foo.q = QuadForm<R, n>::reduce(foo.q, foo.s);
 
-#ifdef DEBUG
-	  assert( foo.s.is_isometry(cur.q, foo.q) );
-#endif
+	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
-	  // size_t r = this->hash->indexof(foo);
-	  size_t r_inv = this->inv_hash->indexof(foo);
-	  size_t r = this->inv_map.at(r_inv);
+	  size_t r_inv = this->_inv_hash->indexof(foo);
+	  size_t r = this->_inv_map.at(r_inv);
 
-#ifdef DEBUG
 	  assert( r < this->size() );
-#endif
 
 	  W64 spin_vals;
 	  if (r > idx)
 	    {
-	      const GenusRep<R,n>& rep = this->inv_hash->get(r);
-	      const GenusRep<R,n>& rep_inv = this->inv_hash->get(r_inv);
+	      const GenusRep<R,n>& rep = this->_inv_hash->get(r);
+	      const GenusRep<R,n>& rep_inv = this->_inv_hash->get(r_inv);
 	      
-	      GenusRep<R, n> tmp = rep;
+	      GenusRep<R,n> tmp = rep;
 
 	      tmp.s = foo.s * rep_inv.sinv * rep.s;
 	      
-#ifdef DEBUG
-	      assert( tmp.s.is_isometry(cur.q, tmp.q) );
-#endif
+	      assert( tmp.s.isIsometry(cur.q, tmp.q) );
 	      
-	      // W16_Vector<n> result = manager.transform_vector(tmp, vec);
-	      W16_Vector<n> result = manager.transform_vector(foo, vec);
+	      W16_Vector<n> result = manager.transformVector(foo, vec);
 	      
 	      vector_hash[r].add(result);
 	      
 	      foo.s = cur.s * foo.s;
 	      R scalar = p;
 
-#ifdef DEBUG
-	      assert( foo.s.is_isometry(mother.q, foo.q) );
-#endif
+	      assert( foo.s.isIsometry(mother.q, foo.q) );
 
-	      // foo.s = foo.s * rep.sinv;
 	      foo.s = foo.s * rep_inv.sinv;
 
-#ifdef DEBUG
-	      assert( foo.s.is_isometry(mother.q, mother.q) );
-#endif
+	      assert( foo.s.isIsometry(mother.q, mother.q) );
 
 	      scalar *= birch_util::my_pow(cur.es);
-	      // scalar *= birch_util::my_pow(rep.es);
 	      scalar *= birch_util::my_pow(rep_inv.es);
 
-	      spin_vals = this->spinor->norm(mother.q, foo.s, scalar);
+	      spin_vals = this->_spinor->norm(mother.q, foo.s, scalar);
 	    }
 	  else if (r == idx)
 	    {
-	      spin_vals = this->spinor->norm(foo.q, foo.s, p);
+	      spin_vals = this->_spinor->norm(foo.q, foo.s, p);
 	    }
 	  else {
-	    manager.get_next_neighbor();
-	    done = manager.get_isotropic_subspace().empty();
+	    manager.getNextNeighbor();
+	    done = manager.getIsotropicSubspace().empty();
 	    continue;
 	  }
 
 	  all_spin_vals.push_back((r << num_primes) | spin_vals);
-	  manager.get_next_neighbor();
-	  done = manager.get_isotropic_subspace().empty();
+	  manager.getNextNeighbor();
+	  done = manager.getIsotropicSubspace().empty();
 	}
 
       for (size_t k=0; k<num_conductors; k++)
 	{
-	  const std::vector<int>& lut = this->lut_positions[k];
+	  const std::vector<int>& lut = this->_lut_positions[k];
 	  int npos = lut[idx];
 	  if (unlikely(npos == -1)) continue;
 
@@ -1019,7 +990,7 @@ Genus<R, n>::hecke_matrix_dense_internal(const R& p) const
 	      row[rpos] += birch_util::char_val(x & k);
 	    }
 
-	  hecke_ptr[k] += this->dims[k];
+	  hecke_ptr[k] += this->_dims[k];
 	}
 
       all_spin_vals.clear();
@@ -1032,9 +1003,9 @@ Genus<R, n>::hecke_matrix_dense_internal(const R& p) const
   for (size_t k=0; k<num_conductors; k++)
     {
       std::vector<int>& matrix = hecke_matrices[k];
-      size_t dim = this->dims[k];
+      size_t dim = this->_dims[k];
       size_t dim2 = dim * dim;
-      const std::vector<size_t>& auts = this->num_auts[k];
+      const std::vector<size_t>& auts = this->_num_auts[k];
 
       // Copy upper diagonal matrix to the lower diagonal.
       for (size_t start=0, row=0; start<dim2; start+=dim+1, row++)
@@ -1051,9 +1022,7 @@ Genus<R, n>::hecke_matrix_dense_internal(const R& p) const
 		    }
 		  else
 		    {
-#ifdef DEBUG
 		      assert( (matrix[src] * col_auts) % row_auts == 0 );
-#endif
 
 		      matrix[dst] = matrix[src] * col_auts / row_auts;
 		    }
@@ -1062,16 +1031,16 @@ Genus<R, n>::hecke_matrix_dense_internal(const R& p) const
 	}
 
       // Move the matrix in the corresponding entry in the map.
-      matrices[this->conductors[k]] = std::move(hecke_matrices[k]);
+      matrices[this->_conductors[k]] = std::move(hecke_matrices[k]);
     }
   return matrices;
 }
 
 // !! - TOOD - maybe it's better to return here already eigenvectors
 template<typename R, size_t n>
-std::vector< Matrix<int> >
-Genus<R,n>::decomposition_recurse(const Matrix<int> & V_basis,
-				  const R & p, size_t k) const
+inline std::vector< Matrix<int> >
+Genus<R,n>::_decompositionRecurse(const Matrix<int> & V_basis,
+				  const Integer<R> & p, size_t k) const
 {
   // This will hold the bases of the irreducible spaces
   std::vector< Matrix<int> > decomp;
@@ -1080,18 +1049,18 @@ Genus<R,n>::decomposition_recurse(const Matrix<int> & V_basis,
     return decomp;
 
 #ifdef DEBUG
-  std::cerr << "Decomposing spaces of dimension " << this->dims;
+  std::cerr << "Decomposing spaces of dimension " << this->_dims;
   std::cerr << "using T_" << p << "." << std::endl;
 #endif
 
   // !! - TODO - check that results are stored and we don't
   // recompute for different values of k
-  std::map<R,std::vector<int>> T_p_dense = hecke_matrix_dense(p);
+  std::map<R,std::vector<int>> T_p_dense = heckeMatrixDense(p.num());
   
-  Matrix<int> T_p(T_p_dense[k],this->dims[k], this->dims[k]);
+  Matrix<int> T_p(T_p_dense[k],this->_dims[k], this->_dims[k]);
   T_p = T_p.restrict(V_basis);
     
-  UnivariatePoly<Z> f = T_p.char_poly();
+  UnivariatePoly<Z> f = T_p.charPoly();
   std::unordered_map< UnivariatePoly<Z>, size_t > fac = f.factor();
 
   for( std::pair< UnivariatePoly<Z>, size_t > fa : fac) {
@@ -1109,13 +1078,12 @@ Genus<R,n>::decomposition_recurse(const Matrix<int> & V_basis,
     if (a == 1)
       decomp.push_back(W_basis);
     else {
-      R q;
+      Integer<R> q;
       if (W_basis.nrows() == V_basis.nrows())
-	q = Math<R>::next_prime(p);
-	// mpz_nextprime(q.get_mpz_t(), q.get_mpz_t());
+	q = p.nextPrime();
       else
-	q = 2;
-      std::vector< Matrix<int> > sub = this->decomposition_recurse(W_basis, q, k);
+	q = R(2);
+      std::vector< Matrix<int> > sub = this->_decompositionRecurse(W_basis, q, k);
       decomp.insert(decomp.end(), sub.begin(), sub.end());
     }
   }
@@ -1125,43 +1093,43 @@ Genus<R,n>::decomposition_recurse(const Matrix<int> & V_basis,
 
 // !! TODO - support non-squarefree (when there are oldforms)
 template<typename R, size_t n>
-std::vector< Matrix<int> > Genus<R,n>::decomposition(size_t k) const
+inline std::vector< Matrix<int> > Genus<R,n>::_decomposition(size_t k) const
 {
   std::vector< Matrix<int> > decomp;
-  if (this->dims[k] == 0)
+  if (this->_dims[k] == 0)
     return decomp;
 
-  Matrix<int> M_basis = Matrix<int>::identity(this->dims[k]);
+  MatrixInt<int> M_basis = MatrixInt<int>::identity(this->_dims[k]);
 
-  R p = 2;
+  Integer<R> p = R(2);
 
-  return decomposition_recurse(M_basis, p, k);
+  return this->_decompositionRecurse(M_basis, p, k);
 }
 
 template<typename R, size_t n>
-std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > >
-Genus<R,n>::eigenvectors()
+inline std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > >
+Genus<R,n>::eigenvectors(void)
 {
   std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > > evecs;
 
-  for (size_t k = 0; k < this->conductors.size(); k++){
-    std::vector< Matrix<int> > decomp = this->decomposition(k);
+  for (size_t k = 0; k < this->_conductors.size(); k++){
+    std::vector< MatrixInt<int> > decomp = this->_decomposition(k);
     std::vector< std::vector< NumberFieldElement<Z> > > evecs_k;
-    for (Matrix<int> T : decomp) {
-      UnivariatePoly<Z> f = T.char_poly();
+    for (MatrixInt<int> T : decomp) {
+      UnivariatePolyInt<Z> f = T.charPoly();
       std::shared_ptr< NumberField<Z> > K
 	= std::make_shared< NumberField<Z> >(f);
-      Matrix< NumberFieldElement<Z> > T_K(T.nrows(), T.ncols());
+      Matrix< NumberFieldElement<Z>, NumberField<Z> > T_K(K, T.nrows(), T.ncols());
       for (size_t row = 0; row < T.nrows(); row++)
 	for (size_t col = 0; col < T.ncols(); col++)
 	  T_K(row,col) = NumberFieldElement<Z>(K, T(row,col));
-      NumberFieldElement<Z> lambda(K, UnivariatePoly< Rational<Z> >::x());
+      NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x());
       T_K -= lambda * Matrix< NumberFieldElement<Z> >::identity(T.nrows());
-      Matrix< NumberFieldElement<Z> > nullsp = T_K.kernel();
+      Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
       evecs_k.push_back(vec);
     }
-    evecs[this->conductors[k]] = evecs_k;
+    evecs[this->_conductors[k]] = evecs_k;
   }
   return evecs;
 }

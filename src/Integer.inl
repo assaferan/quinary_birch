@@ -205,3 +205,25 @@ inline bool Integer<R>::isLocalSquare(const Integer<R>& p) const
   }
   return ((w > ee) || ((w == ee) && (a0 % R(8)).isOne()));
 }
+
+template<typename R>
+inline Integer<R> Integer<R>::binomialCoefficient(const Integer<R> & k) const;
+{
+  const Integer<R> & n = *this;
+  Integer<R> res = Integer<R>::one();
+  if (k > n - k)
+    return Integer<R>::binomialCoefficient(n, n-k);
+  for (Integer<R> i = 0; i < k; i++) {
+    res *= (n-i);
+    res /= (i+1);
+  }
+  return res;
+}
+
+template <typename R>
+inline Integer<R> Integer<R>::nextPrime() const
+{
+  Z p = birch_util::convertInteger<R,Z>(a.num());
+  mpz_nextprime(p.get_mpz_t(), p.get_mpz_t());
+  return birch_util::convertInteger<Z,R>(p); 
+}

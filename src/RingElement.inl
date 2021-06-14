@@ -104,7 +104,6 @@ inline Derived& RingElement<Derived,DerivedParent>::operator-- ()
   return *(this->getPtr());
 }
 
-
 /**
  * Output operator.
  *

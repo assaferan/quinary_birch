@@ -1,77 +1,30 @@
 #ifndef __NUMBER_FIELD_H_
 #define __NUMBER_FIELD_H_
 
-#include "Polynomial.h"
-#include "Rational.h"
+#include "birch.h"
 
 template<typename R>
-class NumberField :public std::enable_shared_from_this< const NumberField<R> > {
-public:
-  NumberField(const UnivariatePoly< Rational<R> > & mod) : f(mod) {}
-  NumberField(const UnivariatePoly< R > &);
-
-  const UnivariatePoly< Rational<R> > & modulus() const
-  {return this->f; }
-
-  std::shared_ptr< const NumberField<R> > getptr() const
-  {
-    return std::enable_shared_from_this< const NumberField<R> >::shared_from_this();
-  }
-  
-protected:
-  UnivariatePoly< Rational<R> > f;
-};
-
-template<typename R>
-class NumberFieldElement
+class NumberField : public virtual Ring< NumberField<R>, NumberFieldElement<R,S> >
 {
 public:
-  NumberFieldElement() = default;
-  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld) : K(fld) {}
-  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
-		     const UnivariatePoly< Rational<R> > & poly)
-    : K(fld), elt(poly) {}
-  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
-		     const R & a)
-    : K(fld), elt(a) {} 
-  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
-		     const Rational<R> & a) : K(fld), elt(a) {}
+  NumberField(const UnivariatePolyRat<R> & mod) : _f(mod) {}
+  NumberField(const UnivariatePolyInt<R> &);
 
-  // assignment operator
-  NumberFieldElement<R> & operator=(const R &);
+  inline const UnivariatePolyRat<R> & modulus() const
+  {return this->_f; }
+
+  inline std::shared_ptr< const NumberField<R> > getPtr() const override
+  { return std::enable_shared_from_this< const NumberField<R> >::shared_from_this(); }
+
+  inline NumberField<R> zero(void) const override
+  {return NumberFieldElement<R>::zero(this->getPtr()); }
   
-  // arithmetic
-  NumberFieldElement<R> operator-() const;
-  NumberFieldElement<R> operator+(const NumberFieldElement<R> & ) const;
-  NumberFieldElement<R> operator-(const NumberFieldElement<R> & ) const;
-  NumberFieldElement<R> operator*(const NumberFieldElement<R> & ) const;
-  NumberFieldElement<R> operator/(const NumberFieldElement<R> & ) const;
-
-  NumberFieldElement<R> operator*(const R & ) const;
-  NumberFieldElement<R> operator/(const R & ) const;
-
-  NumberFieldElement<R> & operator+=(const NumberFieldElement<R> & );
-  NumberFieldElement<R> & operator-=(const NumberFieldElement<R> & );
-  NumberFieldElement<R> & operator*=(const NumberFieldElement<R> & );
-  NumberFieldElement<R> & operator/=(const NumberFieldElement<R> & );
-
-  NumberFieldElement<R>& operator*=(const R & );
-  NumberFieldElement<R>& operator/=(const R & );
-
-  NumberFieldElement<R> inverse(void) const;
+  inline NumberField<R> one(void) const override
+  {return NumberFieldElement<R>::one(this->getPtr()); }
   
 protected:
-  std::shared_ptr<const NumberField<R> > K;
-  
-  UnivariatePoly< Rational<R> > elt;
+  UnivariatePolyRat<R> _f;
 };
-
-// !! TODO - replace with norm or something ?
-template<typename R>
-int abs(const NumberFieldElement<R> & a)
-{
-  return 1;
-}
 
 #include "NumberField.inl"
 

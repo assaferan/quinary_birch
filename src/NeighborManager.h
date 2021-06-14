@@ -11,67 +11,67 @@ template<typename R, typename S, typename T, size_t n>
 class NeighborManager
 {
 public:
-  NeighborManager(const QuadForm<T, n>& q, std::shared_ptr<Fp<R,S>> GF,
+  NeighborManager(const QuadFormZZ<T,n>& q, std::shared_ptr<Fp<R,S>> GF,
 		  size_t k = 1);
 
-  void next_isotropic_subspace(void);
+  void nextIsotropicSubspace(void);
 
-  inline GenusRep<T, n> get_reduced_neighbor_rep();
+  GenusRep<T,n> getReducedNeighborRep(void);
 
   // to representative of the line
-  Vector<R, n> transform_vector(const GenusRep<T, n>& dst, Vector<R, n> src);
+  VectorInt<R,n> transformVector(const GenusRep<T,n>& dst, VectorInt<R,n> src);
   
-  void get_next_neighbor(void);
+  void getNextNeighbor(void);
 
-  QuadForm<T, n> build_neighbor(Isometry<T, n>& ) const;
+  QuadFormZZ<T,n> buildNeighbor(Isometry<T,n>& ) const;
 
-  const std::vector< Vector<T, n> > & get_isotropic_subspace() const
+  const std::vector< VectorInt<T,n> > & getIsotropicSubspace() const
   {return this->X; }
 
 protected:
-  std::shared_ptr< Fp<R,S> > GF;
-  QuadForm<T, n> q;
-  T disc;
-  SquareMatrix< FpElement<R, S> , n> b;
-  SquareMatrix<T, n> quot_gram;
-  std::shared_ptr< SquareMatrixFp<R, S, n> > p_std_gram;
-  std::shared_ptr< SquareMatrixFp<R, S, n> > p_basis;
-  std::shared_ptr< PolynomialFp<R, S> > p_q_std;
+  std::shared_ptr< Fp<R,S> > _GF;
+  QuadFormZZ<T,n> _q;
+  T _disc;
+  SquareMatrixFp<R,S,n> _b;
+  SquareMatrixInt<T,n> _quot_gram;
+  std::shared_ptr< SquareMatrixFp<R,S,n> > _p_std_gram;
+  std::shared_ptr< SquareMatrixFp<R,S,n> > _p_basis;
+  std::shared_ptr< PolynomialFp<R,S> > _p_q_std;
   // dimension of the radical
-  size_t rad_dim;
+  size_t _rad_dim;
   // dimension of the anisotropic subspace
-  size_t aniso_dim;
+  size_t _aniso_dim;
   // the Witt index (number of hyperbolic planes)
-  size_t witt_index;
+  size_t _witt_index;
 
-  VectorFp< R, S, n> vec;
-  std::vector< std::vector< size_t> > pivots;
-  size_t pivot_ptr;
-  size_t k; // dimension of the isotropic subspace
-  size_t skew_dim;
-  std::shared_ptr< MatrixFp<R,S> > p_skew;
-  std::vector<size_t> free_vars;
-  std::vector<FpElement<R,S> > params;
-  std::shared_ptr<Matrix<PolynomialFp<R,S> > > p_isotropic_param;
-  std::vector< VectorFp<R, S, n> > iso_subspace;
-  std::vector< Vector<T, n> > X, Z, U;
+  VectorFp<R,S,n> _vec;
+  std::vector< std::vector< size_t> > _pivots;
+  size_t _pivot_ptr;
+  size_t _k; // dimension of the isotropic subspace
+  size_t _skew_dim;
+  std::shared_ptr< MatrixFp<R,S> > _p_skew;
+  std::vector<size_t> _free_vars;
+  std::vector<FpElement<R,S> > _params;
+  std::shared_ptr<Matrix<PolynomialFp<R,S>, PolynomialRingFp<R,S> > > _p_isotropic_param;
+  std::vector< VectorFp<R,S,n> > _iso_subspace;
+  std::vector< VectorInt<T,n> > _X, _Z, _U;
 
   // The 2-isotropic vectors were stored in binary within each of the
   // coordinates of `vec` and so we use this function to unpack them into
   // actual 2-isotropic vectors.
-  Vector<R, n> isotropic_vector_p2(R t) const;
+  VectorInt<R,n> _isotropicVector_p2(R t) const;
 
   // get all possible pivots
   static std::vector< std::vector<size_t> >
   __pivots(size_t dim, size_t aniso, size_t k);
 
-  void __initialize_pivots(void);
+  void __initializePivots(void);
 
-  SquareMatrix<T,n> __gram(const SquareMatrix<T,n> & B, bool quot = true) const;
+  SquareMatrixInt<T,n> __gram(const SquareMatrixInt<T,n> & B, bool quot = true) const;
   
-  void lift_subspace();
-  void update_skew_space();
-  void update_skew_matrix(size_t &, size_t &);
+  void _liftSubspace();
+  void _updateSkewSpace();
+  void _updateSkewMatrix(size_t &, size_t &);
 };
 
 #include "NeighborManager.inl"

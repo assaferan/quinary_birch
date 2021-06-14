@@ -105,6 +105,10 @@ public:
   int kroneckerSymbol(const Integer<R> & n) const;
   
   bool isLocalSquare(const Integer<R>& p) const;
+
+  Integer<R> binomialCoefficient(const Integer<R> & k) const;
+
+  Integer<R> nextprime() const;
   
 protected:
   R _num;

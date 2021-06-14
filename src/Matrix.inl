@@ -119,7 +119,7 @@ size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,Parent>
 }
 
 template<class R, class Parent>
-size_t Matrix<R,Parent>::rank() const
+size_t Matrix<R,Parent>::rank(void) const
 {  
   Matrix<R,Parent> echelon((*this));
   Matrix<R,Parent> trans(_base, echelon.nrows(), echelon.nrows());
@@ -127,12 +127,12 @@ size_t Matrix<R,Parent>::rank() const
 }
 
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::kernel() const {
+Matrix<R,Parent> Matrix<R,Parent>::kernel(void) const {
   return this->transpose().leftKernel();
 }
 
 template<class R, class Parent>
-Matrix<R,Parent> Matrix<R,Parent>::leftKernel() const {
+Matrix<R,Parent> Matrix<R,Parent>::leftKernel(void) const {
   Matrix<R,Parent> echelon((*this));
   Matrix<R,Parent> trans(_base, _nrows, _nrows);
   size_t rank = Matrix<R,Parent>::rowEchelon(echelon, trans);
@@ -145,7 +145,7 @@ Matrix<R,Parent> Matrix<R,Parent>::leftKernel() const {
 }
 
 template<class R, class Parent>
-R Matrix<R,Parent>::trace() const
+R Matrix<R,Parent>::trace(void) const
 {
   // can only take trace of a square matrix
   assert(this->nrows() == this->ncols());
@@ -159,34 +159,34 @@ R Matrix<R,Parent>::trace() const
 
 // We implement Faddeev-LeVerrier here, as this is
 // not expected to be a bottleneck
-/*
+
 template<class R, class Parent>
-UnivariatePoly<Z> Matrix<R,Parent>::char_poly() const
+UnivariatePolyInt<Z> Matrix<R,Parent>::charPoly(void) const
 {
   // can only compute characteristic polynomial for a square matrix
   assert(this->nrows() == this->ncols());
 
   size_t n = this->nrows();
   std::vector<Z> c(n+1);
-  Matrix<Z> z(n,n);
-  Matrix<Z> I = Matrix<Z>::identity(n);
-  std::vector< Matrix<Z> > M(n+1, z);
-  Matrix<Z> A(n,n);
+  MatrixInt<Z> z(n,n);
+  MatrixInt<Z> I = MatrixInt<Z>::identity(n);
+  std::vector< MatrixInt<Z> > M(n+1, z);
+  MatrixInt<Z> A(n,n);
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
       A(row,col) = birch_util::convert_Integer<R, Z>((*this)(row,col));
 
-  c[n] = Math<R>::one();
+  c[n] = this->_base->one();
   for (size_t k = 1; k <= n; k++) {
     M[k] = A*M[k-1]+c[n-k+1]*I;
     Z k_Z = k;
     c[n-k] = - (A*M[k]).trace() / k_Z;
   }
 
-  UnivariatePoly<Z> p(c);
+  UnivariatePolyInt<Z> p(c);
   return p;
 }
-*/
+*
 
 template<class R, class Parent>
 Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basis) const

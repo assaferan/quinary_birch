@@ -128,7 +128,8 @@ public:
    *
    * returns true iff equal
    */
-  virtual bool operator== (const Derived&) const = 0;
+  inline virtual bool operator== (const Derived&) const
+  { return ((*this)-other).isZero();}
 
   /**
    * Inequality test,

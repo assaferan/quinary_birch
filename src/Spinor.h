@@ -12,12 +12,12 @@ class Spinor
 public:
     Spinor(const std::vector<R>& primes)
     {
-        this->primes_ = primes;
-        this->twist = (1LL << this->primes_.size()) - 1;
+        this->_primes = primes;
+        this->_twist = (1LL << this->_primes.size()) - 1;
     }
 
   template<size_t n>
-  Z64 norm(const QuadForm<R, n>& q, const Isometry<R, n>& s, const R& scalar) const
+  inline Z64 norm(const QuadFormZZ<R,n>& q, const Isometry<R,n>& s, const R& scalar) const
     {
       R tr = 0;
       for (size_t i = 0; i < n; i++)
@@ -27,28 +27,28 @@ public:
       // We should use the genus information for that
       if (n == 3) {
 	if (tr != -scalar)
-	  return this->compute_vals(tr + scalar);
+	  return this->_computeVals(tr + scalar);
       }
       // for now we let the spinor norm be trivial
       tr = 1;
-      return this->compute_vals(tr);
+      return this->_computeVals(tr);
         
     }
 
-    const std::vector<R> primes(void) const
+    inline const std::vector<R> & primes(void) const
     {
-        return this->primes_;
+        return this->_primes;
     }
 
 private:
-    std::vector<R> primes_;
-    Z64 twist;
+    std::vector<R> _primes;
+    Z64 _twist;
 
-    Z64 compute_vals(R x) const
+    inline Z64 _computeVals(R x) const
     {
         Z64 val = 0;
         Z64 mask = 1;
-        for (const R& p : this->primes_)
+        for (const R& p : this->_primes)
         {
             while (x % p == 0)
             {

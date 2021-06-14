@@ -28,22 +28,22 @@ public:
   inline FpElement<R,S> operator+() const {return FpElement(_GF, _val); }
   inline FpElement<R,S> operator++(int)
   {(this->_val)++; return (*this); }
-  inline FpElement<R,S> operator-() const override;
-  inline FpElement<R,S> operator+(const FpElement<R,S> &other) const override;
-  inline FpElement<R,S> operator-(const FpElement<R,S> &other) const override;
-  inline FpElement<R,S> operator*(const FpElement<R,S> &other) const override;
-  inline FpElement<R,S> operator/(const FpElement<R,S> &other) const override;
-  inline FpElement<R,S> inverse(void) const override;
+  FpElement<R,S> operator-() const override;
+  FpElement<R,S> operator+(const FpElement<R,S> &other) const override;
+  FpElement<R,S> operator-(const FpElement<R,S> &other) const override;
+  FpElement<R,S> operator*(const FpElement<R,S> &other) const override;
+  FpElement<R,S> operator/(const FpElement<R,S> &other) const override;
+  FpElement<R,S> inverse(void) const override;
   
-  inline FpElement<R,S> & operator+=(const FpElement<R, S> &other) override;
-  inline FpElement<R,S> & operator-=(const FpElement<R, S> &other) override;
-  inline FpElement<R,S> & operator*=(const FpElement<R, S> &other) override;
-  inline FpElement<R,S> & operator/=(const FpElement<R, S> &other) override;
+  FpElement<R,S> & operator+=(const FpElement<R,S> &other) override;
+  FpElement<R,S> & operator-=(const FpElement<R,S> &other) override;
+  FpElement<R,S> & operator*=(const FpElement<R,S> &other) override;
+  FpElement<R,S> & operator/=(const FpElement<R,S> &other) override;
 
-  inline int legendre() const;
-  inline FpElement<R, S> sqrt() const;
+  int legendre() const;
+  FpElement<R,S> sqrt() const;
   // assignment and conversion
-  inline FpElement<R,S> & operator=(const FpElement<R,S> &other) override;
+  FpElement<R,S> & operator=(const FpElement<R,S> &other) override;
   inline FpElement<R,S> & operator=(const R &other)
   { this->_val = other; return (*this); }
   
@@ -84,7 +84,7 @@ public:
 
   inline const FpElement<R,S>* getPtr() const override {return this;}
 
-  inline void print(std::ostream& os) const
+  inline void print(std::ostream& os) const override
   {
     // making sure this is in the range [0,p) before printing
     os << (this->parent()->mod(this->lift())).lift();

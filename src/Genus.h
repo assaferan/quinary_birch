@@ -77,7 +77,7 @@ public:
       {
 	throw std::invalid_argument("Prime must not divide the discriminant.");
       }
-    return this->heckeMatrixDenseInternal(p);
+    return this->_heckeMatrixDenseInternal(p);
   }
 
   inline std::map<R,std::vector<std::vector<int>>> heckeMatrixSparse(const R& p) const
@@ -86,7 +86,7 @@ public:
       {
 	throw std::invalid_argument("Prime must not divide the discriminant.");
       }
-    return this->heckeMatrixSparseInternal(p);
+    return this->_heckeMatrixSparseInternal(p);
   }
 
   Eigenvector<R> eigenvector(const std::vector<Z32>&, const R& ) const;
@@ -123,29 +123,28 @@ protected:
   std::vector<Z32> _eigenvectors(EigenvectorManager<R, n>&,
 				 std::shared_ptr<Fp<S,T>>, const R& ) const;
 
-  // TODO: Add the actual mass formula here for reference.
-  Rational<Z> getMass(const QuadFormZZ<R,n>&,
-		      const std::vector<PrimeSymbol<R>>&);
+  Rational<Z> _getMass(const QuadFormZZ<R,n>&,
+		       const std::vector<PrimeSymbol<R>>&);
 
-  Rational<Z> localFactor(const MatrixRat<R> & g,
-			   const R & p);
+  static Rational<Z> _localFactor(const MatrixRat<R> & g,
+				  const R & p);
 
-  Rational<Z> combine(const QuadFormZZ<R,n>& q,
-		      const R & p);
+  static Rational<Z> _combine(const QuadFormZZ<R,n>& q,
+			      const R & p);
 
   std::map<R,std::vector<std::vector<int>>>
-  heckeMatrixSparseInternal(const R& ) const;
+  _heckeMatrixSparseInternal(const R& ) const;
 
-  std::map<R,std::vector<int>> heckeMatrixDenseInternal(const R&) const;
+  std::map<R,std::vector<int>> _heckeMatrixDenseInternal(const R&) const;
 
-  static std::set<Integer<R> > wittToHasse(const Integer<R> &,
+  static std::set<Integer<R> > _wittToHasse(const Integer<R> &,
 					   const std::set<std::pair<Integer<R>, int> > &);
 
-  std::vector< MatrixInt<int> > decomposition(size_t k) const;
+  std::vector< MatrixInt<int> > _decomposition(size_t k) const;
   
   std::vector< MatrixInt<int> >
-  decompositionRecurse(const MatrixInt<int> & V_basis,
-		       const R & p, size_t k) const;
+  _decompositionRecurse(const MatrixInt<int> & V_basis,
+			const R & p, size_t k) const;
 };
 
 #include "Genus.inl"

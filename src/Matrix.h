@@ -7,7 +7,7 @@
 
 #include "birch.h"
 
-// #include "Polynomial.h"
+#include "UnivariatePoly.h"
 
 // R should be a ring element,
 // Parent the parent ring class
@@ -17,8 +17,8 @@
 template<class R, class Parent>
 class Matrix
 {
-  static_assert(std::is_base_of<RingElement<R, Parent>, R>::value);
-  static_assert(std::is_base_of<Ring<Parent, R>, Parent>::value);
+  static_assert(std::is_base_of<RingElement<R,Parent>,R>::value);
+  static_assert(std::is_base_of<Ring<Parent,R>,Parent>::value);
   
 public:
   Matrix(const std::vector<R> & data, size_t nrows, size_t ncols)
@@ -57,26 +57,26 @@ public:
     return _data[_ncols*row+col];
   }
   
-  inline size_t nrows() const {return _nrows;}
-  inline size_t ncols() const {return _ncols;}
+  inline size_t nrows(void) const {return _nrows;}
+  inline size_t ncols(void) const {return _ncols;}
 
   // return the i-th row
   std::vector<R> operator[](size_t i) const;
   
-  R determinant() const;
+  R determinant(void) const;
 
-  size_t rank() const;
+  size_t rank(void) const;
 
-  Matrix<R,Parent> kernel() const;
+  Matrix<R,Parent> kernel(void) const;
 
-  Matrix<R,Parent> leftKernel() const;
+  Matrix<R,Parent> leftKernel(void) const;
 
   // restrict matrix to the subspace specified by the argument
-  Matrix<R,Parent> restrict(const Matrix<R,Parent> & ) const;
+  Matrix<R,Parent> restrict(const Matrix<R,Parent> &) const;
 
-  R trace() const;
+  R trace(void) const;
   
-  // UnivariatePoly<Z> char_poly() const;
+  UnivariatePolyInt<Z> charPoly(void) const;
   
   static Matrix<R,Parent> diagonalJoin(const std::vector< Matrix<R,Parent> > &);
 

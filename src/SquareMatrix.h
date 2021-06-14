@@ -78,6 +78,7 @@ public:
   void addRow(size_t row_to, size_t row_from, const R & val);
   void addCol(size_t col_to, size_t col_from, const R & val);
 
+  // !! TODO - this might be only relevant for SquareMatrixInt
   SquareMatrix<R,Parent,n> hermiteForm(const R & d) const;
   // static functions
   // compute S[idx1]*F*S[idx2]^t

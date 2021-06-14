@@ -92,6 +92,9 @@ public:
 
   inline bool isOne() const
   {return _a == _scale * SquareMatrixInt<R,n>::identity(_a.baseRing()); }
+
+  inline SquareMatrixInt<R,n> hermiteForm(const R & d) const
+  {return _a.hermiteForm(d); }
   
 protected:
   SquareMatrixInt<R,n> _a;
