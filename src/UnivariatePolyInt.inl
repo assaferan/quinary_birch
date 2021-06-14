@@ -275,3 +275,17 @@ UnivariatePolyInt<R>::_trialFactor(const std::vector< UnivariatePolyInt<R> > & u
 
   return g;
 }
+
+// conversion, assignment operator
+template<typename R>
+template<typename T>
+inline UnivariatePolyInt<R> &
+UnivariatePolyInt<R>::operator=(const UnivariatePolyInt<T> & other)
+{
+  
+  this->_coeffs.resize(other.degree()+1);
+  for (int i = 0; i <= other.degree(); i++) 
+    this->_coeffs[i] = birch_util::convert_Integer<T,R>(other.coefficient(i).num());
+  
+  return (*this); 
+}
