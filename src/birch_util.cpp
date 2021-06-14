@@ -86,7 +86,7 @@ namespace birch_util
   Z convert_Integer<Z128>(const Z128& x)
   {
     W128 abs_x = x < 0 ? -x : x;
-    Z ret = convert_Integer<W128, Z>(abs_x);
+    Z ret = convert_Integer<W128,Z>(abs_x);
     return x < 0 ? -ret : ret;
   }
   
@@ -100,6 +100,17 @@ namespace birch_util
   Z64 convert_Integer<Z64>(const Z64& x)
   {
     return x;
+  }
+
+  // !! TODO - check that it does what we want
+  template<>
+  Z128 convert_Integer<Z>(const Z& x)
+  {
+    Z high = x >> 64;
+    Z128 res = mpz_get_si(high.get_mpz_t()) << 64;
+    Z low = abs(x) - (high << 64);
+    res |= mpz_get_ui(low.get_mpz_t());
+    return res;
   }
 
   template<>
