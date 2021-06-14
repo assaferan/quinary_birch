@@ -1,6 +1,7 @@
 #ifndef __UNIVARIATE_POLY_INT_H_
 #define __UNIVARIATE_POLY_INT_H_
 
+#include <set>
 #include <unordered_map>
 
 #include "birch.h"
