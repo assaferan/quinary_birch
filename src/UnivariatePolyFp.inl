@@ -104,12 +104,12 @@ UnivariatePolyFp<R,S>::_czDistinctDegFactor(void) const
   UnivariatePolyFp<R,S> x_p_i = UnivariatePolyFp<R,S>::x(this->_base);
   for (size_t i = 0; i < l; i++) {
     h.push_back(x_p_i);
-    x_p_i = x_p_i.powMod(birch_util::convert_Integer<R, size_t>(p), *this);
+    x_p_i = x_p_i.powMod(birch_util::convert_Integer<R,size_t>(p.num()), *this);
   }
 
   x_p_i = x(this->baseRing());
   for (size_t i = 0; i <= m; i++) {
-    x_p_i = x_p_i.powMod(birch_util::convert_Integer<R, size_t>(p_l), *this);
+    x_p_i = x_p_i.powMod(birch_util::convert_Integer<R, size_t>(p_l.num()), *this);
     H.push_back(x_p_i);
   }
 
