@@ -209,7 +209,7 @@ template<typename R>
 inline R _balance(const R & a, const R & n)
 {
   R b = a % n;
-  if (2*b > n)
+  if ((b+b) > n)
     b -= n;
   return b;
 }
