@@ -36,7 +36,7 @@ public:
 
   virtual R inverse(const Z64& a) const;
 
-  FpElement<R,S> random(void);
+  FpElement<R,S> random(void) const;
 
   inline FpElement<R,S> zero(void) const override
   {return FpElement<R,S>::zero(this->getPtr()); }
