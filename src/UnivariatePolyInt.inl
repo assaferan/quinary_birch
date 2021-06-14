@@ -74,7 +74,7 @@ template<typename R>
 template<typename S, typename T>
 inline void UnivariatePolyInt<R>::_henselStep(std::vector<UnivariatePolyInt<R> > & u,
 					      std::vector<UnivariatePolyInt<R> > & v,
-					      std::shared_ptr< const Fp<S,T> > GF,
+					      std::shared_ptr< Fp<S,T> > GF,
 					      size_t i) const
 {
   Integer<R> p = birch_util::convert_Integer<S,R>(GF->prime());
