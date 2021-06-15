@@ -102,7 +102,7 @@ template <typename R>
 inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n, const Integer<R> & d)
 {
   std::vector< Rational<R> > b = Rational<R>::_bernoulliPoly(n);
-  Integer<R> d_pow = d^convertInteger<R,Z64>(n.num());
+  Integer<R> d_pow = d^birch_util::convertInteger<R,Z64>(n.num());
 
   Rational<R> b_chi = Rational<R>::zero();
   for (Integer<R> a = Integer<R>::zero(); a < d; a++)
