@@ -1382,7 +1382,7 @@ QuadFormInt<R,n>::generateOrbit(void) const
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit;
   typename std::unordered_map< QuadFormZZ<R,n>,
 			       Isometry<R,n> >::const_iterator i, j;
-  orbit.insert(std::make_pair(qf, s));
+  orbit[qf] = s;
   while (num < orbit.size()) {
     num = orbit.size();
     for (i = orbit.begin(); i != orbit.end(); i++) {
