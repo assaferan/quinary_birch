@@ -127,10 +127,10 @@ protected:
 		       const std::vector<PrimeSymbol<R>>&);
 
   static Rational<Z> _localFactor(const MatrixRat<R> & g,
-				  const R & p);
+				  const Integer<R> & p);
 
   static Rational<Z> _combine(const QuadFormZZ<R,n>& q,
-			      const R & p);
+			      const Integer<R> & p);
 
   std::map<R,std::vector<std::vector<int>>>
   _heckeMatrixSparseInternal(const R& ) const;
