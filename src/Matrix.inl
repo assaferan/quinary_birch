@@ -92,6 +92,10 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
   while ((pivot_row < echelon.nrows()) && (pivot_col < echelon.ncols())) {
     row_max = pivot_row;
     max_val = echelon(row_max, pivot_col);
+    while ((max_val.isZero()) && row_max < n) {
+      row_max++;
+      max_val = echelon(row_max, pivot_col);
+    }
     if (max_val == 0) {
       pivot_col++;
     }
