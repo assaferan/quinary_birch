@@ -27,7 +27,7 @@ inline Rational<Z> Genus<R,n>::_localFactor(const MatrixRat<R> & g,
 					    const Integer<R> & p)
 {
   size_t m = g.ncols();
-  Integer<Z> one = Integer<Z>::one();
+  Rational<Z> one = Rational<Z>::one();
   Integer<Z> p_sqr = birch_util::convert_Integer<R,Z>((p*p).num());
   Rational<Z> f = one;
   Rational<Z> p_i(one, p_sqr);
