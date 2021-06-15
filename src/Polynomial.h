@@ -5,6 +5,8 @@
 #include <set>
 
 #include "birch.h"
+#include "PolynomialRing.h"
+#include "RingElement.h"
 
 // !! TODO - this works for arbitrary euclidean domains,
 // can write the general version and specialize to Fp
