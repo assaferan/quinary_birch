@@ -101,7 +101,7 @@ NeighborManager<R,S,T,n>::__gram(const SquareMatrixInt<T,n> & B, bool quot) cons
 template<typename R, typename S, typename T, size_t n>
 inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 {
-  T p = this->_GF->prime();
+  Integer<T> p = this->_GF->prime();
 
   assert(this->_pivot_ptr >= 1);
   
@@ -205,11 +205,11 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < this->_k; j++) {
       T delta = (i == j) ? 1 : 0;
       // we split the operation due to signed type issues
-      T a = gram(this->_k-j-1, i + this->_k);
+      Integer<T> a = gram(this->_k-j-1, i + this->_k);
       // a nonnegative value with the same residue mod p*p
       // !!! TODO - we might be able to get rid of that
       // since T is always signed - check!
-      a = (a / (p*p) + 1)*p*p-a+delta;
+      a = (a / (p*p) + Integer<T>::one())*p*p-a+delta;
       if (a >= (p*p))
 	a -= p*p;
       Z_new[i] += a * this->_Z[j];
