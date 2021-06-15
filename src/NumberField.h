@@ -4,7 +4,7 @@
 #include "birch.h"
 
 template<typename R>
-class NumberField : public virtual Ring< NumberField<R>, NumberFieldElement<R,S> >
+class NumberField : public virtual Ring< NumberField<R>, NumberFieldElement<R> >
 {
 public:
   NumberField(const UnivariatePolyRat<R> & mod) : _f(mod) {}
