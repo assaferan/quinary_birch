@@ -55,7 +55,7 @@ public:
 
   // access
   inline size_t size(void) const
-  { return this->hash->keys().size(); }
+  { return this->_hash->keys().size(); }
 
   inline W64 seed(void) const
   { return this->_seed; }
