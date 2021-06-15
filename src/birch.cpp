@@ -5,6 +5,7 @@
 #include "testInteger.h"
 #include "testRational.h"
 #include "FpElement.h"
+#include "Genus.h"
 #include "Matrix.h"
 #include "SquareMatrix.h"
 #include "Vector.h"
