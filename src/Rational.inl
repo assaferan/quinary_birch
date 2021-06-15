@@ -59,14 +59,14 @@ inline std::vector< Rational<R> > Rational<R>::_bernoulliUpTo(const Integer<R> &
   std::shared_ptr<const RationalField<R> > QQ = std::make_shared<const RationalField<R> >();
   std::vector< Rational<R> > a(n.num()+1, QQ);
   std::vector< Rational<R> > b(n.num()+1, QQ);
-  for (size_t i = 0; i <= n; i++) {
+  for (size_t i = 0; i <= n.num(); i++) {
     Rational<R> r(1, i+1);
     a[i] = r;
   }
   b[0] = a[0];
-  for (size_t i = 0; i < n; i++)
+  for (size_t i = 0; i < n.num(); i++)
     {
-      for (size_t j = 0; j < n - i; j++) {
+      for (size_t j = 0; j < n.num() - i; j++) {
 	Integer<R> mult = j + 1;
 	a[j] = mult*(a[j] - a[j+1]);
       }
