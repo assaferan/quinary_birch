@@ -161,41 +161,50 @@ template<typename R, typename S>
 using MatrixFp = Matrix< FpElement<R,S>, Fp<R,S> >;
 
 template<typename R>
-using MatrixInt = Matrix< Integer<R>, IntegerRing<R> >;
+using MatrixInt = Matrix<Integer<R>,IntegerRing<R> >;
 
 template<typename R>
-using MatrixRat = Matrix< Rational<R>, RationalField<R> >;
+using MatrixRat = Matrix<Rational<R>,RationalField<R> >;
 
 // square matrices 
 template<typename R, typename S, size_t n>
-using SquareMatrixFp = SquareMatrix< FpElement<R,S>, Fp<R,S>, n>;
+using SquareMatrixFp = SquareMatrix<FpElement<R,S>,Fp<R,S>,n>;
 
 template<typename R, size_t n>
-using SquareMatrixInt = SquareMatrix< Integer<R>, IntegerRing<R>, n>;
+using SquareMatrixInt = SquareMatrix<Integer<R>,IntegerRing<R>,n>;
 
 template<typename R, size_t n>
-using SquareMatrixRat = SquareMatrix< Rational<R>, RationalField<R>, n>;
+using SquareMatrixRat = SquareMatrix<Rational<R>,RationalField<R>,n>;
 
 template<size_t n>
-using Z_SquareMatrix = SquareMatrixInt<Z, n>;
+using Z_SquareMatrix = SquareMatrixInt<Z,n>;
 template<size_t n>
-using Z64_SquareMatrix = SquareMatrixInt<Z64, n>;
+using Z64_SquareMatrix = SquareMatrixInt<Z64,n>;
 template<size_t n>
-using Z128_SquareMatrix = SquareMatrixInt<Z128, n>;
+using Z128_SquareMatrix = SquareMatrixInt<Z128,n>;
 
 // polynomials
 template<typename R>
-using UnivariatePolyRat = UnivariatePoly< Rational<R>, RationalField<R> >;
+using UnivariatePolyRat = UnivariatePoly<Rational<R>,RationalField<R> >;
 
 // vectors
 template<typename R, typename S, size_t n>
 using VectorFp = Vector< FpElement<R,S>, Fp<R,S>, n>;
 
 template<typename R, size_t n>
-using VectorInt = Vector< Integer<R>, IntegerRing<R>, n>;
+using VectorInt = Vector<Integer<R>,IntegerRing<R>,n>;
 
 template<size_t n>
-using Z_Vector = VectorInt<Z, n>;
+using Z_Vector = VectorInt<Z,n>;
+
+template<size_t n>
+using W16_Vector = VectorInt<W16,n>;
+
+template<size_t n>
+using W32_Vector = VectorInt<W32,n>;
+
+template<size_t n>
+using W64_Vector = VectorInt<W64,n>;
 
 // finite fields
 typedef Fp<W16,W32>  W16_Fp;
@@ -212,16 +221,16 @@ typedef FpElement<W64,W128> W64_FpElement;
 
 // Vectors of Finite field elements
 template<size_t n>
-using W16_VectorFp = VectorFp< W16, W32, n>;
+using W16_VectorFp = VectorFp<W16,W32,n>;
 template<size_t n>
-using W32_VectorFp = VectorFp< W32, W64, n>;
+using W32_VectorFp = VectorFp<W32,W64,n>;
 template<size_t n>
-using W64_VectorFp = VectorFp< W64, W128, n>;
+using W64_VectorFp = VectorFp<W64,W128,n>;
 
 // Matrices of finite field elements
-typedef MatrixFp< W16, W32> W16_MatrixFp;
-typedef MatrixFp< W32, W64> W32_MatrixFp;
-typedef MatrixFp< W64, W128> W64_MatrixFp;
+typedef MatrixFp<W16,W32> W16_MatrixFp;
+typedef MatrixFp<W32,W64> W32_MatrixFp;
+typedef MatrixFp<W64,W128> W64_MatrixFp;
 
 /* Struct definitions */
 

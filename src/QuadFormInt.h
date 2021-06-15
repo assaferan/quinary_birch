@@ -184,6 +184,18 @@ public:
 
 };
 
+namespace std
+{
+  template<class R, size_t n>
+  struct hash<QuadFormZZ<R,n>>
+  {
+    Z64 operator()(const QuadFormZZ<R,n>& q) const
+    {
+      return q.hashValue();
+    }
+  };
+}
+
 // Here we find that we must instantiate the following classes due to
 // partial template specilization of hashValue.
   

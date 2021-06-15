@@ -49,18 +49,6 @@ protected:
  
 };
 
-namespace std
-{
-  template<class R, class Parent, size_t n>
-  struct hash<QuadForm<R,Parent,n>>
-  {
-    Z64 operator()(const QuadForm<R,Parent,n>& q) const
-    {
-      return q.hashValue();
-    }
-  };
-}
-
 #include "QuadForm.inl"
 
 #endif // __QUAD_FORM_H_

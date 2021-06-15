@@ -15,6 +15,9 @@ public:
     : _K(fld), _elt(poly) {}
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const R & a)
+    : _K(fld), _elt(a) {}
+  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
+		     const Integer<R> & a)
     : _K(fld), _elt(a) {} 
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const Rational<R> & a) : _K(fld), _elt(a) {}

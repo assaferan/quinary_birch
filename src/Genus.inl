@@ -2,6 +2,10 @@
 #include <random>
 #include <unordered_set>
 
+#include "Matrix.h"
+#include "QuadFormInt.h"
+#include "UnivariatePoly.h"
+
 // implementation file for header Genus.h
 
 template<typename R, size_t dim>
@@ -187,7 +191,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
       seed = rd();
     }
   
-  this->disc = q.discriminant();
+  this->_disc = q.discriminant();
   this->_seed = seed;
   
   this->_prime_divisors.reserve(symbols.size());
@@ -197,7 +201,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
     }
   
   Spinor<R> *spin = new Spinor<R>(this->_prime_divisors);
-  this->spinor = std::unique_ptr<Spinor<R>>(spin);
+  this->_spinor = std::unique_ptr<Spinor<R>>(spin);
   
   if (symbols.size() > 63)
     {
@@ -343,9 +347,9 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 		  Z num_aut = temp.q.numAutomorphisms();
 		  Rational<Z> q_mass(1, num_aut);
 		  sum_mass += q_mass;
-		  done = (sum_mass == this->mass);
+		  done = (sum_mass == this->_mass);
 
-		  assert(sum_mass <= this->mass);
+		  assert(sum_mass <= this->_mass);
 		  
 		  this->_spinor_primes->add(prime);
 
@@ -918,7 +922,7 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 	  */
 	  // Build the neighbor and reduce it.
 	  foo.q = manager.buildNeighbor(foo.s);
-	  SquareMatrix<R, n> qf = foo.q.bilinearForm();
+	  SquareMatrixInt<R,n> qf = foo.q.bilinearForm();
 	  QuadFormZZ<R,n>::greedy(qf, foo.s);
 	  QuadFormZZ<R,n> qred(qf);
 	  foo.q = qred;
@@ -1040,8 +1044,8 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 
 // !! - TOOD - maybe it's better to return here already eigenvectors
 template<typename R, size_t n>
-inline std::vector< Matrix<int> >
-Genus<R,n>::_decompositionRecurse(const Matrix<int> & V_basis,
+inline std::vector< MatrixInt<int> >
+Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
 				  const Integer<R> & p, size_t k) const
 {
   // This will hold the bases of the irreducible spaces
@@ -1126,7 +1130,7 @@ Genus<R,n>::eigenvectors(void)
 	for (size_t col = 0; col < T.ncols(); col++)
 	  T_K(row,col) = NumberFieldElement<Z>(K, T(row,col));
       NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x());
-      T_K -= lambda * Matrix< NumberFieldElement<Z> >::identity(T.nrows());
+      T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(T.nrows());
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
       evecs_k.push_back(vec);
