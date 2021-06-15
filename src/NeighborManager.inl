@@ -289,7 +289,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     Z_new[i] = this->_Z[i];
     for (size_t j = this->k-1-i; j < this->k; j++) {
       T scalar = gram(this->k+i, 2*this->k-1-j);
-      if (i+j == k-1)
+      if (i+j == this->_k-1)
 	scalar = (scalar/2) + ((scalar % 2 == 0) ? 0 : half);
       scalar = (scalar / (p*p) + 1)*p*p-scalar;
       if (scalar >= p*p)
@@ -818,10 +818,10 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
   }
 
   // The matrix whose rows parameterize all isotropic subspaces.
-  for (size_t row = 0; row < p_isotropic_param->nrows(); row++)
-    for (size_t col = 0; col < p_isotropic_param->ncols(); col++)
-      (*p_isotropic_param)(row,col) =
-	(*p_isotropic_param)(row,col).evaluate(eval_list);
+  for (size_t row = 0; row < this->_p_isotropic_param->nrows(); row++)
+    for (size_t col = 0; col < this->_p_isotropic_param->ncols(); col++)
+      (*this->_p_isotropic_param)(row,col) =
+	(*this->_p_isotropic_param)(row,col).evaluate(eval_list);
 
 #ifdef DEBUG
   // Verify that we didn't screw up somewhere along the line.
