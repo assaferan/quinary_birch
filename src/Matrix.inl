@@ -17,7 +17,7 @@ Matrix<R,Parent>::Matrix(const R data[n][n])
 template<class R, class Parent>
 template <size_t n>
 Matrix<R,Parent>::Matrix(const SquareMatrix<R,Parent,n> & mat)
-  : _nrows(n), _ncols(n), _data(n*n), _base(data.baseRing())
+  : _nrows(n), _ncols(n), _data(n*n), _base(mat.baseRing())
 {
   size_t idx = 0;
   for (size_t row = 0; row < _nrows; row++)
