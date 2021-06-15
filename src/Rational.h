@@ -18,11 +18,11 @@ public:
   // c-tors
   Rational(const Integer<R>& num, const Integer<R>& denom = Integer<R>::one())
     : _num(num), _denom(denom)
-  { reduce(); }
+  { _reduce(); }
 
   Rational(const R & num, const R & denom = 1)
     : _num(num), _denom(denom)
-  { reduce(); }
+  { _reduce(); }
 
   // Rational(const Integer<R> & num) : _num(num), _denom(1) {}
   
