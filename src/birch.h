@@ -110,6 +110,9 @@ template<typename R, typename S>
 class UnivariatePolyFp;
 
 template<typename R, typename S>
+class PolynomialRingFp;
+
+template<typename R, typename S>
 class PolynomialFp;
 
 // vectors
