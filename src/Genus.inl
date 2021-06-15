@@ -1119,7 +1119,8 @@ inline std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > >
 Genus<R,n>::eigenvectors(void)
 {
   std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > > evecs;
-
+  std::shared_ptr< const RationalField<Z> > QQ = std::make_shared< const RationalField<Z> >();
+  
   for (size_t k = 0; k < this->_conductors.size(); k++){
     std::vector< MatrixInt<int> > decomp = this->_decomposition(k);
     std::vector< std::vector< NumberFieldElement<Z> > > evecs_k;
@@ -1131,7 +1132,7 @@ Genus<R,n>::eigenvectors(void)
       for (size_t row = 0; row < T.nrows(); row++)
 	for (size_t col = 0; col < T.ncols(); col++)
 	  T_K(row,col) = NumberFieldElement<Z>(K, T(row,col));
-      NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x());
+      NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(QQ));
       T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(T.nrows());
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
