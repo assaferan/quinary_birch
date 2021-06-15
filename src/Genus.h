@@ -144,7 +144,7 @@ protected:
   
   std::vector< MatrixInt<int> >
   _decompositionRecurse(const MatrixInt<int> & V_basis,
-			const R & p, size_t k) const;
+			const Integer<R> & p, size_t k) const;
 };
 
 namespace std
