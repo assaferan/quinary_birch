@@ -249,7 +249,24 @@ typedef PrimeSymbol<Z>   Z_PrimeSymbol;
 typedef PrimeSymbol<Z64> Z64_PrimeSymbol;
 typedef PrimeSymbol<Z128> Z128_PrimeSymbol;
 
+// !! TODO - where do these belong?
+
 // There is no default operator<< for Z128
-std::ostream & operator<<(std::ostream & os, const Z128 & z);
+std::ostream & operator<<(std::ostream & os, const Z128 & z)
+{
+  os << birch_util::convertInteger<Z128,Z>(z);
+  return os;
+}
+
+// or for std::vector
+template<typename R>
+std::ostream& operator<<(std::ostream& os, const std::vector<R>& v)
+{
+  for (size_t i = 0; i < v.size() - 1; i++)
+    os << v[i] << ",";
+  if (v.size() >= 1)
+    os << v[v.size()-1];
+  return os;
+}
 
 #endif // __BIRCH_H_
