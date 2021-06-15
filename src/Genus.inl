@@ -94,7 +94,7 @@ inline Rational<Z> Genus<R,n>::_combine(const QuadFormZZ<R,n>& q,
     e += (n_rat-Rational<Z64>::one())/two;
   }
   assert(e.isIntegral());
-  Integer<Z> p_Z = birch_util::convertInteger<R, Z>(p.num());
+  Rational<Z> p_Z = birch_util::convertInteger<R,Z>(p.num());
   Rational<Z> p_e = p_Z^(e.floor().num());
 
   Z pow2 = 1 << (jordan.grams.size()-1);
