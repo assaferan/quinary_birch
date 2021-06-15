@@ -128,7 +128,7 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
   Rational<Z> mass(1, 1<<r);    
 
   Integer<Z> two = Z(2);
-  Integer<Z> max_i = n / two + n % two;
+  Integer<Z> max_i = Z(n / 2 + n % 2);
   for (Integer<Z> i = 1; i < max_i; i++)
     mass *= -Rational<Z>::bernoulliNumber(two*i)/(two*i);
      
