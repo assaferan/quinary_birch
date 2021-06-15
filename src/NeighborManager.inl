@@ -82,7 +82,8 @@ inline SquareMatrixInt<T,n>
 NeighborManager<R,S,T,n>::__gram(const SquareMatrixInt<T,n> & B, bool quot) const
 {
   T p = this->_GF->prime();
-  SquareMatrixInt<T,n> gram;
+  std::shared_ptr<const IntegerRing<T> > ZZ = std::make_shared<const IntegerRing<T> >();
+  SquareMatrixInt<T,n> gram(ZZ);
   
   if (p == 2)
     gram = B * this->_q.bilinearForm() * B.transpose();
