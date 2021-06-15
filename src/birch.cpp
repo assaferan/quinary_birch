@@ -18,6 +18,7 @@ std::ostream & operator<<(std::ostream & os, const Z128 & z)
 
 int main()
 {
+  /*
   testInteger<Z64> test1;
   testInteger<Z> test2;
   testInteger<Z128> test3;
@@ -133,6 +134,40 @@ int main()
   p.power = 1;
   p.ramified = true;
   symbols.push_back(p);
+  */
+
+  Z64_QuadForm<3>::SymVec coeffs = {2,0,2,1,0,6};
+  Z64_QuadForm q(coeffs);
+
+  // !! TODO - maybe use these to determine the spinor primes?
+  std::set< Integer<Z64> > F;
+  size_t I;
+  Integer<Z64> det = q.invariants(F,I);
+
+  // For now, using the discriminant to do these
+  
+  Integer<Z64> disc = q.discriminat();
+  Integer<Z64>::FactorData facs = disc.factorization();
+
+  std::vector<Z64_PrimeSymbol> symbols;
+  Z64_PrimeSymbol symb;
+
+  for (std::pair<Integer<Z64>, size_t> fa : facs) {
+    symb.p = fa.first;
+    symb.power = fa.second;
+    symb.ramified = true;
+    symbols.push_back(symb);
+  }
+
+  Z64_Genus genus(q, symbols);
+
+  std::map<Z64,size_t> dims = genus.dimensionMap();
+
+  std::cout << "Dimensions are ";
+  for (std::pair<Z64, size_t> dim : dims) {
+    std::cout << dim.second << " ";
+  }
+  std::cout << std::endl;
   
   return 0;
 }
