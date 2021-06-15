@@ -1,9 +1,10 @@
+// !! TODO - this might be redundant now
 template<typename R, typename S, size_t n>
 inline FpElement<R,S> QuadFormFp<R,S,n>::evaluate(const VectorFp<R,S,n>& v) const {
   R p = this->_B.baseRing()->prime();
   if (p == 2) return this->_evaluate_p2(v);
   VectorFp<R,S,n> Bv = (this->bilinearForm()) * v;
-  FpElement<R,S> two(GF, 2);
+  FpElement<R,S> two(this->baseRing(), 2);
   return VectorFp<R,S,n>::innerProduct(v, Bv)/two;
 } 
 
