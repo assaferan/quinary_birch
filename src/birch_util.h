@@ -2,6 +2,8 @@
 #define __BIRCH_UTIL_H_
 // Birch-specific namespace for helper functions
 
+#include <map>
+
 #include "birch.h"
 
 namespace birch_util
