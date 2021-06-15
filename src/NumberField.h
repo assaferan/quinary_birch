@@ -28,4 +28,4 @@ protected:
 
 #include "NumberField.inl"
 
-#endif // _NUMBER_FIELD_H
+#endif // _NUMBER_FIELD_H_
