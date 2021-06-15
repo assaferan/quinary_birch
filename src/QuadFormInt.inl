@@ -1412,7 +1412,7 @@ template<typename R, size_t n>
 inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
 QuadFormInt<R,n>::_permutationOrbit() const
 {
-  std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > orbit; 
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit; 
   std::map<R, std::vector<size_t> > stable_sets;
   
   SquareMatrixInt<R,n> q1(this->baseRing());
