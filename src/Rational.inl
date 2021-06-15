@@ -80,7 +80,7 @@ template <typename R>
 inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n)
 {
   std::vector< Rational<R> > b = _bernoulliUpTo(n);
-  return b[n];
+  return b[n.num()];
 }
 
 
