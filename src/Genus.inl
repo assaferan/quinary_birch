@@ -61,7 +61,7 @@ inline Rational<Z> Genus<R,n>::_combine(const QuadFormZZ<R,n>& q,
 {
   assert(p.num() != 2);
   typename QuadFormZZ<R,n>::jordan_data jordan = q.jordanDecomposition(p);
-  Integer<Z> one = Integer<Z>::one();
+  Rational<Z> one = Rational<Z>::one();
   Rational<Z> f = one;
   Rational<Z64> e = 0;
   std::vector<size_t> ms;
@@ -85,11 +85,11 @@ inline Rational<Z> Genus<R,n>::_combine(const QuadFormZZ<R,n>& q,
   size_t v = q_mat.determinant().valuation(p);
   if ((n % 2 == 0) && (v % 2 == 1)) {
     Rational<Z64> n_rat = (Z64)n;
-    e += (n_rat-1)/2;
+    e += (n_rat-one)/2;
   }
   assert(e.isIntegral());
   Integer<Z> p_Z = birch_util::convert_Integer<R, Z>(p.num());
-  Rational<Z> p_e = p_Z^(e.floor());
+  Rational<Z> p_e = p_Z^(e.floor().num());
 
   Z pow2 = 1 << (jordan.grams.size()-1);
   Rational<Z> denom = pow2 * f * p_e;
@@ -122,9 +122,11 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
      
   // mass from infinity and 2
   Rational<Z> mass(1, 1<<r);    
-     
-  for (size_t i = 1; i < n / 2 + n % 2; i++)
-    mass *= -Rational<Z>::bernoulliNumber(2*i)/(2*i);
+
+  Integer<Z> two = Z(2);
+  Integer<Z> max_i = n / two + n % two;
+  for (Integer<Z> i = 1; i < max_i; i++)
+    mass *= -Rational<Z>::bernoulliNumber(two*i)/(two*i);
      
   if (n % 2 == 1)
     {	 
