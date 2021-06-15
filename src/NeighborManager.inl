@@ -404,7 +404,7 @@ inline void NeighborManager<R,S,T,n>::nextIsotropicSubspace(void)
     }
     
     // Initialize the new pivot.
-    this->__initialize_pivots();
+    this->__initializePivots();
   }
 
   // The list of evaluation values.
