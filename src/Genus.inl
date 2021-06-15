@@ -131,14 +131,14 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 
   Integer<Z> two = Z(2);
   Integer<Z> max_i = Z(n / 2 + n % 2);
-  for (Integer<Z> i = 1; i < max_i; i++)
+  for (Integer<Z> i = Integer<Z>::one(); i < max_i; i++)
     mass *= -Rational<Z>::bernoulliNumber(two*i)/(two*i);
      
   if (n % 2 == 1)
     {	 
       if (val2 % 2 == 1)
 	{
-	  mass *= (1 << r) + ((witt.find(2) != witt.end()) ? -1 : 1);
+	  mass *= Z((1 << r) + ((witt.find(2) != witt.end()) ? -1 : 1));
 	  mass /= Z(2);
 	  witt.erase(2);
 	}
@@ -1066,14 +1066,14 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
   // recompute for different values of k
   std::map<R,std::vector<int>> T_p_dense = heckeMatrixDense(p.num());
   
-  Matrix<int> T_p(T_p_dense[k],this->_dims[k], this->_dims[k]);
+  MatrixInt<int> T_p(T_p_dense[k],this->_dims[k], this->_dims[k]);
   T_p = T_p.restrict(V_basis);
     
-  UnivariatePoly<Z> f = T_p.charPoly();
-  std::unordered_map< UnivariatePoly<Z>, size_t > fac = f.factor();
+  UnivariatePolyInt<Z> f = T_p.charPoly();
+  std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f.factor();
 
-  for( std::pair< UnivariatePoly<Z>, size_t > fa : fac) {
-    UnivariatePoly<Z> f = fa.first;
+  for( std::pair< UnivariatePolyInt<Z>, size_t > fa : fac) {
+    UnivariatePolyInt<Z> f = fa.first;
     size_t a = fa.second;
     
 #ifdef DEBUG_LEVEL_FULL
@@ -1081,8 +1081,8 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
 
-    Matrix<int> fT = f.evaluate(T_p);
-    Matrix<int> W_basis = fT.kernel();
+    MatrixInt<int> fT = f.evaluate(T_p);
+    MatrixInt<int> W_basis = fT.kernel();
 
     if (a == 1)
       decomp.push_back(W_basis);
@@ -1092,7 +1092,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
 	q = p.nextPrime();
       else
 	q = R(2);
-      std::vector< Matrix<int> > sub = this->_decompositionRecurse(W_basis, q, k);
+      std::vector< MatrixInt<int> > sub = this->_decompositionRecurse(W_basis, q, k);
       decomp.insert(decomp.end(), sub.begin(), sub.end());
     }
   }
@@ -1108,7 +1108,8 @@ inline std::vector< MatrixInt<int> > Genus<R,n>::_decomposition(size_t k) const
   if (this->_dims[k] == 0)
     return decomp;
 
-  MatrixInt<int> M_basis = MatrixInt<int>::identity(this->_dims[k]);
+  std::shared_ptr< const IntegerRing<int> > ZZ = std::make_shared< const IntegerRing<int> >();
+  MatrixInt<int> M_basis = MatrixInt<int>::identity(ZZ, this->_dims[k]);
 
   Integer<R> p = R(2);
 
