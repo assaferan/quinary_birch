@@ -9,18 +9,21 @@ class PolynomialFp<R,S>;
 template <typename R, typename S>
 class PolynomialRingFp : public virtual Ring< PolynomialRingFp<R,S>, PolynomialFp<R,S> >
 {
-  public:
+public:
 
-  IntegerRing() {}
+  PolynomialRingFp(std::shared_ptr<const Fp<R,S> > base_ring) : _base(base_ring) {}
   
-  inline Integer<R> zero() const override
-  {return Integer<R>::zero(); }
+  inline PolynomialFp<R,S> zero() const override
+  {return PolynomialFp<R,S>::zero(_base); }
   
-  inline Integer<R> one() const override
-  {return Integer<R>::one(); }
+  inline PolynomialFp<R,S> one() const override
+  {return PolynomialFp<R,S>::one(); }
 
-  inline std::shared_ptr<const IntegerRing<R> > getPtr() const override
-  {return std::enable_shared_from_this< const IntegerRing<R> >::shared_from_this(); }
+  inline std::shared_ptr<const PolynomialRingFp<R,S> > getPtr() const override
+  {return std::enable_shared_from_this< const PolynomialRingFp<R,S> >::shared_from_this(); }
+
+protected:
+  std::shared_ptr<const Fp<R,S> > _base;
 };
 
 #endif // __POLYNOMIAL_RING_H_
