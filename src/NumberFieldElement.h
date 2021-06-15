@@ -33,16 +33,16 @@ public:
   NumberFieldElement<R> operator*(const NumberFieldElement<R> & ) const override;
   NumberFieldElement<R> operator/(const NumberFieldElement<R> & ) const override;
 
-  NumberFieldElement<R> operator*(const R & ) const override;
-  NumberFieldElement<R> operator/(const R & ) const override;
+  NumberFieldElement<R> operator*(const R & ) const;
+  NumberFieldElement<R> operator/(const R & ) const;
 
   NumberFieldElement<R> & operator+=(const NumberFieldElement<R> & ) override;
   NumberFieldElement<R> & operator-=(const NumberFieldElement<R> & ) override;
   NumberFieldElement<R> & operator*=(const NumberFieldElement<R> & ) override;
   NumberFieldElement<R> & operator/=(const NumberFieldElement<R> & ) override;
 
-  NumberFieldElement<R>& operator*=(const R & ) override;
-  NumberFieldElement<R>& operator/=(const R & ) override;
+  NumberFieldElement<R>& operator*=(const R & );
+  NumberFieldElement<R>& operator/=(const R & );
 
   NumberFieldElement<R> inverse(void) const override;
 
