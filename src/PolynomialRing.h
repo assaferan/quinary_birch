@@ -4,7 +4,7 @@
 #include "Ring.h"
 
 template <typename R, typename S>
-class PolynomialFp<R,S>;
+class PolynomialFp;
 
 template <typename R, typename S>
 class PolynomialRingFp : public virtual Ring< PolynomialRingFp<R,S>, PolynomialFp<R,S> >
