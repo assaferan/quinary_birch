@@ -449,7 +449,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 	{
 	  if (!ignore[k])
 	    {
-	      this->_lut_positions[k][idx] = this->-dims[k];
+	      this->_lut_positions[k][idx] = this->_dims[k];
 	      this->_num_auts[k].push_back(num);
 	    }
 	  this->_dims[k] += (ignore[k] ? 0 : 1);
