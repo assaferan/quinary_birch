@@ -142,6 +142,9 @@ using Z64_QuadForm = QuadFormZZ<Z64,n>;
 template<size_t n>
 using Z128_QuadForm = QuadFormZZ<Z128,n>;
 
+template<size_t n>
+using W16_QuadForm = QuadFormZZ<W16,n>;
+
 // genera
 template<size_t n>
 using Z_Genus = Genus<Z,n>;
