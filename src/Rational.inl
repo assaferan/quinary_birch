@@ -67,7 +67,7 @@ inline std::vector< Rational<R> > Rational<R>::_bernoulliUpTo(const Integer<R> &
   for (size_t i = 0; i < n.num(); i++)
     {
       for (size_t j = 0; j < n.num() - i; j++) {
-	Integer<R> mult = j + 1;
+	Integer<R> mult = R(j + 1);
 	a[j] = mult*(a[j] - a[j+1]);
       }
       b[i+1] = a[0];
