@@ -545,13 +545,13 @@ inline void NeighborManager<R,S,T,n>::_updateSkewMatrix(size_t & row, size_t & c
 template<typename R, typename S, typename T, size_t n>
 inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
 {
-  T p = this->_GF->prime();
+  Integer<T> p = this->_GF->prime();
   // Update the skew space.
   for (size_t i = 0; i < this->_k ; i++) {
     for (size_t j = 0; j < this->_k; j++){
       // !! TODO - I got rid here of X_skew,
       // check that it sisn't destroy anything
-      T val = (*(this->_p_skew))(i,j).lift();
+      Integer<T> val = (*(this->_p_skew))(i,j).lift();
       this->_X[i] += p * (val * this->_Z[j]);
     }
   }
