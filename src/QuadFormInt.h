@@ -187,9 +187,9 @@ public:
 namespace std
 {
   template<class R, size_t n>
-  struct hash<QuadFormInt<R,n>>
+  struct hash<QuadFormZZ<R,n>>
   {
-    virtual Z64 operator()(const QuadFormInt<R,n>& q) const
+    Z64 operator()(const QuadFormZZ<R,n>& q) const
     {
       return q.hashValue();
     }
