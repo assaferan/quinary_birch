@@ -143,10 +143,10 @@ public:
   { _num.makeOne(); _denom.makeOne(); return (*this); }
 
   inline static Rational<R> zero(void) 
-  { return Rational<R>::zero(); }
+  { Rational<R> z; return z.makeZero(); }
   
   inline static Rational<R> one(void)
-  { return Rational<R>::one(); }
+  { Rational<R> one; return one.makeOne(); }
   
   inline Rational<R>* getPtr(void) override { return this; }
 
