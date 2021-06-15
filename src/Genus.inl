@@ -47,7 +47,7 @@ inline Rational<Z> Genus<R,n>::_localFactor(const MatrixRat<R> & g,
   }
   size_t r = m / 2;
   R sign = (r % 2 == 0) ? 1 : -1;
-  Rational<R> d = g.determinant() * sign;
+  Rational<R> d = g.determinant() * Rational<R>(sign);
   
   if (((d.valuation(p)) % 2) == 0) {
     p_i = one;
