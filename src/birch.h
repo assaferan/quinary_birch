@@ -143,8 +143,13 @@ using Z64_QuadForm = QuadFormZZ<Z64,n>;
 template<size_t n>
 using Z128_QuadForm = QuadFormZZ<Z128,n>;
 
-template<size_t n>
-using W16_QuadForm = QuadFormZZ<W16,n>;
+// Quadratic forms over a finite field.
+template <size_t n>
+using W16_QuadForm = QuadFormFp<W16,W32,n>;
+template <size_t n>
+using W32_QuadForm = QuadFormFp<W32,W64,n>;
+template <size_t n>
+using W64_QuadForm = QuadFormFp<W64,W128,n>;
 
 // genera
 template<size_t n>
