@@ -25,7 +25,7 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
 
 #ifdef DEBUG
   R prime = GF->prime();
-  if (prime != 2) assert( qp->evaluate(vec) == 0 );
+  if (prime != 2) assert( qp->evaluate(this->_vec) == 0 );
 #endif
 
   this->_p_std_gram = std::make_shared<SquareMatrixFp<R,S,n> >(GF);
