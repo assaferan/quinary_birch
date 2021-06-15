@@ -692,8 +692,8 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	      
 	      foo.s = foo.s * rep.sinv;
 
-	      scalar *= birch_util::my_pow(cur.es);
-	      scalar *= birch_util::my_pow(rep.es);
+	      scalar *= birch_util::myPow(cur.es);
+	      scalar *= birch_util::myPow(rep.es);
 	      
 	      spin_vals = this->_spinor->norm(mother.q, foo.s, scalar);
 	    }
@@ -792,8 +792,8 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 
 	      assert( foo.s.isIsometry(mother.q, mother.q) );
 
-	      scalar *= birch_util::my_pow(cur.es);
-	      scalar *= birch_util::my_pow(rep.es);
+	      scalar *= birch_util::myPow(cur.es);
+	      scalar *= birch_util::myPow(rep.es);
 
 	      spin_vals = this->_spinor->norm(mother.q, foo.s, scalar);
 	    }
@@ -817,7 +817,7 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 	      int rpos = lut[r];
 	      if (rpos == -1) continue;
 
-	      int value = birch_util::char_val(x & k);
+	      int value = birch_util::charVal(x & k);
 	      row[rpos] += value;
 	    }
 
