@@ -48,7 +48,7 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
 
   // Count the rows at the end of the matrix which are exactly zero.
   size_t idx = n;
-  while ((idx >= 1) && (*_p_std_gram)[idx-1].isZero()) {
+  while ((idx >= 1) && (*this->_p_std_gram)[idx-1].isZero()) {
     idx--;
   }
 
@@ -196,7 +196,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   SquareMatrixInt<T,n> gram = __gram(B);
 
   // Lift Z so that it is in a hyperbolic pair with X modulo p^2.
-  std::vector< VectorInt<T,n> > Z_new(k);
+  std::vector< VectorInt<T,n> > Z_new(this->_k);
   for (size_t i = 0; i < this->_k; i++) {
     Z_new[i] = this->_Z[i];
     for (size_t j = 0; j < this->_k; j++) {
@@ -408,7 +408,7 @@ inline void NeighborManager<R,S,T,n>::nextIsotropicSubspace(void)
 
   // The list of evaluation values.
   FpElement<R,S> zero(this->_GF, 0);
-  std::vector<FpElement<R,S> > eval_list(n*k, zero);
+  std::vector<FpElement<R,S> > eval_list(n*this->_k, zero);
 
   // Produce the isotropic subspace corresponding to the current
   //  parameters.
@@ -464,7 +464,7 @@ inline GenusRep<T,n> NeighborManager<R,S,T,n>::getReducedNeighborRep(void)
   GenusRep<T,n> rep;
 
   rep.q = this->buildNeighbor(rep.s);
-  rep.q = QuadForm<T,n>::reduce(rep.q, rep.s);
+  rep.q = QuadFormZZ<T,n>::reduce(rep.q, rep.s);
   return rep;
 }
 
@@ -491,14 +491,14 @@ NeighborManager<R,S,T,n>::transformVector(const GenusRep<T,n>& dst,
 
   VectorInt<R,n> vec;
   for (size_t i = 0; i < n; i++)
-    vec[i] = GF->mod(temp[i]).lift();
+    vec[i] = this->_GF->mod(temp[i]).lift();
 
   for (size_t i = n; i > 0; i--) {
     if (vec[i-1] != 0)
       {
 	R inv = this->_GF->inverse(vec[i-1]);
 	for (size_t j = 0; j < i-1; j++)
-	  vec[j] = this->_GF->mod(GF->mul(vec[j], inv)).lift();
+	  vec[j] = this->_GF->mod(this->_GF->mul(vec[j], inv)).lift();
 	vec[i-1] = 1;
 	break;
       }
@@ -537,7 +537,7 @@ inline void NeighborManager<R,S,T,n>::_updateSkewMatrix(size_t & row, size_t & c
       // Indicate we should repeat another iteration.
       done = false;
     }
-  } while ((!_done) && (row+col != this->_k-1));
+  } while ((!done) && (row+col != this->_k-1));
   return;
 }
 
@@ -625,7 +625,7 @@ inline QuadFormZZ<T,n> NeighborManager<R,S,T,n>::buildNeighbor(Isometry<T,n>& s)
   //	s.swap_cols(0, pivot);
   // need to adjust determinant for s to be in SO
   // This transforms using the isometry (and rescales already)
-  qq = s.transform(q.bilinearForm());
+  qq = s.transform(this->_q.bilinearForm());
 
   QuadFormZZ<T,n> retval(qq);
 	
@@ -697,7 +697,7 @@ NeighborManager<R,S,T,n>::__pivots(size_t dim, size_t aniso, size_t k)
 }
 
 template<typename R, typename S, typename T, size_t n>
-inline void NeighborManager<R,S,T,n>::__initialize_pivots(void)
+inline void NeighborManager<R,S,T,n>::__initializePivots(void)
 {
   assert(this->_pivot_ptr >= 1);
 
