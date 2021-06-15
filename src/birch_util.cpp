@@ -1,6 +1,24 @@
 #include "birch.h"
 #include "birch_util.h"
 
+// There is no default operator<< for Z128
+std::ostream & operator<<(std::ostream & os, const Z128 & z)
+{
+  os << birch_util::convertInteger<Z128,Z>(z);
+  return os;
+}
+
+// or for std::vector
+template<typename R>
+std::ostream& operator<<(std::ostream& os, const std::vector<R>& v)
+{
+  for (size_t i = 0; i < v.size() - 1; i++)
+    os << v[i] << ",";
+  if (v.size() >= 1)
+    os << v[v.size()-1];
+  return os;
+}
+
 namespace birch_util
 {
   static int bitcounts[256] = {
