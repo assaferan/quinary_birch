@@ -492,8 +492,8 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 	  // and that sinv is an isometry from the rep to the mother form.
 	  assert( rep.s.transform(mother.q.bilinearForm()) ==
 		  rep.q.bilinearForm() );
-	  assert( rep.s.is_isometry(mother.q, rep.q) );
-	  assert( rep.sinv.is_isometry(rep.q, mother.q) );
+	  assert( rep.s.isIsometry(mother.q, rep.q) );
+	  assert( rep.sinv.isIsometry(rep.q, mother.q) );
 
 	}
       
