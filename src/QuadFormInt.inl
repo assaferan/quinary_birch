@@ -336,7 +336,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	 
 	 // T12 = S[k]*F*S[k+1]^t
 	 Rational<R> T12 =
-	   SquareMatrixRat<R,n>::innerProduct(this->_B, S, k, k+1);
+	   SquareMatrixInt<R,n>::innerProduct(this->_B, S, k, k+1);
 
 	 // multiply S[k] by p^val(T12,p)/T12
 	 // Check whether we have to change to rational here
