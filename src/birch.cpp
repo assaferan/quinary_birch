@@ -7,6 +7,7 @@
 #include "FpElement.h"
 #include "Genus.h"
 #include "Matrix.h"
+#include "Polynomial.h"
 #include "SquareMatrix.h"
 #include "Vector.h"
 #include "QuadFormInt.h"
