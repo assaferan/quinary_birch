@@ -73,7 +73,7 @@ inline FpElement<R,S> & FpElement<R,S>::operator/=(const FpElement<R,S> &other)
 template<typename R, typename S>
 inline int FpElement<R,S>::legendre(void) const
 {
-  return this->_GF->legendre(*this);
+  return this->_GF->legendre(this->_val);
 }
 
 template<typename R, typename S>
