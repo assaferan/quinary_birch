@@ -44,7 +44,7 @@ private:
   std::vector<R> _primes;
   Z64 _twist;
 
-  inline Z64 _computeVals(Intger<R> & x) const
+  inline Z64 _computeVals(Integer<R> & x) const
   {
     Z64 val = 0;
     Z64 mask = 1;
