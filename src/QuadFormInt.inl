@@ -1379,14 +1379,14 @@ QuadFormInt<R,n>::generateOrbit(void) const
   Isometry<R,n> s;
   QuadFormInt<R,n> qf(this->bilinearForm());
   size_t num = 0;
-  std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > orbit;
-  typename std::unordered_map< QuadFormInt<R,n>,
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit;
+  typename std::unordered_map< QuadFormZZ<R,n>,
 			       Isometry<R,n> >::const_iterator i, j;
   orbit.insert(std::make_pair(qf, s));
   while (num < orbit.size()) {
     num = orbit.size();
     for (i = orbit.begin(); i != orbit.end(); i++) {
-      std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> >
+      std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
 	perms = (i->first)._permutationOrbit();
       for (j = perms.begin(); j != perms.end(); j++) {
 	assert((i->second*j->second).transform(this->bilinearForm()) ==
@@ -1395,7 +1395,7 @@ QuadFormInt<R,n>::generateOrbit(void) const
       }
     }
     for (i = orbit.begin(); i != orbit.end(); i++) {
-      std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> >
+      std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
 	signs = (i->first)._signOrbit();
       for (j = signs.begin(); j != signs.end(); j++) {
 	assert((i->second*j->second).transform(this->bilinearForm()) ==
@@ -1458,7 +1458,7 @@ template<typename R, size_t n>
 inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
 QuadFormInt<R,n>::_signOrbit(void) const
 {
-  std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > orbit;
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit;
   Isometry<R,n> s;
   SquareMatrixInt<R,n> q(this->baseRing());
   
