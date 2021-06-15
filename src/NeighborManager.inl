@@ -120,7 +120,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 
   SquareMatrixFp<R,S,n> basis = *this->_p_basis;
   // Set up the correct basis vectors.
-  for (size_t i = 0; i < this->k; i++)
+  for (size_t i = 0; i < this->_k; i++)
     for (size_t j = pivots[i]+1; j < n; j++)
       basis.addCol(pivots[i], j, this->_iso_subspace[i][j]);
 
@@ -131,7 +131,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   
   // Extract our target isotropic subspace modulo p
   std::vector< VectorFp<R,S,n> > x,z,u;
-  for (size_t i = 0; i < this->k; i++) {
+  for (size_t i = 0; i < this->_k; i++) {
     x.push_back(basis.transpose()[pivots[i]]);
   }
 
@@ -173,16 +173,17 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   
   // Build the coordinate matrix.
   // !! TODO - the mod p is not necessary, good for debugging
-  SquareMatrixInt<T,n> B;
-  for (size_t i = 0; i < this->k; i++)
+  std::shared_ptr<const IntegerRing<T> > ZZ = std::make_shared<const IntegerRing<T> >();
+  SquareMatrixInt<T,n> B(ZZ);
+  for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       B(i,j) = this->_X[i][j] = x[i][j].lift() % p;
 
-  for (size_t i = 0; i < this->k; i++)
+  for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       B(this->_k+i,j) = this->_Z[i][j] = z[i][j].lift() % p;
 
-  for (size_t i = 0; i < n - 2*this->k; i++)
+  for (size_t i = 0; i < n - 2*this->_k; i++)
     for (size_t j = 0; j < n; j++)
       B(2*this->_k+i,j) = this->_U[i][j] = u[i][j].lift() % p;
 
