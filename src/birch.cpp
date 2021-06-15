@@ -146,14 +146,14 @@ int main()
 
   // For now, using the discriminant to do these
   
-  Integer<Z64> disc = q.discriminat();
+  Integer<Z64> disc = q.discriminant();
   Integer<Z64>::FactorData facs = disc.factorization();
 
   std::vector<Z64_PrimeSymbol> symbols;
   Z64_PrimeSymbol symb;
 
   for (std::pair<Integer<Z64>, size_t> fa : facs) {
-    symb.p = fa.first;
+    symb.p = fa.first.num();
     symb.power = fa.second;
     symb.ramified = true;
     symbols.push_back(symb);
