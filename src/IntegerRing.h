@@ -1,5 +1,5 @@
-#ifndef __INTEGER_RING_H
-#define __INTEGER_RING_H
+#ifndef __INTEGER_RING_H_
+#define __INTEGER_RING_H_
 
 #include "Ring.h"
 
@@ -24,4 +24,4 @@ public:
   
 };
 
-#endif // __INTEGER_RING_H
+#endif // __INTEGER_RING_H_
