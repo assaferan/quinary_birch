@@ -284,8 +284,8 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   temp = __gram(B);
 
   // Verify all is well.
-  for (size_t i = 0; i < k; i++)
-    for (size_t j = 0; j < k; j++)
+  for (size_t i = 0; i < this->_k; i++)
+    for (size_t j = 0; j < this->_k; j++)
       assert(temp(i,j) % (p*p) == 0);
   
 #endif // DEBUG
