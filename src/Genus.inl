@@ -97,17 +97,17 @@ inline Rational<Z> Genus<R,n>::_combine(const QuadFormZZ<R,n>& q,
   return Genus<R,n>::_localFactor(diag, p) / denom;
 }
 
-template<typename R, size_t m>
-Rational<Z> Genus<R,m>::_getMass(const QuadFormZZ<R,m>& q,
+template<typename R, size_t n>
+Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 				 const std::vector<PrimeSymbol<R>>& symbols)
 {
-  size_t r = m / 2;
+  size_t r = n / 2;
 
   std::set<std::pair<Integer<R>, int> > hasse;
   // do we need the dummy? We could probably let it go
   size_t dummy;
   Integer<R> det = q.invariants(hasse, dummy);
-  std::set<Integer<R> > witt = Genus<R,N>::_wittToHasse(det, hasse);
+  std::set<Integer<R> > witt = Genus<R,n>::_wittToHasse(det, hasse);
   std::vector< std::pair<Integer<R>, size_t> > fac = det.factorization();
   std::set<Integer<R> > B;
   // TODO - replace these by set_union, set_difference ?
@@ -123,10 +123,10 @@ Rational<Z> Genus<R,m>::_getMass(const QuadFormZZ<R,m>& q,
   // mass from infinity and 2
   Rational<Z> mass(1, 1<<r);    
      
-  for (size_t i = 1; i < m / 2 + m % 2; i++)
+  for (size_t i = 1; i < n / 2 + n % 2; i++)
     mass *= -Rational<Z>::bernoulliNumber(2*i)/(2*i);
      
-  if (m % 2 == 1)
+  if (n % 2 == 1)
     {	 
       if (val2 % 2 == 1)
 	{
@@ -136,7 +136,7 @@ Rational<Z> Genus<R,m>::_getMass(const QuadFormZZ<R,m>& q,
 	}
       if (witt.find(2) != witt.end())
 	{ 
-	  mass *= (1 << (m-1)) - 1;
+	  mass *= (1 << (n-1)) - 1;
 	  mass /= 6;
 	}
     }
@@ -147,7 +147,7 @@ Rational<Z> Genus<R,m>::_getMass(const QuadFormZZ<R,m>& q,
 	mass *= -Rational<Z>::bernoulliNumber(r)/r;
       else
 	{
-	  Integer<Z> disc_z = birch_util::convert_Integer<R, Z>(disc);
+	  Integer<Z> disc_z = birch_util::convert_Integer<R,Z>(disc);
 	  mass *= -Rational<Z>::bernoulliNumber(r, disc_z) / r;
 	  if (r % 2 == 0)
 	    mass *= -Rational<Z>::bernoulliNumber(r) / r;
