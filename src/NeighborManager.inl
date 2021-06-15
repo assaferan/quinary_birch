@@ -1,4 +1,5 @@
 #include "Polynomial.h"
+#include "QuadFormFp.h"
 
 template<typename R, typename S, typename T, size_t n>
 inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
@@ -575,7 +576,7 @@ inline void NeighborManager<R,S,T,n>::getNextNeighbor(void)
   }
 
   // ...otherwise, get the next isotropic subspace modulo p.
-  this->_nextIsotropicSubspace();
+  this->nextIsotropicSubspace();
 
   // Lift the subspace if we haven't reached the end of the list.
   if (!(this->_iso_subspace.empty())) {
