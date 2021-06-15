@@ -25,8 +25,8 @@ public:
 
   QuadFormZZ<T,n> buildNeighbor(Isometry<T,n>& ) const;
 
-  const std::vector< VectorInt<T,n> > & getIsotropicSubspace() const
-  {return this->X; }
+  inline const std::vector< VectorInt<T,n> > & getIsotropicSubspace(void) const
+  {return this->_X; }
 
 protected:
   std::shared_ptr< Fp<R,S> > _GF;
