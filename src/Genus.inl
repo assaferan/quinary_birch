@@ -129,10 +129,8 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
   // mass from infinity and 2
   Rational<Z> mass(1, 1<<r);    
 
-  Integer<Z> two = Z(2);
-  Integer<Z> max_i = Z(n / 2 + n % 2);
-  for (Integer<Z> i = Integer<Z>::one(); i < max_i; i++)
-    mass *= -Rational<Z>::bernoulliNumber(two*i)/(two*i);
+  for (size_t i = 1; i < n / 2 + n % 2; i++)
+    mass *= -Rational<Z>::bernoulliNumber(2*i)/Z(2*i);
      
   if (n % 2 == 1)
     {	 
@@ -153,13 +151,13 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
       Integer<R> disc = (r % 2 == 1) ? -det : det;
       Integer<Z> r_Z = Z(r);
       if (disc.isSquare())
-	mass *= -Rational<Z>::bernoulliNumber(r_Z)/r_Z;
+	mass *= -Rational<Z>::bernoulliNumber(r)/r_Z;
       else
 	{
 	  Integer<Z> disc_z = birch_util::convertInteger<R,Z>(disc.num());
-	  mass *= -Rational<Z>::bernoulliNumber(r_Z, disc_z) / r_Z;
+	  mass *= -Rational<Z>::bernoulliNumber(r, disc_z) / r_Z;
 	  if (r % 2 == 0)
-	    mass *= -Rational<Z>::bernoulliNumber(r_Z) / r_Z;
+	    mass *= -Rational<Z>::bernoulliNumber(r) / r_Z;
 	  if (val2 % 2 == 1)
 	    {
 	      mass /= Z(2);
