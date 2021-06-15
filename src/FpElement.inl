@@ -83,7 +83,7 @@ inline FpElement<R,S> FpElement<R,S>::sqrt(void) const
   
   if (a.isOne()) return a;
   if (a.isZero()) return a;
-  if (this->legendre() != 1) return zero();
+  if (this->legendre() != 1) return this->_GF->zero();
 
   R p = this->_GF->prime();
   R q = p-1;
