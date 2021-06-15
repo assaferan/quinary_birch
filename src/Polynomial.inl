@@ -1,3 +1,5 @@
+#include <map>
+
 // PolynomialFp
 
 // create the zero polynomial
