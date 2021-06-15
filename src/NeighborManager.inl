@@ -1,4 +1,5 @@
 #include "Polynomial.h"
+#include "PolynomialRing.h"
 #include "QuadFormFp.h"
 
 template<typename R, typename S, typename T, size_t n>
