@@ -90,8 +90,8 @@ inline std::vector< Rational<R> > Rational<R>::_bernoulliPoly(const Integer<R> &
 {
   std::vector< Rational<R> > b = _bernoulliUpTo(n);
   std::reverse(b.begin(), b.end());
-  for (Integer<R> k = 0; k <= n; k++)
-    b[k] *= n.binomialCoefficient(k);
+  for (size_t k = 0; k <= n.num(); k++)
+    b[k] *= n.binomialCoefficient(R(k));
   return b;
 }
 
