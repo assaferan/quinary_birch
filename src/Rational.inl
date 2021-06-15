@@ -56,8 +56,9 @@ inline void Rational<R>::_reduce(void)
 template <typename R>
 inline std::vector< Rational<R> > Rational<R>::_bernoulliUpTo(const Integer<R> & n)
 {
-  std::vector< Rational<R> > a(n.num()+1);
-  std::vector< Rational<R> > b(n.num()+1);
+  std::shared_ptr<const RationalField<R> > QQ = std::make_shared<const RationalField<R> >();
+  std::vector< Rational<R> > a(n.num()+1, QQ);
+  std::vector< Rational<R> > b(n.num()+1, QQ);
   for (size_t i = 0; i <= n; i++) {
     Rational<R> r(1, i+1);
     a[i] = r;
