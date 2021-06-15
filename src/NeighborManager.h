@@ -30,9 +30,12 @@ public:
 
 protected:
   std::shared_ptr< Fp<R,S> > _GF;
+  VectorFp<R,S,n> _vec;
+  SquareMatrixFp<R,S,n> _b;
+  
   QuadFormZZ<T,n> _q;
   T _disc;
-  SquareMatrixFp<R,S,n> _b;
+  
   SquareMatrixInt<T,n> _quot_gram;
   std::shared_ptr< SquareMatrixFp<R,S,n> > _p_std_gram;
   std::shared_ptr< SquareMatrixFp<R,S,n> > _p_basis;
@@ -44,7 +47,7 @@ protected:
   // the Witt index (number of hyperbolic planes)
   size_t _witt_index;
 
-  VectorFp<R,S,n> _vec;
+  
   std::vector< std::vector< size_t> > _pivots;
   size_t _pivot_ptr;
   size_t _k; // dimension of the isotropic subspace
