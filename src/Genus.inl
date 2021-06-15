@@ -131,13 +131,13 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
       if (val2 % 2 == 1)
 	{
 	  mass *= (1 << r) + ((witt.find(2) != witt.end()) ? -1 : 1);
-	  mass /= 2;
+	  mass /= Z(2);
 	  witt.erase(2);
 	}
       if (witt.find(2) != witt.end())
 	{ 
 	  mass *= (1 << (n-1)) - 1;
-	  mass /= 6;
+	  mass /= Z(6);
 	}
     }
   else
@@ -153,7 +153,7 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 	    mass *= -Rational<Z>::bernoulliNumber(r) / r;
 	  if (val2 % 2 == 1)
 	    {
-	      mass /= 2;
+	      mass /= Z(2);
 	      witt.erase(2);
 	    }
 	}
