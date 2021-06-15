@@ -21,7 +21,7 @@ PolynomialFp<R,S>::PolynomialFp(const FpElement<R,S> & a)
 // create the constant polynomial 
 template<typename R, typename S>
 PolynomialFp<R,S>::PolynomialFp(std::shared_ptr<const Fp<R,S>> GF, 
-				  const R & a)
+				const R & a)
 {
   this->_GF = GF;
   std::multiset<size_t> empty_set;
@@ -166,7 +166,7 @@ inline PolynomialFp<R,S> & PolynomialFp<R,S>::operator=(const FpElement<R,S> & a
   this->_GF = a.parent();
   this->_mons.clear();
   std::multiset<size_t> empty_set;
-  this->mons[empty_set] = a;
+  this->_mons[empty_set] = a;
   return (*this);
 }
 
@@ -176,7 +176,7 @@ inline PolynomialFp<R,S> PolynomialFp<R,S>::operator-() const
   PolynomialFp<R,S> neg(this->_GF);
   typename std::map<std::multiset<size_t>, FpElement<R,S> >::const_iterator it;
   for (it = this->_mons.begin(); it != this->_mons.end(); it++) {
-    neg.mons[it->first] = -it->second;
+    neg._mons[it->first] = -it->second;
   }
   
   return neg;
@@ -249,7 +249,7 @@ inline PolynomialFp<R,S> PolynomialFp<R,S>::operator*(const PolynomialFp<R,S> & 
       if (loc == prod._mons.end())
 	prod._mons[mon] = zero;
       prod._mons[mon] += (i->second)*(j->second);
-  }
+    }
   
   return prod;
 }
