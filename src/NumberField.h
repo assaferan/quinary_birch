@@ -16,10 +16,10 @@ public:
   inline std::shared_ptr< const NumberField<R> > getPtr(void) const override
   { return std::enable_shared_from_this< const NumberField<R> >::shared_from_this(); }
 
-  inline NumberField<R> zero(void) const override
+  inline NumberFieldElement<R> zero(void) const override
   {return NumberFieldElement<R>::zero(this->getPtr()); }
   
-  inline NumberField<R> one(void) const override
+  inline NumberFieldElement<R> one(void) const override
   {return NumberFieldElement<R>::one(this->getPtr()); }
   
 protected:
