@@ -89,7 +89,7 @@ QuadFormInt<R,n>::getQuinaryForms(const R & disc)
   
   std::vector<NippEntry> nipps =
     ParseNipp::parseDisc(nipp_fname.str(),
-			 birch_util::convert_Integer<R,Z>(disc));
+			 birch_util::convertInteger<R,Z>(disc));
   
   for (NippEntry nipp : nipps)
     {
