@@ -122,7 +122,7 @@ inline FpElement<R,S> FpElement<R,S>::sqrt(void) const
       m = i;
     }
 
-  return zero();
+  return this->_GF->zero();
 }
 
 // assignment and conversion
