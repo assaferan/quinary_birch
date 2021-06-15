@@ -68,6 +68,14 @@ class F2;
 template <typename R, typename S>
 class FpElement;
 
+// number fields
+template<typename R>
+class NumberField;
+
+// number field elements
+template<typename R>
+class NumberFieldElement;
+
 // genus
 template<typename R, size_t n>
 class Genus;
