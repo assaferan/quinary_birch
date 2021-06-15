@@ -141,10 +141,12 @@ int main()
   Z64_QuadForm<3>::SymVec coeffs = {2,0,2,1,0,6};
   Z64_QuadForm<3> q(coeffs);
 
+  /*
   // !! TODO - maybe use these to determine the spinor primes?
   std::set< Integer<Z64> > F;
   size_t I;
   Integer<Z64> det = q.invariants(F,I);
+  */
 
   // For now, using the discriminant to do these
   
