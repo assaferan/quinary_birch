@@ -30,7 +30,7 @@ inline Rational<Z> Genus<R,n>::_localFactor(const MatrixRat<R> & g,
   Rational<Z> one = Rational<Z>::one();
   Integer<Z> p_sqr = birch_util::convert_Integer<R,Z>((p*p).num());
   Rational<Z> f = one;
-  Rational<Z> p_i(one, p_sqr);
+  Rational<Z> p_i = one/p_sqr;
   for (size_t i = 2; i+2 <= m; i+= 2)
     {
       f *= (one - p_i);
