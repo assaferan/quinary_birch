@@ -32,7 +32,7 @@ QuadFormInt<R,n>::mod(std::shared_ptr< Fp<S,T> > GF) const
   SquareMatrixFp<S,T,n> q_mod(GF);
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      q_mod(i,j) = GF->mod(this->_B(i,j));
+      q_mod(i,j) = GF->mod(this->_B(i,j).num());
   R p = GF->prime();
   if (p == 2) {
     for (size_t i = 0; i < n; i++) {
@@ -1413,7 +1413,7 @@ inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
 QuadFormInt<R,n>::_permutationOrbit() const
 {
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit; 
-  std::map<R, std::vector<size_t> > stable_sets;
+  std::map<Integer<R>, std::vector<size_t> > stable_sets;
   
   SquareMatrixInt<R,n> q1(this->baseRing());
   

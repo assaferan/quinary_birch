@@ -5,3 +5,4 @@ src/.#Fp.inl
 *.inl#
 make.log
 src/.#Matrix.h
+src/.#QuadFormInt.inl
