@@ -133,7 +133,7 @@ inline void QuadFormFp<R,S,n>::_hyperbolizeForm(SquareMatrixFp<R,S,n> & gram,
 						bool deterministic,
 						size_t start) const
 {
-  std::shared_ptr<const Fp<R,S> > GF = _B.baseRing();
+  std::shared_ptr<const Fp<R,S> > GF = this->baseRing();
   VectorFp<R,S,n> vec(GF);
   bool found = this->isotropicVector(vec, start, deterministic);
   size_t dim = n - start;
