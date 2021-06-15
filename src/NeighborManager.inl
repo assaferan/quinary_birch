@@ -166,15 +166,16 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "u = " << u << std::endl;
 #endif
+
+  std::shared_ptr<const IntegerRing<T> > ZZ = std::make_shared<const IntegerRing<T> >();
   
   // Convert to coordinates modulo p^2.
-  this->_X.resize(this->_k);
-  this->_Z.resize(this->_k);
-  this->_U.resize(n - 2*this->_k);
+  this->_X.resize(this->_k, VectorInt<T,n>(ZZ));
+  this->_Z.resize(this->_k, VectorInt<T,n>(ZZ));
+  this->_U.resize(n - 2*this->_k, VectorInt<T,n>(ZZ));
   
   // Build the coordinate matrix.
-  // !! TODO - the mod p is not necessary, good for debugging
-  std::shared_ptr<const IntegerRing<T> > ZZ = std::make_shared<const IntegerRing<T> >();
+  // !! TODO - the mod p is not necessary, good for debugging  
   SquareMatrixInt<T,n> B(ZZ);
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
