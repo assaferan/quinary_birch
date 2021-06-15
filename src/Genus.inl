@@ -302,7 +302,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
       while (!done && current < this->_hash->size())
 	{
 	  // Get the current quadratic form and build the neighbor manager.
-	  const QuadFormZZ<R,n>& mother = this->_hash->get(current)._q;
+	  const QuadFormZZ<R,n>& mother = this->_hash->get(current).q;
 	  NeighborManager<W16,W32,R,n> manager(mother, GF);
 
 #ifdef DEBUG
