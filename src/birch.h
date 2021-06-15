@@ -68,6 +68,10 @@ class F2;
 template <typename R, typename S>
 class FpElement;
 
+// genus
+template<typename R, size_t n>
+class Genus;
+
 // isometry
 template<typename R, size_t n>
 class Isometry;
@@ -84,15 +88,6 @@ class QuadFormInt;
 
 template<typename R, size_t n>
 class QuadFormZZ;
-
-template<size_t n>
-using Z_QuadForm = QuadFormZZ<Z,n>;
-
-template<size_t n>
-using Z64_QuadForm = QuadFormZZ<Z64,n>;
-
-template<size_t n>
-using Z128_QuadForm = QuadFormZZ<Z128,n>;
 
 // matrices
 template<class R, class Parent>
@@ -123,6 +118,25 @@ class Vector;
 // quadratic forms
 template<typename R, size_t n>
 using R_QuadForm = QuadForm<Integer<R>, IntegerRing<R>, n>;
+
+template<size_t n>
+using Z_QuadForm = QuadFormZZ<Z,n>;
+
+template<size_t n>
+using Z64_QuadForm = QuadFormZZ<Z64,n>;
+
+template<size_t n>
+using Z128_QuadForm = QuadFormZZ<Z128,n>;
+
+// genera
+template<size_t n>
+using Z_Genus = Genus<Z,n>;
+
+template<size_t n>
+using Z64_Genus = Genus<Z64,n>;
+
+template<size_t n>
+using Z128_Genus = Genus<Z128,n>;
 
 // isometries
 template<size_t n>
