@@ -342,7 +342,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	 // Check whether we have to change to rational here
 	 for (size_t i = 0; i < n; i++) {
 	   Integer<R> val = (1 << T12.valuation(p));
-	   S(k,i) *= val / T12;
+	   S(k,i) *= Rational<R>(val) / T12;
 	 }
 	 Rational<R> T11 =
 	   SquareMatrixInt<R,n>::innerProduct(this->_B, S, k, k);
