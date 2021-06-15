@@ -137,7 +137,7 @@ int main()
   */
 
   Z64_QuadForm<3>::SymVec coeffs = {2,0,2,1,0,6};
-  Z64_QuadForm q(coeffs);
+  Z64_QuadForm<3> q(coeffs);
 
   // !! TODO - maybe use these to determine the spinor primes?
   std::set< Integer<Z64> > F;
@@ -159,7 +159,7 @@ int main()
     symbols.push_back(symb);
   }
 
-  Z64_Genus genus(q, symbols);
+  Z64_Genus<3> genus(q, symbols);
 
   std::map<Z64,size_t> dims = genus.dimensionMap();
 
