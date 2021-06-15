@@ -57,7 +57,7 @@ public:
   inline bool isZero(void) const
   {
     for (size_t i = 0; i < n; i++)
-      if (!v[i].isZero())
+      if (!this->_v[i].isZero())
 	return false;
     return true;
   }
