@@ -347,7 +347,7 @@ PolynomialFp<R,S>::evaluate(const std::vector<PolynomialFp<R,S> > & vec) const
 // booleans
 
 template<typename R, typename S>
-inline bool PolynomialFp<R,S>::isZero() const
+inline bool PolynomialFp<R,S>::isZero(void) const
 {
   typename std::map<std::multiset<size_t>, FpElement<R,S> >::const_iterator i;
   for (i = this->_mons.begin(); i != this->_mons.end(); i++)
@@ -355,6 +355,12 @@ inline bool PolynomialFp<R,S>::isZero() const
       return false;
 
   return true;
+}
+
+template<typename R, typename S>
+inline bool PolynomialFp<R,S>::isOne(void) const
+{
+  return ((*this)-PolynomialFp<R,S>::one(this->_GF)).isZero();
 }
 
 template<typename R, typename S>
@@ -383,8 +389,9 @@ inline bool PolynomialFp<R,S>::operator!=(const FpElement<R,S> & a) const
 }
 
 template<typename R, typename S>
-inline std::ostream& operator<<(std::ostream& os, const PolynomialFp<R,S>& poly)
+inline void PolynomialFp<R,S>::print(std::ostream& os) const
 {
+  const PolynomialFp<R,S>& poly = *this;
   bool first = true;
   typename std::map<std::multiset<size_t>, FpElement<R,S> >::const_iterator i;
   

@@ -10,7 +10,7 @@
 // can write the general version and specialize to Fp
 
 template<typename R, typename S>
-class PolynomialFp
+class PolynomialFp : public virtual RingElement< PolynomialFp<R,S>, PolynomialRingFp<R,S> >
 {
 public:
 
@@ -48,32 +48,52 @@ public:
   int degree(size_t i) const;
 
   // conversion, assignment operator
-  PolynomialFp<R,S> & operator=(const PolynomialFp<R,S> & );
+  PolynomialFp<R,S> & operator=(const PolynomialFp<R,S> & ) override;
   PolynomialFp<R,S> & operator=(const FpElement<R,S> & );
   
   // arithmetic
-  PolynomialFp<R,S> operator-() const;
-  PolynomialFp<R,S> operator+(const PolynomialFp<R,S> & ) const;
-  PolynomialFp<R,S> operator-(const PolynomialFp<R,S> & ) const;
-  PolynomialFp<R,S> operator*(const PolynomialFp<R,S> & ) const;
+  PolynomialFp<R,S> operator-() const override;
+  PolynomialFp<R,S> operator+(const PolynomialFp<R,S> & ) const override;
+  PolynomialFp<R,S> operator-(const PolynomialFp<R,S> & ) const override;
+  PolynomialFp<R,S> operator*(const PolynomialFp<R,S> & ) const override;
   PolynomialFp<R,S> operator*(const FpElement<R,S> & ) const;
 
-  PolynomialFp<R,S> & operator+=(const PolynomialFp<R,S> & );
-  PolynomialFp<R,S> & operator-=(const PolynomialFp<R,S> & );
-  PolynomialFp<R,S> & operator*=(const PolynomialFp<R,S> & );
+  PolynomialFp<R,S> & operator+=(const PolynomialFp<R,S> & ) override;
+  PolynomialFp<R,S> & operator-=(const PolynomialFp<R,S> & ) override;
+  PolynomialFp<R,S> & operator*=(const PolynomialFp<R,S> & ) override;
   PolynomialFp<R,S> & operator*=(const FpElement<R,S> & );
 
   FpElement<R,S> evaluate(const std::vector< FpElement<R,S> > & ) const;
   PolynomialFp<R,S> evaluate(const std::vector<PolynomialFp<R,S> > & vec) const;
 
   // booleans
-  bool isZero() const;
-  bool operator==(const PolynomialFp<R,S> & ) const;
-  bool operator!=(const PolynomialFp<R,S> & ) const;
+  bool isZero(void) const override;
+  bool isOne(void) const override;
+  bool operator==(const PolynomialFp<R,S> & ) const override;
+  bool operator!=(const PolynomialFp<R,S> & ) const override;
   bool operator==(const FpElement<R,S> & ) const;
   bool operator!=(const FpElement<R,S> & ) const;
 
-  
+  inline PolynomialFp<R,S> * getPtr(void) override {return this;}
+  inline const PolynomialFp<R,S> * getPtr(void) const override {return this;}
+
+  inline PolynomialFp<R,S> & makeZero(void) override
+  { this->_mons.clear(); return (*this);}
+
+  inline PolynomialFp<R,S> & makeOne(void) override
+  { std::multiset<size_t> empty_set; this->_mons[empty_set] = this->_GF->one(); return (*this); }
+
+  inline static PolynomialFp<R,S> zero(std::shared_ptr< const Fp<R,S> > GF)
+  { PolynomialFp<R,S> z(GF); return z.makeZero(); }
+
+  inline static PolynomialFp<R,S> one(std::shared_ptr< const Fp<R,S> > GF)
+  { PolynomialFp<R,S> z(GF); return z.makeOne(); }
+
+  void print(std::ostream&) const override;
+
+  inline std::shared_ptr<const PolynomialRingFp<R,S> > parent(void) const override
+  { return std::make_shared< const PolynomialRingFp<R,S> >(this->_GF);}
+    
 protected:
   std::shared_ptr<const Fp<R,S>> _GF;
   
@@ -85,9 +105,6 @@ template<typename R, typename S>
 inline PolynomialFp<R,S> operator*(const FpElement<R,S> & a,
 				   const PolynomialFp<R,S>  & poly)
 { return poly*a; }
-
-template<typename R, typename S>
-std::ostream& operator<<(std::ostream&, const PolynomialFp<R,S>&);
 
 #include "Polynomial.inl"
 

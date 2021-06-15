@@ -32,9 +32,9 @@ class RingElement
 {
 public:
 
-  virtual Derived* getPtr() = 0;
+  virtual Derived* getPtr(void) = 0;
 
-  virtual const Derived* getPtr() const = 0;
+  virtual const Derived* getPtr(void) const = 0;
   
   /**
    * Determine if *this ring element is zero, that is the additive identity.
@@ -42,24 +42,24 @@ public:
    * returns true iff *this is zero.
    */
    
-  virtual bool isZero() const = 0;
+  virtual bool isZero(void) const = 0;
   
   /**
    * Make *this ring element zero.
    */
-  virtual Derived& makeZero() = 0;
+  virtual Derived& makeZero(void) = 0;
 
   /**
    * Determine if *this ring element is one, that is the multiplication identity.
    *
    * returns true iff *this is one.
    */
-  virtual bool isOne() const = 0;
+  virtual bool isOne(void) const = 0;
 
   /**
    * Make *this ring element one.
    */
-  virtual Derived& makeOne() = 0;
+  virtual Derived& makeOne(void) = 0;
 
   /**
    * Copy assignment.
@@ -80,7 +80,7 @@ public:
    * Increment operators
    */
   virtual Derived operator++ (int);
-  virtual Derived& operator++ ();
+  virtual Derived& operator++ (void);
 
   /**
    * Subtraction.
@@ -96,12 +96,12 @@ public:
    * Decrement operators
    */
   virtual Derived operator-- (int);
-  virtual Derived& operator-- ();
+  virtual Derived& operator-- (void);
   
   /**
    * Negation.
    */
-  virtual Derived operator- () const;
+  virtual Derived operator- (void) const;
 
   /**
    * Multiplication.
@@ -153,7 +153,7 @@ public:
    *
    * returns the string representation of the Ring element.
    */
-  virtual std::string toString() const;
+  virtual std::string toString(void) const;
 
   /**
    * Output operator.
@@ -166,7 +166,7 @@ public:
   friend std::ostream& operator<< <Derived,DerivedParent>(std::ostream& ostream,
 					    RingElement<Derived,DerivedParent>&& d);
 
-  virtual std::shared_ptr<const DerivedParent > parent() const = 0;
+  virtual std::shared_ptr<const DerivedParent > parent(void) const = 0;
 
 };
 
