@@ -81,7 +81,7 @@ template <typename R>
 inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n)
 {
   std::vector< Rational<R> > b = _bernoulliUpTo(n);
-  return b[n.num()];
+  return b[birch_util::convertInteger<R,Z64>(n.num())];
 }
 
 
