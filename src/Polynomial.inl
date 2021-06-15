@@ -416,5 +416,5 @@ inline void PolynomialFp<R,S>::print(std::ostream& os) const
   if (first)
     os << "0";
 
-  return os;
+  return;
 }
