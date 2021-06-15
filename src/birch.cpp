@@ -13,7 +13,7 @@
 
 std::ostream & operator<<(std::ostream & os, const Z128 & z)
 {
-  os << birch_util::convert_Integer<Z128, Z>(z);
+  os << birch_util::convertInteger<Z128, Z>(z);
   return os;
 }
 
