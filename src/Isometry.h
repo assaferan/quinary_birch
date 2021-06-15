@@ -41,10 +41,10 @@ public:
 
   void rescale(void);
 
-  inline const Integer<R> & operator(void)(size_t i, size_t j) const
+  inline const Integer<R> & operator()(size_t i, size_t j) const
   { return this->_a(i,j); }
 
-  inline Integer<R> & operator(void)(size_t i, size_t j)
+  inline Integer<R> & operator()(size_t i, size_t j)
   { return this->_a(i,j); }
 
   // basic operations
