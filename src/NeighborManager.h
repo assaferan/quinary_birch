@@ -3,7 +3,7 @@
 
 #include "birch.h"
 #include "Polynomial.h"
-#include "QuadForm.h"
+#include "QuadFormInt.h"
 #include "Isometry.h"
 #include "Fp.h"
 

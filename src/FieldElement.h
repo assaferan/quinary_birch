@@ -1,5 +1,5 @@
-#ifndef __FIELD_ELEMENT_H
-#define __FIELD_ELEMENT_H
+#ifndef __FIELD_ELEMENT_H_
+#define __FIELD_ELEMENT_H_
 
 #include "EuclideanDomainElement.h"
 
@@ -27,4 +27,4 @@ class FieldElement : public virtual EuclideanDomainElement<Derived, DerivedParen
 
 #include "FieldElement.inl"
 
-#endif // __FIELD_ELEMENT_H
+#endif // __FIELD_ELEMENT_H_

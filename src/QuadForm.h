@@ -37,10 +37,10 @@ class QuadForm
   { R one = baseRing()->one(); R two = one + one; assert(!(two.isZero()));
     return Vector<R,Parent,n>::innerProduct(vec, (this->_B) * vec) / two; }
 
-  inline const SquareMatrix<R,Parent,n> & bilinearForm() const
+  inline const SquareMatrix<R,Parent,n> & bilinearForm(void) const
   { return this->_B; }
 
-  std::shared_ptr<const Parent > baseRing() const {return _B.baseRing();}
+  std::shared_ptr<const Parent > baseRing(void) const {return _B.baseRing();}
   
 protected:
   // _B = the matrix representing the

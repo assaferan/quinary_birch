@@ -6,7 +6,7 @@ inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const R & a)
 }
 
 template<typename R>
-inline NumberFieldElement<R> NumberFieldElement<R>::operator-() const
+inline NumberFieldElement<R> NumberFieldElement<R>::operator-(void) const
 {
   NumberFieldElement<R> neg(this->_K);
   neg._elt = -(this->_elt);

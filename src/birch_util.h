@@ -7,29 +7,27 @@
 namespace birch_util
 {
   template<typename From, typename To>
-  To convert_Integer(const From& x);
+  To convertInteger(const From& x);
 
   int popcnt(Z64 x);
 
   template<typename From, typename To>
-  PrimeSymbol<To> convert_PrimeSymbol(const PrimeSymbol<From>& symbol);
+  PrimeSymbol<To> convertPrimeSymbol(const PrimeSymbol<From>& symbol);
 
   template<typename From, typename To, size_t n>
-  QuadForm<To,n> convert_QuadForm(const QuadForm<From,n>& q);
+  QuadForm<To,n> convertQuadForm(const QuadForm<From,n>& q);
 
   template<typename From, typename To, size_t n>
-  Isometry<To,n> convert_Isometry(const Isometry<From,n>& s);
+  Isometry<To,n> convertIsometry(const Isometry<From,n>& s);
   
   template<typename From, typename To, size_t n>
-  GenusRep<To,n> convert_GenusRep(const GenusRep<From,n>& from);
+  GenusRep<To,n> convertGenusRep(const GenusRep<From,n>& from);
 
   // !! TODO - get rid of this redundant method
   template<typename R>
-  R my_pow(const std::map<R,int>& pairs);
+  R myPow(const std::map<R,int>& pairs);
 
-  extern int char_vals[256];
-
-  int char_val(W64 x);
+  int charVal(W64 x);
 }
 
 #include "birch_util.inl"

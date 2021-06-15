@@ -226,7 +226,7 @@ inline Integer<R> Integer<R>::binomialCoefficient(const Integer<R> & k) const
 template <typename R>
 inline Integer<R> Integer<R>::nextPrime(void) const
 {
-  Z p = birch_util::convert_Integer<R,Z>(this->num());
+  Z p = birch_util::convertInteger<R,Z>(this->num());
   mpz_nextprime(p.get_mpz_t(), p.get_mpz_t());
-  return birch_util::convert_Integer<Z,R>(p); 
+  return birch_util::convertInteger<Z,R>(p); 
 }

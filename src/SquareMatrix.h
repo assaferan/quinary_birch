@@ -24,10 +24,10 @@ public:
   SquareMatrix<R,Parent,n> & operator=(const SquareMatrix<R,Parent,n> &);
   
   // access
-  inline const R& operator()(size_t i, size_t j) const {return mat[i][j]; }
-  inline R& operator()(size_t i, size_t j) {return mat[i][j];}
+  inline const R& operator()(size_t i, size_t j) const {return this->_mat[i][j]; }
+  inline R& operator()(size_t i, size_t j) {return this->_mat[i][j];}
 
-  inline std::shared_ptr<const Parent> baseRing() const { return _base; };
+  inline std::shared_ptr<const Parent> baseRing(void) const { return this->_base; };
 
   // return the i-th row
   Vector<R,Parent,n> operator[](size_t i) const;
@@ -46,10 +46,10 @@ public:
   // ordering of the matrices for Minkowski reduction
   bool operator<(const SquareMatrix<R,Parent,n>&) const;
   
-  bool isUpperTriangular() const;
-  bool isLowerTriangular() const;
-  bool isSymmetric() const;
-  bool isPositiveDefinite() const;
+  bool isUpperTriangular(void) const;
+  bool isLowerTriangular(void) const;
+  bool isSymmetric(void) const;
+  bool isPositiveDefinite(void) const;
   
   // basic operations
   void setIdentity(void);
@@ -96,15 +96,15 @@ public:
   
 protected:
   std::shared_ptr<const Parent> _base;
-  R mat[n][n];
+  R _mat[n][n];
   
   // helper functions
-  void deepCopy(const R mat[n][n]);
+  void _deepCopy(const R mat[n][n]);
   
-  Vector<R,Parent,n> forwardSubstitution(const Vector<R,Parent,n> & vec) const;
-  Vector<R,Parent,n> backwardSubstitution(const Vector<R,Parent,n> & vec) const;
-  SquareMatrix<R,Parent,n> inverseLowerTriangular(void) const;
-  SquareMatrix<R,Parent,n> inverseUpperTriangular(void) const;
+  Vector<R,Parent,n> _forwardSubstitution(const Vector<R,Parent,n> & vec) const;
+  Vector<R,Parent,n> _backwardSubstitution(const Vector<R,Parent,n> & vec) const;
+  SquareMatrix<R,Parent,n> _inverseLowerTriangular(void) const;
+  SquareMatrix<R,Parent,n> _inverseUpperTriangular(void) const;
 };
 
 // left multiplication

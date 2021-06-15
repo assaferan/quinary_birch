@@ -56,7 +56,7 @@ public:
   template<typename S, typename T>
   std::shared_ptr< QuadFormFp<S,T,n> > mod(std::shared_ptr< Fp<S,T> >) const;
 
-  VectorInt<R,n> orthogonalizeGram() const;
+  VectorInt<R,n> orthogonalizeGram(void) const;
 
   static QuadFormZZ<R,n> reduce(const QuadFormZZ<R,n> & q,
 				Isometry<R,n> & isom,
@@ -73,14 +73,14 @@ public:
 
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > generateOrbit() const;
 
-  inline bool isReduced() const { return this->_is_reduced; }
+  inline bool isReduced(void) const { return this->_is_reduced; }
 
-  size_t numAutomorphisms() const;
+  size_t numAutomorphisms(void) const;
 
   inline void setNumAut(size_t num_aut)
   { this->_num_aut = num_aut; this->_num_aut_init = true; return;}
 
-  inline void setReduced()
+  inline void setReduced(void)
   { this->_is_reduced = true; return; }
   
 protected:
@@ -97,62 +97,62 @@ protected:
   // This is non-constant because we update the members
   // updates also the automorphism group of the lattice
   
-  static size_t iReduce(SquareMatrixInt<R,n> & qf,
+  static size_t _iReduce(SquareMatrixInt<R,n> & qf,
 			Isometry<R,n> & isom,
 			std::set< Isometry<R,n> > & auts,
 			bool calc_aut = true);
 
-  static bool permutationReduction(SquareMatrixInt<R,n> & qf,
+  static bool _permutationReduction(SquareMatrixInt<R,n> & qf,
 				   Isometry<R,n> & isom,
 				   std::set< Isometry<R,n> > & auts,
 				   bool calc_aut = true);
   
-  static bool signNormalization(SquareMatrixInt<R,n> & qf,
+  static bool _signNormalization(SquareMatrixInt<R,n> & qf,
 				Isometry<R,n> & isom,
 				std::set< Isometry<R,n> > & auts,
 				bool calc_aut = true);
   
-  static bool normEchelon(SquareMatrixInt<R,n> & qf, Isometry<R,n> & isom);
+  static bool _normEchelon(SquareMatrixInt<R,n> & qf, Isometry<R,n> & isom);
   
-  static bool neighborReduction(SquareMatrixInt<R,n> & qf,
+  static bool _neighborReduction(SquareMatrixInt<R,n> & qf,
 				Isometry<R,n> & isom,
 				std::set< Isometry<R,n> > & auts,
 				bool calc_aut = true);
   
-  static size_t generateAuts(std::set< Isometry<R,n> > & auts);
+  static size_t _generateAuts(std::set< Isometry<R,n> > & auts);
 
-  static VectorInt<R,n-1> voronoiBounds(size_t dim = n);
+  static VectorInt<R,n-1> _voronoiBounds(size_t dim = n);
   
   // static helper functions
 
-  static std::vector< std::vector<size_t> > allPerms(size_t m);
+  static std::vector< std::vector<size_t> > _allPerms(size_t m);
   
-  static int hasse(const VectorInt<R,n>& , const Integer<R> & );
+  static int _hasse(const VectorInt<R,n>& , const Integer<R> & );
 
   // update in-place q and iso according to the closest vector
   // to the space spanned by the n-1 first ones
-  static void closestLatticeVector(SquareMatrixInt<R,n> &q,
+  static void _closestLatticeVector(SquareMatrixInt<R,n> &q,
 				   Isometry<R,n> & iso,
 				   size_t dim = n);
 
-  static bool signNormalizationSlow(SquareMatrixInt<R,n> & qf,
+  static bool _signNormalizationSlow(SquareMatrixInt<R,n> & qf,
 				    Isometry<R,n> & isom,
 				    std::set< Isometry<R,n> > & auts);
 
-  static bool signNormalizationFast(SquareMatrixInt<R,n> & qf,
+  static bool _signNormalizationFast(SquareMatrixInt<R,n> & qf,
 				    Isometry<R,n> & isom);
 
-  static std::vector<uint8_t> bitTranspose(const std::vector< uint8_t > & mat);
-  static uint8_t bitEchelonForm(std::vector< uint8_t > & mat,
+  static std::vector<uint8_t> _bitTranspose(const std::vector< uint8_t > & mat);
+  static uint8_t _bitEchelonForm(std::vector< uint8_t > & mat,
 				std::vector< uint8_t > & trans);
   
-  static std::vector<uint8_t> kernel(const std::vector< uint8_t > & mat);
+  static std::vector<uint8_t> _kernel(const std::vector< uint8_t > & mat);
 
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
-  permutationOrbit() const;
+  _permutationOrbit(void) const;
   
   std::unordered_map<  QuadFormZZ<R,n>, Isometry<R,n> >
-  signOrbit() const;
+  _signOrbit(void) const;
 };
 
 // we need this intermediate class for the partial specialization

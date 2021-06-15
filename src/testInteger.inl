@@ -3,12 +3,12 @@
 template<typename R>
 testInteger<R>::testInteger()
 {
-  testGcd();
-  testXGcd();
+  _testGcd();
+  _testXGcd();
 }
 
 template<typename R>
-void testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
+inline void testInteger<R>::_testXGcd(const R & a, const R & b, const R & d,
 			       const R & s, const R & t)
 {
 #ifdef DEBUG
@@ -29,7 +29,7 @@ void testInteger<R>::testXGcd(const R & a, const R & b, const R & d,
 }
 
 template<typename R>
-void testInteger<R>::testGcd(const R & a, const R & b, const R & d)
+inline void testInteger<R>::_testGcd(const R & a, const R & b, const R & d)
 {
   
 #ifdef DEBUG
@@ -45,33 +45,33 @@ void testInteger<R>::testGcd(const R & a, const R & b, const R & d)
 }
 
 template<typename R>
-void testInteger<R>::testXGcd()
+inline void testInteger<R>::_testXGcd(void)
 {
   // https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-  testXGcd(240, 46, 2, -9, 47);
+  _testXGcd(240, 46, 2, -9, 47);
   // https://en.wikipedia.org/wiki/Euclidean_algorithm
-  testXGcd(252, 105, 21, -2, 5);
-  testXGcd(1071, 462, 21, -3, 7);
+  _testXGcd(252, 105, 21, -2, 5);
+  _testXGcd(1071, 462, 21, -3, 7);
 
   // test negative numbers
-  testXGcd(-240, 46, 2, 9, 47);
-  testXGcd(-240, -46, 2, 9, -47);
+  _testXGcd(-240, 46, 2, 9, 47);
+  _testXGcd(-240, -46, 2, 9, -47);
   
   return;
 }
 
 template<typename R>
-void testInteger<R>::testGcd()
+inline void testInteger<R>::_testGcd(void)
 {
   // https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-  testGcd(240, 46, 2);
+  _testGcd(240, 46, 2);
   // https://en.wikipedia.org/wiki/Euclidean_algorithm
-  testGcd(252, 105, 21);
-  testGcd(1071, 462, 21);
+  _testGcd(252, 105, 21);
+  _testGcd(1071, 462, 21);
 
   // test negative numbers
-  testGcd(-240, 46, 2);
-  testGcd(-240, -46, 2);
+  _testGcd(-240, 46, 2);
+  _testGcd(-240, -46, 2);
 
   return;
 }

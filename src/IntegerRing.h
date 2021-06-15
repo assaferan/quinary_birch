@@ -13,13 +13,13 @@ public:
 
   IntegerRing() {}
   
-  inline Integer<R> zero() const override
+  inline Integer<R> zero(void) const override
   {return Integer<R>::zero(); }
   
-  inline Integer<R> one() const override
+  inline Integer<R> one(void) const override
   {return Integer<R>::one(); }
 
-  inline std::shared_ptr<const IntegerRing<R> > getPtr() const override
+  inline std::shared_ptr<const IntegerRing<R> > getPtr(void) const override
   {return std::enable_shared_from_this< const IntegerRing<R> >::shared_from_this(); }
   
 };

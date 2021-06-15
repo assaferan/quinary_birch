@@ -46,7 +46,7 @@ public:
 
   NumberFieldElement<R> inverse(void) const override;
 
-  inline std::shared_ptr< const NumberField<R> > parent() const override
+  inline std::shared_ptr< const NumberField<R> > parent(void) const override
   {return this->_K;}
 
   bool isZero(void) const override;
@@ -55,14 +55,14 @@ public:
   static zero(std::shared_ptr<const NumberField<R> > fld);
   static one(std::shared_ptr<const NumberField<R> > fld);
   
-  inline NumberFieldElement<R>& makeZero() override
+  inline NumberFieldElement<R>& makeZero(void) override
   { _elt.makeZero(); return *this; }
 
-  inline NumberFieldElement<R>& makeOne() override
+  inline NumberFieldElement<R>& makeOne(void) override
   { _elt.makeOne(); return *this; }
 
-  inline NumberFieldElement<R>* getPtr() override {return this;}
-  inline const NumberFieldElement<R>* getPtr() const override {return this;}
+  inline NumberFieldElement<R>* getPtr(void) override {return this;}
+  inline const NumberFieldElement<R>* getPtr(void) const override {return this;}
 
   inline void print(std::ostream& os) const override
   { _elt.print(os); return; }

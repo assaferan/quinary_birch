@@ -27,7 +27,7 @@ inline Derived RingElement<Derived,DerivedParent>::operator* (const Derived& oth
 }
 
 template <class Derived, class DerivedParent>
-inline Derived RingElement<Derived,DerivedParent>::operator- () const {
+inline Derived RingElement<Derived,DerivedParent>::operator- (void) const {
   Derived neg = *(this->getPtr());
   return neg.makeZero() - (*this->getPtr());
 }
@@ -60,7 +60,7 @@ inline Derived RingElement<Derived,DerivedParent>::operator^ (unsigned long long
 }
 
 template <class Derived, class DerivedParent>
-inline std::string RingElement<Derived,DerivedParent>::toString() const {
+inline std::string RingElement<Derived,DerivedParent>::toString(void) const {
   std::stringstream ss;
   print(ss);
   return ss.str();
@@ -77,7 +77,7 @@ inline Derived RingElement<Derived,DerivedParent>::operator++ (int dummy)
 }
 
 template <class Derived, class DerivedParent>
-inline Derived& RingElement<Derived,DerivedParent>::operator++ ()
+inline Derived& RingElement<Derived,DerivedParent>::operator++ (void)
 {
   Derived one = *(this->getPtr());
   one.makeOne();
@@ -96,7 +96,7 @@ inline Derived RingElement<Derived,DerivedParent>::operator-- (int dummy)
 }
 
 template <class Derived, class DerivedParent>
-inline Derived& RingElement<Derived,DerivedParent>::operator-- ()
+inline Derived& RingElement<Derived,DerivedParent>::operator-- (void)
 {
   Derived one = *(this->getPtr());
   one.makeOne();

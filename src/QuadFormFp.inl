@@ -1,14 +1,14 @@
 template<typename R, typename S, size_t n>
 inline FpElement<R,S> QuadFormFp<R,S,n>::evaluate(const VectorFp<R,S,n>& v) const {
   R p = this->_B.baseRing()->prime();
-  if (p == 2) return this->evaluate_p2(v);
+  if (p == 2) return this->_evaluate_p2(v);
   VectorFp<R,S,n> Bv = (this->bilinearForm()) * v;
   FpElement<R,S> two(GF, 2);
   return VectorFp<R,S,n>::innerProduct(v, Bv)/two;
 } 
 
 template<typename R, typename S, size_t n>
-inline void QuadFormFp<R,S,n>::splitHyperbolicPlane(const VectorFp<R,S,n>& vec,
+inline void QuadFormFp<R,S,n>::_splitHyperbolicPlane(const VectorFp<R,S,n>& vec,
 						    SquareMatrixFp<R,S,n>& gram,
 						    SquareMatrixFp<R,S,n> & basis,
 						    size_t start) const
@@ -127,10 +127,10 @@ inline void QuadFormFp<R,S,n>::splitHyperbolicPlane(const VectorFp<R,S,n>& vec,
 }
 
 template<typename R, typename S, size_t n>
-inline void QuadFormFp<R,S,n>::hyperbolizeForm(SquareMatrixFp<R,S,n> & gram,
-					       SquareMatrixFp<R,S,n> & basis,
-					       bool deterministic,
-					       size_t start) const
+inline void QuadFormFp<R,S,n>::_hyperbolizeForm(SquareMatrixFp<R,S,n> & gram,
+						SquareMatrixFp<R,S,n> & basis,
+						bool deterministic,
+						size_t start) const
 {
   std::shared_ptr<const Fp<R,S> > GF = _B.baseRing();
   VectorFp<R,S,n> vec(GF);
@@ -213,7 +213,7 @@ inline void QuadFormFp<R,S,n>::hyperbolizeForm(SquareMatrixFp<R,S,n> & gram,
   assert(this->evaluate(vec) == 0);
 
   // Attempt to split a hyperbolic plane from the form.
-  splitHyperbolicPlane(vec, gram, basis, start);
+  _splitHyperbolicPlane(vec, gram, basis, start);
 
   // Determine how many dimensions we need to split off.
   size_t lower_dim = gram[0].isZero() ? 1 : 2;
@@ -224,7 +224,7 @@ inline void QuadFormFp<R,S,n>::hyperbolizeForm(SquareMatrixFp<R,S,n> & gram,
     // !! TODO - check maybe we have to replace basis here
     SquareMatrixFp<R,S,n> newbasis(GF);
     newbasis.setIdentity();
-    q_split.hyperbolizeForm(gram, newbasis, deterministic, start + lower_dim);
+    q_split._hyperbolizeForm(gram, newbasis, deterministic, start + lower_dim);
     basis = newbasis * basis;
   }
 
@@ -247,7 +247,7 @@ inline void QuadFormFp<R,S,n>::decompose(SquareMatrixFp<R,S,n> & gram,
 					 bool deterministic) const
 {
   basis.setIdentity();
-  hyperbolizeForm(gram, basis, deterministic);
+  _hyperbolizeForm(gram, basis, deterministic);
 
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "After hyperbolize_form." << std::endl;
@@ -325,7 +325,7 @@ inline void QuadFormFp<R,S,n>::decompose(SquareMatrixFp<R,S,n> & gram,
 
 // !! TODO - all F2 operations (including this one) can be made faster
 template<typename R, typename S, size_t n>
-inline FpElement<R,S> QuadFormFp<R,S,n>::evaluate_p2(const VectorFp<R,S,n>& v)
+inline FpElement<R,S> QuadFormFp<R,S,n>::_evaluate_p2(const VectorFp<R,S,n>& v)
   const
 {
   std::shared_ptr< const Fp<R,S> > GF = this->_B.baseRing();
@@ -339,8 +339,8 @@ inline FpElement<R,S> QuadFormFp<R,S,n>::evaluate_p2(const VectorFp<R,S,n>& v)
 }
 
 template<typename R, typename S, size_t n>
-bool QuadFormFp<R,S,n>::isotropicVector_p2(VectorFp<R,S,n> & vec,
-					   size_t start) const
+bool QuadFormFp<R,S,n>::_isotropicVector_p2(VectorFp<R,S,n> & vec,
+					    size_t start) const
 {
   FpElement<R,S> g;
   // If we can find a pair of orthogonal basis vectors,
@@ -427,7 +427,7 @@ inline bool QuadFormFp<R,S,n>::isotropicVector(VectorFp<R,S,n> & vec,
 
   std::shared_ptr<const Fp<R,S> > GF = this->_B.baseRing();
   
-  if (GF->prime() == 2) return this->isotropicVector_p2(vec, start);
+  if (GF->prime() == 2) return this->_isotropicVector_p2(vec, start);
 
   if (dim == 2) {
     FpElement<R,S> a = this->_B(start,start);

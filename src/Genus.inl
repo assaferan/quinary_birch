@@ -32,7 +32,7 @@ inline Rational<Z> Genus<R,n>::_localFactor(const MatrixRat<R> & g,
 {
   size_t m = g.ncols();
   Rational<Z> one = Rational<Z>::one();
-  Integer<Z> p_sqr = birch_util::convert_Integer<R,Z>((p*p).num());
+  Integer<Z> p_sqr = birch_util::convertInteger<R,Z>((p*p).num());
   Rational<Z> f = one;
   Rational<Z> p_i = one/p_sqr;
   for (size_t i = 2; i+2 <= m; i+= 2)
@@ -50,7 +50,7 @@ inline Rational<Z> Genus<R,n>::_localFactor(const MatrixRat<R> & g,
   
   if (((d.valuation(p)) % 2) == 0) {
     p_i = one;
-    for (size_t i = 0; i < r; i++) p_i /= birch_util::convert_Integer<R,Z>(p.num());
+    for (size_t i = 0; i < r; i++) p_i /= birch_util::convertInteger<R,Z>(p.num());
     if (d.isLocalSquare(p))
       f *= one - p_i;
     else
@@ -92,7 +92,7 @@ inline Rational<Z> Genus<R,n>::_combine(const QuadFormZZ<R,n>& q,
     e += (n_rat-one)/2;
   }
   assert(e.isIntegral());
-  Integer<Z> p_Z = birch_util::convert_Integer<R, Z>(p.num());
+  Integer<Z> p_Z = birch_util::convertInteger<R, Z>(p.num());
   Rational<Z> p_e = p_Z^(e.floor().num());
 
   Z pow2 = 1 << (jordan.grams.size()-1);
@@ -153,7 +153,7 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 	mass *= -Rational<Z>::bernoulliNumber(r)/r;
       else
 	{
-	  Integer<Z> disc_z = birch_util::convert_Integer<R,Z>(disc);
+	  Integer<Z> disc_z = birch_util::convertInteger<R,Z>(disc);
 	  mass *= -Rational<Z>::bernoulliNumber(Z(r), disc_z) / Z(r);
 	  if (r % 2 == 0)
 	    mass *= -Rational<Z>::bernoulliNumber(Z(r)) / Z(r);
@@ -502,18 +502,18 @@ template<typename T>
 Genus<R,n>::Genus(const Genus<T,n>& src)
 {
   // Convert the discriminant.
-  this->_disc = birch_util::convert_Integer<T,R>(src._disc);
+  this->_disc = birch_util::convertInteger<T,R>(src._disc);
 
   // Convert the prime divisors.
   for (const T& p : src._prime_divisors)
     {
-      this->_prime_divisors.push_back(birch_util::convert_Integer<T,R>(p));
+      this->_prime_divisors.push_back(birch_util::convertInteger<T,R>(p));
     }
 
   // Convert the conductors.
   for (const T& cond : src._conductors)
     {
-      this->_conductors.push_back(birch_util::convert_Integer<T,R>(cond));
+      this->_conductors.push_back(birch_util::convertInteger<T,R>(cond));
     }
 
   // Copy dimensions.
@@ -540,14 +540,14 @@ Genus<R,n>::Genus(const Genus<T,n>& src)
   
   for (const GenusRep<T, n>& rep : src._hash->keys())
     {
-      this->_hash->add(birch_util::convert_GenusRep<T,R>(rep));
+      this->_hash->add(birch_util::convertGenusRep<T,R>(rep));
     }
 
   this->_inv_hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(new HashMap<GenusRep<R,n>>(src._inv_hash->size()));
   
   for (const GenusRep<T, n>& rep : src._inv_hash->keys())
     {
-      this->_inv_hash->add(birch_util::convert_GenusRep<T,R>(rep));
+      this->_inv_hash->add(birch_util::convertGenusRep<T,R>(rep));
     }
 
   for (std::pair<size_t,size_t> element : src._inv_map) {
@@ -559,7 +559,7 @@ Genus<R,n>::Genus(const Genus<T,n>& src)
   primes.reserve(src._spinor->primes().size());
   for (const T& p : src._spinor->primes())
     {
-      primes.push_back(birch_util::convert_Integer<T,R>(p));
+      primes.push_back(birch_util::convertInteger<T,R>(p));
     }
   this->_spinor = std::unique_ptr<Spinor<R>>(new Spinor<R>(primes));
   
@@ -616,8 +616,8 @@ std::vector<Z32>
 Genus<R,n>::eigenvalues(EigenvectorManager<R,n>& vector_manager,
 			const R& p) const
 {
-  R bits16 = birch_util::convert_Integer<Z64,R>(1LL << 16);
-  R bits32 = birch_util::convert_Integer<Z64,R>(1LL << 32);
+  R bits16 = birch_util::convertInteger<Z64,R>(1LL << 16);
+  R bits32 = birch_util::convertInteger<Z64,R>(1LL << 32);
 
   if (p == 2)
     {
@@ -627,19 +627,19 @@ Genus<R,n>::eigenvalues(EigenvectorManager<R,n>& vector_manager,
     }
   else if (p < bits16)
     {
-      W16 prime = birch_util::convert_Integer<R,W16>(p);
+      W16 prime = birch_util::convertInteger<R,W16>(p);
       std::shared_ptr<W16_Fp> GF = std::make_shared<W16_Fp>(prime, this->seed(), true);
       return this->_eigenvectors<W16,W32>(vector_manager, GF, p);
     }
   else if (p < bits32)
     {
-      W32 prime = birch_util::convert_Integer<R,W32>(p);
+      W32 prime = birch_util::convertInteger<R,W32>(p);
       std::shared_ptr<W32_Fp> GF = std::make_shared<W32_Fp>(prime, this->seed(), false);
       return this->_eigenvectors<W32,W64>(vector_manager, GF, p);
     }
   else
     {
-      W64 prime = birch_util::convert_Integer<R,W64>(p);
+      W64 prime = birch_util::convertInteger<R,W64>(p);
       std::shared_ptr<W64_Fp> GF = std::make_shared<W64_Fp>(prime, this->seed(), false);
       return this->_eigenvectors<W64,W128>(vector_manager, GF, p);
     }
@@ -734,7 +734,7 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
   std::vector<std::vector<int>> indptr;
   std::vector<std::vector<int>> indices(num_conductors);
 
-  W16 prime = birch_util::convert_Integer<R,W16>(p);
+  W16 prime = birch_util::convertInteger<R,W16>(p);
 
   std::shared_ptr<W16_Fp> GF;
   if (prime == 2)
@@ -873,7 +873,7 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
       hecke_ptr.push_back(hecke_matrices.back().data());
     }
 
-  W16 prime = birch_util::convert_Integer<R,W16>(p);
+  W16 prime = birch_util::convertInteger<R,W16>(p);
   std::vector<W64> all_spin_vals;
   all_spin_vals.reserve(prime+1);
 

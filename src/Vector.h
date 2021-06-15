@@ -14,16 +14,16 @@ public:
   // c-tor - default constructor constructs the zero vector
   Vector(std::shared_ptr<const Parent> base_ring) : _base(base_ring)
   {
-    for (size_t i = 0; i < n; i++) this->v[i] = base_ring->zero();
+    for (size_t i = 0; i < n; i++) this->_v[i] = base_ring->zero();
   }
   // access
-  inline const R& operator[](size_t i) const {return v[i]; }
-  inline R& operator[](size_t i) {return v[i];}
+  inline const R& operator[](size_t i) const {return this->_v[i]; }
+  inline R& operator[](size_t i) {return this->_v[i];}
   
-  inline std::shared_ptr<const Parent> baseRing() const { return _base; };
+  inline std::shared_ptr<const Parent> baseRing(void) const { return _base; };
 
   // arithmetic
-  inline Vector<R,Parent,n> operator-() const;
+  inline Vector<R,Parent,n> operator-(void) const;
   inline Vector<R,Parent,n> operator+(const Vector<R,Parent,n> &) const;
   inline Vector<R,Parent,n> operator-(const Vector<R,Parent,n> &) const;
   inline Vector<R,Parent,n> operator*(const R & a) const;
@@ -41,7 +41,7 @@ public:
   inline Vector<R,Parent,n> & operator=(const Vector<R,Parent,n>& other)
   {
     if (this != (&other)) {
-      for (size_t i = 0; i < n; i++) this->v[i] = other[i];
+      for (size_t i = 0; i < n; i++) this->_v[i] = other[i];
     }
     return (*this);
   }
@@ -66,7 +66,7 @@ public:
   
 protected:
   std::shared_ptr<const Parent> _base;
-  R v[n];
+  R _v[n];
   
 };
 

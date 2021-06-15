@@ -28,7 +28,7 @@ UnivariatePolyInt<Z>::factor(void) const
     if (f == Integer<Z>::one()) continue;
     
     Integer<Z> p = Z(3);
-    W16 p_16 = birch_util::convert_Integer<Z,W16>(p.num());
+    W16 p_16 = birch_util::convertInteger<Z,W16>(p.num());
     std::shared_ptr< const W16_Fp > GF
       = std::make_shared< W16_Fp >(p_16,seed);
     UnivariatePolyFp<W16,W32> f_p = f.mod(GF);
@@ -36,7 +36,7 @@ UnivariatePolyInt<Z>::factor(void) const
       UnivariatePolyFp<W16,W32>::gcd(f_p, f_p.derivative());
     while (d.degree() > 0) {
       p = p.nextPrime();
-      p_16 = birch_util::convert_Integer<Z,W16>(p.num());
+      p_16 = birch_util::convertInteger<Z,W16>(p.num());
       GF = std::make_shared<W16_Fp>(p_16,seed);
       f_p = f.mod(GF);
       d = UnivariatePolyFp<W16,W32>::gcd(f_p, f_p.derivative());

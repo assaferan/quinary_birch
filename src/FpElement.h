@@ -20,8 +20,8 @@ public:
     : _GF(fld), _val(val) {}
 
   // access = get methods
-  inline const R & lift() const {return _val; }
-  inline std::shared_ptr< const Fp<R,S> > parent() const override
+  inline const R & lift(void) const {return _val; }
+  inline std::shared_ptr< const Fp<R,S> > parent(void) const override
   {return _GF; }
 
   // arithmetic
@@ -40,8 +40,8 @@ public:
   FpElement<R,S> & operator*=(const FpElement<R,S> &other) override;
   FpElement<R,S> & operator/=(const FpElement<R,S> &other) override;
 
-  int legendre() const;
-  FpElement<R,S> sqrt() const;
+  int legendre(void) const;
+  FpElement<R,S> sqrt(void) const;
   // assignment and conversion
   FpElement<R,S> & operator=(const FpElement<R,S> &other) override;
   inline FpElement<R,S> & operator=(const R &other)
@@ -81,9 +81,9 @@ public:
   inline static FpElement<R,S> one(std::shared_ptr< const Fp<R,S> > GF)
   {FpElement<R,S> z(GF); z.makeOne(); return z;}
   
-  inline FpElement<R,S>* getPtr() override {return this;}
+  inline FpElement<R,S>* getPtr(void) override {return this;}
 
-  inline const FpElement<R,S>* getPtr() const override {return this;}
+  inline const FpElement<R,S>* getPtr(void) const override {return this;}
 
   inline void print(std::ostream& os) const override
   {

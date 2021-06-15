@@ -15,11 +15,11 @@ class Ring : public virtual std::enable_shared_from_this<const Derived>
 {
 public:
 
-  virtual std::shared_ptr<const Derived> getPtr() const = 0;
+  virtual std::shared_ptr<const Derived> getPtr(void) const = 0;
   
   // producing the global constants of the ring
-  virtual DerivedElement zero() const = 0;
-  virtual DerivedElement one() const = 0;
+  virtual DerivedElement zero(void) const = 0;
+  virtual DerivedElement one(void) const = 0;
 };
 
 #endif // __RING_H_

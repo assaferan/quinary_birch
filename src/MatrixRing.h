@@ -19,17 +19,17 @@ public:
 
   MatrixRing(std::shared_ptr<const R> ring, size_t n) : _base(ring) {}
   
-  inline std::shared_ptr<const MatrixRing<RElt,R> > getPtr() const override
+  inline std::shared_ptr<const MatrixRing<RElt,R> > getPtr(void) const override
   {return std::enable_shared_from_this< const MatrixRing<RElt,R> >::shared_from_this();}
   
   // producing the global constants of the ring
-  inline Matrix<RElt,R> zero() const override
+  inline Matrix<RElt,R> zero(void) const override
   { return Matrix<RElt,R>::zero(_base); }
     
-  inline Matrix<RElt,R> one() const override
+  inline Matrix<RElt,R> one(void) const override
   { return Matrix<RElt,R>::one(_base); }
 
-  inline std::shared_ptr<const R> baseRing() const {return _base;}
+  inline std::shared_ptr<const R> baseRing(void) const {return _base;}
 
 protected:
 

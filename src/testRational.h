@@ -11,24 +11,24 @@ public:
   
 protected:
 
-  static void testConstructor(const R & num, const R & denom);
-  static void testAdd(const R & num1, const R & denom1,
-		      const R & num2, const R & denom2);
-  static void testSub(const R & num1, const R & denom1,
-		      const R & num2, const R & denom2);
-  static void testMul(const R & num1, const R & denom1,
-		      const R & num2, const R & denom2);
-  static void testDiv(const R & num1, const R & denom1,
-		      const R & num2, const R & denom2);
-  static void testPow(const R & num1, const R & denom1,
-		      const Z64 & e);
-  static void testInverse(const R & num, const R & denom);
-  static void testZero(const R & denom);
-  static void testOne(const R & val);
-  static void testGcd(const R & num1, const R & denom1,
-		      const R & num2, const R & denom2);
-  static void testEuclid(const R & num1, const R & denom1,
-			 const R & num2, const R & denom2);
+  static void _testConstructor(const R & num, const R & denom);
+  static void _testAdd(const R & num1, const R & denom1,
+		       const R & num2, const R & denom2);
+  static void _testSub(const R & num1, const R & denom1,
+		       const R & num2, const R & denom2);
+  static void _testMul(const R & num1, const R & denom1,
+		       const R & num2, const R & denom2);
+  static void _testDiv(const R & num1, const R & denom1,
+		       const R & num2, const R & denom2);
+  static void _testPow(const R & num1, const R & denom1,
+		       const Z64 & e);
+  static void _testInverse(const R & num, const R & denom);
+  static void _testZero(const R & denom);
+  static void _testOne(const R & val);
+  static void _testGcd(const R & num1, const R & denom1,
+		       const R & num2, const R & denom2);
+  static void _testEuclid(const R & num1, const R & denom1,
+			  const R & num2, const R & denom2);
   
   
 };

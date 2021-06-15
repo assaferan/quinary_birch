@@ -4,7 +4,7 @@ inline Rational<R> Rational<R>::operator+(const Rational<R> &other) const
   Rational<R> sum;
   sum._num = (this->_num) * other._denom + (this->_denom) * other._num;
   sum._denom = (this->_denom) * other._denom;
-  sum.reduce();
+  sum._reduce();
   return sum;
 }
 
@@ -14,7 +14,7 @@ inline Rational<R> Rational<R>::operator*(const Rational<R> &other) const
   Rational<R> prod;
   prod._num = (this->_num) * other._num;
   prod._denom = (this->_denom) * other._denom;
-  prod.reduce();
+  prod._reduce();
   return prod;
 }
 
@@ -24,7 +24,7 @@ inline Rational<R> Rational<R>::operator/(const Rational<R> &other) const
   Rational<R> prod;
   prod._num = (this->_num) * other._denom;
   prod._denom = (this->_denom) * other._num;
-  prod.reduce();
+  prod._reduce();
   return prod;
 }
 
@@ -42,7 +42,7 @@ inline bool Rational<R>::operator<(const Rational<R> &other) const
 }
 
 template<typename R>
-inline void Rational<R>::reduce(void)
+inline void Rational<R>::_reduce(void)
 {
   Integer<R> d = _num.gcd(_denom);
   _num /= d;
@@ -54,7 +54,7 @@ inline void Rational<R>::reduce(void)
 // We are using Akiyama and Tanigawa's algorithm
 // It's not the fastest, but it is one of the simplest.
 template <typename R>
-inline std::vector< Rational<R> > Rational<R>::bernoulliUpTo(const Integer<R> & n)
+inline std::vector< Rational<R> > Rational<R>::_bernoulliUpTo(const Integer<R> & n)
 {
   std::vector< Rational<R> > a(n.num()+1);
   std::vector< Rational<R> > b(n.num()+1);
@@ -79,15 +79,15 @@ inline std::vector< Rational<R> > Rational<R>::bernoulliUpTo(const Integer<R> & 
 template <typename R>
 inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n)
 {
-  std::vector< Rational<R> > b = bernoulliUpTo(n);
+  std::vector< Rational<R> > b = _bernoulliUpTo(n);
   return b[n];
 }
 
 
 template <typename R>
-inline std::vector< Rational<R> > Rational<R>::bernoulliPoly(const Integer<R> & n)
+inline std::vector< Rational<R> > Rational<R>::_bernoulliPoly(const Integer<R> & n)
 {
-  std::vector< Rational<R> > b = bernoulliUpTo(n);
+  std::vector< Rational<R> > b = _bernoulliUpTo(n);
   std::reverse(b.begin(), b.end());
   for (Integer<R> k = 0; k <= n; k++)
     b[k] *= n.binomialCoefficient(k);
@@ -100,7 +100,7 @@ inline std::vector< Rational<R> > Rational<R>::bernoulliPoly(const Integer<R> & 
 template <typename R>
 inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n, const Integer<R> & d)
 {
-  std::vector< Rational<R> > b = Rational<R>::bernoulliPoly(n);
+  std::vector< Rational<R> > b = Rational<R>::_bernoulliPoly(n);
   Integer<R> d_pow = d^n.num();
 
   Rational<R> b_chi = Rational<R>::zero();

@@ -172,7 +172,7 @@ inline UnivariatePolyInt<Z> Matrix<R,Parent>::charPoly(void) const
   MatrixInt<Z> A(n,n);
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
-      A(row,col) = birch_util::convert_Integer<R,Z>((*this)(row,col));
+      A(row,col) = birch_util::convertInteger<R,Z>((*this)(row,col));
 
   c[n] = this->_base->one();
   for (size_t k = 1; k <= n; k++) {

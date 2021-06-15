@@ -5,18 +5,18 @@
 // SquareMatrix
 
 template<class R, class Parent, size_t n>
-void SquareMatrix<R,Parent,n>::deepCopy(const R mat[n][n])
+void SquareMatrix<R,Parent,n>::_deepCopy(const R mat[n][n])
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      this->mat[i][j] = mat[i][j];
+      this->_mat[i][j] = mat[i][j];
 }
 
 // c-tors
 template<class R, class Parent, size_t n>
 SquareMatrix<R,Parent,n>::SquareMatrix(const R mat[n][n])
 {
-  deepCopy(mat);
+  _deepCopy(mat);
   if (n > 0)
     _base = mat[0][0].parent();
 }
@@ -24,7 +24,7 @@ SquareMatrix<R,Parent,n>::SquareMatrix(const R mat[n][n])
 template<class R, class Parent, size_t n>
 SquareMatrix<R,Parent,n>::SquareMatrix(const SquareMatrix<R,Parent,n> & other)
 {
-  deepCopy(other.mat);
+  _deepCopy(other._mat);
   _base = other._base;
 }
 
@@ -45,7 +45,7 @@ SquareMatrix<R,Parent,n> &
 SquareMatrix<R,Parent,n>::operator=(const SquareMatrix<R,Parent,n> & other)
 {
   if (this !=  &other) {
-    deepCopy(other.mat);
+    _deepCopy(other._mat);
     _base = other._base;
   }
   return (*this);
@@ -62,7 +62,7 @@ SquareMatrix<R,Parent,n>::operator*(const SquareMatrix<R,Parent,n>& other) const
     for (size_t j = 0; j < n; j++) {
       prod(i,j) = _base->zero();
       for (size_t k = 0; k < n; k++)
-	prod(i,j) += this->mat[i][k]*other(k,j);
+	prod(i,j) += this->_mat[i][k]*other(k,j);
     }
   return prod;
 }
@@ -74,7 +74,7 @@ Vector<R,Parent,n> SquareMatrix<R,Parent,n>::operator*(const Vector<R,Parent,n>&
   for (size_t i = 0; i < n; i++) {
     prod[i] = _base->zero();
     for (size_t j = 0; j < n; j++)
-      prod[i] += this->mat[i][j] * vec[j];
+      prod[i] += this->_mat[i][j] * vec[j];
   }
   return prod;
 }
@@ -84,7 +84,7 @@ SquareMatrix<R,Parent,n> SquareMatrix<R,Parent,n>::operator*(const R & scalar) c
   SquareMatrix<R,Parent,n> prod(_base);
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
-      prod(row,col) = scalar*this->mat[row][col];
+      prod(row,col) = scalar*this->_mat[row][col];
   return prod;
 }
 
@@ -96,7 +96,7 @@ SquareMatrix<R,Parent,n>  SquareMatrix<R,Parent,n>::operator/(const R & scalar) 
   SquareMatrix<R,Parent,n> quo(_base);
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
-      quo(row,col) = this->mat[row][col] / scalar;
+      quo(row,col) = this->_mat[row][col] / scalar;
   return quo;
 }
 
@@ -106,7 +106,7 @@ bool SquareMatrix<R,Parent,n>::operator==(const SquareMatrix<R,Parent,n>& other)
 {
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
-      if (mat[row][col] != other(row, col)) return false;
+      if (this->_mat[row][col] != other(row, col)) return false;
   return true;
 }
 
@@ -116,58 +116,58 @@ template<class R, class Parent, size_t n>
 bool SquareMatrix<R,Parent,n>::operator<(const SquareMatrix<R,Parent,n>& other) const
 {
   for (size_t i = 0; i < n; i++) {
-    if (mat[i][i] < other(i,i)) return true;
-    if (mat[i][i] > other(i,i)) return false;
+    if (this->_mat[i][i] < other(i,i)) return true;
+    if (this->_mat[i][i] > other(i,i)) return false;
   }
   for (size_t col = 0; col < n-1; col++)
     for (size_t row = 0; row < n-1-col; row++) {
-      if (mat[row][row+col+1].abs() > other(row, row+col+1).abs()) return true;
-      if (mat[row][row+col+1].abs() < other(row, row+col+1).abs()) return false;
+      if (this->_mat[row][row+col+1].abs() > other(row, row+col+1).abs()) return true;
+      if (this->_mat[row][row+col+1].abs() < other(row, row+col+1).abs()) return false;
     }
   for (size_t col = 0; col < n-1; col++)
     for (size_t row = 0; row < n-1-col; row++) {
-      if (mat[row][row+col+1] > other(row, row+col+1)) return true;
-      if (mat[row][row+col+1] < other(row, row+col+1)) return false;
+      if (this->_mat[row][row+col+1] > other(row, row+col+1)) return true;
+      if (this->_mat[row][row+col+1] < other(row, row+col+1)) return false;
     }
   if (!isSymmetric()) {
     for (size_t col = 0; col < n-1; col++)
       for (size_t row = 0; row < n-1-col; row++) {
-	if (mat[row+col+1][col] > other(row+col+1, col)) return true;
-	if (mat[row+col+1][col] < other(row+col+1, col)) return false;
+	if (this->_mat[row+col+1][col] > other(row+col+1, col)) return true;
+	if (this->_mat[row+col+1][col] < other(row+col+1, col)) return false;
       }
   }
   return false;
 }
 
 template<class R, class Parent, size_t n>
-bool SquareMatrix<R,Parent,n>::isUpperTriangular() const
+bool SquareMatrix<R,Parent,n>::isUpperTriangular(void) const
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < i; j++)
-      if (!mat[i][j].isZero()) return false;
+      if (!this->_mat[i][j].isZero()) return false;
   return true;
 }
 
 template<class R, class Parent, size_t n>
-bool SquareMatrix<R,Parent,n>::isLowerTriangular() const
+bool SquareMatrix<R,Parent,n>::isLowerTriangular(void) const
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = i+1; j < n; j++)
-      if (!mat[i][j].isZero()) return false;
+      if (!this->_mat[i][j].isZero()) return false;
   return true;
 }
 
 template<class R, class Parent, size_t n>
-bool SquareMatrix<R,Parent,n>::isSymmetric() const
+bool SquareMatrix<R,Parent,n>::isSymmetric(void) const
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < i; j++)
-      if (mat[i][j] != mat[j][i]) return false;
+      if (this->_mat[i][j] != this->_mat[j][i]) return false;
   return true;
 }
 
 template<class R, class Parent, size_t n>
-bool SquareMatrix<R,Parent,n>::isPositiveDefinite() const
+bool SquareMatrix<R,Parent,n>::isPositiveDefinite(void) const
 {
   SquareMatrix<R,Parent,n> L(_base);
   Vector<R,Parent,n> D(_base);
@@ -181,7 +181,7 @@ SquareMatrix<R,Parent,n> SquareMatrix<R,Parent,n>::transpose(void) const
   SquareMatrix<R,Parent,n> trans(_base);
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      trans(i,j) = this->mat[j][i];
+      trans(i,j) = this->_mat[j][i];
   return trans;
 }
 
@@ -210,7 +210,7 @@ R SquareMatrix<R,Parent,n>::determinant(void) const
   // init
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
-      M(row+1, col+1) = this->mat[row][col];
+      M(row+1, col+1) = this->_mat[row][col];
   for (size_t k = 1; k < n; k++) {
     if (M(k,k).isZero()) {
       bool found = false;
@@ -236,7 +236,7 @@ R SquareMatrix<R,Parent,n>::determinant(void) const
 // for lower triangular matrices
 template<class R, class Parent, size_t n>
 Vector<R,Parent,n>
-SquareMatrix<R,Parent,n>::forwardSubstitution(const Vector<R,Parent,n> & vec) const
+SquareMatrix<R,Parent,n>::_forwardSubstitution(const Vector<R,Parent,n> & vec) const
 {
   Vector <R,Parent,n> sol;
   R sum = _base->zero();
@@ -245,8 +245,8 @@ SquareMatrix<R,Parent,n>::forwardSubstitution(const Vector<R,Parent,n> & vec) co
   for (size_t i = 0; i < n; i++) {
     sum = _base->zero();
     for (size_t j = 0; j < i; j++)
-      sum += mat[i][j] * sol[j];
-    sol[i] = (vec[i] - sum) / mat[i][i];
+      sum += this->_mat[i][j] * sol[j];
+    sol[i] = (vec[i] - sum) / this->_mat[i][i];
   } 
  
   return sol;
@@ -256,7 +256,7 @@ SquareMatrix<R,Parent,n>::forwardSubstitution(const Vector<R,Parent,n> & vec) co
 // for lower triangular matrices
 template<class R, class Parent, size_t n>
 SquareMatrix<R,Parent,n>
-SquareMatrix<R,Parent,n>::inverseLowerTriangular(void) const
+SquareMatrix<R,Parent,n>::_inverseLowerTriangular(void) const
 {
   SquareMatrix<R,Parent,n> inv(_base);
   inv.setIdentity();
@@ -267,9 +267,9 @@ SquareMatrix<R,Parent,n>::inverseLowerTriangular(void) const
     for (size_t i = col; i < n; i++) {
       sum.makeZero();
       for (size_t j = 0; j < i; j++)
-	sum += mat[i][j] * inv(j, col);
+	sum += this->_mat[i][j] * inv(j, col);
       R delta = (i == col) ? _base->one() : _base->zero();
-      inv(i,col) = (delta - sum) / mat[i][i];
+      inv(i,col) = (delta - sum) / this->_mat[i][i];
     } 
   }
   return inv;
@@ -277,7 +277,7 @@ SquareMatrix<R,Parent,n>::inverseLowerTriangular(void) const
 
 template<class R, class Parent, size_t n>
 SquareMatrix<R,Parent,n>
-SquareMatrix<R,Parent,n>::inverseUpperTriangular(void) const
+SquareMatrix<R,Parent,n>::_inverseUpperTriangular(void) const
 {
   SquareMatrix<R,Parent,n> inv(_base);
   inv.setIdentity();
@@ -288,9 +288,9 @@ SquareMatrix<R,Parent,n>::inverseUpperTriangular(void) const
     for (size_t i = col+1; i > 0; i--) {
       sum = _base->zero();
       for (size_t j = i; j < n; j++)
-	sum += mat[i-1][j] * inv(j,col);
+	sum += this->_mat[i-1][j] * inv(j,col);
       R delta = (i-1 == col) ? _base->one() : _base->zero();
-      inv(i-1,col) = (delta - sum) / mat[i-1][i-1];
+      inv(i-1,col) = (delta - sum) / this->_mat[i-1][i-1];
     } 
   }
   return inv;
@@ -300,7 +300,7 @@ SquareMatrix<R,Parent,n>::inverseUpperTriangular(void) const
 // for upper triangular matrices
 template<class R, class Parent, size_t n>
 Vector<R,Parent,n>
-SquareMatrix<R,Parent,n>::backwardSubstitution(const Vector<R,Parent,n> & vec) const
+SquareMatrix<R,Parent,n>::_backwardSubstitution(const Vector<R,Parent,n> & vec) const
 {
   Vector <R,Parent,n> sol(_base);
   R sum = _base->zero();
@@ -309,8 +309,8 @@ SquareMatrix<R,Parent,n>::backwardSubstitution(const Vector<R,Parent,n> & vec) c
   for (size_t i = n; i > 0; i--) {
     sum = _base->zero();
     for (size_t j = i; j < n; j++)
-      sum += mat[i-1][j] * sol[j];
-    sol[i-1] = (vec[i-1] - sum) / mat[i-1][i-1];
+      sum += this->_mat[i-1][j] * sol[j];
+    sol[i-1] = (vec[i-1] - sum) / this->_mat[i-1][i-1];
   } 
   
   return sol;
@@ -329,13 +329,13 @@ SquareMatrix<R,Parent,n>::cholesky(SquareMatrix<R,Parent,n>& L,
     sum.makeZero();
     for (size_t k = 0; k < j; k++)
       sum += L(j,k)*L(j,k)*D[k];
-    D[j] = mat[j][j] - sum;
+    D[j] = this->_mat[j][j] - sum;
     if (D[j].isZero()) return false;
     for (size_t i = j+1; i < n; i++) {
       sum.makeZero();
       for (size_t k = 0; k < j; k++)
 	sum += L(i,k)*L(j,k)*D[k];
-      L(i,j) = (mat[i][j] - sum) / D[j];
+      L(i,j) = (this->_mat[i][j] - sum) / D[j];
     } 
   }
   /*
@@ -416,10 +416,10 @@ SquareMatrix<R,Parent,n>::solve(const Vector<R,Parent,n> & vec) const
   Vector<R,Parent,n> D(_base);
   bool is_positive_definite = cholesky(L, D);
   assert(is_positive_definite);
-  sol = L.forwardSubstitution(vec);
+  sol = L._forwardSubstitution(vec);
   for (size_t i = 0; i < n; i++)
     sol[i] /= D[i];
-  sol = L.transpose().backwardSubstitution(sol);
+  sol = L.transpose()._backwardSubstitution(sol);
   return sol;
 }
 
@@ -431,13 +431,13 @@ void SquareMatrix<R,Parent,n>::swapRows(size_t row1, size_t row2)
   Vector<R,Parent,n> temp_row(_base);
 
   for (size_t col = 0; col < n; col++)
-    temp_row[col] = mat[row1][col];
+    temp_row[col] = this->_mat[row1][col];
 
   for (size_t col = 0; col < n; col++)
-    mat[row1][col] = mat[row2][col];
+    this->_mat[row1][col] = this->_mat[row2][col];
 
   for (size_t col = 0; col < n; col++)
-    mat[row2][col] = temp_row[col];
+    this->_mat[row2][col] = temp_row[col];
 
   return;
 }
@@ -450,13 +450,13 @@ void SquareMatrix<R,Parent,n>::swapCols(size_t col1, size_t col2)
   Vector<R,Parent,n> temp_col(_base);
 
   for (size_t row = 0; row < n; row++)
-    temp_col[row] = mat[row][col1];
+    temp_col[row] = this->_mat[row][col1];
 
   for (size_t row = 0; row < n; row++)
-    mat[row][col1] = mat[row][col2];
+    this->_mat[row][col1] = this->_mat[row][col2];
 
   for (size_t row = 0; row < n; row++)
-    mat[row][col2] = temp_col[row];
+    this->_mat[row][col2] = temp_col[row];
 
   return;
 }
@@ -467,7 +467,7 @@ void SquareMatrix<R,Parent,n>::multiplyRow(size_t row, const R & val)
   assert(row < n);
 
   for (size_t col = 0; col < n; col++)
-    mat[row][col] *= val;
+    this->_mat[row][col] *= val;
   return;
 }
 
@@ -477,7 +477,7 @@ void SquareMatrix<R,Parent,n>::multiplyCol(size_t col, const R & val)
   assert(col < n);
 
   for (size_t row = 0; row < n; row++)
-    mat[row][col] *= val;
+    this->_mat[row][col] *= val;
   return;
 }
 
@@ -487,7 +487,7 @@ void SquareMatrix<R,Parent,n>::addRow(size_t row_to, size_t row_from, const R & 
   assert((row_to < n) && (row_from < n));
 
   for (size_t col = 0; col < n; col++) {
-    mat[row_to][col] += val * mat[row_from][col];
+    this->_mat[row_to][col] += val * this->_mat[row_from][col];
   }
   return;
 }
@@ -498,7 +498,7 @@ void SquareMatrix<R,Parent,n>::addCol(size_t col_to, size_t col_from, const R & 
   assert((col_to < n) && (col_from < n));
 
   for (size_t row = 0; row < n; row++) {
-    mat[row][col_to] += val * mat[row][col_from];
+    this->_mat[row][col_to] += val * this->_mat[row][col_from];
   }
   return;
 }
@@ -509,8 +509,8 @@ SquareMatrix<R,Parent,n> SquareMatrix<R,Parent,n>::inverse(void) const
 {  
   assert(this->determinant() != _base->zero());
 
-  if (isLowerTriangular()) return inverseLowerTriangular();
-  if (isUpperTriangular()) return inverseUpperTriangular();
+  if (isLowerTriangular()) return _inverseLowerTriangular();
+  if (isUpperTriangular()) return _inverseUpperTriangular();
   if (isSymmetric()) {
     SquareMatrix<R,Parent,n> L(_base);
     Vector<R,Parent,n> D(_base);
@@ -527,7 +527,7 @@ SquareMatrix<R,Parent,n> SquareMatrix<R,Parent,n>::inverse(void) const
   }
   SquareMatrix<R,Parent,n> inv(_base);
   inv.setIdentity();
-  SquareMatrix<R,Parent,n> echelon(mat);
+  SquareMatrix<R,Parent,n> echelon(this->_mat);
   size_t pivot_row = 0;
   size_t pivot_col = 0;
   size_t row_max;

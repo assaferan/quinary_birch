@@ -21,7 +21,7 @@ public:
   template<typename T>
   FpElement<R,S> mod(const T& a) const;
     
-  std::shared_ptr< const Fp<R, S> > getPtr() const override;
+  std::shared_ptr< const Fp<R, S> > getPtr(void) const override;
 
   virtual R neg(R a) const;
   virtual R mul(R a, R b) const;

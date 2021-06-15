@@ -44,19 +44,19 @@ protected:
   // vectors as a coordinate of the return vector. Special care must be taken
   // to obtain the actual isotropic vectors when needed.
  
-  bool isotropicVector_p2(VectorFp<R,S,n> &, size_t start = 0) const;
+  bool _isotropicVector_p2(VectorFp<R,S,n> &, size_t start = 0) const;
 
-  FpElement<R,S> evaluate_p2(const VectorFp<R,S,n>& v) const;
+  FpElement<R,S> _evaluate_p2(const VectorFp<R,S,n>& v) const;
 
-  void hyperbolizeForm(SquareMatrixFp<R,S,n> &,
-		       SquareMatrixFp<R,S,n> &,
-		       bool deterministic = false,
-		       size_t start = 0) const;
+  void _hyperbolizeForm(SquareMatrixFp<R,S,n> &,
+			SquareMatrixFp<R,S,n> &,
+			bool deterministic = false,
+			size_t start = 0) const;
   
-  void splitHyperbolicPlane(const VectorFp<R,S,n> &,
-			    SquareMatrixFp<R,S,n> &,
-			    SquareMatrixFp<R,S,n> &,
-			    size_t start = 0) const;
+  void _splitHyperbolicPlane(const VectorFp<R,S,n> &,
+			     SquareMatrixFp<R,S,n> &,
+			     SquareMatrixFp<R,S,n> &,
+			     size_t start = 0) const;
 };
 
 #include "QuadFormFp.inl"

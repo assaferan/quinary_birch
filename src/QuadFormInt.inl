@@ -120,7 +120,7 @@ QuadFormInt<R,n>::getQuinaryForms(const R & disc)
 // Do we want to have a version for arbitrary euclidean domains?
 // Maybe replace cholesky in SquareMatrix with this version.
 template<typename R, size_t n>
-inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram() const
+inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
 {
   std::shared_ptr<const IntegerRing<R> > ring = this->baseRing();
   VectorInt<R,n> D(ring);
@@ -173,7 +173,7 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram() const
 }
 
 template<typename R, size_t n>
-inline int QuadFormInt<R,n>::hasse(const VectorInt<R,n> & D, const Integer<R> & p)
+inline int QuadFormInt<R,n>::_hasse(const VectorInt<R,n> & D, const Integer<R> & p)
 {
   std::shared_ptr<const IntegerRing<R> > ring = D.baseRing();
   int hasse = 1;
@@ -209,7 +209,7 @@ QuadFormInt<R,n>::invariants(std::set<Integer<R>> & F, size_t& I) const
 	  P.insert(fa.first);
     }
   for (Integer<R> p : P)
-    if (hasse(D,p) == -1) F.insert(p);
+    if (_hasse(D,p) == -1) F.insert(p);
 
   Integer<R> prod = Integer<R>::one();
   for (size_t i = 0; i < n; i++)
@@ -238,7 +238,7 @@ QuadFormInt<R,n>::invariants(typename QuadFormInt<R,n>::QFInv &F,
 	    P.insert(fa.first);
     }
   for (Integer<R> p : P)
-    F.insert(std::make_pair(p, hasse(D,p)));
+    F.insert(std::make_pair(p, _hasse(D,p)));
 
   Integer<R> prod = Integer<R>::one();
   for (size_t i = 0; i < n; i++)
@@ -471,7 +471,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 }
 
 template<typename R, size_t n>
-inline VectorInt<R,n-1> QuadFormInt<R,n>::voronoiBounds(size_t dim)
+inline VectorInt<R,n-1> QuadFormInt<R,n>::_voronoiBounds(size_t dim)
 {
   // !! TODO - check what the real bounds are !!
   std::shared_ptr<const IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
@@ -482,7 +482,7 @@ inline VectorInt<R,n-1> QuadFormInt<R,n>::voronoiBounds(size_t dim)
 }
 
 template<typename R, size_t n>
-inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
+inline void QuadFormInt<R,n>::_closestLatticeVector(SquareMatrixInt<R,n> &q,
 						   Isometry<R,n> & iso,
 						   size_t dim)
 {
@@ -522,7 +522,7 @@ inline void QuadFormInt<R,n>::closestLatticeVector(SquareMatrixInt<R,n> &q,
   y_int.prettyPrint(std::cerr, dim-1);
 #endif
   
-  VectorInt<R,n-1> voronoi = voronoiBounds(dim-1);
+  VectorInt<R,n-1> voronoi = _voronoiBounds(dim-1);
   VectorInt<R,n-1> x(ZZ);
   VectorInt<R,n-1> x_min(ZZ);
   VectorInt<R,n-1> x_max(ZZ);
@@ -653,7 +653,7 @@ inline void QuadFormInt<R,n>::greedy(SquareMatrixInt<R,n>& gram,
     assert((s0.inverse()*s).transform(q0) == gram);
 #endif
     
-    closestLatticeVector(gram, s, dim);
+    _closestLatticeVector(gram, s, dim);
 
 #ifdef DEBUG_LEVEL_FULL
     assert((s0.inverse()*s).transform(q0) == gram);
@@ -666,7 +666,7 @@ inline void QuadFormInt<R,n>::greedy(SquareMatrixInt<R,n>& gram,
 
 template<typename R, size_t n>
 inline std::vector< std::vector<size_t> >
-QuadFormInt<R,n>::allPerms(size_t m)
+QuadFormInt<R,n>::_allPerms(size_t m)
 {
   std::vector< std::vector<size_t> > perms;
   if (m == 1) {
@@ -675,7 +675,7 @@ QuadFormInt<R,n>::allPerms(size_t m)
     perms.push_back(id);
     return perms;
   }
-  std::vector< std::vector<size_t> > rec_perms = allPerms(m-1);
+  std::vector< std::vector<size_t> > rec_perms = _allPerms(m-1);
   for (std::vector<size_t> perm : rec_perms) {
     perm.push_back(m-1);
     perms.push_back(perm);
@@ -693,7 +693,7 @@ QuadFormInt<R,n>::allPerms(size_t m)
 }
 
 template<typename R, size_t n>
-inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
+inline bool QuadFormInt<R,n>::_permutationReduction(SquareMatrixInt<R,n> & qf,
 						   Isometry<R,n> & isom,
 						   std::set< Isometry<R, n> > & auts,
 						   bool calc_aut)
@@ -724,7 +724,7 @@ inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
   for (iter = stable_sets.begin(); iter != stable_sets.end(); iter++) {
     //    R key = iter->first;
     std::vector<size_t> value = iter->second;
-    std::vector< std::vector<size_t> > val_perms = allPerms(value.size());
+    std::vector< std::vector<size_t> > val_perms = _allPerms(value.size());
     for (std::vector<size_t> perm : val_perms) {
       VectorInt<size_t, n> large_perm(ZZ_uint);
       for (size_t k = 0; k < n; k++)
@@ -751,7 +751,7 @@ inline bool QuadFormInt<R,n>::permutationReduction(SquareMatrixInt<R,n> & qf,
 }
 
 template<typename R, size_t n>
-inline bool QuadFormInt<R,n>::signNormalizationSlow(SquareMatrixInt<R,n> & qf,
+inline bool QuadFormInt<R,n>::_signNormalizationSlow(SquareMatrixInt<R,n> & qf,
 						    Isometry<R,n> & isom,
 						    std::set< Isometry<R,n> > & auts)
 {
@@ -843,7 +843,7 @@ inline bool QuadFormInt<R,n>::signNormalizationSlow(SquareMatrixInt<R,n> & qf,
 // !! TODO - maybe use this one also to update the automorphism group
 // (by permutation). Though it seems this is covered by permutation_reduction
 template<typename R, size_t n>
-inline bool QuadFormInt<R,n>::normEchelon(SquareMatrixInt<R,n> & qf,
+inline bool QuadFormInt<R,n>::_normEchelon(SquareMatrixInt<R,n> & qf,
 					  Isometry<R,n> & isom)
 {
 #ifdef DEBUG
@@ -867,13 +867,13 @@ inline bool QuadFormInt<R,n>::normEchelon(SquareMatrixInt<R,n> & qf,
     }
   }
   if (!u0.isOne())
-    is_reduced = (is_reduced) && normEchelon(qf, isom);
+    is_reduced = (is_reduced) && _normEchelon(qf, isom);
   isom = isom*u0;
   return is_reduced;
 }
 
 template<typename R, size_t n>
-inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
+inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 						Isometry<R,n> & isom,
 						std::set< Isometry<R,n> > & auts,
 						bool calc_aut)
@@ -920,7 +920,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
 #ifdef DEBUG_LEVEL_FULL
 	assert((isom_orig.inverse() * isom).transform(qf_orig) == qf);
 #endif
-	normEchelon(qf, isom);
+	_normEchelon(qf, isom);
 #ifdef DEBUG_LEVEL_FULL
 	assert((isom_orig.inverse() * isom).transform(qf_orig) == qf);
 #endif
@@ -1020,7 +1020,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
       SquareMatrixInt<R,n> q0 = b0.transform(qf);
       Isometry<R,n> u;
       std::set< Isometry<R,n> > tmp_auts;
-      signNormalization(q0, u, tmp_auts, calc_aut);
+      _signNormalization(q0, u, tmp_auts, calc_aut);
       if (q0 < qf) {
 	qf = q0;
         isom = isom*b0*u;
@@ -1043,7 +1043,7 @@ inline bool QuadFormInt<R,n>::neighborReduction(SquareMatrixInt<R,n> & qf,
 // We don't really need to do this.
 // implement a small version of Todd-Coxeter Schreier-Sims ?!
 template<typename R, size_t n>
-inline size_t QuadFormInt<R,n>::generateAuts(std::set< Isometry<R,n> > & auts)
+inline size_t QuadFormInt<R,n>::_generateAuts(std::set< Isometry<R,n> > & auts)
 {
   size_t num_aut;
   do {
@@ -1063,25 +1063,25 @@ inline size_t QuadFormInt<R,n>::generateAuts(std::set< Isometry<R,n> > & auts)
 }
 
 template<typename R, size_t n>
-inline size_t QuadFormInt<R,n>::numAutomorphisms() const
+inline size_t QuadFormInt<R,n>::numAutomorphisms(void) const
 {
   if (this->_num_aut_init) return this->_num_aut;
   SquareMatrixInt<R,n> qf = this->_B;
   Isometry<R,n> isom;
   std::set< Isometry<R,n> > auts;
-  return iReduce(qf, isom, auts, true);
+  return _iReduce(qf, isom, auts, true);
 }
 
 // !! - TODO - think whether we want to save this as a member.
 // Right now it seems to me that most of the time we don't need it,
 // so there is no need to carry it around.
 template<typename R, size_t n>
-inline std::set<Isometry<R,n>> QuadFormInt<R,n>::properAutomorphisms() const
+inline std::set<Isometry<R,n>> QuadFormInt<R,n>::properAutomorphisms(void) const
 {
   SquareMatrixInt<R,n> qf = this->_B;
   Isometry<R,n> isom;
   std::set< Isometry<R,n> > auts;
-  iReduce(qf, isom, auts, true);
+  _iReduce(qf, isom, auts, true);
   return auts;
 }
 
@@ -1094,7 +1094,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 
   std::set< Isometry<R,n> > auts;
   SquareMatrixInt<R,n> qf = q.bilinearForm();
-  size_t num_aut = iReduce(qf, isom, auts, calc_aut);
+  size_t num_aut = _iReduce(qf, isom, auts, calc_aut);
   QuadFormZZ<R,n> q_red(qf);
   if (calc_aut) {
     q_red._num_aut = num_aut;
@@ -1105,7 +1105,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 }
 
 template<typename R, size_t n>
-inline size_t QuadFormInt<R,n>::iReduce(SquareMatrixInt<R,n> & qf,
+inline size_t QuadFormInt<R,n>::_iReduce(SquareMatrixInt<R,n> & qf,
 					Isometry<R,n> & isom,
 					std::set< Isometry<R,n> > & auts,
 					bool calc_aut)
@@ -1122,14 +1122,14 @@ inline size_t QuadFormInt<R,n>::iReduce(SquareMatrixInt<R,n> & qf,
   bool is_reduced;
   do {
     is_reduced = true;
-    is_reduced = (permutationReduction(qf, isom, auts, calc_aut)) && (is_reduced);
+    is_reduced = (_permutationReduction(qf, isom, auts, calc_aut)) && (is_reduced);
 #ifdef DEBUG_LEVEL_FULL
     assert((s0.inverse()*isom).transform(q0) == qf);
     for (Isometry<R, n> s : auts) {
       assert((s0.inverse()*s*s0).transform(q0) == q0);
     }
 #endif    
-    is_reduced = (signNormalization(qf, isom, auts, calc_aut)) && (is_reduced);
+    is_reduced = (_signNormalization(qf, isom, auts, calc_aut)) && (is_reduced);
 #ifdef DEBUG_LEVEL_FULL
     assert((s0.inverse()*isom).transform(q0) == qf);
     for (Isometry<R,n> s : auts) {
@@ -1137,7 +1137,7 @@ inline size_t QuadFormInt<R,n>::iReduce(SquareMatrixInt<R,n> & qf,
     }
 #endif
     
-    is_reduced = (neighborReduction(qf, isom, auts, calc_aut)) && (is_reduced);
+    is_reduced = (_neighborReduction(qf, isom, auts, calc_aut)) && (is_reduced);
     
 #ifdef DEBUG_LEVEL_FULL
     assert((s0.inverse()*isom).transform(q0) == qf);
@@ -1148,23 +1148,23 @@ inline size_t QuadFormInt<R,n>::iReduce(SquareMatrixInt<R,n> & qf,
   } while (!is_reduced);
   if (!calc_aut)
     return auts.size();
-  return generateAuts(auts);
+  return _generateAuts(auts);
 }
 
 template<typename R, size_t n>
-inline bool QuadFormInt<R,n>::signNormalization(SquareMatrixInt<R,n> & qf,
+inline bool QuadFormInt<R,n>::_signNormalization(SquareMatrixInt<R,n> & qf,
 						Isometry<R,n> & isom,
 						std::set< Isometry<R,n> > & auts,
 						bool calc_aut)
 {
   if (!calc_aut)
-    return signNormalizationFast(qf, isom);
-  return signNormalizationSlow(qf, isom, auts);
+    return _signNormalizationFast(qf, isom);
+  return _signNormalizationSlow(qf, isom, auts);
 }
 
 template<typename R, size_t n>
 inline std::vector<uint8_t>
-QuadFormInt<R,n>::bitTranspose(const std::vector< uint8_t > & mat)
+QuadFormInt<R,n>::_bitTranspose(const std::vector< uint8_t > & mat)
 {
   assert(n+1 <= 8);
 
@@ -1183,7 +1183,7 @@ QuadFormInt<R,n>::bitTranspose(const std::vector< uint8_t > & mat)
 // returns the transformation and the rank
 // performs the echelonization in place
 template<typename R, size_t n>
-inline uint8_t QuadFormInt<R,n>::bitEchelonForm(std::vector< uint8_t > & mat,
+inline uint8_t QuadFormInt<R,n>::_bitEchelonForm(std::vector< uint8_t > & mat,
 						std::vector< uint8_t > & trans)
 {
   assert(mat.size() <= 8);
@@ -1239,13 +1239,13 @@ inline uint8_t QuadFormInt<R,n>::bitEchelonForm(std::vector< uint8_t > & mat,
 
 template<typename R, size_t n>
 inline std::vector<uint8_t>
-QuadFormInt<R,n>::kernel(const std::vector< uint8_t > & mat)
+QuadFormInt<R,n>::_kernel(const std::vector< uint8_t > & mat)
 {
   std::vector<uint8_t> ker;
 
-  std::vector<uint8_t> mat_t = bitTranspose(mat);
+  std::vector<uint8_t> mat_t = _bitTranspose(mat);
   
-  uint8_t rank = bitEchelonForm(mat_t, ker);
+  uint8_t rank = _bitEchelonForm(mat_t, ker);
   // getting the zero rows
 
   ker.erase(ker.begin(), ker.begin() + rank);
@@ -1256,7 +1256,7 @@ QuadFormInt<R,n>::kernel(const std::vector< uint8_t > & mat)
 // !! TODO - use bit slicing to make this faster
 // Also does not need to compute the rank every time
 template<typename R, size_t n>
-bool QuadFormInt<R,n>::signNormalizationFast(SquareMatrixInt<R,n> & qf,
+bool QuadFormInt<R,n>::_signNormalizationFast(SquareMatrixInt<R,n> & qf,
 					     Isometry<R,n> & isom)
 {
   bool is_reduced = true;
@@ -1327,7 +1327,7 @@ bool QuadFormInt<R,n>::signNormalizationFast(SquareMatrixInt<R,n> & qf,
 
   // The last row of ker should now be a solution to the affine equation
   // The rows above are the kernel
-  std::vector<uint8_t> ker_bit = kernel(bb_vecs);
+  std::vector<uint8_t> ker_bit = _kernel(bb_vecs);
 
 #ifdef DEBUG_LEVEL_FULL
   Isometry<R,n> s;
@@ -1374,7 +1374,7 @@ bool QuadFormInt<R,n>::signNormalizationFast(SquareMatrixInt<R,n> & qf,
 
 template<typename R, size_t n>
 inline std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >
-QuadFormInt<R,n>::generateOrbit() const
+QuadFormInt<R,n>::generateOrbit(void) const
 {
   Isometry<R,n> s;
   QuadFormInt<R,n> qf(this->bilinearForm());
@@ -1387,7 +1387,7 @@ QuadFormInt<R,n>::generateOrbit() const
     num = orbit.size();
     for (i = orbit.begin(); i != orbit.end(); i++) {
       std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> >
-	perms = (i->first).permutationOrbit();
+	perms = (i->first)._permutationOrbit();
       for (j = perms.begin(); j != perms.end(); j++) {
 	assert((i->second*j->second).transform(this->bilinearForm()) ==
 	       j->first.bilinearForm());
@@ -1396,7 +1396,7 @@ QuadFormInt<R,n>::generateOrbit() const
     }
     for (i = orbit.begin(); i != orbit.end(); i++) {
       std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> >
-	signs = (i->first).signOrbit();
+	signs = (i->first)._signOrbit();
       for (j = signs.begin(); j != signs.end(); j++) {
 	assert((i->second*j->second).transform(this->bilinearForm()) ==
 	       j->first.bilinearForm());
@@ -1410,7 +1410,7 @@ QuadFormInt<R,n>::generateOrbit() const
 
 template<typename R, size_t n>
 inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
-QuadFormInt<R,n>::permutationOrbit() const
+QuadFormInt<R,n>::_permutationOrbit() const
 {
   std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > orbit; 
   std::map<R, std::vector<size_t> > stable_sets;
@@ -1432,7 +1432,7 @@ QuadFormInt<R,n>::permutationOrbit() const
   for (iter = stable_sets.begin(); iter != stable_sets.end(); iter++) {
     std::vector<size_t> value = iter->second;
     std::vector< std::vector<size_t> > val_perms =
-      QuadFormInt<R,n>::allPerms(value.size());
+      QuadFormInt<R,n>::_allPerms(value.size());
     for (std::vector<size_t> perm : val_perms) {
       VectorInt<size_t,n> large_perm(ZZ);
       for (size_t k = 0; k < n; k++)
@@ -1456,7 +1456,7 @@ QuadFormInt<R,n>::permutationOrbit() const
 
 template<typename R, size_t n>
 inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
-QuadFormInt<R,n>::signOrbit() const
+QuadFormInt<R,n>::_signOrbit(void) const
 {
   std::unordered_map< QuadFormInt<R,n>, Isometry<R,n> > orbit;
   Isometry<R,n> s;

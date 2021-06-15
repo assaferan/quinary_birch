@@ -306,7 +306,7 @@ inline Matrix<S,SParent> UnivariatePoly<R,Parent>::evaluate(const Matrix<S,SPare
   Matrix<S,SParent> res(a.nrows(), a.nrows());
   Matrix<S,SParent> a_i = Matrix<S,SParent>::identity(a.nrows());
   for (size_t i = 0; i < this->_coeffs.size(); i++) {
-    res += birch_util::convert_Integer<R,S>(this->_coeffs[i])*a_i;
+    res += birch_util::convertInteger<R,S>(this->_coeffs[i])*a_i;
     a_i *= a;
   }
   return res;

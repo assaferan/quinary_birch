@@ -13,13 +13,13 @@ public:
 
   RationalField() {}
   
-  inline Rational<R> zero() const override
+  inline Rational<R> zero(void) const override
   {return Rational<R>::zero(); }
   
-  inline Rational<R> one() const override
+  inline Rational<R> one(void) const override
   {return Rational<R>::one(); }
 
-  inline std::shared_ptr<const RationalField<R> > getPtr() const override
+  inline std::shared_ptr<const RationalField<R> > getPtr(void) const override
   {return std::enable_shared_from_this< const RationalField<R> >::shared_from_this(); }
 
   
