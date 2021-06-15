@@ -97,6 +97,7 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
       pivot_col++;
     }
     else {
+      row_max--;
       echelon.swapRows(pivot_row, row_max);
       trans.swapRows(pivot_row, row_max);
       for (size_t row = pivot_row+1; row < echelon.nrows(); row++) {
