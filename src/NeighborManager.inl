@@ -10,7 +10,7 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
   T p = GF->prime();
   
   this->_q = q;
-  this->_disc = q.discriminant();
+  this->_disc = q.discriminant().num();
 
   std::shared_ptr<QuadFormFp<R,S,n> > qp = q.mod(GF);
 
