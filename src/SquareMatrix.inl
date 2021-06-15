@@ -695,7 +695,7 @@ F SquareMatrix<R,Parent,n>::innerProduct(const SquareMatrix<R,Parent,n> & G,
 {
   assert((idx1 < n) && (idx2 < n));
   
-  F ans = S->baseRing()->zero();
+  F ans = S.baseRing()->zero();
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
       ans += S(idx1, i) * G(i,j) * S(idx2, j);
