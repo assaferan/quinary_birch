@@ -2,6 +2,7 @@
 #define __BIRCH_H_
 
 #include <gmpxx.h>
+#include <vector>
 
 /* Type definitions */
 
