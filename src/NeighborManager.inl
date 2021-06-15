@@ -177,15 +177,15 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   SquareMatrixInt<T,n> B(ZZ);
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      B(i,j) = this->_X[i][j] = x[i][j].lift() % p;
+      B(i,j) = this->_X[i][j] = Integer<T>(x[i][j].lift()) % p;
 
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      B(this->_k+i,j) = this->_Z[i][j] = z[i][j].lift() % p;
+      B(this->_k+i,j) = this->_Z[i][j] = Integer<T>(z[i][j].lift()) % p;
 
   for (size_t i = 0; i < n - 2*this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      B(2*this->_k+i,j) = this->_U[i][j] = u[i][j].lift() % p;
+      B(2*this->_k+i,j) = this->_U[i][j] = Integer<T>(u[i][j].lift()) % p;
 
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "X = " << this->_X << std::endl;
