@@ -3,6 +3,7 @@
 #include <unordered_set>
 
 #include "Matrix.h"
+#include "NumberFieldElement.h"
 #include "QuadFormInt.h"
 #include "UnivariatePoly.h"
 
@@ -699,7 +700,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	  for (Z64 vpos : vector_manager._position_lut[index])
 	    {
 	      W64 cond = vector_manager._conductors[vpos];
-	      Z32 value = birch_util::char_val(spin_vals & cond);
+	      Z32 value = birch_util::charVal(spin_vals & cond);
 	      Z32 coord = vector_manager._strided_eigenvectors[offset + vpos];
 	      if (likely(coord))
 		{
@@ -960,8 +961,8 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 
 	      assert( foo.s.isIsometry(mother.q, mother.q) );
 
-	      scalar *= birch_util::my_pow(cur.es);
-	      scalar *= birch_util::my_pow(rep_inv.es);
+	      scalar *= birch_util::myPow(cur.es);
+	      scalar *= birch_util::myPow(rep_inv.es);
 
 	      spin_vals = this->_spinor->norm(mother.q, foo.s, scalar);
 	    }
@@ -994,7 +995,7 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 	      int rpos = lut[r];
 	      if (unlikely(rpos == -1)) continue;
 
-	      row[rpos] += birch_util::char_val(x & k);
+	      row[rpos] += birch_util::charVal(x & k);
 	    }
 
 	  hecke_ptr[k] += this->_dims[k];
@@ -1102,7 +1103,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
 template<typename R, size_t n>
 inline std::vector< Matrix<int> > Genus<R,n>::_decomposition(size_t k) const
 {
-  std::vector< Matrix<int> > decomp;
+  std::vector< MatrixInt<int> > decomp;
   if (this->_dims[k] == 0)
     return decomp;
 
