@@ -112,7 +112,7 @@ namespace birch_util
   Z convertInteger<Z128>(const Z128& x)
   {
     W128 abs_x = x < 0 ? -x : x;
-    Z ret = convert_Integer<W128,Z>(abs_x);
+    Z ret = convertInteger<W128,Z>(abs_x);
     return x < 0 ? -ret : ret;
   }
   
