@@ -92,7 +92,7 @@ public:
   { return _num / _denom; }
 
   inline Integer<R> ceiling(void) const
-  { return (_num + _denom - 1)/_denom; }
+  { return (_num + _denom - Integer<R>::one())/_denom; }
 
   inline bool isIntegral(void) const
   {return ((_denom.isOne()) || ((-_denom).isOne())); }
