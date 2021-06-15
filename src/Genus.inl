@@ -156,7 +156,7 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 	mass *= -Rational<Z>::bernoulliNumber(r_Z)/r_Z;
       else
 	{
-	  Integer<Z> disc_z = birch_util::convertInteger<R,Z>(disc);
+	  Integer<Z> disc_z = birch_util::convertInteger<R,Z>(disc.num());
 	  mass *= -Rational<Z>::bernoulliNumber(r_Z, disc_z) / r_Z;
 	  if (r % 2 == 0)
 	    mass *= -Rational<Z>::bernoulliNumber(r_Z) / r_Z;
