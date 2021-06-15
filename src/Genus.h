@@ -147,14 +147,16 @@ protected:
 			const R & p, size_t k) const;
 };
 
-template<typename R, size_t n>
-struct hash<GenusRep<R,n>>
+namespace std
 {
-  Z64 operator()(const GenusRep<R,n>& rep) const
+  template<typename R, size_t n>
+  struct hash<GenusRep<R,n>>
   {
-    return rep.q.hashValue();
-  }
-};
+    Z64 operator()(const GenusRep<R,n>& rep) const
+    {
+      return rep.q.hashValue();
+    }
+  };
 }
 
 #include "Genus.inl"
