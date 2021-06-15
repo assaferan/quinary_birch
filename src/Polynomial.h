@@ -1,7 +1,8 @@
 #ifndef __POLYNOMIAL_H_
 #define __POLYNOMIAL_H_
 
-#include<set>
+#include <map>
+#include <set>
 
 #include "birch.h"
 
