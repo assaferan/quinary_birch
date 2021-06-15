@@ -542,7 +542,6 @@ SquareMatrix<R,Parent,n> SquareMatrix<R,Parent,n>::inverse(void) const
       pivot_col++;
     }
     else {
-      row_max--;
       echelon.swapRows(pivot_row, row_max);
       inv.swapRows(pivot_row, row_max);
 
