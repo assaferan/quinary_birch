@@ -136,7 +136,7 @@ public:
   // assign zero
   inline Rational<R> & makeZero(void) override { _num.makeZero(); return (*this); }
 
-  inline bool isOne(void) override const { return (_num == _denom); }
+  inline bool isOne(void) const override { return (_num == _denom); }
 
   // assign to one
   inline Rational<R> & makeOne(void) override
