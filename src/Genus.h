@@ -148,11 +148,11 @@ protected:
 };
 
 template<typename R, size_t n>
-struct hash<GenusRep<R, n>>
+struct hash<GenusRep<R,n>>
 {
-  Z64 operator()(const GenusRep<R, n>& rep) const
+  Z64 operator()(const GenusRep<R,n>& rep) const
   {
-    return rep.q.hash_value();
+    return rep.q.hashValue();
   }
 };
 }
