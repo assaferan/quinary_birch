@@ -32,11 +32,11 @@ protected:
   std::shared_ptr< Fp<R,S> > _GF;
   VectorFp<R,S,n> _vec;
   SquareMatrixFp<R,S,n> _b;
+  SquareMatrixInt<T,n> _quot_gram;
   
   QuadFormZZ<T,n> _q;
   T _disc;
   
-  SquareMatrixInt<T,n> _quot_gram;
   std::shared_ptr< SquareMatrixFp<R,S,n> > _p_std_gram;
   std::shared_ptr< SquareMatrixFp<R,S,n> > _p_basis;
   std::shared_ptr< PolynomialFp<R,S> > _p_q_std;
