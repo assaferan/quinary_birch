@@ -52,8 +52,8 @@ public:
   bool isZero(void) const override;
   bool isOne(void) const override;
 
-  static zero(std::shared_ptr<const NumberField<R> > fld);
-  static one(std::shared_ptr<const NumberField<R> > fld);
+  static NumberFieldElement<R> zero(std::shared_ptr<const NumberField<R> > fld);
+  static NumberFieldElement<R> one(std::shared_ptr<const NumberField<R> > fld);
   
   inline NumberFieldElement<R>& makeZero(void) override
   { _elt.makeZero(); return *this; }
