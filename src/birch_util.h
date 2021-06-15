@@ -15,7 +15,7 @@ namespace birch_util
   PrimeSymbol<To> convertPrimeSymbol(const PrimeSymbol<From>& symbol);
 
   template<typename From, typename To, size_t n>
-  QuadForm<To,n> convertQuadForm(const QuadForm<From,n>& q);
+  QuadFormZZ<To,n> convertQuadForm(const QuadFormZZ<From,n>& q);
 
   template<typename From, typename To, size_t n>
   Isometry<To,n> convertIsometry(const Isometry<From,n>& s);
