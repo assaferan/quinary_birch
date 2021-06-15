@@ -72,6 +72,9 @@ class FpElement;
 template<typename R, size_t n>
 class Genus;
 
+template<typename R, size_t n>
+class GenusRep;
+
 // isometry
 template<typename R, size_t n>
 class Isometry;
