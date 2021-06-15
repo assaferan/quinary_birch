@@ -9,7 +9,7 @@ class NumberFieldElement : public virtual FieldElement< NumberFieldElement<R>, N
 {
 public:
   NumberFieldElement() = default;
-  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld) : K(fld) {}
+  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld) : _K(fld) {}
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const UnivariatePolyRat<R> & poly)
     : _K(fld), _elt(poly) {}
