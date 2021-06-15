@@ -115,7 +115,7 @@ inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n, const Inte
 	  s += b[k]*a_pow*d_pow;
 	  a_pow *= a;
 	}
-      s *= chi_a;
+      s *= R(chi_a);
       b_chi += s;
     }
   return b_chi;
