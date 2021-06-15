@@ -1133,7 +1133,7 @@ Genus<R,n>::eigenvectors(void)
 	for (size_t col = 0; col < T.ncols(); col++)
 	  T_K(row,col) = NumberFieldElement<Z>(K, T(row,col));
       NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(QQ));
-      T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(T.nrows());
+      T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T.nrows());
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
       evecs_k.push_back(vec);
