@@ -90,7 +90,8 @@ inline Rational<Z> Genus<R,n>::_combine(const QuadFormZZ<R,n>& q,
   size_t v = q_mat.determinant().valuation(p);
   if ((n % 2 == 0) && (v % 2 == 1)) {
     Rational<Z64> n_rat = (Z64)n;
-    e += (n_rat-Rational<Z64>::one())/2;
+    Integer<Z64> two = 2;
+    e += (n_rat-Rational<Z64>::one())/two;
   }
   assert(e.isIntegral());
   Integer<Z> p_Z = birch_util::convertInteger<R, Z>(p.num());
