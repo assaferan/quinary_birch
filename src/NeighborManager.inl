@@ -48,7 +48,7 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
 
   // Count the rows at the end of the matrix which are exactly zero.
   size_t idx = n;
-  while ((idx >= 1) && (*p_std_gram)[idx-1].isZero()) {
+  while ((idx >= 1) && (*_p_std_gram)[idx-1].isZero()) {
     idx--;
   }
 
