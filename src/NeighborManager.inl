@@ -253,9 +253,9 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   for (size_t i = 0; i < this->_k; i++) {
     X_new[i] = this->_X[i];
     Integer<T> gram2 = gram(i,i)/two + ((gram(i,i) % two).isZero() ? Integer<T>::zero() : half);
-    for (size_t j = this->_k-1-i; j < this->k; j++) {
-      T scalar = (i+j == this->_k-1) ? gram2 : gram(i, this->_k-1-j);
-      scalar = (scalar / (p*p) + 1)*p*p-scalar;
+    for (size_t j = this->_k-1-i; j < this->_k; j++) {
+      Integer<T> scalar = (i+j == this->_k-1) ? gram2 : gram(i, this->_k-1-j);
+      scalar = (scalar / (p*p) + Integer<T>::one())*p*p-scalar;
       if (scalar >= p*p)
 	scalar -= p*p;
       X_new[i] +=  scalar  * this->_Z[j];
