@@ -138,7 +138,7 @@ protected:
   std::map<R,std::vector<int>> _heckeMatrixDenseInternal(const R&) const;
 
   static std::set<Integer<R> > _wittToHasse(const Integer<R> &,
-					   const std::set<std::pair<Integer<R>, int> > &);
+					    const std::set<std::pair<Integer<R>, int> > &);
 
   std::vector< MatrixInt<int> > _decomposition(size_t k) const;
   
@@ -146,6 +146,16 @@ protected:
   _decompositionRecurse(const MatrixInt<int> & V_basis,
 			const R & p, size_t k) const;
 };
+
+template<typename R, size_t n>
+struct hash<GenusRep<R, n>>
+{
+  Z64 operator()(const GenusRep<R, n>& rep) const
+  {
+    return rep.q.hash_value();
+  }
+};
+}
 
 #include "Genus.inl"
 
