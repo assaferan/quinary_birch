@@ -40,8 +40,8 @@ public:
   using R_QuadForm<R,n>::evaluate;
 
   struct jordan_data {
-    std::vector< SquareMatrixRat<R,n> > matrices;
-    std::vector< SquareMatrixRat<R,n> > grams;
+    std::vector< MatrixRat<R> > matrices;
+    std::vector< MatrixRat<R> > grams;
     std::vector<size_t> exponents;
   };
 
