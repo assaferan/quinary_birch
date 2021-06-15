@@ -110,6 +110,8 @@ public:
   Integer<R> binomialCoefficient(const Integer<R> & k) const;
 
   Integer<R> nextPrime(void) const;
+
+  bool isSquare(void) const;
   
 protected:
   R _num;
