@@ -54,19 +54,19 @@ inline void Rational<R>::_reduce(void)
 // We are using Akiyama and Tanigawa's algorithm
 // It's not the fastest, but it is one of the simplest.
 template <typename R>
-inline std::vector< Rational<R> > Rational<R>::_bernoulliUpTo(const Integer<R> & n)
+inline std::vector< Rational<R> > Rational<R>::_bernoulliUpTo(size_t n)
 {
   std::shared_ptr<const RationalField<R> > QQ = std::make_shared<const RationalField<R> >();
-  std::vector< Rational<R> > a(n.num()+1, QQ);
-  std::vector< Rational<R> > b(n.num()+1, QQ);
-  for (size_t i = 0; i <= n.num(); i++) {
+  std::vector< Rational<R> > a(n+1, QQ);
+  std::vector< Rational<R> > b(n+1, QQ);
+  for (size_t i = 0; i <= n; i++) {
     Rational<R> r(1, i+1);
     a[i] = r;
   }
   b[0] = a[0];
-  for (size_t i = 0; i < n.num(); i++)
+  for (size_t i = 0; i < n; i++)
     {
-      for (size_t j = 0; j < n.num() - i; j++) {
+      for (size_t j = 0; j < n - i; j++) {
 	Integer<R> mult = R(j + 1);
 	a[j] = mult*(a[j] - a[j+1]);
       }
@@ -78,20 +78,22 @@ inline std::vector< Rational<R> > Rational<R>::_bernoulliUpTo(const Integer<R> &
 }
 
 template <typename R>
-inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n)
+inline Rational<R> Rational<R>::bernoulliNumber(size_t n)
 {
   std::vector< Rational<R> > b = _bernoulliUpTo(n);
-  return b[birch_util::convertInteger<R,Z64>(n.num())];
+  return b[n];
 }
 
 
 template <typename R>
-inline std::vector< Rational<R> > Rational<R>::_bernoulliPoly(const Integer<R> & n)
+inline std::vector< Rational<R> > Rational<R>::_bernoulliPoly(size_t n)
 {
   std::vector< Rational<R> > b = _bernoulliUpTo(n);
   std::reverse(b.begin(), b.end());
-  for (size_t k = 0; k <= n.num(); k++)
-    b[k] *= n.binomialCoefficient(R(k));
+  for (size_t k = 0; k <= n; k++) {
+    Integer<R> n_int = n;
+    b[k] *= n_int.binomialCoefficient(R(k));
+  }
   return b;
 }
 
@@ -99,10 +101,10 @@ inline std::vector< Rational<R> > Rational<R>::_bernoulliPoly(const Integer<R> &
 // quadratic field with discrminant d (Is it? verify we are working
 // with the correct discriminant (d or 4d maybe?))
 template <typename R>
-inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n, const Integer<R> & d)
+inline Rational<R> Rational<R>::bernoulliNumber(size_t n, const Integer<R> & d)
 {
   std::vector< Rational<R> > b = Rational<R>::_bernoulliPoly(n);
-  Integer<R> d_pow = d^birch_util::convertInteger<R,Z64>(n.num());
+  Integer<R> d_pow = d^n;
 
   Rational<R> b_chi = Rational<R>::zero();
   for (Integer<R> a = Integer<R>::zero(); a < d; a++)
@@ -110,7 +112,7 @@ inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n, const Inte
       int chi_a = a.kroneckerSymbol(n);      
       Integer<R> a_pow = Integer<R>::one();
       Rational<R> s = Rational<R>::zero();
-      for (size_t k = 0; k <= n.num(); k++)
+      for (size_t k = 0; k <= n; k++)
 	{
 	  d_pow /= d;
 	  s += b[k]*a_pow*d_pow;
