@@ -104,12 +104,12 @@ inline Rational<R> Rational<R>::bernoulliNumber(const Integer<R> & n, const Inte
   Integer<R> d_pow = d^convertInteger<R,Z64>(n.num());
 
   Rational<R> b_chi = Rational<R>::zero();
-  for (Integer<R> a = 0; a < d; a++)
+  for (Integer<R> a = Integer<R>::zero(); a < d; a++)
     {
       int chi_a = a.kroneckerSymbol(n);      
       Integer<R> a_pow = Integer<R>::one();
       Rational<R> s = Rational<R>::zero();
-      for (size_t k = 0; k <= n; k++)
+      for (Integer<R> k = Integer<R>::zero(); k <= n; k++)
 	{
 	  d_pow /= d;
 	  s += b[k]*a_pow*d_pow;
