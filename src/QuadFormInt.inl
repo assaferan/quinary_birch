@@ -808,7 +808,7 @@ inline bool QuadFormInt<R,n>::_signNormalizationSlow(SquareMatrixInt<R,n> & qf,
     ps_ptr++;
   }
 
-  W16_MatrixFp ker = w_F2.kernel();
+  W16_MatrixFp ker = w_F2.leftKernel();
   // The last row of ker should now be a solution to the affine equation
   // The rows above are the kernel
 #ifdef DEBUG
