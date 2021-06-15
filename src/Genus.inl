@@ -17,7 +17,7 @@ Genus<R,dim>::_wittToHasse(const Integer<R>& det,
   std::set< Integer<R> > hasse;
   int c_table[8] = {2, 1, 1, -2, -2, -1, -1, 2};
   int c_mask = c_table[dim % 8];
-  Integer<R> c = R((c_mask / 2)*det + c_mask % 2);
+  Integer<R> c = R(c_mask / 2)*det + R(c_mask % 2);
   Integer<R> minus_one = -Integer<R>::one();
 
   for (std::pair<Integer<R>,int> x : finite)
