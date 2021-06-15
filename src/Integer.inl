@@ -235,9 +235,9 @@ template <typename R>
 inline bool Integer<R>::isSquare(void) const
 {
   // We could do that without factoring, but it's good enough for now
-  std::vector< std::pair<R, size_t> > fac = this->factorization();
+  std::vector< std::pair<Integer<R>, size_t> > fac = this->factorization();
   if ((*this) < 0) return false;
-  for (std::pair<R, size_t> fa : fac)
+  for (std::pair<Integer<R>, size_t> fa : fac)
     if (fa.second % 2 == 1) return false;
   return true;
 }
