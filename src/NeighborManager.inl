@@ -203,7 +203,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   for (size_t i = 0; i < this->_k; i++) {
     Z_new[i] = this->_Z[i];
     for (size_t j = 0; j < this->_k; j++) {
-      T delta = (i == j) ? 1 : 0;
+      Integer<T> delta = (i == j) ? Integer<T>::one() : Integer<T>::zero();
       // we split the operation due to signed type issues
       Integer<T> a = gram(this->_k-j-1, i + this->_k);
       // a nonnegative value with the same residue mod p*p
@@ -248,10 +248,11 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   }
   // Lift X so that it is isotropic modulo p^2.
   std::vector< VectorInt<T,n> > X_new(this->_k);
-  T half = (p*p+1)/2;
+  Integer<T> two = T(2);
+  Integer<T> half = (p*p+Integer<T>::one())/two;
   for (size_t i = 0; i < this->_k; i++) {
     X_new[i] = this->_X[i];
-    T gram2 = gram(i,i)/2 + ((gram(i,i) % 2 == 0) ? 0 : half);
+    Integer<T> gram2 = gram(i,i)/two + ((gram(i,i) % two).isZero() ? Integer<T>::zero() : half);
     for (size_t j = this->_k-1-i; j < this->k; j++) {
       T scalar = (i+j == this->_k-1) ? gram2 : gram(i, this->_k-1-j);
       scalar = (scalar / (p*p) + 1)*p*p-scalar;
@@ -288,13 +289,13 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 #endif // DEBUG
 
   // Lift Z so that it is isotropic modulo p^2.
-  for (size_t i = 0; i < this->k; i++) {
+  for (size_t i = 0; i < this->_k; i++) {
     Z_new[i] = this->_Z[i];
-    for (size_t j = this->k-1-i; j < this->k; j++) {
-      T scalar = gram(this->k+i, 2*this->k-1-j);
+    for (size_t j = this->_k-1-i; j < this->_k; j++) {
+      Integer<T> scalar = gram(this->_k+i, 2*this->_k-1-j);
       if (i+j == this->_k-1)
-	scalar = (scalar/2) + ((scalar % 2 == 0) ? 0 : half);
-      scalar = (scalar / (p*p) + 1)*p*p-scalar;
+	scalar = (scalar/two) + ((scalar % two).isZero() ? Integer<T>::zero() : half);
+      scalar = (scalar / (p*p) + Integer<T>::one())*p*p-scalar;
       if (scalar >= p*p)
 	scalar -= p*p;
       Z_new[i] += scalar * this->_X[j];
@@ -303,7 +304,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   this->_Z = Z_new;
 
 #ifdef DEBUG
-  for (size_t i = 0; i < this->k; i++)
+  for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       this->_Z[i][j] = this->_Z[i][j] % (p*p);
 
@@ -342,15 +343,15 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n - 2*this->_k; j++) {
       // Clear components corresponding to X.
-      T scalar = gram(2*this->_k-1-i, 2*this->_k+j);
-      scalar = (scalar / (p*p) + 1)*p*p-scalar;
+      Integer<T> scalar = gram(2*this->_k-1-i, 2*this->_k+j);
+      scalar = (scalar / (p*p) + Integer<T>::one())*p*p-scalar;
       if (scalar >= p*p)
 	scalar -= p*p;
       this->_U[j] += scalar * this->_X[i];
       
       // Clear components corresponding to Z.
       scalar = gram(this->_k-1-i, 2*this->_k+j);
-      scalar = (scalar / (p*p) + 1)*p*p-scalar;
+      scalar = (scalar / (p*p) + Integer<T>::one())*p*p-scalar;
       if (scalar >= p*p)
 	scalar -= p*p;
       this->_U[j] += scalar * this->_Z[i];
