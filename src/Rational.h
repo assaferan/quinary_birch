@@ -164,17 +164,17 @@ public:
   inline bool isLocalSquare(const Integer<R>& p) const
   {return _num.isLocalSquare(p) == _denom.isLocalSquare(p); }
 
-  static Rational<R> bernoulliNumber(const Integer<R> & n);
+  static Rational<R> bernoulliNumber(size_t n);
 
-  static Rational<R> bernoulliNumber(const Integer<R> & n, const Integer<R> & d);
+  static Rational<R> bernoulliNumber(size_t n, const Integer<R> & d);
   
 protected:
   Integer<R> _num;
   Integer<R> _denom;
 
   void _reduce(void);
-  static std::vector< Rational<R> > _bernoulliUpTo(const Integer<R> & n);
-  static std::vector< Rational<R> > _bernoulliPoly(const Integer<R> & n);
+  static std::vector< Rational<R> > _bernoulliUpTo(size_t n);
+  static std::vector< Rational<R> > _bernoulliPoly(size_t n);
 };
 
 #include "Rational.inl"
