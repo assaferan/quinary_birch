@@ -170,7 +170,7 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 	{
 	  // checking if disc is a local square at 2
 	  int w = 1;
-	  if ((val2 % 2 != 1) && ((disc >> val2) % 8 == 1))
+	  if ((val2 % 2 != 1) && ((disc / (1 <<  val2)) % 8 == 1))
 	    w = -1;
 	  mass *= Z((1<<(r-1))+w);
 	  mass *= Z((1<<r)+w);
