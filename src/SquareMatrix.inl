@@ -535,10 +535,12 @@ SquareMatrix<R,Parent,n> SquareMatrix<R,Parent,n>::inverse(void) const
   R factor = _base->one();
   
   while ((pivot_row < n) && (pivot_col < n)) {
-    for (row_max = pivot_row; (row_max < n) && (max_val.isZero());) {
+    for (row_max = pivot_row; row_max < n;) {
       max_val = echelon(row_max, pivot_col);
       if (max_val.isZero())
 	row_max++;
+      else
+	break;
     }
     if (max_val.isZero()) {
       pivot_col++;
