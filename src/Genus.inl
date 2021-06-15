@@ -138,7 +138,7 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 	}
       if (witt.find(2) != witt.end())
 	{ 
-	  mass *= (1 << (n-1)) - 1;
+	  mass *= Z((1 << (n-1)) - 1);
 	  mass /= Z(6);
 	}
     }
@@ -150,9 +150,9 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
       else
 	{
 	  Integer<Z> disc_z = birch_util::convert_Integer<R,Z>(disc);
-	  mass *= -Rational<Z>::bernoulliNumber(r, disc_z) / r;
+	  mass *= -Rational<Z>::bernoulliNumber(Z(r), disc_z) / Z(r);
 	  if (r % 2 == 0)
-	    mass *= -Rational<Z>::bernoulliNumber(r) / r;
+	    mass *= -Rational<Z>::bernoulliNumber(Z(r)) / Z(r);
 	  if (val2 % 2 == 1)
 	    {
 	      mass /= Z(2);
@@ -165,9 +165,9 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 	  int w = 1;
 	  if ((val2 % 2 != 1) && ((disc >> val2) % 8 == 1))
 	    w = -1;
-	  mass *= (1<<(r-1))+w;
-	  mass *= (1<<r)+w;
-	  mass /= 6;
+	  mass *= Z((1<<(r-1))+w);
+	  mass *= Z((1<<r)+w);
+	  mass /= Z(6);
 	}
     }
   // odd places which are not unimodular or have Witt invariant -1.
@@ -227,7 +227,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
   this->_mass = this->_getMass(q, symbols);
 
   // The mass provides a reasonable estimate for the size of the genus.
-  Z64 estimated_size = mpz_get_si(this->_mass.ceiling().get_mpz_t());
+  Z64 estimated_size = mpz_get_si(this->_mass.ceiling().num().get_mpz_t());
 
   // Should this be 1/#aut or 2/#aut? probably depends if this is SO or O
   GenusRep<R,n> rep;
