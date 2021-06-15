@@ -720,7 +720,7 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
     data.push_back(x_i);
   }
   this->_p_isotropic_param =
-    std::make_shared< Matrix< PolynomialFp<R, S>, PolynomialRingFp<R,S> > >(data, this->k, n);
+    std::make_shared< Matrix< PolynomialFp<R, S>, PolynomialRingFp<R,S> > >(data, this->_k, n);
 
   FpElement<R,S> zero(this->_GF, 0);
   FpElement<R,S> one(this->_GF, 1);
