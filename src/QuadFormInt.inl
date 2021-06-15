@@ -1377,7 +1377,7 @@ inline std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >
 QuadFormInt<R,n>::generateOrbit(void) const
 {
   Isometry<R,n> s;
-  QuadFormInt<R,n> qf(this->bilinearForm());
+  QuadFormZZ<R,n> qf(this->bilinearForm());
   size_t num = 0;
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit;
   typename std::unordered_map< QuadFormZZ<R,n>,
@@ -1444,7 +1444,7 @@ QuadFormInt<R,n>::_permutationOrbit() const
       s.updatePerm(large_perm);
       q1 = s.transform(this->bilinearForm());
       greedy(q1, s);
-      QuadFormInt<R,n> q(q1);
+      QuadFormZZ<R,n> q(q1);
 
       assert(s.transform(this->bilinearForm()) == q.bilinearForm());
 
@@ -1470,7 +1470,7 @@ QuadFormInt<R,n>::_signOrbit(void) const
     }
     q = s.transform(this->bilinearForm());
     greedy(q,s);
-    QuadFormInt<R,n> qq(q);
+    QuadFormZZ<R,n> qq(q);
     assert(s.transform(this->bilinearForm()) == qq.bilinearForm());
     orbit[qq] = s;
   }
