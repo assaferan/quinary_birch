@@ -438,7 +438,7 @@ inline void NeighborManager<R,S,T,n>::nextIsotropicSubspace(void)
       pos++;
       // Manually move to the next element.
       assert(pos <= this->_params.size());
-      this->params[pos-1]++;
+      this->_params[pos-1]++;
     } while ((pos != this->_free_vars.size()) && (this->_params[pos-1] == zero));
   }
 
