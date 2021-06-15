@@ -17,7 +17,7 @@ public:
     }
 
   template<size_t n>
-  inline Z64 norm(const QuadFormZZ<R,n>& q, const Isometry<R,n>& s, const R& scalar) const
+  inline Z64 norm(const QuadFormZZ<R,n>& q, const Isometry<R,n>& s, const Integer<R>& scalar) const
     {
       Integer<R> tr = Integer<R>::zero();
       for (size_t i = 0; i < n; i++)
