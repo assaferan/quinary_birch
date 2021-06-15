@@ -44,10 +44,11 @@ private:
   std::vector<R> _primes;
   Z64 _twist;
 
-  inline Z64 _computeVals(Integer<R> & x) const
+  inline Z64 _computeVals(const Integer<R> & a) const
   {
     Z64 val = 0;
     Z64 mask = 1;
+    R x = a.num();
     for (const R& p : this->_primes)
       {
 	while (x % p == 0)
