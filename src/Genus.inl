@@ -1126,7 +1126,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<int> & V_basis,
 	q = p.nextPrime();
       else
 	q = R(2);
-      std::vector< MatrixInt<int> > sub = this->_decompositionRecurse(W_basis, q, k);
+      std::vector< MatrixRat<int> > sub = this->_decompositionRecurse(W_basis, q, k);
       decomp.insert(decomp.end(), sub.begin(), sub.end());
     }
   }
