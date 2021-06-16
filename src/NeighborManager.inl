@@ -884,6 +884,6 @@ std::vector< VectorFp<R,S,n> > NeighborManager<R,S,T,n>::radical(void) const
 {
   std::vector< VectorFp<R,S,n> > rad;
   for (size_t i = 0; i < this->_rad_dim; i++)
-    rad.push_back(this->_p_basis[n-1-i]);
+    rad.push_back((*this->_p_basis)[n-1-i]);
   return rad;
 }
