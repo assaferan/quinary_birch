@@ -82,6 +82,7 @@ public:
 
   // booleans
   inline bool isZero(void) const {return this->_coeffs.empty();}
+  inline bool isOne(void) const {return ((*this)-one(this->_base)).isZero();}
   bool operator==(const UnivariatePoly<R,Parent> & ) const;
   bool operator!=(const UnivariatePoly<R,Parent> & ) const;
   bool operator==(const R & ) const;
@@ -90,6 +91,12 @@ public:
   // zero and one
   UnivariatePoly<R,Parent> & makeZero(void);
   UnivariatePoly<R,Parent> & makeOne(void);
+
+  inline static UnivariatePoly<R,Parent> zero(std::shared_ptr<const Parent> ring)
+  { UnivariatePoly<R,Parent> z(ring); return z;}
+
+  inline static UnivariatePoly<R,Parent> one(std::shared_ptr<const Parent> ring)
+  { UnivariatePoly<R,Parent> p(ring->one()); return p;}
   
   // algorithms
   UnivariatePoly<R,Parent> derivative(void) const;
