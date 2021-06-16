@@ -203,7 +203,7 @@ inline Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basi
 
   Matrix<R,Parent> padded = basis * (*this) * trans.transpose();
 
-  Marix<R,Parent> ret(this->_base, basis.nrows(), basis.nrows());
+  Matrix<R,Parent> ret(this->_base, basis.nrows(), basis.nrows());
 
   for (size_t row = 0; row < basis.nrows(); row++)
     for (size_t col = 0; col < basis.nrows(); col++)
