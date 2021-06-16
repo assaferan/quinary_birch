@@ -1074,7 +1074,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     return decomp;
 
 #ifdef DEBUG
-  std::cerr << "Decomposing spaces of dimension " << this->_dims;
+  std::cerr << "Decomposing space of dimension " << this->_dims;
   std::cerr << "using T_" << p << "." << std::endl;
 #endif
 
@@ -1094,8 +1094,18 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
       basis_rat(row,col) = V_basis(row,col);
   
   T_p = T_p.restrict(basis_rat);
-
+  
+#ifdef DEBUG
+  std::cerr << "Computing characteristic polynomial of T_" << p << "." << std::endl;
+#endif
+    
   UnivariatePolyRat<Z> f = T_p.charPoly();
+  
+#ifdef DEBUG
+  std::cerr << "f = " << f << std::endl;
+  std::cerr << "multiplying by common denominator." << std::endl;
+#endif
+  
   Integer<Z> denom = Integer<Z>::one();
   std::vector< Integer<Z> > coeffs_int;
   for (int i = 0; i <= f.degree(); i++)
@@ -1105,6 +1115,11 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     coeffs_int.push_back(f.coefficient(i).floor());
   
   UnivariatePolyInt<Z> f_int(coeffs_int);
+
+#ifdef DEBUG
+  std::cerr << "factoring characteristic polynomial f_int = " << f_int << std::endl;
+#endif
+  
   std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f_int.factor();
 
   for( std::pair< UnivariatePolyInt<Z>, size_t > fa : fac) {
