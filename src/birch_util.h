@@ -11,6 +11,9 @@ namespace birch_util
   template<typename From, typename To>
   To convertInteger(const From& x);
 
+  template<typename From, typename To>
+  To convert(const From& x);
+
   int popcnt(Z64 x);
 
   template<typename From, typename To>
