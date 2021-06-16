@@ -133,6 +133,7 @@ namespace std
 }
 
 // we put it outside the class to avoid partial specialization
+// !! TODO - figure out a better way
 
 template<typename R, typename S, typename T, size_t n>
 std::shared_ptr< SquareMatrixFp<S,T,n> >
