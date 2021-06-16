@@ -17,7 +17,7 @@ public:
     QuadForm<FpElement<R, S> ,Fp<R,S>, n>(GF->mod(vec))
   {}
 
-  inline const std::shared_ptr<const Fp<R,S>>& field(void) const
+  inline std::shared_ptr<const Fp<R,S>> field(void) const
   { return this->_B.baseRing();}
 
   using QuadForm<FpElement<R,S>,Fp<R,S>,n>::bilinearForm;
