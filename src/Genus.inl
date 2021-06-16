@@ -1087,7 +1087,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
   for (size_t i = 0; i < T_p_dense_k.size(); i++)
     T_p_dense_int[i] = T_p_dense_k[i];
   
-  MatrixInt<int> T_p(T_p_dense_k,this->_dims[k], this->_dims[k]);
+  MatrixInt<int> T_p(T_p_dense_int,this->_dims[k], this->_dims[k]);
   T_p = T_p.restrict(V_basis);
     
   UnivariatePolyInt<Z> f = T_p.charPoly();
