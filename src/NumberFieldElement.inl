@@ -157,3 +157,13 @@ inline bool NumberFieldElement<R>::isOne(void) const
 {
   return _elt.isOne();
 }
+
+template<typename R>
+inline NumberFieldElement<R> & operator=(const NumberFieldElement<R> & other)
+{
+  if (this != &other) {
+    this->_K = other._K;
+    this->_elt = other._elt;
+  }
+  return *this;
+}
