@@ -75,6 +75,13 @@ template<class R, class Parent, size_t n>
 inline Vector<R,Parent,n> operator*(const R & a, const Vector<R,Parent,n> & v)
 { return v*a; }
 
+// we put it outsisde the class to avoid partial specialization
+// !! TODO - figure out a better way
+
+template<typename R, typename S, typename T, size_t n>
+std::shared_ptr< VectorFp<S,T,n> >
+mod(const VectorInt<R,n> & a, std::shared_ptr< Fp<S,T> > GF);
+
 #include "Vector.inl"
 
 #endif // __VECTOR_H_
