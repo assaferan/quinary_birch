@@ -1134,6 +1134,8 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     MatrixRat<Z> fT = f.evaluate(T_p);
     MatrixRat<Z> W_basis = fT.kernel();
 
+    assert (W_basis.nrows() != 0);
+    
     if (a == 1)
       decomp.push_back(W_basis);
     else {
