@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <limits>
 #include <map>
 #include <random>
@@ -1052,7 +1053,10 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::set< Isometry<R,n> > & auts)
     for (iter1 = auts.begin(); iter1 != auts.end(); iter1++) {
       for (iter2 = auts.begin(); iter2 != auts.end(); iter2++) {
 	Isometry<R,n> prod = (*iter1)*(*iter2);
-	if (auts.find(prod) == auts.end())
+	// For some reason this doesn't work at the moment (check operator< ?)
+	//	if (auts.find(prod) == auts.end())
+	// so we do it even more slowly
+	if (std::find(auts.begin(), auts.end(), prod) == auts.end())
 	  auts.insert(prod);
       }
     }
