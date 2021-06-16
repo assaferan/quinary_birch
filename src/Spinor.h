@@ -43,7 +43,8 @@ public:
       std::shared_ptr< SquareMatrixFp<W16,W32,n> > s_p = mod(s.integralMatrix(),GF);
       W16_MatrixFp s_mat(*s_p);
       // we rescale to get the matrix corresponding to s
-      W16_FpElement scale(GF, s.getScale().num());
+      // we add p because the constructor expects an unsigned
+      W16_FpElement scale(GF, prime + s.getScale().num());
       s_mat *= scale.inverse();
       W16_MatrixFp rad = this->_rads.at(prime);
       W16_FpElement det = s_mat.transpose().restrict(rad).determinant();
