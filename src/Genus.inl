@@ -1150,10 +1150,10 @@ Genus<R,n>::eigenvectors(void)
   std::shared_ptr< const RationalField<Z> > QQ = std::make_shared< const RationalField<Z> >();
   
   for (size_t k = 0; k < this->_conductors.size(); k++){
-    std::vector< MatrixRat<int> > decomp = this->_decomposition(k);
+    std::vector< MatrixRat<Z> > decomp = this->_decomposition(k);
     std::vector< std::vector< NumberFieldElement<Z> > > evecs_k;
-    for (MatrixRat<int> T : decomp) {
-      UnivariatePolyInt<Z> f = T.charPoly();
+    for (MatrixRat<Z> T : decomp) {
+      UnivariatePolyRat<Z> f = T.charPoly();
       std::shared_ptr< NumberField<Z> > K
 	= std::make_shared< NumberField<Z> >(f);
       Matrix< NumberFieldElement<Z>, NumberField<Z> > T_K(K, T.nrows(), T.ncols());
