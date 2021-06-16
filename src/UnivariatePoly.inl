@@ -250,6 +250,9 @@ inline UnivariatePoly<R,Parent>& UnivariatePoly<R,Parent>::operator*=(const R & 
 {
   for (size_t i = 0; i < this->_coeffs.size(); i++)
     this->_coeffs[i] *= a;
+
+  // This is only relevant if a is a zero-divisor
+  this->_eliminateDeg();
   
   return (*this);
 }
