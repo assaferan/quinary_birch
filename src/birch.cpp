@@ -1,4 +1,6 @@
 #include <iostream>
+#include <map>
+#include <vector>
 
 #include "birch.h"
 #include "birch_util.h"
@@ -166,6 +168,17 @@ int main()
     std::cout << dim.second << " ";
   }
   std::cout << std::endl;
+
+  std::map<Z64,std::vector<int> > T2_dense = genus.heckeMatrixDense(2);
+  std::map<Z64,std::vector<std::vector<int> > > T2_sparse = genus.heckeMatrixSparse(2);
+
+  for (std::pair<Z64, std::vector<int> > mat : T2_dense) {
+    std::cout << mat.second << std::endl;
+  }
+
+  for (std::pair<Z64, std::vector< std::vector<int> > > mat : T2_sparse) {
+    std::cout << mat.second << std::endl;
+  }
   
   return 0;
 }
