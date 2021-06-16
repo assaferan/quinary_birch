@@ -57,6 +57,9 @@ public:
   inline size_t nrows(void) const {return _nrows;}
   inline size_t ncols(void) const {return _ncols;}
 
+  inline std::shared_ptr< const Parent> baseRing(void) const
+  { return this->_base; }
+
   // return the i-th row
   std::vector<R> operator[](size_t i) const;
   
