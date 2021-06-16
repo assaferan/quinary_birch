@@ -1,5 +1,7 @@
 #include "birch.h"
 #include "birch_util.h"
+#include "Integer.h"
+#include "Rational.h"
 
 namespace birch_util
 {
