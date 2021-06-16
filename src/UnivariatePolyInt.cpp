@@ -18,6 +18,8 @@ std::unordered_map< UnivariatePolyInt<Z>, size_t >
 UnivariatePolyInt<Z>::factor(void) const
 {
   std::unordered_map< UnivariatePolyInt<Z>, size_t > fac;
+  if (this->isZero())
+    return fac;
 
   std::vector< UnivariatePolyInt<Z> > sqf = this->_squarefreeFactor();
   std::random_device rd;
