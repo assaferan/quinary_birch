@@ -500,7 +500,7 @@ NeighborManager<R,S,T,n>::transformVector(const GenusRep<T,n>& dst,
 
   VectorInt<R,n> vec(ZZ_R);
   for (size_t i = 0; i < n; i++)
-    vec[i] = this->_GF->mod(temp[i]).lift();
+    vec[i] = this->_GF->mod(temp[i].num()).lift();
 
   for (size_t i = n; i > 0; i--) {
     if (vec[i-1] != 0)
