@@ -192,7 +192,7 @@ inline UnivariatePoly<R,Parent> Matrix<R,Parent>::charPoly(void) const
   c[n] = this->baseRing()->one();
   for (size_t k = 1; k <= n; k++) {
     M[k] = A*M[k-1]+c[n-k+1]*I;
-    R k_R = k;
+    R k_R = birch_util::convert<size_t, R>(k);
     c[n-k] = - (A*M[k]).trace() / k_R;
   }
 
