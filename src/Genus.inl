@@ -1096,7 +1096,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
   T_p = T_p.restrict(basis_rat);
 
   UnivariatePolyRat<Z> f = T_p.charPoly();
-  Integer<Z> denom = Integer<Z>::zero();
+  Integer<Z> denom = Integer<Z>::one();
   std::vector< Integer<Z> > coeffs_int;
   for (int i = 0; i <= f.degree(); i++)
     denom = denom.lcm(f.coefficient(i).denom());
