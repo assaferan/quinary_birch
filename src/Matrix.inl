@@ -187,6 +187,7 @@ inline UnivariatePoly<R,Parent> Matrix<R,Parent>::charPoly(void) const
   Matrix<R,Parent> z(this->baseRing(),n,n);
   Matrix<R,Parent> I = Matrix<R,Parent>::identity(this->baseRing(),n);
   std::vector< Matrix<R,Parent> > M(n+1, z);
+  const Matrix<R,Parent> & A = *this;
 
   c[n] = this->baseRing()->one();
   for (size_t k = 1; k <= n; k++) {
