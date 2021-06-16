@@ -1094,6 +1094,14 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
       basis_rat(row,col) = V_basis(row,col);
   
   T_p = T_p.restrict(V_basis);
+
+  MatrixInt<int> T_p_int(V_basis.baseRing(), T_p.nrows(), T_p.ncols());
+   for (size_t row = 0; row < T_p.nrows(); row++)
+     for (size_t col = 0; col < T_p.ncols(); col++) {
+       assert(T_p(row,col).isIntegral());
+       T_p_int(row,col) = T_p(row,col).floor();
+     }
+      
     
   UnivariatePolyInt<Z> f = T_p.charPoly();
   std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f.factor();
