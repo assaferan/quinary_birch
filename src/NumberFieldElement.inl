@@ -116,7 +116,10 @@ template<typename R>
 inline NumberFieldElement<R>
 NumberFieldElement<R>::inverse(void) const
 {
-  UnivariatePolyRat<R> s,t;
+  std::shared_ptr<const RationalField<R> > QQ = std::make_shared< const RationalField<R> >();
+  UnivariatePolyRat<R> s(QQ);
+  UnivariatePolyRat<R> t(QQ);
+  
   UnivariatePolyRat<R>::xgcd(this->_elt, this->_K->modulus(), s, t);
   
   NumberFieldElement<R> inv(this->_K, s);
