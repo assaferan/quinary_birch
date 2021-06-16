@@ -1166,8 +1166,10 @@ Genus<R,n>::eigenvectors(void)
 	= std::make_shared< NumberField<Z> >(f);
       Matrix< NumberFieldElement<Z>, NumberField<Z> > T_K(K, T.nrows(), T.ncols());
       for (size_t row = 0; row < T.nrows(); row++)
-	for (size_t col = 0; col < T.ncols(); col++)
-	  T_K(row,col) = NumberFieldElement<Z>(K, Z(T(row,col).num().num()));
+	for (size_t col = 0; col < T.ncols(); col++){
+	  Rational<Z> elt(T(row,col).num().num(), T(row,col).denom().num());
+	  T_K(row,col) = NumberFieldElement<Z>(K, elt);
+	}
       NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(QQ));
       T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T.nrows());
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
