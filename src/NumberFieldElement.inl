@@ -94,7 +94,7 @@ template<typename R>
 inline NumberFieldElement<R> &
 NumberFieldElement<R>::operator/=(const NumberFieldElement<R> & other)
 {
-  this = (*this)/other;
+  *this = (*this)/other;
   return (*this);
 }
 
