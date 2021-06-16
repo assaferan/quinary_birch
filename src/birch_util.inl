@@ -81,19 +81,6 @@ namespace birch_util
       }
     return value;
   }
-
-  template<typename R>
-  inline Rational<R> convert< Integer<R>, Rational<R> >(const Integer<R> & x)
-  {
-    return x;
-  }
-
-  template<typename R, typename S>
-  inline Rational<R> convert< S, Rational<R> >(const S & x)
-  {
-    R y = convertInteger<S,R>(x);
-    return x;
-  }
   
 }
 
