@@ -116,22 +116,6 @@ inline SquareMatrix<R,Parent,n> operator*(const R & a, const SquareMatrix<R,Pare
 template<class R, class Parent, size_t n>
 std::ostream& operator<<(std::ostream&, const SquareMatrix<R,Parent,n>&);
 
-namespace std
-{
-  template<class R, class Parent, size_t n>
-  struct hash<Vector<R,Parent,n> >
-  {
-    Z64 operator()(const Vector<R,Parent,n>& vec) const
-    {
-      Z64 fnv = FNV_OFFSET;
-      for (size_t i = 0; i < n; i++)
-	fnv = (fnv ^ vec[i].num()) * FNV_PRIME;
-            
-      return fnv;
-    }
-  };
-}
-
 // we put it outside the class to avoid partial specialization
 // !! TODO - figure out a better way
 
