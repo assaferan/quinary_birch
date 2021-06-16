@@ -85,7 +85,7 @@ namespace birch_util
 
 // or for std::vector
 template<typename R>
-std::ostream& operator<<(std::ostream& os, const std::vector<R>& v)
+inline std::ostream& operator<<(std::ostream& os, const std::vector<R>& v)
 {
   for (size_t i = 0; i < v.size() - 1; i++)
     os << v[i] << ",";
