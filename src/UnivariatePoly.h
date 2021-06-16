@@ -125,6 +125,22 @@ UnivariatePoly<R,Parent> operator*(const R & a,
 template<class R, class Parent>
 std::ostream& operator<<(std::ostream&, const UnivariatePoly<R, Parent> &);
 
+namespace std
+{
+  template<class R, class Parent>
+  struct hash<UnivariatePoly<R,Parent> >
+  {
+    Z64 operator()(const UnivariatePoly<R,Parent,n>& poly) const
+    {
+      Z64 fnv = FNV_OFFSET;
+      for (int i = 0; i <= poly.degree(); i++)
+	fnv = (fnv ^ poly.coefficient(i).num()) * FNV_PRIME;
+            
+      return fnv;
+    }
+  };
+}
+
 #include "UnivariatePoly.inl"
 
 #endif // __UNIVARIATE_POLY_H
