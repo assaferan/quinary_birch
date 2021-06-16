@@ -127,6 +127,9 @@ UnivariatePoly<R,Parent>::operator*(const UnivariatePoly<R,Parent> & other) cons
   for (i = 0; i < this->_coeffs.size(); i++)
     for (j = 0; j < other._coeffs.size(); j++)
       prod._coeffs[i+j] += this->_coeffs[i] * other._coeffs[j];
+
+  // only needed if R is not an integral domain - we assume R is Euclidean
+  // prod._eliminateDeg();
   
   return prod;
 }
@@ -158,12 +161,16 @@ UnivariatePoly<R,Parent>::operator%(const UnivariatePoly<R,Parent> & other) cons
 template<class R, class Parent>
 inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::operator*(const R & a) const
 {
+  if (a.isZero())
+    return UnivariatePoly<R,Parent>::zero(this->_base);
+  
   UnivariatePoly<R,Parent> prod(this->_base);
   prod._coeffs.resize(this->_coeffs.size());
   for (size_t i = 0; i < this->_coeffs.size(); i++)
     prod._coeffs[i] = a * this->_coeffs[i];
 
-  prod._eliminateDeg();
+  // only relevant if a == 0
+  //   prod._eliminateDeg();
   
   return prod;
 }
@@ -250,11 +257,14 @@ UnivariatePoly<R,Parent>::operator%=(const UnivariatePoly<R,Parent> & other)
 template<class R, class Parent>
 inline UnivariatePoly<R,Parent>& UnivariatePoly<R,Parent>::operator*=(const R & a)
 {
+  if (a.isZero())
+    return makeZero();
+  
   for (size_t i = 0; i < this->_coeffs.size(); i++)
     this->_coeffs[i] *= a;
 
-  // This is only relevant if a is a zero-divisor
-  this->_eliminateDeg();
+  // This is only relevant if a == 0
+  // this->_eliminateDeg();
   
   return (*this);
 }
@@ -273,6 +283,8 @@ inline UnivariatePoly<R,Parent>& UnivariatePoly<R,Parent>::operator%=(const R & 
 {
   for (size_t i = 0; i < this->_coeffs.size(); i++)
     this->_coeffs[i] %= a;
+
+  this->_eliminateDeg();
   
   return (*this);
 }
