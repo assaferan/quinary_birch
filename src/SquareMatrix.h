@@ -134,8 +134,7 @@ namespace std
 
 // we put it outsisde the class to avoid partial specialization
 
-template<typename R, size_t n>
-template<typename S, typename T>
+template<typename R, typename S, typename T, size_t n>
 std::shared_ptr< SquareMatrixFp<S,T,n> >
 mod(const SquareMatrixInt<R,n> & a, std::shared_ptr< Fp<S,T> > GF);
 
