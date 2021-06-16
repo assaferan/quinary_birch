@@ -69,6 +69,15 @@ inline void Matrix<R,Parent>::swapRows(size_t row1, size_t row2)
   return;
 }
 
+template<class R, class Parent>
+inline void Matrix<R,Parent>::multiplyRow(size_t row, const R & scalar)
+{
+  for (size_t col = 0; col < this->ncols(); col++)
+    (*this)(row,col) *= scalar;
+
+  return;
+}
+
 // in place echelon form, returns the rank and trans is the transformation
 template<class R, class Parent>
 inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,Parent>& trans)
@@ -103,8 +112,12 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
     else {
       echelon.swapRows(pivot_row, row_max);
       trans.swapRows(pivot_row, row_max);
+      R scalar = max_val.inverse();
+      echelon.multiplyRow(pivot_row, scalar);
+      trans.multiplyRow(pivot_row, scalar);
       for (size_t row = pivot_row+1; row < echelon.nrows(); row++) {
-	R factor = echelon(row,pivot_col) / echelon(pivot_row, pivot_col);
+	// R factor = echelon(row,pivot_col) / echelon(pivot_row, pivot_col);
+	R factor = echelon(row,pivot_col);
 	echelon(row, pivot_col).makeZero();
 	for (size_t col = pivot_col + 1; col < echelon.ncols(); col++) {
 	  echelon(row,col) -= factor * echelon(pivot_row, col);

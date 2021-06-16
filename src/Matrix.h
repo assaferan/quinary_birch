@@ -97,6 +97,7 @@ public:
   // algorithms
   
   void swapRows(size_t, size_t);
+  void multiplyRow(size_t, const R &);
   
   // in-place row-echelon form for the matrix echelon,
   // returns the rank and the transformation matrix trans
