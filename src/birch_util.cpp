@@ -153,6 +153,13 @@ namespace birch_util
     return y;
   }
 
+  template<>
+  Rational<Z> convert(const Z32 & x)
+  {
+    Z y = convertInteger<Z32,Z>(x);
+    return y;
+  }
+
   int char_vals[256] = {
 			1, -1, -1,  1, -1,  1,  1, -1, -1,  1,  1, -1,  1, -1, -1,  1, -1,  1,
 			1, -1,  1, -1, -1,  1,  1, -1, -1,  1, -1,  1,  1, -1, -1,  1,  1, -1,

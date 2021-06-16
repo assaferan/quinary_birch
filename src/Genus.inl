@@ -1085,7 +1085,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
   std::vector<int> T_p_dense_k = T_p_dense[this->_conductors[k]];
   std::vector< Rational<Z> > T_p_dense_int(T_p_dense_k.size());
   for (size_t i = 0; i < T_p_dense_k.size(); i++)
-    T_p_dense_int[i] = birch_util::convert(T_p_dense_k[i]);
+    T_p_dense_int[i] = birch_util::convert< int, Rational<Z> >(T_p_dense_k[i]);
   
   MatrixRat<Z> T_p(T_p_dense_int,this->_dims[k], this->_dims[k]);
   MatrixRat<Z> basis_rat(T_p.baseRing(), V_basis.nrows(), V_basis.ncols());

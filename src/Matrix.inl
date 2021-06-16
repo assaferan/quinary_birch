@@ -89,7 +89,7 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
   // trans = identity(echelon.nrows());
   for (size_t row = 0; row < trans.nrows(); row++)
     for (size_t col = 0; col < trans.ncols(); col++)
-      trans(row, col) = (row == col) ? 1 : 0;
+      trans(row, col) = (row == col) ? echelon._base->one() : echelon._base->zero();
   
   size_t pivot_row = 0;
   size_t pivot_col = 0;
@@ -192,8 +192,8 @@ inline UnivariatePoly<R,Parent> Matrix<R,Parent>::charPoly(void) const
   c[n] = this->baseRing()->one();
   for (size_t k = 1; k <= n; k++) {
     M[k] = A*M[k-1]+c[n-k+1]*I;
-    Z k_Z = k;
-    c[n-k] = - (A*M[k]).trace() / k_Z;
+    R k_R = k;
+    c[n-k] = - (A*M[k]).trace() / k_R;
   }
 
   UnivariatePoly<R,Parent> p(c);
