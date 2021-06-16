@@ -350,20 +350,7 @@ inline bool UnivariatePoly<R,Parent>::operator!=(const R & a) const
 template<class R, class Parent>
 inline std::ostream& operator<<(std::ostream& os, const UnivariatePoly<R,Parent> & p)
 {
-  size_t deg = p.degree();
-  for (size_t i = deg+1; i > 0; i--) {
-    R coeff = p.coefficient(i-1);
-    if (!coeff.isZero()) {
-      if ((i <= deg) && (coeff > p.baseRing()->zero()))
-	os << '+';
-      if (coeff != p.baseRing()->one())
-	os << coeff;
-      if (i > 1)
-	os << "x";
-      if (i > 2)
-	os << "^" << (i-1);
-    }
-  }
+  p.print(os);
   return os;
 }
 
@@ -492,4 +479,24 @@ inline UnivariatePoly<R,Parent> & UnivariatePoly<R,Parent>::makeOne(void)
   return *this;
 }
 
+template<class R, class Parent>
+void UnivariatePoly<R,Parent>::print(std::ostream & os) const
+{
+  const UnivariatePoly<R,Parent> & p = *this;
+  size_t deg = p.degree();
+  for (size_t i = deg+1; i > 0; i--) {
+    R coeff = p.coefficient(i-1);
+    if (!coeff.isZero()) {
+      if ((i <= deg) && (coeff > p.baseRing()->zero()))
+	os << '+';
+      if (coeff != p.baseRing()->one())
+	os << coeff;
+      if (i > 1)
+	os << "x";
+      if (i > 2)
+	os << "^" << (i-1);
+    }
+  }
+  return;
+}
 
