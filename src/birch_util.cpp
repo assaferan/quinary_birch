@@ -173,9 +173,9 @@ namespace birch_util
     return x;
   }
 
-  Rational<Z> convert(const W64 & x)
+  Rational<Z> convert(const W32 & x)
   {
-    Z y = convertInteger<W64,Z>(x);
+    Z y = convertInteger<W32,Z>(x);
     return y;
   }
 
