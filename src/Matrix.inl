@@ -195,11 +195,11 @@ inline Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basi
 {
   assert(basis.nrows() == basis.rank());
   
-  Matrix<R,Parent> echelon = basis;
+  Matrix<R,Parent> echelon = basis.transpose();
   Matrix<R,Parent> trans(_base, echelon.nrows(), echelon.nrows());
   rowEchelon(echelon, trans);
 
-  return basis * (*this) * trans.transpose();
+  return basis * (*this) * trans.transpose().inverse();
 }
 
 template<class R, class Parent>
