@@ -125,3 +125,23 @@ NumberFieldElement<R>::inverse(void) const
   NumberFieldElement<R> inv(this->_K, s);
   return inv;
 }
+
+template<typename R>
+inline NumberFieldElement<R>
+NumberFieldElement<R>::zero(std::shared_ptr<const NumberField<R> > fld)
+{
+  NumberFieldElement z(fld);
+  z.makeZero();
+
+  return z;
+}
+
+template<typename R>
+inline NumberFieldElement<R>
+NumberFieldElement<R>::one(std::shared_ptr<const NumberField<R> > fld)
+{
+  NumberFieldElement z(fld);
+  z.makeOne();
+
+  return z;
+}
