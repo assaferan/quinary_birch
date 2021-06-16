@@ -30,7 +30,7 @@ public:
       for (size_t row = 0; row < rad.size(); row++)
 	for (size_t col = 0; col < n; col++)
 	  rad_mat(row,col) = rad[row][col];
-      this->_rads[prime] = rad_mat;
+      this->_rads.insert(std::make_pair(prime,rad_mat));
     }
   }
 
