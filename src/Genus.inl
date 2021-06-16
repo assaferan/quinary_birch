@@ -1096,10 +1096,19 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
   T_p = T_p.restrict(basis_rat);
 
   UnivariatePolyRat<Z> f = T_p.charPoly();
-  std::unordered_map< UnivariatePolyRat<Z>, size_t > fac = f.factor();
+  Integer<Z> denom = Integer<Z>::zero();
+  std::vector< Integer<Z> > coeffs_int;
+  for (int i = 0; i <= f.degree(); i++)
+    denom = denom.lcm(f.coefficient(i).denom());
+  f *= denom;
+  for (int i = 0; i <= f.degree(); i++) 
+    coeffs_int.push_back(f.coefficient(i).floor());
+  
+  UnivariatePolyInt<Z> f_int(coeffs_int);
+  std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f.factor();
 
-  for( std::pair< UnivariatePolyRat<Z>, size_t > fa : fac) {
-    UnivariatePolyRat<Z> f = fa.first;
+  for( std::pair< UnivariatePolyInt<Z>, size_t > fa : fac) {
+    UnivariatePolyInt<Z> f = fa.first;
     size_t a = fa.second;
     
 #ifdef DEBUG_LEVEL_FULL
