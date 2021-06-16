@@ -440,7 +440,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
       std::vector<bool> ignore(this->_conductors.size(), false);
       for (const Isometry<R,n>& s : auts)
 	{
-	  Z64 vals = this->_spinor->norm(s);
+	  Z64 vals = this->_spinor->norm(rep.s*s*rep.sinv);
 	  
 	  for (size_t k=0; k<num_conductors; k++)
 	    {
