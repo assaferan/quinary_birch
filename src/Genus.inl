@@ -1093,7 +1093,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
     for (size_t col = 0; col < V_basis.ncols(); col++)
       basis_rat(row,col) = V_basis(row,col);
   
-  T_p = T_p.restrict(V_basis);
+  T_p = T_p.restrict(basis_rat);
 
   MatrixInt<int> T_p_int(V_basis.baseRing(), T_p.nrows(), T_p.ncols());
    for (size_t row = 0; row < T_p.nrows(); row++)
