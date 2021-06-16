@@ -1081,8 +1081,10 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
   // !! - TODO - check that results are stored and we don't
   // recompute for different values of k
   std::map<R,std::vector<int>> T_p_dense = heckeMatrixDense(p.num());
+
+  std::vector<int> T_p_dense_k = T_p_dense[this->_conductors[k]];
   
-  MatrixInt<int> T_p(T_p_dense[k],this->_dims[k], this->_dims[k]);
+  MatrixInt<int> T_p(T_p_dense_k,this->_dims[k], this->_dims[k]);
   T_p = T_p.restrict(V_basis);
     
   UnivariatePolyInt<Z> f = T_p.charPoly();
