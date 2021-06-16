@@ -93,6 +93,9 @@ public:
   static SquareMatrix<R,Parent,n> identity(std::shared_ptr<const Parent>);
 
   std::ostream & prettyPrint(std::ostream &, size_t upTo = n) const;
+
+  template<typename S, typename T>
+  std::shared_ptr< SquareMatrixFp<S,T,n> > mod(std::shared_ptr< Fp<S,T> > GF) const;
   
 protected:
   std::shared_ptr<const Parent> _base;

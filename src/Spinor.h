@@ -1,7 +1,11 @@
 #ifndef __SPINOR_H_
 #define __SPINOR_H_
 
+#include <random>
+#include <unordered_map>
+
 #include "birch.h"
+#include "NeighborManager.h"
 
 template<typename R>
 class Spinor
@@ -10,29 +14,37 @@ class Spinor
   friend class Spinor;
 
 public:
-  Spinor(const std::vector<R>& primes)
+  template <size_t n>
+  Spinor(const std::vector<R>& primes, const QuadFormZZ<R,n>& q)
   {
     this->_primes = primes;
     this->_twist = (1LL << this->_primes.size()) - 1;
+    std::random_device rd;
+    this->_seed = rd();
+    for (R prime : primes) {
+      GF = std::make_shared<W16_Fp>(prime, this->_seed, true);
+      NeighborManager<W16,W32,R,n> manager(q, GF);
+      std::vector< W16_VectorFp > rad = manager.radical();
+      W16_MatrixFp rad_mat(GF, rad.size(), n);
+      for (size_t row = 0; row < rad.size(); row++)
+	for (size_t col = 0; col < n; col++)
+	  rad_mat(row,col) = rad[row][col];
+      this->_rads[prime] = rad_mat;
+    }
   }
 
   template<size_t n>
-  inline Z64 norm(const QuadFormZZ<R,n>& q, const Isometry<R,n>& s, const Integer<R>& scalar) const
+  inline Z64 norm(const Isometry<R,n>& s) const
   {
-    Integer<R> tr = Integer<R>::zero();
-    for (size_t i = 0; i < n; i++)
-      tr += s(i,i);
-    // Stub
-    // !! TODO - compute the spinor norm of s
-    // We should use the genus information for that
-    if (n == 3) {
-      if (tr != -scalar)
-	return this->_computeVals(tr + scalar);
+    std::vector< W16_FpElement> dets;
+    for (R prime : this->_primes) {
+      GF = std::make_shared<W16_Fp>(prime, this->_seed, true);
+      std::shared_ptr< SquareMatrixFp<W16,W32,n> > s_p = s.integralMatrix().mod(GF);
+      W16_MatrixFp s_mat(*s_p);
+      W16_FpElement det = s_mat.restrict(this->_rads[prime]).determinant();
+      dets.push_back(det);
     }
-    // for now we let the spinor norm be trivial
-    tr = Integer<R>::one();
-    return this->_computeVals(tr);
-        
+    return this->_computeVals(dets);    
   }
 
   inline const std::vector<R> & primes(void) const
@@ -43,21 +55,20 @@ public:
 private:
   std::vector<R> _primes;
   Z64 _twist;
+  W64 _seed;
+  std::unordered_map<R, W16_MatrixFp> _rads;
 
-  inline Z64 _computeVals(const Integer<R> & a) const
+  inline Z64 _computeVals(const std::vector< W16_FpElement> & a) const
   {
     Z64 val = 0;
     Z64 mask = 1;
-    R x = a.num();
-    for (const R& p : this->_primes)
-      {
-	while (x % p == 0)
-	  {
-	    x /= p;
-	    val ^= mask;
-	  }
-	mask <<= 1;
+    for (size_t i = 0; i < a.size(); i++) {
+      if (!a[i].isOne()) {
+	assert ((-a[i]).isOne());
+	val ^= mask;
       }
+      mask <<= 1;
+    }
     return val;
   }
 };

@@ -203,7 +203,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
       this->_prime_divisors.push_back(symb.p);
     }
   
-  Spinor<R> *spin = new Spinor<R>(this->_prime_divisors);
+  Spinor<R> *spin = new Spinor<R>(this->_prime_divisors, q);
   this->_spinor = std::unique_ptr<Spinor<R>>(spin);
   
   if (symbols.size() > 63)
@@ -440,7 +440,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
       std::vector<bool> ignore(this->_conductors.size(), false);
       for (const Isometry<R,n>& s : auts)
 	{
-	  Z64 vals = this->_spinor->norm(rep.q, s, 1);
+	  Z64 vals = this->_spinor->norm(s);
 	  
 	  for (size_t k=0; k<num_conductors; k++)
 	    {
@@ -564,7 +564,7 @@ Genus<R,n>::Genus(const Genus<T,n>& src)
     {
       primes.push_back(birch_util::convertInteger<T,R>(p));
     }
-  this->_spinor = std::unique_ptr<Spinor<R>>(new Spinor<R>(primes));
+  this->_spinor = std::unique_ptr<Spinor<R>>(new Spinor<R>(primes, this->_hash->get(0).q));
   
   // Copy seed.
   this->_seed = src._seed;
@@ -682,7 +682,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	  W64 spin_vals;
 	  if (unlikely(rpos == npos))
 	    {
-	      spin_vals = this->_spinor->norm(foo.q, foo.s, p);
+	      spin_vals = this->_spinor->norm(foo.s);
 	    }
 	  else
 	    {
@@ -695,7 +695,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	      scalar *= birch_util::myPow(cur.es);
 	      scalar *= birch_util::myPow(rep.es);
 	      
-	      spin_vals = this->_spinor->norm(mother.q, foo.s, scalar);
+	      spin_vals = this->_spinor->norm(foo.s);
 	    }
 	  
 	  for (Z64 vpos : vector_manager._position_lut[index])
@@ -778,7 +778,7 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 	  W64 spin_vals;
 	  if (r == idx)
 	    {
-	      spin_vals = this->_spinor->norm(foo.q, foo.s, p);
+	      spin_vals = this->_spinor->norm(foo.s);
 	    }
 	  else
 	    {
@@ -795,7 +795,7 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 	      scalar *= birch_util::myPow(cur.es);
 	      scalar *= birch_util::myPow(rep.es);
 
-	      spin_vals = this->_spinor->norm(mother.q, foo.s, scalar);
+	      spin_vals = this->_spinor->norm(foo.s);
 	    }
 
 	  all_spin_vals.push_back((r << num_primes) | spin_vals);
@@ -965,11 +965,11 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 	      scalar *= birch_util::myPow(cur.es);
 	      scalar *= birch_util::myPow(rep_inv.es);
 
-	      spin_vals = this->_spinor->norm(mother.q, foo.s, scalar);
+	      spin_vals = this->_spinor->norm(foo.s);
 	    }
 	  else if (r == idx)
 	    {
-	      spin_vals = this->_spinor->norm(foo.q, foo.s, p);
+	      spin_vals = this->_spinor->norm(foo.s);
 	    }
 	  else {
 	    manager.getNextNeighbor();

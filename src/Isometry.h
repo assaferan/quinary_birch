@@ -27,6 +27,9 @@ public:
     _a(mat), _scale(scale) { this->rescale(); }
 
   // access - set/get
+  inline const SquareMatrixInt<R,n> & integralMatrix(void) const
+  {return this->_a;}
+  
   inline const Integer<R> & getScale(void) const
   { return this->_scale; }
   

@@ -28,6 +28,12 @@ public:
   inline const std::vector< VectorInt<T,n> > & getIsotropicSubspace(void) const
   {return this->_X; }
 
+  inline size_t radDim(void) const {return _rad_dim; }
+  inline size_t anisoDim(void) const {return _aniso_dim; }
+  inline size_t wittIndex(void) const {return _witt_index; }
+
+  std::vector< VectorFp<R,S,n> > radical(void) const;
+
 protected:
   std::shared_ptr< Fp<R,S> > _GF;
   VectorFp<R,S,n> _vec;
