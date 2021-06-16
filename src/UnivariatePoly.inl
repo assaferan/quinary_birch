@@ -162,6 +162,8 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::operator*(const R & a)
   prod._coeffs.resize(this->_coeffs.size());
   for (size_t i = 0; i < this->_coeffs.size(); i++)
     prod._coeffs[i] = a * this->_coeffs[i];
+
+  prod._eliminateDeg();
   
   return prod;
 }
