@@ -196,7 +196,7 @@ inline bool Matrix<R,Parent>::operator==(const Matrix<R,Parent> & other) const
   if (this->nrows() != other.nrows()) return false;
   if (this->ncols() != other.ncols()) return false;
   for (size_t row = 0; row < this->nrows(); row++)
-    for (size_t col = 0; col < this->ncols; col++)
+    for (size_t col = 0; col < this->ncols(); col++)
       if ((*this)(row, col) != other(row,col)) return false;
   return true;
 }
