@@ -182,17 +182,18 @@ inline UnivariatePolyInt<Z> Matrix<R,Parent>::charPoly(void) const
   // can only compute characteristic polynomial for a square matrix
   assert(this->nrows() == this->ncols());
 
+  std::shared_ptr< const IntegerRing<Z> > ZZ = std::make_shared< const IntegerRing<Z> >();
   size_t n = this->nrows();
-  std::vector< Integer<Z> > c(n+1);
-  MatrixInt<Z> z(n,n);
-  MatrixInt<Z> I = MatrixInt<Z>::identity(this->_base,n);
+  std::vector< Integer<Z> > c(n+1, ZZ->zero());
+  MatrixInt<Z> z(ZZ, n,n);
+  MatrixInt<Z> I = MatrixInt<Z>::identity(ZZ,n);
   std::vector< MatrixInt<Z> > M(n+1, z);
-  MatrixInt<Z> A(n,n);
+  MatrixInt<Z> A(ZZ,n,n);
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
       A(row,col) = birch_util::convertInteger<R,Z>((*this)(row,col));
 
-  c[n] = this->_base->one();
+  c[n] = ZZ->one();
   for (size_t k = 1; k <= n; k++) {
     M[k] = A*M[k-1]+c[n-k+1]*I;
     Z k_Z = k;
