@@ -1068,7 +1068,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
 				  const Integer<R> & p, size_t k) const
 {
   // This will hold the bases of the irreducible spaces
-  std::vector< MatrixRat<int> > decomp;
+  std::vector< MatrixRat<Z> > decomp;
   
   if (V_basis.nrows() == 0)
     return decomp;
