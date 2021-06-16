@@ -106,6 +106,8 @@ public:
 				       const UnivariatePoly<R,Parent> & g,
 				       UnivariatePoly<R,Parent> & s,
 				       UnivariatePoly<R,Parent> & t);
+
+  void print(std::ostream &) const;
   
 protected:
   std::shared_ptr<const Parent> _base;
