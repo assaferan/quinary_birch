@@ -117,6 +117,12 @@ namespace birch_util
     Z ret = convertInteger<W128,Z>(abs_x);
     return x < 0 ? -ret : ret;
   }
+
+  template<>
+  Z32 convertInteger<Z>(const Z& x)
+  {
+    return mpz_get_si(x.get_mpz_t());
+  }
   
   template<>
   Z64 convertInteger<Z>(const Z& x)
@@ -147,7 +153,7 @@ namespace birch_util
   {
     return x;
   }
-
+  
   template<>
   Rational<Z32> convert(const Integer<Z>& x)
   {
