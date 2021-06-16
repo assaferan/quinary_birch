@@ -754,8 +754,11 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
       rowdata.push_back(std::vector<int>(dim));
       indptr.push_back(std::vector<int>(dim+1, 0));
     }
-
+  
+#ifdef DEBUG
   const GenusRep<R,n>& mother = this->_hash->keys()[0];
+#endif
+  
   size_t num_reps = this->size();
   for (size_t idx=0; idx<num_reps; idx++)
     {
