@@ -91,6 +91,7 @@ public:
   Matrix<R,Parent>& operator*=(const Matrix<R,Parent> &);
 
   Matrix<R,Parent> operator*(const R & a) const;
+  Matrix<R,Parent>& operator*=(const R & a);
 
   bool operator==(const Matrix<R,Parent> &) const;
 

@@ -350,6 +350,16 @@ inline Matrix<R,Parent> Matrix<R,Parent>::operator*(const R & a) const
 }
 
 template<class R, class Parent>
+inline Matrix<R,Parent>& Matrix<R,Parent>::operator*=(const R & a)
+{
+  for (size_t row = 0; row < this->nrows(); row++)
+    for (size_t col = 0; col < this->ncols(); col++)
+      (*this)(row,col) *= a;
+  
+  return (*this);
+}
+
+template<class R, class Parent>
 inline bool Matrix<R,Parent>::isZero(void) const
 {
   for (size_t i = 0; i < _data.size(); i++)
