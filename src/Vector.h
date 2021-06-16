@@ -82,6 +82,22 @@ template<typename R, typename S, typename T, size_t n>
 std::shared_ptr< VectorFp<S,T,n> >
 mod(const VectorInt<R,n> & a, std::shared_ptr< Fp<S,T> > GF);
 
+namespace std
+{
+  template<class R, class Parent, size_t n>
+  struct hash<Vector<R,Parent,n> >
+  {
+    Z64 operator()(const Vector<R,Parent,n>& vec) const
+    {
+      Z64 fnv = FNV_OFFSET;
+      for (size_t i = 0; i < n; i++)
+	fnv = (fnv ^ vec[i].num()) * FNV_PRIME;
+            
+      return fnv;
+    }
+  };
+}
+
 #include "Vector.inl"
 
 #endif // __VECTOR_H_
