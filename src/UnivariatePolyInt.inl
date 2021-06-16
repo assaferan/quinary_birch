@@ -161,13 +161,23 @@ UnivariatePolyInt<R>::_henselLift(const std::vector<UnivariatePolyFp<S,T> > & g,
     s += (prod / g[i]) * v_bar[i];
   assert(s.isZero());
 #endif
+  
   v.resize(g.size());
   u.resize(g.size());
+  
+  FpElement<S,T> mult = one;
+  // initialize u and v and fix the leading coefficients
   for (size_t i = 0; i < g.size(); i++) {
     v[i] = v_bar[i].lift();
-    u[i] = g[i].lift();
+    mult *= g[i].lead();
+    u[i] = (g[i]/g[i].lead()).lift();
+    // we lift to a monic polynomial
+    u[i].lead() = Integer<R>::one();
   }
 
+  // return the leading coefficient to the first factor
+  u[0] *= mult.lift();
+  
   for (size_t i = 1; i < a; i++) {
     this->_henselStep(u, v, g[0].baseRing(), i);
   }
