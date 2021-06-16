@@ -191,6 +191,17 @@ inline UnivariatePolyInt<Z> Matrix<R,Parent>::charPoly(void) const
 }
 
 template<class R, class Parent>
+inline bool Matrix<R,Parent>::operator==(const Matrix<R,Parent> & other) const
+{
+  if (this->nrows() != other.nrows()) return false;
+  if (this->ncols() != other.ncols()) return false;
+  for (size_t row = 0; row < this->nrows(); row++)
+    for (size_t col = 0; col < this->ncols; col++)
+      if ((*this)(row, col) != other(row,col)) return false;
+  return true;
+}
+
+template<class R, class Parent>
 inline Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basis) const
 {
   assert(basis.nrows() == basis.rank());

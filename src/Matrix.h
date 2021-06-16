@@ -92,6 +92,8 @@ public:
 
   Matrix<R,Parent> operator*(const R & a) const;
 
+  bool operator==(const Matrix<R,Parent> &) const;
+
   // algorithms
   
   void swapRows(size_t, size_t);
