@@ -882,8 +882,9 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
 template<typename R, typename S, typename T, size_t n>
 std::vector< VectorFp<R,S,n> > NeighborManager<R,S,T,n>::radical(void) const
 {
+  SquareMatrixFp<R,S,n> basis = (*this->_p_basis).transpose();
   std::vector< VectorFp<R,S,n> > rad;
   for (size_t i = 0; i < this->_rad_dim; i++)
-    rad.push_back((*this->_p_basis)[n-1-i]);
+    rad.push_back(basis[n-1-i]);
   return rad;
 }
