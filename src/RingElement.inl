@@ -37,8 +37,8 @@ inline Derived& RingElement<Derived,DerivedParent>::operator^= (unsigned long lo
 {
   if (exp == 1) return *(this->getPtr());
   
+  Derived base = *(this->getPtr());
   this->makeOne();
-  Derived base = *(this->getPtr());;
   unsigned long long int e = exp;
   
   while (e) {
