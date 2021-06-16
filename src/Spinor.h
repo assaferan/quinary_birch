@@ -44,8 +44,7 @@ public:
       W16_MatrixFp s_mat(*s_p);
       // we rescale to get the matrix corresponding to s
       W16_FpElement scale(GF, s.getScale().num());
-      W16_FpElement scale_mat = (scale.inverse())^n;
-      s_mat *= scale_mat;
+      s_mat *= scale.inverse();
       W16_MatrixFp rad = this->_rads.at(prime);
       W16_FpElement det = s_mat.transpose().restrict(rad).determinant();
       dets.push_back(det);
