@@ -177,7 +177,7 @@ UnivariatePolyInt<R>::_henselLift(const std::vector<UnivariatePolyFp<S,T> > & g,
   }
 
   // return the leading coefficient to the first factor
-  Integer<R> lc = mult.lift();
+  Integer<R> lc = birch_util::convertInteger<T,R>(mult.lift());
   u[0] *= lc;
   
   for (size_t i = 1; i < a; i++) {
