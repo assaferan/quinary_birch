@@ -784,7 +784,7 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 	    {
 	      spin_vals = this->_spinor->norm(foo.s);
 	    }
-	  else if (r > idx)
+	  else
 	    {
 	      const GenusRep<R,n>& rep = this->_inv_hash->get(r);
 	      const GenusRep<R,n>& rep_inv = this->_inv_hash->get(r_inv);
@@ -809,11 +809,6 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 
 	      spin_vals = this->_spinor->norm(foo.s);
 	    }
-	  else {
-	    manager.getNextNeighbor();
-	    done = manager.getIsotropicSubspace().empty();
-	    continue;
-	  }
 
 	  all_spin_vals.push_back((r << num_primes) | spin_vals);
 	  manager.getNextNeighbor();
