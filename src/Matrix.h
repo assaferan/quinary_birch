@@ -76,7 +76,7 @@ public:
 
   R trace(void) const;
   
-  UnivariatePolyInt<Z> charPoly(void) const;
+  UnivariatePoly<R,Parent> charPoly(void) const;
   
   static Matrix<R,Parent> diagonalJoin(const std::vector< Matrix<R,Parent> > &);
 
