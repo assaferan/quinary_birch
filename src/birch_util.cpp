@@ -174,11 +174,13 @@ namespace birch_util
     return y;
   }
 
+  template<>
   Rational<Z> convert(const Integer<Z> & x)
   {
     return x;
   }
 
+  template<>
   Rational<Z> convertInteger(const W64 & x)
   {
     Z y = convertInteger<W64,Z>(x);
