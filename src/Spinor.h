@@ -42,7 +42,8 @@ public:
       std::shared_ptr<W16_Fp> GF = std::make_shared<W16_Fp>(prime, this->_seed, true);
       std::shared_ptr< SquareMatrixFp<W16,W32,n> > s_p = mod(s.integralMatrix(),GF);
       W16_MatrixFp s_mat(*s_p);
-      W16_FpElement det = s_mat.restrict(this->_rads[prime]).determinant();
+      W16_MatrixFp rad = this->_rads.at(prime);
+      W16_FpElement det = s_mat.restrict(rad).determinant();
       dets.push_back(det);
     }
     return this->_computeVals(dets);    
