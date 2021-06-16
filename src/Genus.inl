@@ -1136,14 +1136,14 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<int> & V_basis,
 
 // !! TODO - support non-squarefree (when there are oldforms)
 template<typename R, size_t n>
-inline std::vector< MatrixInt<int> > Genus<R,n>::_decomposition(size_t k) const
+inline std::vector< MatrixRat<int> > Genus<R,n>::_decomposition(size_t k) const
 {
-  std::vector< MatrixInt<int> > decomp;
+  std::vector< MatrixRat<int> > decomp;
   if (this->_dims[k] == 0)
     return decomp;
 
-  std::shared_ptr< const IntegerRing<int> > ZZ = std::make_shared< const IntegerRing<int> >();
-  MatrixInt<int> M_basis = MatrixInt<int>::identity(ZZ, this->_dims[k]);
+  std::shared_ptr< const RationalField<int> > QQ = std::make_shared< const RationalField<int> >();
+  MatrixRat<int> M_basis = MatrixRat<int>::identity(QQ, this->_dims[k]);
 
   Integer<R> p = R(2);
 
