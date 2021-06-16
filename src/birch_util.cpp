@@ -146,6 +146,13 @@ namespace birch_util
     return x;
   }
 
+  template<>
+  Rational<Z32> convert(const Integer<Z>& x)
+  {
+    Z32 y = convertInteger<Z,Z32>(x.num());
+    return y;
+  }
+
   int char_vals[256] = {
 			1, -1, -1,  1, -1,  1,  1, -1, -1,  1,  1, -1,  1, -1, -1,  1, -1,  1,
 			1, -1,  1, -1, -1,  1,  1, -1, -1,  1, -1,  1,  1, -1, -1,  1,  1, -1,
@@ -172,3 +179,5 @@ std::ostream & operator<<(std::ostream & os, const Z128 & z)
   os << birch_util::convertInteger<Z128,Z>(z);
   return os;
 }
+
+
