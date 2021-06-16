@@ -176,7 +176,7 @@ namespace birch_util
   Rational<Z> convert(const W64 & x)
   {
     Z y = convertInteger<W64,Z>(x);
-    return x;
+    return y;
   }
 
   int char_vals[256] = {
