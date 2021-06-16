@@ -145,3 +145,15 @@ NumberFieldElement<R>::one(std::shared_ptr<const NumberField<R> > fld)
 
   return z;
 }
+
+template<typename R>
+inline bool NumberFieldElement<R>::isZero(void) const
+{
+  return _elt.isZero();
+}
+
+template<typename R>
+inline bool NumberFieldElement<R>::isOne(void) const
+{
+  return _elt.isOne();
+}
