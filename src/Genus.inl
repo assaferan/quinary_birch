@@ -1105,7 +1105,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     coeffs_int.push_back(f.coefficient(i).floor());
   
   UnivariatePolyInt<Z> f_int(coeffs_int);
-  std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f.factor();
+  std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f_int.factor();
 
   for( std::pair< UnivariatePolyInt<Z>, size_t > fa : fac) {
     UnivariatePolyInt<Z> f = fa.first;
