@@ -130,7 +130,7 @@ namespace std
   template<class R, class Parent>
   struct hash<UnivariatePoly<R,Parent> >
   {
-    Z64 operator()(const UnivariatePoly<R,Parent,n>& poly) const
+    Z64 operator()(const UnivariatePoly<R,Parent>& poly) const
     {
       Z64 fnv = FNV_OFFSET;
       for (int i = 0; i <= poly.degree(); i++)
