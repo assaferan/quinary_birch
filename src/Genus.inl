@@ -774,7 +774,8 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 
 	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
-	  size_t r = this->_hash->indexof(foo);
+	  size_t r_inv = this->_inv_hash->indexof(foo);
+	  size_t r = this->_inv_map.at(r_inv);
 
 	  assert( r < this->size() );
 
@@ -785,7 +786,9 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 	    }
 	  else
 	    {
-	      const GenusRep<R,n>& rep = this->_hash->get(r);
+	      const GenusRep<R,n>& rep = this->_inv_hash->get(r);
+	      const GenusRep<R,n>& rep_inv = this->_inv_hash->get(r_inv);
+
 	      foo.s = cur.s * foo.s;
 	      R scalar = p;
 
