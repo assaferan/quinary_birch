@@ -81,6 +81,12 @@ namespace birch_util
       }
     return value;
   }
+
+  template<typename R>
+  inline Rational<R> convert< Integer<R>, Rational<R> >(const Integer<R> & x)
+  {
+    return x;
+  }
 }
 
 // or for std::vector
@@ -95,3 +101,5 @@ inline std::ostream& operator<<(std::ostream& os, const std::vector<R>& v)
   }
   return os;
 }
+
+
