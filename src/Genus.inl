@@ -886,7 +886,10 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
   else
     GF = std::make_shared<W16_Fp>((W16)prime, this->seed(), true);
 
+#ifdef DEBUG
   const GenusRep<R,n>& mother = this->_hash->keys()[0];
+#endif
+  
   size_t num_reps = this->size();
 
   // Create hash tables for storing isotropic vectors to be skipped
