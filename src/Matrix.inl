@@ -177,30 +177,25 @@ inline R Matrix<R,Parent>::trace(void) const
 // not expected to be a bottleneck
 
 template<class R, class Parent>
-inline UnivariatePolyInt<Z> Matrix<R,Parent>::charPoly(void) const
+inline UnivariatePoly<R,Parent> Matrix<R,Parent>::charPoly(void) const
 {
   // can only compute characteristic polynomial for a square matrix
   assert(this->nrows() == this->ncols());
 
-  std::shared_ptr< const IntegerRing<Z> > ZZ = std::make_shared< const IntegerRing<Z> >();
   size_t n = this->nrows();
-  std::vector< Integer<Z> > c(n+1, ZZ->zero());
-  MatrixInt<Z> z(ZZ, n,n);
-  MatrixInt<Z> I = MatrixInt<Z>::identity(ZZ,n);
-  std::vector< MatrixInt<Z> > M(n+1, z);
-  MatrixInt<Z> A(ZZ,n,n);
-  for (size_t row = 0; row < n; row++)
-    for (size_t col = 0; col < n; col++)
-      A(row,col) = birch_util::convertInteger<R,Z>((*this)(row,col));
+  std::vector<R> c(n+1, this->baseRing()->zero());
+  Matrix<R,Parent> z(this->baseRing(),n,n);
+  Matrix<R,Parent> I = Matrix<R,Parent>::identity(this->baseRing(),n);
+  std::vector< Matrix<R,Parent> > M(n+1, z);
 
-  c[n] = ZZ->one();
+  c[n] = this->baseRing()->one();
   for (size_t k = 1; k <= n; k++) {
     M[k] = A*M[k-1]+c[n-k+1]*I;
     Z k_Z = k;
     c[n-k] = - (A*M[k]).trace() / k_Z;
   }
 
-  UnivariatePolyInt<Z> p(c);
+  UnivariatePoly<R,Parent> p(c);
   return p;
 }
 
