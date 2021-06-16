@@ -186,7 +186,7 @@ int main()
 
   std::cout << "eigenvectors = ";
   for (std::pair<Z64,std::vector< std::vector< NumberFieldElement<Z> > > > evec : evecs) {
-    std::cout << evec << std::endl;
+    std::cout << evec.second << std::endl;
   }
   
   return 0;
