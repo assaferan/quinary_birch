@@ -814,19 +814,13 @@ void SquareMatrix<R,Parent,n>::setIdentity(void)
 template<typename R, size_t n>
 template<typename S, typename T>
 inline std::shared_ptr< SquareMatrixFp<S,T,n> >
-SquareMatrixInt<R,n>::mod(std::shared_ptr< Fp<S,T> > GF) const
+mod(const SquareMatrixInt<R,n> & a, std::shared_ptr< Fp<S,T> > GF)
 {
   SquareMatrixFp<S,T,n> mat_mod(GF);
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      mat_mod(i,j) = GF->mod((*this)(i,j).num());
-  R p = GF->prime();
-  if (p == 2) {
-    for (size_t i = 0; i < n; i++) {
-      R value = (*this)(i,i).num() / 2;
-      mat_mod(i,i) = GF->mod(value);
-    }
-  }
+      mat_mod(i,j) = GF->mod(a(i,j).num());
+ 
   std::shared_ptr< SquareMatrixFp<S,T,n> > mat =
     std::make_shared< SquareMatrixFp<S,T,n> >(mat_mod);
   return mat;

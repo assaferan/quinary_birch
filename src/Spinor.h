@@ -6,6 +6,7 @@
 
 #include "birch.h"
 #include "NeighborManager.h"
+#include "SquareMatrix.h"
 
 template<typename R>
 class Spinor
@@ -22,9 +23,9 @@ public:
     std::random_device rd;
     this->_seed = rd();
     for (R prime : primes) {
-      GF = std::make_shared<W16_Fp>(prime, this->_seed, true);
+      std::shared_ptr<W16_Fp> GF = std::make_shared<W16_Fp>(prime, this->_seed, true);
       NeighborManager<W16,W32,R,n> manager(q, GF);
-      std::vector< W16_VectorFp > rad = manager.radical();
+      std::vector< W16_VectorFp<n> > rad = manager.radical();
       W16_MatrixFp rad_mat(GF, rad.size(), n);
       for (size_t row = 0; row < rad.size(); row++)
 	for (size_t col = 0; col < n; col++)
@@ -38,8 +39,8 @@ public:
   {
     std::vector< W16_FpElement> dets;
     for (R prime : this->_primes) {
-      GF = std::make_shared<W16_Fp>(prime, this->_seed, true);
-      std::shared_ptr< SquareMatrixFp<W16,W32,n> > s_p = s.integralMatrix().mod(GF);
+      std::shared_ptr<W16_Fp> GF = std::make_shared<W16_Fp>(prime, this->_seed, true);
+      std::shared_ptr< SquareMatrixFp<W16,W32,n> > s_p = mod(s.integralMatrix(),GF);
       W16_MatrixFp s_mat(*s_p);
       W16_FpElement det = s_mat.restrict(this->_rads[prime]).determinant();
       dets.push_back(det);
