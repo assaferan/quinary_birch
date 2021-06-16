@@ -199,7 +199,18 @@ inline Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basi
   Matrix<R,Parent> trans(_base, echelon.nrows(), echelon.nrows());
   rowEchelon(echelon, trans);
 
-  return basis * (*this) * trans.transpose().inverse();
+  // do we need to invert trans? 
+
+  Matrix<R,Parent> padded = basis * (*this) * trans.transpose();
+
+  Marix<R,Parent> ret(this->_base, basis.nrows(), basis.nrows());
+
+  for (size_t row = 0; row < basis.nrows(); row++)
+    for (size_t col = 0; col < basis.nrows(); col++)
+      ret(row,col) = padded(row,col);
+  
+  assert( ret * basis == basis * (*this));
+  return ret;
 }
 
 template<class R, class Parent>
