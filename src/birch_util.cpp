@@ -85,6 +85,12 @@ namespace birch_util
   {
     return Z(x);
   }
+
+  template<>
+  Z convertInteger<W32>(const W32& x)
+  {
+    return Z(x);
+  }
   
   template<>
   Z convertInteger<Z32>(const Z32& x)
@@ -173,9 +179,9 @@ namespace birch_util
     return x;
   }
 
-  Rational<Z> convert(const W32 & x)
+  Rational<Z> convertInteger(const W64 & x)
   {
-    Z y = convertInteger<W32,Z>(x);
+    Z y = convertInteger<W64,Z>(x);
     return y;
   }
 
