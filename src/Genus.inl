@@ -1095,14 +1095,14 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<int> & V_basis,
   
   T_p = T_p.restrict(basis_rat);
 
+  /*
   MatrixInt<int> T_p_int(V_basis.baseRing(), T_p.nrows(), T_p.ncols());
    for (size_t row = 0; row < T_p.nrows(); row++)
      for (size_t col = 0; col < T_p.ncols(); col++) {
        assert(T_p(row,col).isIntegral());
        T_p_int(row,col) = T_p(row,col).floor();
-     }
-      
-    
+     }      
+  */
   UnivariatePolyInt<Z> f = T_p.charPoly();
   std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f.factor();
 
@@ -1158,9 +1158,9 @@ Genus<R,n>::eigenvectors(void)
   std::shared_ptr< const RationalField<Z> > QQ = std::make_shared< const RationalField<Z> >();
   
   for (size_t k = 0; k < this->_conductors.size(); k++){
-    std::vector< MatrixInt<int> > decomp = this->_decomposition(k);
+    std::vector< MatrixRat<int> > decomp = this->_decomposition(k);
     std::vector< std::vector< NumberFieldElement<Z> > > evecs_k;
-    for (MatrixInt<int> T : decomp) {
+    for (MatrixRat<int> T : decomp) {
       UnivariatePolyInt<Z> f = T.charPoly();
       std::shared_ptr< NumberField<Z> > K
 	= std::make_shared< NumberField<Z> >(f);
