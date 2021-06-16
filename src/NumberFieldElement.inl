@@ -159,7 +159,7 @@ inline bool NumberFieldElement<R>::isOne(void) const
 }
 
 template<typename R>
-inline NumberFieldElement<R> & operator=(const NumberFieldElement<R> & other)
+inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const NumberFieldElement<R> & other)
 {
   if (this != &other) {
     this->_K = other._K;
