@@ -209,7 +209,7 @@ inline Matrix<R,Parent> Matrix<R,Parent>::restrict(const Matrix<R,Parent> & basi
     for (size_t col = 0; col < basis.nrows(); col++)
       ret(row,col) = padded(row,col);
   
-  assert( ret * basis == basis * (*this));
+  assert( (ret * basis) == (basis * (*this)) );
   return ret;
 }
 
