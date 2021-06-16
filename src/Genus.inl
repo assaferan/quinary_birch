@@ -1083,6 +1083,9 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
   std::map<R,std::vector<int>> T_p_dense = heckeMatrixDense(p.num());
 
   std::vector<int> T_p_dense_k = T_p_dense[this->_conductors[k]];
+  std::vector<Integer<int> > T_p_dense_int(T_p_dense_k.size());
+  for (size_t i = 0; i < T_p_dense_k.size(); i++)
+    T_p_dense_int[i] = T_p_dense_k[i];
   
   MatrixInt<int> T_p(T_p_dense_k,this->_dims[k], this->_dims[k]);
   T_p = T_p.restrict(V_basis);
