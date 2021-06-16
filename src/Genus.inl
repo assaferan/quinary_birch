@@ -203,9 +203,6 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
       this->_prime_divisors.push_back(symb.p);
     }
   
-  Spinor<R> *spin = new Spinor<R>(this->_prime_divisors, q);
-  this->_spinor = std::unique_ptr<Spinor<R>>(spin);
-  
   if (symbols.size() > 63)
     {
       throw std::domain_error("Must have 63 or fewer prime divisors.");
@@ -249,6 +246,9 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
   auto *ptr = new HashMap<GenusRep<R,n>>(estimated_size);
   this->_hash = std::unique_ptr<HashMap<GenusRep<R,n>>>(ptr);
   this->_hash->add(rep);
+
+  Spinor<R> *spin = new Spinor<R>(this->_prime_divisors, rep.q);
+  this->_spinor = std::unique_ptr<Spinor<R>>(spin);
 
   // A temporary placeholder for the genus representatives before they
   // are fully built.
