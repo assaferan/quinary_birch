@@ -1063,8 +1063,8 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 
 // !! - TOOD - maybe it's better to return here already eigenvectors
 template<typename R, size_t n>
-inline std::vector< MatrixRat<int> >
-Genus<R,n>::_decompositionRecurse(const MatrixRat<int> & V_basis,
+inline std::vector< MatrixRat<Z> >
+Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
 				  const Integer<R> & p, size_t k) const
 {
   // This will hold the bases of the irreducible spaces
@@ -1083,31 +1083,23 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<int> & V_basis,
   std::map<R,std::vector<int>> T_p_dense = heckeMatrixDense(p.num());
 
   std::vector<int> T_p_dense_k = T_p_dense[this->_conductors[k]];
-  std::vector<Rational<int> > T_p_dense_int(T_p_dense_k.size());
+  std::vector< Rational<Z> > T_p_dense_int(T_p_dense_k.size());
   for (size_t i = 0; i < T_p_dense_k.size(); i++)
     T_p_dense_int[i] = T_p_dense_k[i];
   
-  MatrixRat<int> T_p(T_p_dense_int,this->_dims[k], this->_dims[k]);
-  MatrixRat<int> basis_rat(T_p.baseRing(), V_basis.nrows(), V_basis.ncols());
+  MatrixRat<Z> T_p(T_p_dense_int,this->_dims[k], this->_dims[k]);
+  MatrixRat<Z> basis_rat(T_p.baseRing(), V_basis.nrows(), V_basis.ncols());
   for (size_t row = 0; row < V_basis.nrows(); row++)
     for (size_t col = 0; col < V_basis.ncols(); col++)
       basis_rat(row,col) = V_basis(row,col);
   
   T_p = T_p.restrict(basis_rat);
 
-  /*
-  MatrixInt<int> T_p_int(V_basis.baseRing(), T_p.nrows(), T_p.ncols());
-   for (size_t row = 0; row < T_p.nrows(); row++)
-     for (size_t col = 0; col < T_p.ncols(); col++) {
-       assert(T_p(row,col).isIntegral());
-       T_p_int(row,col) = T_p(row,col).floor();
-     }      
-  */
-  UnivariatePolyInt<Z> f = T_p.charPoly();
-  std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f.factor();
+  UnivariatePolyRat<Z> f = T_p.charPoly();
+  std::unordered_map< UnivariatePolyRat<Z>, size_t > fac = f.factor();
 
-  for( std::pair< UnivariatePolyInt<Z>, size_t > fa : fac) {
-    UnivariatePolyInt<Z> f = fa.first;
+  for( std::pair< UnivariatePolyRat<Z>, size_t > fa : fac) {
+    UnivariatePolyRat<Z> f = fa.first;
     size_t a = fa.second;
     
 #ifdef DEBUG_LEVEL_FULL
@@ -1115,8 +1107,8 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<int> & V_basis,
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
 
-    MatrixRat<int> fT = f.evaluate(T_p);
-    MatrixRat<int> W_basis = fT.kernel();
+    MatrixRat<Z> fT = f.evaluate(T_p);
+    MatrixRat<Z> W_basis = fT.kernel();
 
     if (a == 1)
       decomp.push_back(W_basis);
@@ -1126,7 +1118,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<int> & V_basis,
 	q = p.nextPrime();
       else
 	q = R(2);
-      std::vector< MatrixRat<int> > sub = this->_decompositionRecurse(W_basis, q, k);
+      std::vector< MatrixRat<Z> > sub = this->_decompositionRecurse(W_basis, q, k);
       decomp.insert(decomp.end(), sub.begin(), sub.end());
     }
   }
@@ -1136,14 +1128,14 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<int> & V_basis,
 
 // !! TODO - support non-squarefree (when there are oldforms)
 template<typename R, size_t n>
-inline std::vector< MatrixRat<int> > Genus<R,n>::_decomposition(size_t k) const
+inline std::vector< MatrixRat<Z> > Genus<R,n>::_decomposition(size_t k) const
 {
-  std::vector< MatrixRat<int> > decomp;
+  std::vector< MatrixRat<Z> > decomp;
   if (this->_dims[k] == 0)
     return decomp;
 
-  std::shared_ptr< const RationalField<int> > QQ = std::make_shared< const RationalField<int> >();
-  MatrixRat<int> M_basis = MatrixRat<int>::identity(QQ, this->_dims[k]);
+  std::shared_ptr< const RationalField<Z> > QQ = std::make_shared< const RationalField<Z> >();
+  MatrixRat<Z> M_basis = MatrixRat<Z>::identity(QQ, this->_dims[k]);
 
   Integer<R> p = R(2);
 
