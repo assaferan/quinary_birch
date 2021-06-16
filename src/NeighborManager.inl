@@ -482,7 +482,7 @@ NeighborManager<R,S,T,n>::transformVector(const GenusRep<T,n>& dst,
 {
   std::shared_ptr< IntegerRing<T> > ZZ = this->_quot_gram.baseRing();
   VectorInt<T,n> temp(ZZ);
-  VectorFp<R,S,n> temp_mod = this->_GF->mod(src);
+  VectorFp<R,S,n> temp_mod = *mod(src, this->_GF);
   for (size_t i = 0; i < n; i++)
     temp[i] = temp_mod[i].lift();
 
