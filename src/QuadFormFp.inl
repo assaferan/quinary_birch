@@ -413,13 +413,13 @@ inline bool QuadFormFp<R,S,n>::isotropicVector(VectorFp<R,S,n> & vec,
 					       size_t start,
 					       bool deterministic) const
 {
-  MatrixFp<R,S> sub_B(this->_base, n-start, n-start);
+  MatrixFp<R,S> sub_B(this->field(), n-start, n-start);
 
   for (size_t row = 0; row < n-start; row++)
     for (size_t col = 0; col < n-start; col++)
       sub_B(row,col) = this->_B(start+row, start+col);
   
-  if ((this->_base->prime() != 2) && (sub_B.determinant().isZero())) {
+  if ((this->field()->prime() != 2) && (sub_B.determinant().isZero())) {
     MatrixFp<R,S> rad = sub_B.kernel();
     for (size_t i = 0; i < n-start; i++)
       vec[start+i] = rad(0,i);
