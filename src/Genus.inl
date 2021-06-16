@@ -1063,8 +1063,8 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 
 // !! - TOOD - maybe it's better to return here already eigenvectors
 template<typename R, size_t n>
-inline std::vector< MatrixInt<int> >
-Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
+inline std::vector< MatrixRat<int> >
+Genus<R,n>::_decompositionRecurse(const MatrixRat<int> & V_basis,
 				  const Integer<R> & p, size_t k) const
 {
   // This will hold the bases of the irreducible spaces
@@ -1115,8 +1115,8 @@ Genus<R,n>::_decompositionRecurse(const MatrixInt<int> & V_basis,
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
 
-    MatrixInt<int> fT = f.evaluate(T_p);
-    MatrixInt<int> W_basis = fT.kernel();
+    MatrixRat<int> fT = f.evaluate(T_p);
+    MatrixRat<int> W_basis = fT.kernel();
 
     if (a == 1)
       decomp.push_back(W_basis);
