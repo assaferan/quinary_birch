@@ -172,12 +172,21 @@ int main()
   std::map<Z64,std::vector<int> > T2_dense = genus.heckeMatrixDense(2);
   std::map<Z64,std::vector<std::vector<int> > > T2_sparse = genus.heckeMatrixSparse(2);
 
+  std::cout << "T2_dense = ";
   for (std::pair<Z64, std::vector<int> > mat : T2_dense) {
     std::cout << mat.second << std::endl;
   }
 
+  std::cout << "T2_sparse = ";
   for (std::pair<Z64, std::vector< std::vector<int> > > mat : T2_sparse) {
     std::cout << mat.second << std::endl;
+  }
+
+  std::map<Z64, std::vector< std::vector< NumberFieldElement<Z> > > > evecs = genus.eigenvectors();
+
+  std::cout << "eigenvectors = ";
+  for (std::pair<Z64,std::vector< std::vector< NumberFieldElement<Z> > > > evec : evecs) {
+    std::cout << evec << std::endl;
   }
   
   return 0;
