@@ -193,7 +193,7 @@ int main()
   EigenvectorManager<Z64,3> manager;
   for (std::pair<Z64,std::vector< std::vector< NumberFieldElement<Z> > > > evecs_k : evecs) {
     for (std::vector< NumberFieldElement<Z> > evec : evecs_k.second)
-      manager.addEigenvector(evec, evecs_k.first);
+      manager.addEigenvector(genus.eigenvector(evec, evecs_k.first));
   }
   manager.finalize();
   
