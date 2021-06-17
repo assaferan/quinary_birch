@@ -137,7 +137,7 @@ inline void EigenvectorManager<R,n>::finalize(void)
       const std::vector< NumberFieldElement<Z> > vec = eigenvector.data();
       for (size_t pos=0; pos<this->_dimension; pos++)
 	{
-	  this->_strided_eigenvectors[pos * this->stride + offset] = vec[pos];
+	  this->_strided_eigenvectors[pos * this->_stride + offset] = vec[pos];
 	}
       ++offset;
     }
