@@ -209,7 +209,7 @@ int main()
   }
 
   std::cerr << "eigenvalues are: " << std::endl;
-  for (std::pair<Z64, std::vector< NumberFieldElement<Z> > evs : all_aps) {
+  for (std::pair<Z64, std::vector< NumberFieldElement<Z> > > evs : all_aps) {
     std::cerr << evs.first << " : " << evs.second << std::endl;
   }
   
