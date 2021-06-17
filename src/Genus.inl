@@ -654,13 +654,12 @@ std::vector< NumberFieldElement<Z> >
 Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 			  std::shared_ptr<Fp<S,T>> GF, const R& p) const
 {
-  std::vector< NumberFieldElement<Z> > eigenvalues(vector_manager.size());
-
-  S prime = GF->prime();
-
-  const GenusRep<R,n>& mother = this->_hash->get(0);
-
   const NumberFieldElement<Z> *stride_ptr = vector_manager._strided_eigenvectors.data();
+  std::vector< NumberFieldElement<Z> > eigenvalues(vector_manager.size(), stride_ptr->parent());
+
+  //  S prime = GF->prime();
+
+  //  const GenusRep<R,n>& mother = this->_hash->get(0);
 
   size_t num_indices = vector_manager._indices.size();
   for (size_t index=0; index<num_indices; index++)
