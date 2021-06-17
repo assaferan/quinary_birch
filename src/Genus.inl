@@ -1173,28 +1173,130 @@ inline std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > >
 Genus<R,n>::eigenvectors(void)
 {
   std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > > evecs;
-  std::shared_ptr< const RationalField<Z> > QQ = std::make_shared< const RationalField<Z> >();
   
   for (size_t k = 0; k < this->_conductors.size(); k++){
-    std::vector< MatrixRat<Z> > decomp = this->_decomposition(k);
-    std::vector< std::vector< NumberFieldElement<Z> > > evecs_k;
-    for (MatrixRat<Z> T : decomp) {
-      UnivariatePolyRat<Z> f = T.charPoly();
-      std::shared_ptr< NumberField<Z> > K
-	= std::make_shared< NumberField<Z> >(f);
-      Matrix< NumberFieldElement<Z>, NumberField<Z> > T_K(K, T.nrows(), T.ncols());
-      for (size_t row = 0; row < T.nrows(); row++)
-	for (size_t col = 0; col < T.ncols(); col++){
-	  Rational<Z> elt(T(row,col).num().num(), T(row,col).denom().num());
-	  T_K(row,col) = NumberFieldElement<Z>(K, elt);
-	}
-      NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(QQ));
-      T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T.nrows());
-      Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
-      std::vector< NumberFieldElement<Z> > vec = nullsp[0];
-      evecs_k.push_back(vec);
-    }
-    evecs[this->_conductors[k]] = evecs_k;
+    evecs[this->_conductors[k]] = this->_decomposition2(k);
   }
   return evecs;
+}
+
+// !! - TOOD - maybe it's better to return here already eigenvectors
+template<typename R, size_t n>
+inline std::vector< std::vector< NumberFieldElement<Z> > > 
+Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
+				   const Integer<R> & p, size_t k) const
+{
+  // This will hold the bases of the irreducible spaces
+  std::vector< std::vector< NumberFieldElement<Z> > > evecs;
+  
+  if (V_basis.nrows() == 0)
+    return evecs;
+
+#ifdef DEBUG
+  std::cerr << "Decomposing space of dimension " << this->_dims;
+  std::cerr << "using T_" << p << "." << std::endl;
+#endif
+
+  // !! - TODO - check that results are stored and we don't
+  // recompute for different values of k
+  std::map<R,std::vector<int>> T_p_dense = heckeMatrixDense(p.num());
+
+  std::vector<int> T_p_dense_k = T_p_dense[this->_conductors[k]];
+  std::vector< Rational<Z> > T_p_dense_int(T_p_dense_k.size());
+  for (size_t i = 0; i < T_p_dense_k.size(); i++)
+    T_p_dense_int[i] = birch_util::convert< int, Rational<Z> >(T_p_dense_k[i]);
+  
+  MatrixRat<Z> T_p(T_p_dense_int,this->_dims[k], this->_dims[k]);
+  MatrixRat<Z> basis_rat(T_p.baseRing(), V_basis.nrows(), V_basis.ncols());
+  for (size_t row = 0; row < V_basis.nrows(); row++)
+    for (size_t col = 0; col < V_basis.ncols(); col++)
+      basis_rat(row,col) = V_basis(row,col);
+  
+  T_p = T_p.restrict(basis_rat);
+  
+#ifdef DEBUG
+  std::cerr << "Computing characteristic polynomial of T_" << p << "." << std::endl;
+#endif
+    
+  UnivariatePolyRat<Z> f = T_p.charPoly();
+  
+#ifdef DEBUG
+  std::cerr << "f = " << f << std::endl;
+  std::cerr << "multiplying by common denominator." << std::endl;
+#endif
+  
+  Integer<Z> denom = Integer<Z>::one();
+  std::vector< Integer<Z> > coeffs_int;
+  for (int i = 0; i <= f.degree(); i++)
+    denom = denom.lcm(f.coefficient(i).denom());
+  f *= denom;
+  for (int i = 0; i <= f.degree(); i++) 
+    coeffs_int.push_back(f.coefficient(i).floor());
+  
+  UnivariatePolyInt<Z> f_int(coeffs_int);
+
+#ifdef DEBUG
+  std::cerr << "factoring characteristic polynomial f_int = " << f_int << std::endl;
+#endif
+  
+  std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f_int.factor();
+
+  for( std::pair< UnivariatePolyInt<Z>, size_t > fa : fac) {
+    UnivariatePolyInt<Z> f = fa.first;
+    size_t a = fa.second;
+    
+#ifdef DEBUG_LEVEL_FULL
+    std::cerr << "Cutting out subspace using f(T_" << p;
+    std::cerr << "), where f = " << f << "." << std::endl;
+#endif
+
+    MatrixRat<Z> fT = f.evaluate(T_p);
+    MatrixRat<Z> W_basis = fT.kernel();
+
+    assert (W_basis.nrows() != 0);
+    
+    if (a == 1) {
+      std::shared_ptr< NumberField<Z> > K
+	= std::make_shared< NumberField<Z> >(f);
+      T_p = T_p.restrict(W_basis);
+      Matrix< NumberFieldElement<Z>, NumberField<Z> > T_K(K, T_p.nrows(), T_p.ncols());
+      for (size_t row = 0; row < T.nrows(); row++)
+	for (size_t col = 0; col < T.ncols(); col++){
+	  Rational<Z> elt(T_p(row,col).num().num(), T_p(row,col).denom().num());
+	  T_K(row,col) = NumberFieldElement<Z>(K, elt);
+	}
+      NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(T_p.baseRing()));
+      T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T_p.nrows());
+      Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
+      std::vector< NumberFieldElement<Z> > vec = nullsp[0];
+      evecs.push_back(vec);
+    }
+    else {
+      Integer<R> q;
+      if (W_basis.nrows() == V_basis.nrows())
+	q = p.nextPrime();
+      else
+	q = R(2);
+      std::vector< std::vector< NumberFieldElement<Z> > > sub = this->_decomposition2Recurse(W_basis, q, k);
+      evecs.insert(evecs.end(), sub.begin(), sub.end());
+    }
+  }
+  
+  return evecs;
+}
+
+// !! TODO - support non-squarefree (when there are oldforms)
+template<typename R, size_t n>
+inline std::vector< std::vector< NumberFieldElement<Z> > > Genus<R,n>::_decomposition2(size_t k) const
+{
+  std::vector< std::vector< NumberFieldElement<Z> > > evecs;
+  if (this->_dims[k] == 0)
+    return evecs;
+
+  std::shared_ptr< const RationalField<Z> > QQ = std::make_shared< const RationalField<Z> >();
+  MatrixRat<Z> M_basis = MatrixRat<Z>::identity(QQ, this->_dims[k]);
+
+  Integer<R> p = R(2);
+
+  return this->_decomposition2Recurse(M_basis, p, k);
 }
