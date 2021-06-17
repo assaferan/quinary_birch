@@ -13,7 +13,7 @@ BirchExample<R,n>::BirchExample(const typename QuadFormZZ<R,n>::SymVec & q,
   for (size_t i = 0; i < n*(n+1)/2; i++)
     coeffs[i] = q[i];
   spinor_prime = spinor;
-  d = dim;
+  dim = d;
 
   std::shared_ptr<const RationalField<Z> > QQ = std::make_shared<const RationalField<Z> >();
   UnivariatePolyRat<Z> f = UnivariatePolyRat<Z>::x(QQ) - Rational<Z>::one();
