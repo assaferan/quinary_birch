@@ -123,6 +123,8 @@ NumberFieldElement<R>::inverse(void) const
   UnivariatePolyRat<R>::xgcd(this->_elt, this->_K->modulus(), s, t);
   
   NumberFieldElement<R> inv(this->_K, s);
+
+  assert(((*this)*inv).isOne());
   return inv;
 }
 
