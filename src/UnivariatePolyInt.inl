@@ -99,8 +99,9 @@ inline void UnivariatePolyInt<R>::_henselStep(std::vector<UnivariatePolyInt<R> >
 #endif  
 
   // step 1 - lift the u_j
-  
-  u[0].lead() = this->lead();
+
+  // setting the leading term
+  u[0] -= (u[0].lead()-this->lead())*UnivariatePolyInt<R>::x(this->baseRing(), u[0].degree());
   
   UnivariatePolyInt<R> t = ((*this) - prod) / p_i;
   UnivariatePolyInt<R> r;
@@ -157,28 +158,33 @@ UnivariatePolyInt<R>::_henselLift(const std::vector<UnivariatePolyFp<S,T> > & g,
   }
 #ifdef DEBUG
   UnivariatePolyFp<S,T> s = -one;
-  for (size_t i = 0; i < g.size(); i++)
+  for (size_t i = 0; i < g.size(); i++) {
+    // making sure that g is monic
+    assert(g[i].lead().isOne());
     s += (prod / g[i]) * v_bar[i];
+  }
   assert(s.isZero());
 #endif
   
   v.resize(g.size());
   u.resize(g.size());
   
-  FpElement<S,T> mult = one;
+  // FpElement<S,T> mult = one;
   // initialize u and v and fix the leading coefficients
   for (size_t i = 0; i < g.size(); i++) {
     v[i] = v_bar[i].lift();
-    mult *= g[i].lead();
-    UnivariatePolyFp<S,T> g_norm = g[i]/g[i].lead();
-    u[i] = g_norm.lift();
-    // we lift to a monic polynomial
-    u[i].lead() = Integer<R>::one();
+    // mult *= g[i].lead();
+    // UnivariatePolyFp<S,T> g_norm = g[i]/g[i].lead();
+    // u[i] = g_norm.lift();
+    u[i] = g[i].lift();
+    // make sure we lift to a monic polynomial
+    u[i] -= (u[i].lead()-Integer<R>::one())*UnivariatePolyInt<R>::x(this->baseRing(), u[i].degree());
   }
 
+  // This part is only needed if the g[i] are not monic
   // return the leading coefficient to the first factor
-  Integer<R> lc = birch_util::convertInteger<T,R>(mult.lift());
-  u[0] *= lc;
+  // Integer<R> lc = birch_util::convertInteger<T,R>(mult.lift());
+  // u[0] *= lc;
   
   for (size_t i = 1; i < a; i++) {
     this->_henselStep(u, v, g[0].baseRing(), i);
