@@ -1263,9 +1263,9 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
       std::shared_ptr< NumberField<Z> > K
 	= std::make_shared< NumberField<Z> >(f);
 #ifdef DEBUG
-      std::cerr << "Restricting T_" << p << " = " << T_p << " to W." << std::endl; 
+      std::cerr << "Restricting T_" << p << " = " << std::endl << T_p << " to W." << std::endl; 
 #endif
-      T_p = T_p.restrict(W_basis);
+      T_p = T_p.restrict(W_basis.transpose());
       Matrix< NumberFieldElement<Z>, NumberField<Z> > T_K(K, T_p.nrows(), T_p.ncols());
       for (size_t row = 0; row < T_p.nrows(); row++)
 	for (size_t col = 0; col < T_p.ncols(); col++){
