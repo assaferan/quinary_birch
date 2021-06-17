@@ -650,7 +650,7 @@ Genus<R,n>::eigenvalues(EigenvectorManager<R,n>& vector_manager,
 
 template<typename R, size_t n>
 template<typename S, typename T>
-std::vector<Z32>
+std::vector< NumberFieldElement<Z> >
 Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 			  std::shared_ptr<Fp<S,T>> GF, const R& p) const
 {
