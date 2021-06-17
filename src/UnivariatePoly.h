@@ -25,7 +25,7 @@ public:
   UnivariatePoly(const R &);
 
   // create polynomial from coefficients
-  UnivariatePoly(const std::vector<R> &);
+  UnivariatePoly(std::shared_ptr<const Parent> base_ring, const std::vector<R> &);
 
   // create the polynomial x^i
   static UnivariatePoly<R,Parent> x(std::shared_ptr<const Parent> base_ring, size_t i = 1);
