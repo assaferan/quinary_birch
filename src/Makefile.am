@@ -52,6 +52,7 @@ SOURCES += RationalField.h
 SOURCES += Ring.h
 SOURCES += RingElement.h
 SOURCES += RingElement.inl
+SOURCES += SetCover.cpp
 SOURCES += SetCover.h
 SOURCES += SquareMatrix.h
 SOURCES += SquareMatrix.inl
