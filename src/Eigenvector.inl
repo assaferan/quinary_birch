@@ -87,7 +87,7 @@ inline void EigenvectorManager<R,n>::finalize(void)
   // Find a set cover and sort the positions.
   SetCover cover(this->_dimension, covers, SetCover::METHOD_KINDA_GREEDY);
   this->_indices = cover.positions();
-  std::sort(this->_indices.begin(), this->indices.end());
+  std::sort(this->_indices.begin(), this->_indices.end());
   size_t num_indices = this->_indices.size();
 
   // Store the position of each eigenvector associated to each index.
