@@ -452,10 +452,10 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
   UnivariatePoly<R,Parent> s_plus(f.baseRing());
   UnivariatePoly<R,Parent> t_plus(f.baseRing());
   
-  s = f.baseRing()->one();
-  s_minus = f.baseRing()->zero();
-  t = f.baseRing()->zero();
-  t_minus = f.baseRing()->one();
+  s = f.baseRing()->zero();
+  s_minus = f.baseRing()->one();
+  t = f.baseRing()->one();
+  t_minus = f.baseRing()->zero();
   
   r_minus = f;
   r = g;
