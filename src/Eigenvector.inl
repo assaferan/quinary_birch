@@ -64,7 +64,7 @@ inline void EigenvectorManager<R,n>::finalize(void)
       W64 mask = 1;
       for (NumberFieldElement<Z> value : data)
 	{
-	  if (value) word |= mask;
+	  if (!value.isZero()) word |= mask;
 	  mask <<= 1;
 	  ++pos;
 
