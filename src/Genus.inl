@@ -1245,7 +1245,7 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
     UnivariatePolyInt<Z> f = fa.first;
     size_t a = fa.second;
     
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG
     std::cerr << "Cutting out subspace using f(T_" << p;
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
@@ -1256,8 +1256,15 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
     assert (W_basis.nrows() != 0);
     
     if (a == 1) {
+#ifdef DEBUG
+      std::cerr << "Found irreducible subspace W = " << W_basis << std::endl;
+      std::cerr << "computing eigenvector." << std::endl;
+#endif
       std::shared_ptr< NumberField<Z> > K
 	= std::make_shared< NumberField<Z> >(f);
+#ifdef DEBUG
+      std::cerr << "Restricting T_" << p << " = " << T_p << " to W." << std::endl; 
+#endif
       T_p = T_p.restrict(W_basis);
       Matrix< NumberFieldElement<Z>, NumberField<Z> > T_K(K, T_p.nrows(), T_p.ncols());
       for (size_t row = 0; row < T_p.nrows(); row++)
