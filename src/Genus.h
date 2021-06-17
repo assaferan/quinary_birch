@@ -139,13 +139,17 @@ protected:
 
   static std::set<Integer<R> > _wittToHasse(const Integer<R> &,
 					    const std::set<std::pair<Integer<R>, int> > &);
-
-  std::vector< std::vector< NumberFieldElement<Z> > > _decomposition2(size_t k) const;
   
   std::vector< MatrixRat<Z> > _decomposition(size_t k) const;
   
   std::vector< MatrixRat<Z> >
   _decompositionRecurse(const MatrixRat<Z> & V_basis,
+			const Integer<R> & p, size_t k) const;
+
+  std::vector< std::vector< NumberFieldElement<Z> > > _decomposition2(size_t k) const;
+
+  std::vector< std::vector< NumberFieldElement<Z> > >
+  _decomposition2Recurse(const MatrixRat<Z> & V_basis,
 			const Integer<R> & p, size_t k) const;
 };
 
