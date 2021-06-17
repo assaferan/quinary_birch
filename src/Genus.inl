@@ -672,21 +672,42 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
       neighbor_manager.getNextNeighbor();
       bool done = neighbor_manager.getIsotropicSubspace().empty();
 
+#ifdef DEBUG
+      std::cerr << "Working on index " << index << std::endl;
+      std::cerr << "npos = " << npos << std::endl;
+      std::cerr << "cur.q = " << std::endl << cur.q << std::endl;
+#endif
+
       while (!done)
 	{
 	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep();
 
+#ifdef DEBUG
+	  std::cerr << "foo.q = " << std::endl << foo.q << std::endl;
+	  std::cerr << "foo.s = " << std::endl << foo.s << std::endl;
+#endif
+	  
 	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
 	  size_t r_inv = this->_inv_hash->indexof(foo);
 	  //	  size_t rpos = this->_hash->indexof(foo);
 	  size_t rpos = this->_inv_map.at(r_inv);
+	  
+#ifdef DEBUG
+	  std::cerr << "r_inv = " << r_inv << std::endl;
+	  std::cerr << "rpos = " << rpos << std::endl;
+#endif
+	  
 	  size_t offset = vector_manager._stride * rpos;
 	  __builtin_prefetch(stride_ptr + offset, 0, 0);
 
 	  W64 spin_vals;
 	  if (unlikely(rpos == npos))
 	    {
+	      assert( foo.s.isIsometry(mother.q, mother.q) );
+#ifdef DEBUG
+	      std::cerr << "computing spinor norms of " << foo.s << std::endl;
+#endif
 	      spin_vals = this->_spinor->norm(foo.s);
 	    }
 	  else
@@ -714,7 +735,9 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 
 	      scalar *= birch_util::myPow(cur.es);
 	      scalar *= birch_util::myPow(rep.es);
-	      
+#ifdef DEBUG
+	      std::cerr << "computing spinor norms of " << foo.s << std::endl;
+#endif
 	      spin_vals = this->_spinor->norm(foo.s);
 	    }
 	  
@@ -804,6 +827,8 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 	  W64 spin_vals;
 	  if (r == idx)
 	    {
+	      assert( foo.s.isIsometry(mother.q, mother.q) );
+	      
 	      spin_vals = this->_spinor->norm(foo.s);
 	    }
 	  else
