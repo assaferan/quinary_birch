@@ -255,6 +255,10 @@ inline void UnivariatePolyFp<R,S>::divRem(const UnivariatePolyFp<R,S> & f,
 
   assert(!g.isZero());
 
+#ifdef DEBUG
+  std::cerr << "Dividing " << f << " by " << g << "." << std::endl;
+#endif
+  
   UnivariatePolyFp<R,S> t(f.baseRing());
   q.makeZero();
   r = f;
