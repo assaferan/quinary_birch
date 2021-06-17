@@ -97,6 +97,10 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
   // !! TODO - add it in this case
   size_t row_max;
   R max_val = echelon._base->zero();
+
+#ifdef DEBUG
+  std::cerr << "Computing row echelon form of " << std::endl << echelon << std::endl;
+#endif
   
   while ((pivot_row < echelon.nrows()) && (pivot_col < echelon.ncols())) {
     for (row_max = pivot_row; row_max < echelon.nrows();) {
@@ -110,11 +114,20 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
       pivot_col++;
     }
     else {
+#ifdef DEBUG
+      std::cerr << "swapping rows " << pivot_row << " and " << row_max << "." << std::endl;
+#endif
       echelon.swapRows(pivot_row, row_max);
       trans.swapRows(pivot_row, row_max);
       R scalar = max_val.inverse();
+#ifdef DEBUG
+      std::cerr << "multiplying row " << pivot_row << " by " << scalar << "." << std::endl;
+#endif
       echelon.multiplyRow(pivot_row, scalar);
       trans.multiplyRow(pivot_row, scalar);
+#ifdef DEBUG
+      std::cerr << "zeroing the pivot column." << std::endl;
+#endif
       for (size_t row = pivot_row+1; row < echelon.nrows(); row++) {
 	// R factor = echelon(row,pivot_col) / echelon(pivot_row, pivot_col);
 	R factor = echelon(row,pivot_col);
@@ -126,6 +139,10 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
 	  trans(row,col) -= factor * trans(pivot_row, col);
 	}
       }
+#ifdef DEBUG
+      std::cerr << "echelon = " << std::endl << echelon << std::endl;
+      std::cerr << "trans = " << std::endl << echelon << std::endl;
+#endif
       
       pivot_row++;
       pivot_col++;
