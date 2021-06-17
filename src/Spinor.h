@@ -49,9 +49,9 @@ public:
       W16_MatrixFp rad = this->_rads.at(prime);
       W16_FpElement det = s_mat.transpose().restrict(rad).determinant();
 #ifdef DEBUG
-      std::cerr << "rad = " << rad << std::endl;
-      std::cerr << "s_mat.transpose() = " << s_mat.transpose() << std::endl;
-      std::cerr << "s_mat.transpose().restrict(rad) = " << s_mat.transpose().restrict(rad) << std::endl;
+      std::cerr << "rad = " << std::endl << rad << std::endl;
+      std::cerr << "s_mat.transpose() = " << std::endl << s_mat.transpose() << std::endl;
+      std::cerr << "s_mat.transpose().restrict(rad) = " << std::endl << s_mat.transpose().restrict(rad) << std::endl;
       std::cerr << "det = " << det << std::endl;
 #endif
       dets.push_back(det);
