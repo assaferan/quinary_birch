@@ -18,7 +18,10 @@ UnivariatePoly<R,Parent>::UnivariatePoly(const R & a)
 template<class R, class Parent>
 UnivariatePoly<R,Parent>::UnivariatePoly(std::shared_ptr<const Parent> base_ring, const std::vector<R> & vec)
   : _base(base_ring), _coeffs(vec)
-{}
+{
+  // in case there are leading zeros in the vector
+  this->_eliminateDeg();
+}
 
 // create the polynomial x^i
 template<class R, class Parent>
