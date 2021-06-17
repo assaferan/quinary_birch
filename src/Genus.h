@@ -91,7 +91,7 @@ public:
 
   Eigenvector<R> eigenvector(const std::vector< NumberFieldElement<Z> >&, const R& ) const;
 
-  std::vector<Z32> eigenvalues(EigenvectorManager<R,n>&, const R&) const;
+  std::vector< NumberFieldElement<Z> > eigenvalues(EigenvectorManager<R,n>&, const R&) const;
 
   inline const GenusRep<R,n>& representative(size_t idx) const
   { return this->_hash->get(idx); }
