@@ -55,7 +55,7 @@ inline TestBirch<R,n>::TestBirch(const BirchExample<R,n> & example)
 template<typename R, size_t n>
 inline void TestBirch<R,n>::_init(const typename QuadFormZZ<R,n>::SymVec & coeffs)
 {
-   QuadFormInt<R,n> q(coeffs);
+   QuadFormZZ<R,n> q(coeffs);
 
   Integer<R> disc = q.discriminant();
   typename Integer<R>::FactorData facs = disc.factorization();
