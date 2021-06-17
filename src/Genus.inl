@@ -1213,7 +1213,7 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
       basis_rat(row,col) = V_basis(row,col);
 
 #ifdef DEBUG
-  std::cerr << "Restricting T_ " << p << " to V = " << basis_rat << "." << std::endl;
+  std::cerr << "Restricting T_ " << p << " to V = " << std::endl << basis_rat << "." << std::endl;
 #endif
   
   MatrixRat<Z> T_p_res = T_p.restrict(basis_rat);
@@ -1280,7 +1280,11 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
 	}
       NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(T_p.baseRing()));
       T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T_p.nrows());
+#ifdef DEBUG
+      std::cerr << "Computing kernel of " << std::endl << T_K << std::endl;
+#endif
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
+      assert(nullsp.nrows() == 1);
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
 #ifdef DEBUG
       std::cerr << "found eigenvector: " << vec << std::endl;
