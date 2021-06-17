@@ -50,6 +50,9 @@ public:
       W16_FpElement det = s_mat.transpose().restrict(rad).determinant();
 #ifdef DEBUG
       std::cerr << "rad = " << std::endl << rad << std::endl;
+      std::cerr << "s_p =  " << std::endl << (*s_p) << std::endl;
+      std::cerr << "scale =  " << std::endl << scale << std::endl;
+      std::cerr << "scale.inverse() =  " << std::endl << scale.inverse() << std::endl;
       std::cerr << "s_mat.transpose() = " << std::endl << s_mat.transpose() << std::endl;
       std::cerr << "s_mat.transpose().restrict(rad) = " << std::endl << s_mat.transpose().restrict(rad) << std::endl;
       std::cerr << "det = " << det << std::endl;
