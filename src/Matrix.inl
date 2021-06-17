@@ -139,7 +139,7 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
 	  trans(row,col) -= factor * trans(pivot_row, col);
 	}
       }
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
       std::cerr << "echelon = " << std::endl << echelon << std::endl;
       std::cerr << "trans = " << std::endl << echelon << std::endl;
 #endif
