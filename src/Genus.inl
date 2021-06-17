@@ -1260,8 +1260,8 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
 	= std::make_shared< NumberField<Z> >(f);
       T_p = T_p.restrict(W_basis);
       Matrix< NumberFieldElement<Z>, NumberField<Z> > T_K(K, T_p.nrows(), T_p.ncols());
-      for (size_t row = 0; row < T.nrows(); row++)
-	for (size_t col = 0; col < T.ncols(); col++){
+      for (size_t row = 0; row < T_p.nrows(); row++)
+	for (size_t col = 0; col < T_p.ncols(); col++){
 	  Rational<Z> elt(T_p(row,col).num().num(), T_p(row,col).denom().num());
 	  T_K(row,col) = NumberFieldElement<Z>(K, elt);
 	}
