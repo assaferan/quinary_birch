@@ -184,7 +184,7 @@ int main()
 
   std::map<Z64, std::vector< std::vector< NumberFieldElement<Z> > > > evecs = genus.eigenvectors();
 
-  std::cout << "eigenvectors = ";
+  std::cout << "eigenvectors: " << std::endl;
   for (std::pair<Z64,std::vector< std::vector< NumberFieldElement<Z> > > > evecs_k : evecs) {
     for (std::vector< NumberFieldElement<Z> > evec : evecs_k.second)
       std::cout << evec << std::endl;
