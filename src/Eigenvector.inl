@@ -127,7 +127,9 @@ inline void EigenvectorManager<R,n>::finalize(void)
   this->_stride = ((num_vecs + 15) / 16) * 16;
 
   // Allocate memory for the strided eigenvectors.
-  this->_strided_eigenvectors.resize(this->_stride * this->_dimension);
+  // We modify resize to reserve, because the parent number fields will also be interleaved.
+  //  this->_strided_eigenvectors.resize(this->_stride * this->_dimension);
+  this->_strided_eigenvectors.reserve(this->_stride * this->_dimension);
 
   // Interleave the eigenvectors.
   size_t offset = 0;
