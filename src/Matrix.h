@@ -136,6 +136,13 @@ template<class R, class Parent>
 inline Matrix<R, Parent> operator*(const R & a, const Matrix<R,Parent> & mat)
 { return mat*a; }
 
+template<class R, class Parent>
+inline std::ostream & operator<<(std::ostream & os, const Matrix<R,Parent> & mat)
+{
+  mat.print(os);
+  return os;
+}
+
 #include "Matrix.inl"
 
 #endif // __MATRIX_H_
