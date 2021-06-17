@@ -720,7 +720,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	{
 	  size_t offset = vector_manager._stride * npos;
 	  NumberFieldElement<Z> coord = vector_manager._strided_eigenvectors[offset + vpos];
-	  assert( eigenvalues[vpos] % coord == 0 );
+	  // assert( eigenvalues[vpos] % coord == 0 );
 	  eigenvalues[vpos] /= coord;
 	}
     }
