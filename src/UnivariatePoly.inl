@@ -16,8 +16,8 @@ UnivariatePoly<R,Parent>::UnivariatePoly(const R & a)
 
 // create polynomial from coefficients
 template<class R, class Parent>
-UnivariatePoly<R,Parent>::UnivariatePoly(const std::vector<R> & vec)
-  : _base(vec[0].parent()), _coeffs(vec)
+UnivariatePoly<R,Parent>::UnivariatePoly(std::shared_ptr<const Parent> base_ring, const std::vector<R> & vec)
+  : _base(base_ring), _coeffs(vec)
 {}
 
 // create the polynomial x^i
