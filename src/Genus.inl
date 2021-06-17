@@ -706,7 +706,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	      NumberFieldElement<Z> coord = vector_manager._strided_eigenvectors[offset + vpos];
 	      if (likely(!coord.isZero()))
 		{
-		  eigenvalues[vpos] += (val_rat * coord);
+		  eigenvalues[vpos] += (coord * val_rat);
 		}
 	    }
 	  neighbor_manager.getNextNeighbor();
