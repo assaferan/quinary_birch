@@ -101,7 +101,7 @@ inline void EigenvectorManager<R,n>::finalize(void)
       for (size_t pos=0; pos<num_indices; pos++)
 	{
 	  size_t index = this->_indices[pos];
-	  if (eigenvector.data()[index])
+	  if (!(eigenvector.data()[index].isZero()))
 	    {
 	      eigenvector.repIndex(index);
 	      this->_position_lut[pos].push_back(i);
