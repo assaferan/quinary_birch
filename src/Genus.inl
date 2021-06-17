@@ -672,7 +672,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
       neighbor_manager.getNextNeighbor();
       bool done = neighbor_manager.getIsotropicSubspace().empty();
 
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
       std::cerr << "Working on index " << index << std::endl;
       std::cerr << "npos = " << npos << std::endl;
       std::cerr << "cur.q = " << std::endl << cur.q << std::endl;
@@ -682,7 +682,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	{
 	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep();
 
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
 	  std::cerr << "foo.q = " << std::endl << foo.q << std::endl;
 	  std::cerr << "foo.s = " << std::endl << foo.s << std::endl;
 #endif
@@ -693,7 +693,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	  //	  size_t rpos = this->_hash->indexof(foo);
 	  size_t rpos = this->_inv_map.at(r_inv);
 	  
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
 	  std::cerr << "r_inv = " << r_inv << std::endl;
 	  std::cerr << "rpos = " << rpos << std::endl;
 #endif
@@ -705,7 +705,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	  if (unlikely(rpos == npos))
 	    {
 	      assert( foo.s.isIsometry(mother.q, mother.q) );
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
 	      std::cerr << "computing spinor norms of " << foo.s << std::endl;
 #endif
 	      spin_vals = this->_spinor->norm(foo.s);
@@ -735,7 +735,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 
 	      scalar *= birch_util::myPow(cur.es);
 	      scalar *= birch_util::myPow(rep.es);
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
 	      std::cerr << "computing spinor norms of " << foo.s << std::endl;
 #endif
 	      spin_vals = this->_spinor->norm(foo.s);
