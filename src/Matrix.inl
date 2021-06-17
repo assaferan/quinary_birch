@@ -196,7 +196,7 @@ inline UnivariatePoly<R,Parent> Matrix<R,Parent>::charPoly(void) const
     c[n-k] = - (A*M[k]).trace() / k_R;
   }
 
-  UnivariatePoly<R,Parent> p(c);
+  UnivariatePoly<R,Parent> p(this->baseRing(), c);
   return p;
 }
 
