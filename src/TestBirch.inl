@@ -35,7 +35,9 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
   manager.finalize();
 
   for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs) {
+#ifdef DEBUG
     Integer<R> p = ev.first;
+#endif
     assert(ev.second == _p_genus->eigenvalues(manager, p.num()));
   }
 
