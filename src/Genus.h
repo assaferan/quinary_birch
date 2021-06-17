@@ -100,7 +100,7 @@ public:
   { return this->_hash->indexof(rep); }
 
   std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > >
-  eigenvectors(void);
+  eigenvectors(void) const;
 
 protected:
   R _disc;

@@ -1110,7 +1110,7 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 
 template<typename R, size_t n>
 inline std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > >
-Genus<R,n>::eigenvectors(void)
+Genus<R,n>::eigenvectors(void) const
 {
   std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > > evecs;
   
