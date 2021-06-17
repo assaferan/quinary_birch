@@ -36,7 +36,7 @@ public:
   inline size_t repIndex(void) const
   { return this->_rep_index; }
 
-  inline Z32 operator[](size_t pos) const
+  inline NumberFieldElement<Z> operator[](size_t pos) const
   { return this->_data[pos]; }
 
 private:
