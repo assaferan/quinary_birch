@@ -506,12 +506,19 @@ void UnivariatePoly<R,Parent>::print(std::ostream & os) const
   for (int i = deg+1; i > 0; i--) {
     R coeff = p.coefficient(i-1);
     if (!coeff.isZero()) {
-      if ((i <= deg) && (coeff > p.baseRing()->zero()))
+      if ((i <= deg) && (coeff > p.baseRing()->zero())) {
 	os << '+';
-      else if ((coeff == -p.baseRing()->one()) && (i != 1))
-	os << '-';
-      else if ((coeff != p.baseRing()->one()) || (i == 1))
-	os << coeff;
+      }
+      else {
+	if ((coeff == -p.baseRing()->one()) && (i != 1)) {
+	  os << '-';
+	}
+	else {
+	  if ((coeff != p.baseRing()->one()) || (i == 1))
+	    os << coeff;
+	}
+      }
+      
       if (i > 1)
 	os << "x";
       if (i > 2)
