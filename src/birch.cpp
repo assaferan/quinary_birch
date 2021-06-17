@@ -207,6 +207,11 @@ int main()
     all_aps[p.num()] = genus.eigenvalues(manager, p.num());
     p = p.nextPrime();
   }
+
+  std::cerr << "eigenvalues are: " << std::endl;
+  for (std::pair<Z64, std::vector< NumberFieldElement<Z> > evs : all_aps) {
+    std::cerr << evs.first << " : " << evs.second << std::endl;
+  }
   
   return 0;
 }
