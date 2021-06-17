@@ -464,7 +464,7 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
     W64 e = r_minus.degree()+1-r.degree();
     R a = r.lead()^e;
 
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
     std::cerr << "r_minus = " << r_minus << std::endl;
     std::cerr << "r = " << r << std::endl;
     std::cerr << "a = " << a << std::endl;
