@@ -674,7 +674,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	{
 	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep();
 
-	  ssert( foo.s.isIsometry(cur.q, foo.q) );
+	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
 	  size_t r_inv = this->_inv_hash->indexof(foo);
 	  //	  size_t rpos = this->_hash->indexof(foo);
@@ -689,7 +689,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	    }
 	  else
 	    {
-	      const GenusRep<R,n>& rep = this->_inv_hash->get(r);
+	      const GenusRep<R,n>& rep = this->_inv_hash->get(rpos);
 	      const GenusRep<R,n>& rep_inv = this->_inv_hash->get(r_inv);
 
 	      GenusRep<R,n> tmp = rep;
