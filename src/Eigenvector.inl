@@ -132,7 +132,7 @@ inline void EigenvectorManager<R,n>::finalize(void)
   size_t offset = 0;
   for (const Eigenvector<R>& eigenvector : this->_eigenvectors)
     {
-      this->_conductors.push_back(eigenvector.conductor_index());
+      this->_conductors.push_back(eigenvector.conductorIndex());
 
       const std::vector<Z32> vec = eigenvector.data();
       for (size_t pos=0; pos<this->_dimension; pos++)
