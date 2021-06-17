@@ -702,11 +702,11 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	    {
 	      W64 cond = vector_manager._conductors[vpos];
 	      Z32 value = birch_util::charVal(spin_vals & cond);
-	      Rational<Z> = birch_util::convertInteger<Z32,Z>(value);
+	      Rational<Z> val_rat = birch_util::convertInteger<Z32,Z>(value);
 	      NumberFieldElement<Z> coord = vector_manager._strided_eigenvectors[offset + vpos];
 	      if (likely(!coord.isZero()))
 		{
-		  eigenvalues[vpos] += (value * coord);
+		  eigenvalues[vpos] += (val_rat * coord);
 		}
 	    }
 	  neighbor_manager.getNextNeighbor();
