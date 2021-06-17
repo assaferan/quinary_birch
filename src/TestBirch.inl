@@ -68,7 +68,7 @@ inline void TestBirch<R,n>::_init(const typename QuadFormZZ<R,n>::SymVec & coeff
     symbols.push_back(symb);
   }
 
-  this->_p_genus = std::make_shared< Genus<R,n> >(genus(q, symbols));
+  this->_p_genus = std::make_shared< Genus<R,n> >(q, symbols);
 }
 
 inline void runBirchTests(void) {
