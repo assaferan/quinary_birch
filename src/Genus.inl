@@ -704,9 +704,10 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	      Z32 value = birch_util::charVal(spin_vals & cond);
 	      Rational<Z> val_rat = birch_util::convertInteger<Z32,Z>(value);
 	      NumberFieldElement<Z> coord = vector_manager._strided_eigenvectors[offset + vpos];
+	      NumberFieldElement<Z> val_nf(coord.parent(), val_rat);
 	      if (likely(!coord.isZero()))
 		{
-		  eigenvalues[vpos] += (coord * val_rat);
+		  eigenvalues[vpos] += (val_nf * coord);
 		}
 	    }
 	  neighbor_manager.getNextNeighbor();
