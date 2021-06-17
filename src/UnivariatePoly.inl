@@ -500,15 +500,17 @@ template<class R, class Parent>
 void UnivariatePoly<R,Parent>::print(std::ostream & os) const
 {
   const UnivariatePoly<R,Parent> & p = *this;
-  size_t deg = p.degree();
-  for (size_t i = deg+1; i > 0; i--) {
+  int deg = p.degree();
+  if (deg == -1)
+    os << "0";
+  for (int i = deg+1; i > 0; i--) {
     R coeff = p.coefficient(i-1);
     if (!coeff.isZero()) {
       if ((i <= deg) && (coeff > p.baseRing()->zero()))
 	os << '+';
       else if ((coeff == -p.baseRing()->one()) && (i != 1))
 	os << '-';
-      else if (coeff != p.baseRing()->one())
+      else if ((coeff != p.baseRing()->one()) || (i == 1))
 	os << coeff;
       if (i > 1)
 	os << "x";
