@@ -201,7 +201,7 @@ int main()
 
   Integer<Z64> p = 2;
 
-  std::unordered_map<Z64, std::vector< NumberFieldElement<Z> > > all_aps;
+  std::map<Z64, std::vector< NumberFieldElement<Z> > > all_aps;
   
   for (size_t i = 0; i < 20; i++) {
     all_aps[p.num()] = genus.eigenvalues(manager, p.num());
