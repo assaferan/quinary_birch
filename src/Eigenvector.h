@@ -15,13 +15,13 @@ public:
   Eigenvector<R>& operator=(const Eigenvector<R>& other) = default;
   Eigenvector<R>& operator=(Eigenvector<R>&& other) = default;
 
-  Eigenvector(std::vector<Z32>&& data, W64 conductor_index)
+  Eigenvector(std::vector< NumberFieldElement<Z> >&& data, W64 conductor_index)
   {
-    this->_data = std::vector<Z32>(data);
+    this->_data = std::vector< NumberFieldElement<Z> >(data);
     this->_conductor_index = conductor_index;
   }
 
-  inline const std::vector<Z32>& data(void) const
+  inline const std::vector< NumberFieldElement<Z> >& data(void) const
   { return this->_data; }
 
   inline size_t size(void) const
@@ -40,7 +40,7 @@ public:
   { return this->_data[pos]; }
 
 private:
-  std::vector<Z32> _data;
+  std::vector< NumberFieldElement<Z> > _data;
   W64 _conductor_index;
   size_t _rep_index;
 };
