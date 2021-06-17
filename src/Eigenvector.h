@@ -2,6 +2,7 @@
 #define __EIGENVECTOR_H_
 
 #include <algorithm>
+#include "NumberFieldElement.h"
 #include "SetCover.h"
 
 template<typename R>
