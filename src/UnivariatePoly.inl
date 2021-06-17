@@ -475,6 +475,8 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
     t_minus = t;
     s = s_plus;
     t = t_plus;
+
+    assert(s_minus * f + t_minus * g == r_minus);
   }
 
   // finalize
