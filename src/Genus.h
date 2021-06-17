@@ -120,8 +120,8 @@ protected:
   W64 _seed;
 
   template<typename S, typename T>
-  std::vector<Z32> _eigenvectors(EigenvectorManager<R, n>&,
-				 std::shared_ptr<Fp<S,T>>, const R& ) const;
+  std::vector< NumberFieldElement<Z> > _eigenvectors(EigenvectorManager<R, n>&,
+						     std::shared_ptr<Fp<S,T>>, const R& ) const;
 
   Rational<Z> _getMass(const QuadFormZZ<R,n>&,
 		       const std::vector<PrimeSymbol<R>>&);
