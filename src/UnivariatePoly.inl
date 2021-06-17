@@ -471,8 +471,9 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
     std::cerr << "s = " << s << std::endl;
     std::cerr << "t = " << t << std::endl;
 #endif
-    
-    divRem(a*r_minus, r, q, r_plus);
+
+    // divRem is already pseudo remainder
+    divRem(r_minus, r, q, r_plus);
 
     R c = f.baseRing()->one();
     if (!r_plus.isZero())
