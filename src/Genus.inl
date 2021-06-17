@@ -659,8 +659,10 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 
   //  S prime = GF->prime();
 
-  //  const GenusRep<R,n>& mother = this->_hash->get(0);
-
+#ifdef DEBUG
+  const GenusRep<R,n>& mother = this->_hash->get(0);
+#endif
+  
   size_t num_indices = vector_manager._indices.size();
   for (size_t index=0; index<num_indices; index++)
     {
