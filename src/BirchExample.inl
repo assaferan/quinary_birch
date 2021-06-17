@@ -10,7 +10,8 @@ BirchExample<R,n>::BirchExample(const typename QuadFormZZ<R,n>::SymVec & q,
 				size_t d,
 				const std::vector< std::vector<R> > & aps)
 {
-  coeffs = q;
+  for (size_t i = 0; i < q.size(); i++)
+    coeffs[i] = q[i];
   spinor_prime = spinor;
   d = dim;
 
