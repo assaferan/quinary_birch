@@ -516,11 +516,9 @@ void UnivariatePoly<R,Parent>::print(std::ostream & os) const
 	if ((coeff == -p.baseRing()->one()) && (i != 1)) {
 	  os << '-';
 	}
-	else {
-	  if ((coeff != p.baseRing()->one()) || (i == 1))
-	    os << coeff;
-	}
       }
+      if (( ( !coeff.isOne() ) && ( !(-coeff).isOne())) || (i == 1))
+	os << coeff;
       
       if (i > 1)
 	os << "x";
