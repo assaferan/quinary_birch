@@ -615,7 +615,7 @@ Eigenvector<R> Genus<R,n>::eigenvector(const std::vector< NumberFieldElement<Z> 
 }
 
 template<typename R, size_t n>
-std::vector<Z32>
+std::vector< NumberFieldElement<Z> >
 Genus<R,n>::eigenvalues(EigenvectorManager<R,n>& vector_manager,
 			const R& p) const
 {
