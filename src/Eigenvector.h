@@ -69,7 +69,7 @@ private:
   size_t _dimension = 0;
   size_t _stride = 0;
   std::vector<Eigenvector<R>> _eigenvectors;
-  std::vector<Z32> _strided_eigenvectors;
+  std::vector< NumberFieldElement<Z> > _strided_eigenvectors;
   std::vector<W64> _conductors;
   std::vector<std::vector<Z64>> _position_lut;
   std::vector<Z64> _indices;
