@@ -476,7 +476,7 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
 
     R c = f.baseRing()->one();
     if (!r_plus.isZero())
-      R c = r_plus.content();
+      c = r_plus.content();
     
     r_minus = r;
     r = r_plus / c;
