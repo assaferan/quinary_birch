@@ -18,8 +18,8 @@ public:
     UnivariatePoly< FpElement<R,S>, Fp<R,S> >(a) {}
   
   // create polynomial from coefficients
-  UnivariatePolyFp(const std::vector< FpElement<R,S> > & v)
-    : UnivariatePoly< FpElement<R,S>, Fp<R,S> >(v) {}
+  UnivariatePolyFp(std::shared_ptr<const Fp<R,S>> GF, const std::vector< FpElement<R,S> > & v)
+    : UnivariatePoly< FpElement<R,S>, Fp<R,S> >(GF, v) {}
 
   UnivariatePolyFp(const UnivariatePoly< FpElement<R,S>, Fp<R,S> > & other)
     : UnivariatePoly< FpElement<R,S>, Fp<R,S> >(other) {}
