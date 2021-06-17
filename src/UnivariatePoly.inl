@@ -457,15 +457,16 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
   t = f.baseRing()->zero();
   t_minus = f.baseRing()->one();
   
-  r_minus = f / f.content();
-  r = g / g.content();
+  r_minus = f;
+  r = g;
   
-  while (r != f.baseRing()->zero()) {
-    divRem(r_minus, r, q, r_plus);
-    
-    R c = r_plus.content();
+  while (!r.isZero()) {
     W64 e = r_minus.degree()+1-r.degree();
     R a = r.lead()^e;
+    
+    divRem(a*r_minus, r, q, r_plus);
+    
+    R c = r_plus.content();
     
     r_minus = r;
     r = r_plus / c;
@@ -477,6 +478,7 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
     t = t_plus;
 
     assert(s_minus * f + t_minus * g == r_minus);
+    assert(s * f + t * g == r);
   }
 
   // finalize
