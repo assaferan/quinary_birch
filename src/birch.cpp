@@ -196,6 +196,8 @@ int main()
       manager.addEigenvector(genus.eigenvector(evec, evecs_k.first));
   }
   manager.finalize();
+
+  std::vector< NumberFieldElement<Z> > aps = genus.eigenvalues(manager, 2);
   
   return 0;
 }
