@@ -669,12 +669,16 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
       NeighborManager<S,T,R,n> neighbor_manager(cur.q, GF);
       neighbor_manager.getNextNeighbor();
       bool done = neighbor_manager.getIsotropicSubspace().empty();
-      //for (W64 t=0; t<=prime; t++)
+
       while (!done)
 	{
 	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep();
-	  
-	  size_t rpos = this->_hash->indexof(foo);
+
+	  ssert( foo.s.isIsometry(cur.q, foo.q) );
+
+	  size_t r_inv = this->_inv_hash->indexof(foo);
+	  //	  size_t rpos = this->_hash->indexof(foo);
+	  size_t rpos = this->_inv_map.at(r_inv);
 	  size_t offset = vector_manager._stride * rpos;
 	  __builtin_prefetch(stride_ptr + offset, 0, 0);
 
@@ -685,11 +689,26 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	    }
 	  else
 	    {
-	      const GenusRep<R,n>& rep = this->_hash->get(rpos);
+	      const GenusRep<R,n>& rep = this->_inv_hash->get(r);
+	      const GenusRep<R,n>& rep_inv = this->_inv_hash->get(r_inv);
+
+	      GenusRep<R,n> tmp = rep;
+
+	      tmp.s = foo.s * rep_inv.sinv * rep.s;
+	      
+	      assert( tmp.s.isIsometry(cur.q, tmp.q) );
+	      	      
+	      //	      const GenusRep<R,n>& rep = this->_hash->get(rpos);
 	      foo.s = cur.s * foo.s;
 	      R scalar = p;
+
+	      assert( foo.s.isIsometry(mother.q, foo.q) );
+
+	      foo.s = foo.s * rep_inv.sinv;
+
+	      assert( foo.s.isIsometry(mother.q, mother.q) );
 	      
-	      foo.s = foo.s * rep.sinv;
+	      // foo.s = foo.s * rep.sinv;
 
 	      scalar *= birch_util::myPow(cur.es);
 	      scalar *= birch_util::myPow(rep.es);
