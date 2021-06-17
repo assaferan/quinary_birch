@@ -198,6 +198,13 @@ int main()
   manager.finalize();
 
   std::vector< NumberFieldElement<Z> > aps = genus.eigenvalues(manager, 2);
+
+  Integer<Z64> p = 2;
+
+  for (size_t i = 0; i < 20; i++) {
+    aps = genus.eigenvalues(manager, p);
+    p = p.nextPrime();
+  }
   
   return 0;
 }
