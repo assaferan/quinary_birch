@@ -31,7 +31,7 @@ public:
   {}
 
   template<typename S, typename T>
-  UnivariatePolyFp<S,T> mod(std::shared_ptr< const Fp<S, T> >) const;
+  UnivariatePolyFp<S,T> mod(std::shared_ptr< const Fp<S,T> >) const;
   
   std::unordered_map< UnivariatePolyInt<R>, size_t > factor(void) const;
 
