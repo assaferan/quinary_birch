@@ -654,13 +654,13 @@ std::vector< NumberFieldElement<Z> >
 Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 			  std::shared_ptr<Fp<S,T>> GF, const R& p) const
 {
-  std::vector<Z32> eigenvalues(vector_manager.size());
+  std::vector< NumberFieldElement<Z> > eigenvalues(vector_manager.size());
 
   S prime = GF->prime();
 
   const GenusRep<R,n>& mother = this->_hash->get(0);
 
-  const Z32 *stride_ptr = vector_manager._strided_eigenvectors.data();
+  const NumberFieldElement<Z> *stride_ptr = vector_manager._strided_eigenvectors.data();
 
   size_t num_indices = vector_manager._indices.size();
   for (size_t index=0; index<num_indices; index++)
@@ -702,8 +702,8 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	    {
 	      W64 cond = vector_manager._conductors[vpos];
 	      Z32 value = birch_util::charVal(spin_vals & cond);
-	      Z32 coord = vector_manager._strided_eigenvectors[offset + vpos];
-	      if (likely(coord))
+	      NumberFieldElement<Z> coord = vector_manager._strided_eigenvectors[offset + vpos];
+	      if (likely(!coord.isZero()))
 		{
 		  eigenvalues[vpos] += (value * coord);
 		}
@@ -717,7 +717,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
       for (Z64 vpos : vector_manager._position_lut[index])
 	{
 	  size_t offset = vector_manager._stride * npos;
-	  Z32 coord = vector_manager._strided_eigenvectors[offset + vpos];
+	  NumberFieldElement<Z> coord = vector_manager._strided_eigenvectors[offset + vpos];
 	  assert( eigenvalues[vpos] % coord == 0 );
 	  eigenvalues[vpos] /= coord;
 	}
