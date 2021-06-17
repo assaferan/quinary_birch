@@ -473,8 +473,10 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
 #endif
     
     divRem(a*r_minus, r, q, r_plus);
-    
-    R c = r_plus.content();
+
+    R c = f.baseRing()->one();
+    if (!r_plus.isZero())
+      R c = r_plus.content();
     
     r_minus = r;
     r = r_plus / c;
