@@ -1061,117 +1061,6 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
   return matrices;
 }
 
-/*
-
-// !! - TOOD - maybe it's better to return here already eigenvectors
-template<typename R, size_t n>
-inline std::vector< MatrixRat<Z> >
-Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
-				  const Integer<R> & p, size_t k) const
-{
-  // This will hold the bases of the irreducible spaces
-  std::vector< MatrixRat<Z> > decomp;
-  
-  if (V_basis.nrows() == 0)
-    return decomp;
-
-#ifdef DEBUG
-  std::cerr << "Decomposing space of dimension " << this->_dims;
-  std::cerr << "using T_" << p << "." << std::endl;
-#endif
-
-  // !! - TODO - check that results are stored and we don't
-  // recompute for different values of k
-  std::map<R,std::vector<int>> T_p_dense = heckeMatrixDense(p.num());
-
-  std::vector<int> T_p_dense_k = T_p_dense[this->_conductors[k]];
-  std::vector< Rational<Z> > T_p_dense_int(T_p_dense_k.size());
-  for (size_t i = 0; i < T_p_dense_k.size(); i++)
-    T_p_dense_int[i] = birch_util::convert< int, Rational<Z> >(T_p_dense_k[i]);
-  
-  MatrixRat<Z> T_p(T_p_dense_int,this->_dims[k], this->_dims[k]);
-  MatrixRat<Z> basis_rat(T_p.baseRing(), V_basis.nrows(), V_basis.ncols());
-  for (size_t row = 0; row < V_basis.nrows(); row++)
-    for (size_t col = 0; col < V_basis.ncols(); col++)
-      basis_rat(row,col) = V_basis(row,col);
-  
-  T_p = T_p.restrict(basis_rat);
-  
-#ifdef DEBUG
-  std::cerr << "Computing characteristic polynomial of T_" << p << "." << std::endl;
-#endif
-    
-  UnivariatePolyRat<Z> f = T_p.charPoly();
-  
-#ifdef DEBUG
-  std::cerr << "f = " << f << std::endl;
-  std::cerr << "multiplying by common denominator." << std::endl;
-#endif
-  
-  Integer<Z> denom = Integer<Z>::one();
-  std::vector< Integer<Z> > coeffs_int;
-  for (int i = 0; i <= f.degree(); i++)
-    denom = denom.lcm(f.coefficient(i).denom());
-  f *= denom;
-  for (int i = 0; i <= f.degree(); i++) 
-    coeffs_int.push_back(f.coefficient(i).floor());
-  
-  UnivariatePolyInt<Z> f_int(coeffs_int);
-
-#ifdef DEBUG
-  std::cerr << "factoring characteristic polynomial f_int = " << f_int << std::endl;
-#endif
-  
-  std::unordered_map< UnivariatePolyInt<Z>, size_t > fac = f_int.factor();
-
-  for( std::pair< UnivariatePolyInt<Z>, size_t > fa : fac) {
-    UnivariatePolyInt<Z> f = fa.first;
-    size_t a = fa.second;
-    
-#ifdef DEBUG_LEVEL_FULL
-    std::cerr << "Cutting out subspace using f(T_" << p;
-    std::cerr << "), where f = " << f << "." << std::endl;
-#endif
-
-    MatrixRat<Z> fT = f.evaluate(T_p);
-    MatrixRat<Z> W_basis = fT.kernel();
-
-    assert (W_basis.nrows() != 0);
-    
-    if (a == 1)
-      decomp.push_back(W_basis);
-    else {
-      Integer<R> q;
-      if (W_basis.nrows() == V_basis.nrows())
-	q = p.nextPrime();
-      else
-	q = R(2);
-      std::vector< MatrixRat<Z> > sub = this->_decompositionRecurse(W_basis, q, k);
-      decomp.insert(decomp.end(), sub.begin(), sub.end());
-    }
-  }
-  
-  return decomp;
-}
-
-// !! TODO - support non-squarefree (when there are oldforms)
-template<typename R, size_t n>
-inline std::vector< MatrixRat<Z> > Genus<R,n>::_decomposition(size_t k) const
-{
-  std::vector< MatrixRat<Z> > decomp;
-  if (this->_dims[k] == 0)
-    return decomp;
-
-  std::shared_ptr< const RationalField<Z> > QQ = std::make_shared< const RationalField<Z> >();
-  MatrixRat<Z> M_basis = MatrixRat<Z>::identity(QQ, this->_dims[k]);
-
-  Integer<R> p = R(2);
-
-  return this->_decompositionRecurse(M_basis, p, k);
-}
-
-*/
-
 template<typename R, size_t n>
 inline std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > >
 Genus<R,n>::eigenvectors(void)
@@ -1301,7 +1190,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
 	q = p.nextPrime();
       else
 	q = R(2);
-      std::vector< std::vector< NumberFieldElement<Z> > > sub = this->_decomposition2Recurse(W_basis, q, k);
+      std::vector< std::vector< NumberFieldElement<Z> > > sub = this->_decompositionRecurse(W_basis, q, k);
       evecs.insert(evecs.end(), sub.begin(), sub.end());
     }
   }
@@ -1322,5 +1211,5 @@ inline std::vector< std::vector< NumberFieldElement<Z> > > Genus<R,n>::_decompos
 
   Integer<R> p = R(2);
 
-  return this->_decomposition2Recurse(M_basis, p, k);
+  return this->_decompositionRecurse(M_basis, p, k);
 }
