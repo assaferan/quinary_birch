@@ -62,7 +62,7 @@ inline void EigenvectorManager<R,n>::finalize(void)
       size_t pos = 0;
       W64 word = 0;
       W64 mask = 1;
-      for (Z32 value : data)
+      for (NumberFieldElement<Z> value : data)
 	{
 	  if (value) word |= mask;
 	  mask <<= 1;
@@ -134,7 +134,7 @@ inline void EigenvectorManager<R,n>::finalize(void)
     {
       this->_conductors.push_back(eigenvector.conductorIndex());
 
-      const std::vector<Z32> vec = eigenvector.data();
+      const std::vector< NumberFieldElement<Z> > vec = eigenvector.data();
       for (size_t pos=0; pos<this->_dimension; pos++)
 	{
 	  this->_strided_eigenvectors[pos * this->stride + offset] = vec[pos];
