@@ -201,8 +201,10 @@ int main()
 
   Integer<Z64> p = 2;
 
+  std::unordered_map<Z64, std::vector< NumberFieldElement<Z> > > all_aps;
+  
   for (size_t i = 0; i < 20; i++) {
-    aps = genus.eigenvalues(manager, p);
+    all_aps[p] = genus.eigenvalues(manager, p);
     p = p.nextPrime();
   }
   
