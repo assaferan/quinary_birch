@@ -1202,11 +1202,11 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
   std::map<R,std::vector<int>> T_p_dense = heckeMatrixDense(p.num());
 
   std::vector<int> T_p_dense_k = T_p_dense[this->_conductors[k]];
-  std::vector< Rational<Z> > T_p_dense_int(T_p_dense_k.size());
+  std::vector< Rational<Z> > T_p_dense_rat(T_p_dense_k.size());
   for (size_t i = 0; i < T_p_dense_k.size(); i++)
-    T_p_dense_int[i] = birch_util::convert< int, Rational<Z> >(T_p_dense_k[i]);
+    T_p_dense_rat[i] = birch_util::convert< int, Rational<Z> >(T_p_dense_k[i]);
   
-  MatrixRat<Z> T_p(T_p_dense_int,this->_dims[k], this->_dims[k]);
+  MatrixRat<Z> T_p(T_p_dense_rat,this->_dims[k], this->_dims[k]);
   MatrixRat<Z> basis_rat(T_p.baseRing(), V_basis.nrows(), V_basis.ncols());
   for (size_t row = 0; row < V_basis.nrows(); row++)
     for (size_t col = 0; col < V_basis.ncols(); col++)
