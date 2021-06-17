@@ -22,7 +22,7 @@ BirchExample<R,n>::BirchExample(const typename QuadFormZZ<R,n>::SymVec & q,
   for (size_t i = 0; i < aps.size(); i++) {
     std::vector< NumberFieldElement<Z> > vec;
     for (size_t j = 0; j < aps[i].size(); j++) {
-      Rational<Z> ap_rat = birch_util::convertInteger<R,Z>(aps[i][j])
+      Rational<Z> ap_rat = birch_util::convertInteger<R,Z>(aps[i][j]);
       NumberFieldElement<Z> ap_nf(QNF, ap_rat);
       vec.push_back(ap_nf);
     }
@@ -39,7 +39,7 @@ inline BirchExample<Z64,3> BirchExample<R,n>::getExample_GV_7_2(void)
   std::vector<Z64> cusp;
 
   // initialize the eisenstein form
-  Integer<64> p = 2;
+  Integer<Z64> p = 2;
   while (p.num() < 100) {
     if (p.num() == 11)
       eis.push_back(0);
