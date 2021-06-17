@@ -463,6 +463,14 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::xgcd(const UnivariateP
   while (!r.isZero()) {
     W64 e = r_minus.degree()+1-r.degree();
     R a = r.lead()^e;
+
+#ifdef DEBUG
+    std::cerr << "r_minus = " << r_minus << std::endl;
+    std::cerr << "r = " << r << std::endl;
+    std::cerr << "a = " << a << std::endl;
+    std::cerr << "s = " << s << std::endl;
+    std::cerr << "t = " << t << std::endl;
+#endif
     
     divRem(a*r_minus, r, q, r_plus);
     
