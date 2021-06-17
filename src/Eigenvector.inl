@@ -54,7 +54,7 @@ inline void EigenvectorManager<R,n>::finalize(void)
   // Construct the set covers from the eigenvectors.
   for (const Eigenvector<R>& eigenvector : this->_eigenvectors)
     {
-      const std::vector<Z32>& data = eigenvector.data();
+      const std::vector< NumberFieldElement<Z> >& data = eigenvector.data();
 
       std::vector<W64> cover;
       cover.reserve(this->_dimension);
