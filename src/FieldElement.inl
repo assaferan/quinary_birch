@@ -13,6 +13,7 @@ FieldElement<Derived,DerivedParent>::euclideanDivision(const Derived & b) const
   return std::make_pair(a*b_inv, z);
 }
 
+/*
 template<class Derived, class DerivedParent>
 Derived FieldElement<Derived,DerivedParent>::gcd(const Derived & b) const
 {
@@ -26,6 +27,7 @@ Derived FieldElement<Derived,DerivedParent>::gcd(const Derived & b) const
   
   return id;
 }
+*/
 
 template<class Derived, class DerivedParent>
 Derived FieldElement<Derived,DerivedParent>::operator^ (long long int e) const
