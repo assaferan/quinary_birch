@@ -96,6 +96,9 @@ inline void UnivariatePolyInt<R>::_henselStep(std::vector<UnivariatePolyInt<R> >
       assert(u[j].lead().isOne());
   }
   assert( (((*this)-prod) % p_i).isZero());
+#endif
+  
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "trying to lift the polynomials " << u <<  " modulo " << p_i << "." << std::endl;
 #endif  
 
