@@ -3,6 +3,7 @@
 
 #include "birch.h"
 #include "FieldElement.h"
+#include "UnivariatePoly.h"
 
 template<typename R>
 class NumberFieldElement : public virtual FieldElement< NumberFieldElement<R>, NumberField<R> >
