@@ -188,7 +188,7 @@ inline void Fp<R,S>::_makeInverseLut(void)
   // Shrink the lut to the appropriate size.
   this->_inverse_lut.resize(this->_p);
 
-  for (Z32 i=1; i<(this->_p); i++)
+  for (R i=1; i<(this->_p); i++)
     {
       assert( this->mul(i, this->_inverse_lut[i]) % (this->_p) == 1 );
     }
