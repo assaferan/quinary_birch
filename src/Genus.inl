@@ -1061,6 +1061,8 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
   return matrices;
 }
 
+/*
+
 // !! - TOOD - maybe it's better to return here already eigenvectors
 template<typename R, size_t n>
 inline std::vector< MatrixRat<Z> >
@@ -1168,6 +1170,8 @@ inline std::vector< MatrixRat<Z> > Genus<R,n>::_decomposition(size_t k) const
   return this->_decompositionRecurse(M_basis, p, k);
 }
 
+*/
+
 template<typename R, size_t n>
 inline std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > >
 Genus<R,n>::eigenvectors(void)
@@ -1175,7 +1179,7 @@ Genus<R,n>::eigenvectors(void)
   std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > > evecs;
   
   for (size_t k = 0; k < this->_conductors.size(); k++){
-    evecs[this->_conductors[k]] = this->_decomposition2(k);
+    evecs[this->_conductors[k]] = this->_decomposition(k);
   }
   return evecs;
 }
@@ -1183,7 +1187,7 @@ Genus<R,n>::eigenvectors(void)
 // !! - TOOD - maybe it's better to return here already eigenvectors
 template<typename R, size_t n>
 inline std::vector< std::vector< NumberFieldElement<Z> > > 
-Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
+Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
 				   const Integer<R> & p, size_t k) const
 {
   // This will hold the bases of the irreducible spaces
@@ -1307,7 +1311,7 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
 
 // !! TODO - support non-squarefree (when there are oldforms)
 template<typename R, size_t n>
-inline std::vector< std::vector< NumberFieldElement<Z> > > Genus<R,n>::_decomposition2(size_t k) const
+inline std::vector< std::vector< NumberFieldElement<Z> > > Genus<R,n>::_decomposition(size_t k) const
 {
   std::vector< std::vector< NumberFieldElement<Z> > > evecs;
   if (this->_dims[k] == 0)
