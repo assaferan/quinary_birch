@@ -1211,14 +1211,18 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
   for (size_t row = 0; row < V_basis.nrows(); row++)
     for (size_t col = 0; col < V_basis.ncols(); col++)
       basis_rat(row,col) = V_basis(row,col);
+
+#ifdef DEBUG
+  std::cerr << "Restricting T_ " << p << " to V = " << basis_rat << "." << std::endl;
+#endif
   
-  T_p = T_p.restrict(basis_rat);
+  MatrixRat<Z> T_p_res = T_p.restrict(basis_rat);
   
 #ifdef DEBUG
   std::cerr << "Computing characteristic polynomial of T_" << p << "." << std::endl;
 #endif
     
-  UnivariatePolyRat<Z> f = T_p.charPoly();
+  UnivariatePolyRat<Z> f = T_p_res.charPoly();
   
 #ifdef DEBUG
   std::cerr << "f = " << f << std::endl;
@@ -1250,7 +1254,7 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
 
-    MatrixRat<Z> fT = f.evaluate(T_p);
+    MatrixRat<Z> fT = f.evaluate(T_p_res);
     MatrixRat<Z> W_basis = fT.kernel();
 
     assert (W_basis.nrows() != 0);
