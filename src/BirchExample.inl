@@ -20,9 +20,9 @@ BirchExample<R,n>::BirchExample(const typename QuadFormZZ<R,n>::SymVec & q,
   std::shared_ptr< const NumberField<Z> > QNF = std::make_shared< const NumberField<Z> >(f);
   
   Integer<R> p = R(2);
-  for (size_t i = 0; i < aps.size(); i++) {
-    std::vector< NumberFieldElement<Z> > vec;
-    for (size_t j = 0; j < aps[i].size(); j++) {
+  for (size_t j = 0; j < aps[0].size(); j++) {
+    for (size_t i = 0; i < aps.size(); i++) {
+      std::vector< NumberFieldElement<Z> > vec;
       Rational<Z> ap_rat = birch_util::convertInteger<R,Z>(aps[i][j]);
       NumberFieldElement<Z> ap_nf(QNF, ap_rat);
       vec.push_back(ap_nf);
