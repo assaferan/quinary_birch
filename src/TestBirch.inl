@@ -56,7 +56,7 @@ inline void TestBirch<R,n>::_init(const typename QuadFormZZ<R,n>::SymVec & coeff
    QuadFormInt<R,n> q(coeffs);
 
   Integer<R> disc = q.discriminant();
-  Integer<R>::FactorData facs = disc.factorization();
+  typename Integer<R>::FactorData facs = disc.factorization();
 
   std::vector<PrimeSymbol<R> > symbols;
   PrimeSymbol<R> symb;
