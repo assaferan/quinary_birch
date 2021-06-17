@@ -1194,7 +1194,7 @@ Genus<R,n>::_decomposition2Recurse(const MatrixRat<Z> & V_basis,
 
 #ifdef DEBUG
   std::cerr << "Decomposing space of dimension " << this->_dims;
-  std::cerr << "using T_" << p << "." << std::endl;
+  std::cerr << " using T_" << p << "." << std::endl;
 #endif
 
   // !! - TODO - check that results are stored and we don't
