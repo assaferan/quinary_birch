@@ -60,7 +60,7 @@ public:
   // This is for sorting, we use the lift for that
   // !! TODO - Is it useful in anyway? shoul we get rid fof that
   inline bool operator<(const FpElement<R,S> &other) const
-  { return (this->_GF->mod(this->_val) < this->_GF->mod(other._val)); }
+  { return (this->_GF->mod(this->_val).lift() < this->_GF->mod(other._val).lift()); }
   inline bool operator>(const FpElement<R,S> &other) const
   { return (other < (*this)); }
   inline bool operator>=(const FpElement<R,S> &other) const
