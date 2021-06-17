@@ -89,7 +89,7 @@ public:
     return this->_heckeMatrixSparseInternal(p);
   }
 
-  Eigenvector<R> eigenvector(const std::vector<Z32>&, const R& ) const;
+  Eigenvector<R> eigenvector(const std::vector< NumberFieldElement<Z> >&, const R& ) const;
 
   std::vector<Z32> eigenvalues(EigenvectorManager<R,n>&, const R&) const;
 
