@@ -45,7 +45,7 @@ inline BirchExample<Z64,3> BirchExample<R,n>::getExample_GV_7_2(void)
     if (p.num() == 11)
       eis.push_back(0);
     else
-      eis.push_back(p+1);
+      eis.push_back(p.num()+1);
     p = p.nextPrime();
   }
 
