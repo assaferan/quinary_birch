@@ -23,7 +23,7 @@ public:
   {}
 
   UnivariatePolyInt(const std::vector< Integer<R> > & v)
-    : UnivariatePoly< Integer<R>, IntegerRing<R> >(v)
+    : UnivariatePoly< Integer<R>, IntegerRing<R> >(std::make_shared< IntegerRing<R> >(), v)
   {}
   
   UnivariatePolyInt(const UnivariatePoly< Integer<R>, IntegerRing<R> > & other)
