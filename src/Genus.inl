@@ -571,7 +571,7 @@ Genus<R,n>::Genus(const Genus<T,n>& src)
 }
 
 template<typename R, size_t n>
-Eigenvector<R> Genus<R,n>::eigenvector(const std::vector<Z32>& vec,
+Eigenvector<R> Genus<R,n>::eigenvector(const std::vector< NumberFieldElement<Z> >& vec,
 				       const R& conductor) const
 {
   size_t num_conductors = this->_conductors.size();
@@ -600,7 +600,7 @@ Eigenvector<R> Genus<R,n>::eigenvector(const std::vector<Z32>& vec,
   
   size_t fulldim = this->size();
 
-  std::vector<Z32> temp(this->size());
+  std::vector< NumberFieldElement<Z> > temp(this->size(), vec[0].parent());
   const std::vector<int>& lut = this->_lut_positions[k];
   
   for (size_t idx=0; idx<fulldim; idx++)
