@@ -47,7 +47,8 @@ inline void EigenvectorManager<R,n>::finalize(void)
   // a set covering problem to find a subset of coordinates with nonzero
   // values, and use multiple genus representatives.
 
-  size_t num_words = (this->_dimension + 63) / 64;
+  // !! TODO - This was here but was not used. Figure out why.
+  //  size_t num_words = (this->_dimension + 63) / 64;
   std::vector<std::vector<W64>> covers;
   covers.reserve(this->size());
 
