@@ -214,7 +214,7 @@ inline UnivariatePolyInt<R> NumberFieldElement<R>::minimalPolynomial(void) const
   
   std::unordered_map< UnivariatePolyInt<R>, size_t > fac = char_poly_int.factor();
 
-  UnivariatePolyInt<R> min_poly = Rational<R>::one();
+  UnivariatePolyInt<R> min_poly = Integer<R>::one();
 
   // Here we use the fact that all algebraic numbers are separable
   for (std::pair< UnivariatePolyInt<R>, size_t > fa : fac) {
