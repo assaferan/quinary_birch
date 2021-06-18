@@ -1,3 +1,5 @@
+#include <unordered_map>
+
 template<typename R>
 inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const R & a)
 {
