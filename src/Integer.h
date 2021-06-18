@@ -122,6 +122,19 @@ template<typename R>
 inline Integer<R>  operator*(const R& a,const Integer<R> &b)
 {return b*a;}
 
+namespace std
+{
+  template<typename R>
+  struct hash< Integer<R> >
+  {
+    Z64 operator()(const Integer<R> & a) const
+    {
+      Z64 fnv = std::hash<R>{}(a.num());
+      return fnv;
+    }
+  };
+}
+
 #include "Integer.inl"
 
 #endif //__INTEGER_H_
