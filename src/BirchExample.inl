@@ -61,3 +61,43 @@ inline BirchExample<Z64,3> BirchExample<R,n>::getExample_GV_7_2(void)
 
   return example;
 }
+
+template<typename R, size_t n>
+inline BirchExample<Z64,4> BirchExample<R,n>::getExample_GV_7_3(void)
+{
+  std::vector< std::vector<Z64> > aps;
+  std::vector<Z64> eis,cusp,eis2,a,b;
+
+  // initialize the eisenstein form
+  Integer<Z64> p = 2;
+  while (p.num() < 100) {
+    if (p.num() == 11)
+      eis.push_back(0);
+    else
+      eis.push_back(p.num()+1);
+    p = p.nextPrime();
+  }
+
+  // initialize the cusp form
+  cusp = {-2, -1, 1, -2, 0, 4, -2, 0, -1, 0, 7, 3, -8, -6, 8, -6, 5, 12, -7, -3, 4, -10, -6, 15, -7};
+
+  eis2.resize(cusp.size());
+  a.resize(cusp.size());
+  b.resize(cusp.size());
+  for (size_t i = 0; i < cusp.size(); i++)
+    eis2[i] = eis[i]*eis[i];
+  for (size_t i = 0; i < cusp.size(); i++)
+    a[i] = cusp[i]*cusp[i];
+  for (size_t i = 0; i < cusp.size(); i++)
+    b[i] = eis[i]*cusp[i];
+  
+  aps.push_back(eis2);
+  aps.push_back(a);
+  aps.push_back(b);
+
+  QuadFormZZ<Z64,4>::SymVec coeffs = {2,0,2,0,1,6,1,0,0,6};
+  
+  BirchExample<Z64,4> example(coeffs, 1, 3, aps);
+
+  return example;
+}
