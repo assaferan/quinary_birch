@@ -141,7 +141,7 @@ namespace std
     {
       Z64 fnv = FNV_OFFSET;
       for (int i = 0; i <= poly.degree(); i++)
-	fnv = (fnv ^ std::hash<R>{}(poly.coefficient(i)) * FNV_PRIME;
+	fnv = (fnv ^ std::hash<R>{}(poly.coefficient(i))) * FNV_PRIME;
             
       return fnv;
     }
