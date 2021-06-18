@@ -187,7 +187,7 @@ inline MatrixRat<R> NumberFieldElement<R>::_multByMatrix(void) const
 
   for (int i = 0; i < d; i++) {
     UnivariatePolyRat<R> mul = ((*this)*basis[i])._elt;
-    for (int j = 0; j < d; i++) {
+    for (int j = 0; j < d; j++) {
       mat(i,j) = mul.coefficient(j);
     }
   }
