@@ -1,4 +1,5 @@
 #include <map>
+#include <unordered_set>
 #include <vector>
 
 #include "birch.h"
@@ -52,8 +53,8 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
     //    assert(ev.second == _p_genus->eigenvalues(manager, p.num()));
   }
 
-  std::set< std::vector< NumberFieldElement<Z> > > evalue_set(evalues.begin(), evalues.end());
-  std::set< std::vector< NumberFieldElement<Z> > > computed_set(computed_evalues.begin(), computed_evalues.end());
+  std::unordered_set< std::vector< NumberFieldElement<Z> > > evalue_set(evalues.begin(), evalues.end());
+  std::unordered_set< std::vector< NumberFieldElement<Z> > > computed_set(computed_evalues.begin(), computed_evalues.end());
 
   assert( evalue_set == computed_set);
 
