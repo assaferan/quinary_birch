@@ -168,12 +168,12 @@ public:
 
   static Rational<R> bernoulliNumber(size_t n, const Integer<R> & d);
 
+  // reducing to the unique form r/s such that s > 0, and r,s relatively prime.
   void reduce(void);
   
 protected:
   Integer<R> _num;
   Integer<R> _denom;
-
   
   static std::vector< Rational<R> > _bernoulliUpTo(size_t n);
   static std::vector< Rational<R> > _bernoulliPoly(size_t n);
