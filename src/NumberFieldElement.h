@@ -104,7 +104,7 @@ namespace std
       Z64 fnv = FNV_OFFSET;
 
       for (size_t i = 0; i < vec.size(); i++)
-	fnv = (fnv ^ std::hash< NumberFieldElement<R> >(vec[i]) * FNV_PRIME;
+	fnv = (fnv ^ std::hash< NumberFieldElement<R> >(vec[i])) * FNV_PRIME;
   
       return fnv;
     }
