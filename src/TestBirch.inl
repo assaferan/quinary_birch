@@ -76,6 +76,6 @@ inline void TestBirch<R,n>::_init(const typename QuadFormZZ<R,n>::SymVec & coeff
 }
 
 inline void runBirchTests(void) {
-  TestBirch<Z64,3> test(BirchExample<Z64,3>::getExample_GV_7_2());
-  TestBirch<Z64,4> test(BirchExample<Z64,4>::getExample_GV_7_3());
+  TestBirch<Z64,3> test_7_2(BirchExample<Z64,3>::getExample_GV_7_2());
+  TestBirch<Z64,4> test_7_3(BirchExample<Z64,4>::getExample_GV_7_3());
 }
