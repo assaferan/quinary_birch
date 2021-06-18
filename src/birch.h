@@ -264,4 +264,24 @@ std::ostream & operator<<(std::ostream & os, const Z128 & z);
 template<typename R>
 std::ostream& operator<<(std::ostream& os, const std::vector<R>& v);
 
+// There is no hash defined for class Z
+namespace std {
+  
+  struct hash<Z>
+  {
+    Z64 operator()(const Z & a) const
+    {
+      Z64 fnv = FNV_OFFSET;
+      Z tmp = a;
+      Z64 max_uint = std::numeric_limits<W64>::max();
+      while (tmp != 0) {
+	Z lsb = tmp & max_uint;
+	fnv = (fnv ^ mpz_get_si(lsb).get_mpz_t()) * FNV_PRIME;
+	tmp >>= 64;
+      }
+      return fnv;
+    }
+  };
+}
+
 #endif // __BIRCH_H_
