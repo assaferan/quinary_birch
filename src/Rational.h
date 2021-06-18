@@ -187,8 +187,11 @@ namespace std
     Z64 operator()(const Rational<R> & a) const
     {
       Z64 fnv = FNV_OFFSET;
-      fnv = (fnv ^ std::hash< Integer<R> >{}(a.num())) * FNV_PRIME;
-      fnv = (fnv ^ std::hash< Integer<R> >{}(a.denom())) * FNV_PRIME;
+      // make sure that equal rationals are hashed to the same value
+      Rational<R> b = a;
+      b.reduce();
+      fnv = (fnv ^ std::hash< Integer<R> >{}(b.num())) * FNV_PRIME;
+      fnv = (fnv ^ std::hash< Integer<R> >{}(b.denom())) * FNV_PRIME;
       return fnv;
     }
   };
