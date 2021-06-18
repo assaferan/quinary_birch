@@ -167,12 +167,14 @@ public:
   static Rational<R> bernoulliNumber(size_t n);
 
   static Rational<R> bernoulliNumber(size_t n, const Integer<R> & d);
+
+  void reduce(void);
   
 protected:
   Integer<R> _num;
   Integer<R> _denom;
 
-  void _reduce(void);
+  
   static std::vector< Rational<R> > _bernoulliUpTo(size_t n);
   static std::vector< Rational<R> > _bernoulliPoly(size_t n);
 };
