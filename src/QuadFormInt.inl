@@ -1063,6 +1063,11 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::set< Isometry<R,n> > & auts)
     // if this condition is fullfilled we are closed under taking
     // products. Since this is a finite group, we are done.
   } while (num_aut != auts.size());
+#ifdef DEBUG
+  std::cerr << "Automorphisms are: " << std::endl;
+  for (Isometry<R,n> s : auts)
+    std::cerr << s << std::endl;
+#endif
   return num_aut;
 }
 
