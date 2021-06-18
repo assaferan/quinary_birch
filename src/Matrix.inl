@@ -42,19 +42,32 @@ inline R Matrix<R,Parent>::determinant(void) const
 {		
   assert(_nrows == _ncols);
   size_t n = _nrows;
+  R sign = _base->one();
   Matrix<R,Parent> M(_base, n+1, n+1);
   M(0,0).makeOne();
   // init
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
       M(row+1, col+1) = (*this)(row, col);
-  for (size_t k = 1; k < n; k++)
-    for (size_t i = k+1; i <= n; i++)
-      for (size_t j = k+1; j <= n; j++) {
-	if (M(k-1,k-1).isZero()) return M(k-1,k-1);
-	M(i,j) = (M(i,j)*M(k,k) - M(i,k)*M(k,j))/M(k-1,k-1);
+  for (size_t k = 1; k < n; k++) {
+    if (M(k,k).isZero()) {
+      bool found = false;
+      for (size_t i = k+1; i <= n; i++) {
+	if (!M(i,k).isZero()) {
+	  M.swapRows(k,i);
+	  sign = -sign;
+	  found = true;
+	  break;
+	}
       }
-  return M(n,n);
+      if (!found)
+	return _base->zero();
+    }
+    for (size_t i = k+1; i <= n; i++)
+      for (size_t j = k+1; j <= n; j++)
+	M(i,j) = (M(i,j)*M(k,k) - M(i,k)*M(k,j))/M(k-1,k-1);
+  }
+  return sign*M(n,n);
 }
 
 template<class R, class Parent>
