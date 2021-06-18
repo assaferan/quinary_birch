@@ -177,6 +177,21 @@ protected:
   static std::vector< Rational<R> > _bernoulliPoly(size_t n);
 };
 
+namespace std
+{
+  template<typename R>
+  struct hash< Rational<R> >
+  {
+    Z64 operator()(const Rational<R> & a) const
+    {
+      Z64 fnv = FNV_OFFSET;
+      fnv = (fnv ^ std::hash< Integer<R> >{}(a.num())) * FNV_PRIME;
+      fnv = (fnv ^ std::hash< Integer<R> >{}(a.denom())) * FNV_PRIME;
+      return fnv;
+    }
+  };
+}
+
 #include "Rational.inl"
 
 #endif // __RATIONAL_H_
