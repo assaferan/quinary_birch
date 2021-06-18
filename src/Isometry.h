@@ -117,7 +117,7 @@ namespace std {
       Z64 fnv = FNV_OFFSET;
       for (size_t i = 0; i < n; i++)
 	for (size_t j = 0; j < n; j++) {
-	  Rational<R> elt = s._a(i,j) / s._scale;
+	  Rational<R> elt = s(i,j) / s.getScale();
 	  fnv = (fnv ^ std::hash< Rational<R> >{}(elt)) * FNV_PRIME;
 	}
       return fnv;
