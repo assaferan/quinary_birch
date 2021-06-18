@@ -92,20 +92,7 @@ namespace std
       return fnv;
     }
   };
-
-  template<typename R>
-  struct hash< std::vector< NumberFieldElement<R> > >
-  {
-    Z64 operator()(const std::vector< NumberFieldElement<R> > & vec) const
-    {
-      Z64 fnv = FNV_OFFSET;
-
-      for (size_t i = 0; i < vec.size(); i++)
-	fnv = (fnv ^ std::hash< NumberFieldElement<R> >{}(vec[i])) * FNV_PRIME;
   
-      return fnv;
-    }
-  };
 }
 
 #include "NumberFieldElement.inl"

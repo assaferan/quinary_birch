@@ -35,15 +35,15 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
       manager.addEigenvector(_p_genus->eigenvector(evec, spinor_prime));
   manager.finalize();
 
-  std::vector< std::vector< NumberFieldElement<Z> > > evalues(evecs.size());
-  std::vector< std::vector< NumberFieldElement<Z> > > computed_evalues(evecs.size());
+  std::vector< EigenvalueVector > evalues(evecs.size());
+  std::vector< EigenvalueVector > computed_evalues(evecs.size());
   
   for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs) {
     Integer<R> p = ev.first;
     std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num());
     for (size_t i = 0; i < evecs.size(); i++) {
-      evalues[i].push_back(ev.second[i]);
-      computed_evalues[i].push_back(computed[i]);
+      evalues[i].vec.push_back(ev.second[i]);
+      computed_evalues[i].vec.push_back(computed[i]);
     }
 #ifdef DEBUG
     std::cerr << "ev.second = " << ev.second << std::endl;
@@ -53,8 +53,8 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
     //    assert(ev.second == _p_genus->eigenvalues(manager, p.num()));
   }
 
-  std::unordered_set< std::vector< NumberFieldElement<Z> > > evalue_set(evalues.begin(), evalues.end());
-  std::unordered_set< std::vector< NumberFieldElement<Z> > > computed_set(computed_evalues.begin(), computed_evalues.end());
+  std::unordered_set< EigenvalueVector > evalue_set(evalues.begin(), evalues.end());
+  std::unordered_set< EigenvalueVector > computed_set(computed_evalues.begin(), computed_evalues.end());
 
   assert( evalue_set == computed_set);
 
