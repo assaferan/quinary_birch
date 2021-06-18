@@ -1047,7 +1047,7 @@ template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> > & auts)
 {
   size_t num_aut;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "Before generating more, automorphisms are: " << std::endl;
   for (Isometry<R,n> s : auts)
     std::cerr << s << std::endl;
@@ -1075,7 +1075,7 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> 
     // if this condition is fullfilled we are closed under taking
     // products. Since this is a finite group, we are done.
   } while (num_aut != auts.size());
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "After generating the entire group, automorphisms are: " << std::endl;
   for (Isometry<R,n> s : auts)
     std::cerr << s << std::endl;
