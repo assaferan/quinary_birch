@@ -85,7 +85,7 @@ namespace std
     {
       Z64 fnv = FNV_OFFSET;
 
-      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >{}(elt.parent().modulus())) * FNV_PRIME;
+      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >{}(elt.parent()->modulus())) * FNV_PRIME;
       
       fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >{}(elt.getPoly())) * FNV_PRIME;
             
