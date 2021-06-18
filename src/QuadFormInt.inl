@@ -696,7 +696,7 @@ QuadFormInt<R,n>::_allPerms(size_t m)
 template<typename R, size_t n>
 inline bool QuadFormInt<R,n>::_permutationReduction(SquareMatrixInt<R,n> & qf,
 						   Isometry<R,n> & isom,
-						   std::set< Isometry<R, n> > & auts,
+						   std::unordered_set< Isometry<R, n> > & auts,
 						   bool calc_aut)
 {
   bool is_reduced = true;
@@ -754,7 +754,7 @@ inline bool QuadFormInt<R,n>::_permutationReduction(SquareMatrixInt<R,n> & qf,
 template<typename R, size_t n>
 inline bool QuadFormInt<R,n>::_signNormalizationSlow(SquareMatrixInt<R,n> & qf,
 						    Isometry<R,n> & isom,
-						    std::set< Isometry<R,n> > & auts)
+						    std::unordered_set< Isometry<R,n> > & auts)
 {
   bool is_reduced = true;
   W16 prime = 2;
@@ -876,7 +876,7 @@ inline bool QuadFormInt<R,n>::_normEchelon(SquareMatrixInt<R,n> & qf,
 template<typename R, size_t n>
 inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 						Isometry<R,n> & isom,
-						std::set< Isometry<R,n> > & auts,
+						std::unordered_set< Isometry<R,n> > & auts,
 						bool calc_aut)
 {
 #ifdef DEBUG_LEVEL_FULL
@@ -1020,7 +1020,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
     if (b0.determinant().abs().isOne()) {
       SquareMatrixInt<R,n> q0 = b0.transform(qf);
       Isometry<R,n> u;
-      std::set< Isometry<R,n> > tmp_auts;
+      std::unordered_set< Isometry<R,n> > tmp_auts;
       _signNormalization(q0, u, tmp_auts, calc_aut);
       if (q0 < qf) {
 	qf = q0;
@@ -1044,15 +1044,15 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 // We don't really need to do this.
 // implement a small version of Todd-Coxeter Schreier-Sims ?!
 template<typename R, size_t n>
-inline size_t QuadFormInt<R,n>::_generateAuts(std::set< Isometry<R,n> > & auts)
+inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> > & auts)
 {
   size_t num_aut;
 #ifdef DEBUG
   std::cerr << "Before generating more, automorphisms are: " << std::endl;
   for (Isometry<R,n> s : auts)
     std::cerr << s << std::endl;
-  for (typename std::set< Isometry<R,n> >::const_iterator iter1 = auts.begin(); iter1 != auts.end(); iter1++) {
-    typename std::set< Isometry<R,n> >::const_iterator iter2 = iter1;
+  for (typename std::unordered_set< Isometry<R,n> >::const_iterator iter1 = auts.begin(); iter1 != auts.end(); iter1++) {
+    typename std::unordered_set< Isometry<R,n> >::const_iterator iter2 = iter1;
     iter2++;
     for (; iter2 != auts.end(); iter2++) {
       assert(*iter1 != *iter2);
@@ -1061,7 +1061,7 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::set< Isometry<R,n> > & auts)
 #endif
   do {
     num_aut = auts.size();
-    typename std::set< Isometry<R,n> >::const_iterator iter1, iter2;
+    typename std::unordered_set< Isometry<R,n> >::const_iterator iter1, iter2;
     for (iter1 = auts.begin(); iter1 != auts.end(); iter1++) {
       for (iter2 = auts.begin(); iter2 != auts.end(); iter2++) {
 	Isometry<R,n> prod = (*iter1)*(*iter2);
@@ -1089,7 +1089,7 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(void) const
   if (this->_num_aut_init) return this->_num_aut;
   SquareMatrixInt<R,n> qf = this->_B;
   Isometry<R,n> isom;
-  std::set< Isometry<R,n> > auts;
+  std::unordered_set< Isometry<R,n> > auts;
   return _iReduce(qf, isom, auts, true);
 }
 
@@ -1097,11 +1097,11 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(void) const
 // Right now it seems to me that most of the time we don't need it,
 // so there is no need to carry it around.
 template<typename R, size_t n>
-inline std::set<Isometry<R,n>> QuadFormInt<R,n>::properAutomorphisms(void) const
+inline std::unordered_set<Isometry<R,n>> QuadFormInt<R,n>::properAutomorphisms(void) const
 {
   SquareMatrixInt<R,n> qf = this->_B;
   Isometry<R,n> isom;
-  std::set< Isometry<R,n> > auts;
+  std::unordered_set< Isometry<R,n> > auts;
   _iReduce(qf, isom, auts, true);
   return auts;
 }
@@ -1113,7 +1113,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 {
   assert(q.bilinearForm().isPositiveDefinite());
 
-  std::set< Isometry<R,n> > auts;
+  std::unordered_set< Isometry<R,n> > auts;
   SquareMatrixInt<R,n> qf = q.bilinearForm();
   size_t num_aut = _iReduce(qf, isom, auts, calc_aut);
   QuadFormZZ<R,n> q_red(qf);
@@ -1128,7 +1128,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::_iReduce(SquareMatrixInt<R,n> & qf,
 					Isometry<R,n> & isom,
-					std::set< Isometry<R,n> > & auts,
+					std::unordered_set< Isometry<R,n> > & auts,
 					bool calc_aut)
 {
 #ifdef DEBUG_LEVEL_FULL
@@ -1175,7 +1175,7 @@ inline size_t QuadFormInt<R,n>::_iReduce(SquareMatrixInt<R,n> & qf,
 template<typename R, size_t n>
 inline bool QuadFormInt<R,n>::_signNormalization(SquareMatrixInt<R,n> & qf,
 						Isometry<R,n> & isom,
-						std::set< Isometry<R,n> > & auts,
+						std::unordered_set< Isometry<R,n> > & auts,
 						bool calc_aut)
 {
   if (!calc_aut)
