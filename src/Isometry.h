@@ -89,10 +89,10 @@ public:
 
   inline bool operator!=(const Isometry<R,n> & other) const
   {return !((*this) == other); }   
-
+  /*
   inline bool operator<(const Isometry<R,n> & other) const
   {return (other._scale * this->_a < this->_scale * other._a);}
-
+  */
   inline Rational<R> determinant() const
   {return _a.determinant() / (_scale^n); }
 
