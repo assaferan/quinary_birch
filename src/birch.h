@@ -278,7 +278,7 @@ namespace std {
       Z tmp = a;
 
       while (tmp != 0) {
-	Z lsb = tmp % modulus
+	Z lsb = tmp % modulus;
 	fnv = (fnv ^ mpz_get_si(lsb.get_mpz_t())) * FNV_PRIME;
 	tmp /= modulus;
       }
