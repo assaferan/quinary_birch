@@ -50,7 +50,6 @@ public:
 	scale = -scale;
       s_mat *= scale.inverse();
       W16_MatrixFp rad = this->_rads.at(prime);
-      W16_FpElement det = s_mat.transpose().restrict(rad).determinant();
 #ifdef DEBUG
       std::cerr << "rad = " << std::endl << rad << std::endl;
       std::cerr << "s_p =  " << std::endl << (*s_p) << std::endl;
@@ -60,6 +59,7 @@ public:
       std::cerr << "s_mat.transpose().restrict(rad) = " << std::endl << s_mat.transpose().restrict(rad) << std::endl;
       std::cerr << "det = " << det << std::endl;
 #endif
+      W16_FpElement det = s_mat.transpose().restrict(rad).determinant();
       dets.push_back(det);
     }
     return this->_computeVals(dets);    
