@@ -435,7 +435,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 	}
       
       // Determine which subspaces this representative contributes.
-      std::set<Isometry<R,n>> auts = rep.q.properAutomorphisms();
+      std::unordered_set<Isometry<R,n>> auts = rep.q.properAutomorphisms();
 
       std::vector<bool> ignore(this->_conductors.size(), false);
       for (const Isometry<R,n>& s : auts)
