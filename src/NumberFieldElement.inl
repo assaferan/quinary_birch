@@ -175,7 +175,7 @@ inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const NumberFiel
 template<typename R>
 inline MatrixRat<R> NumberFieldElement<R>::_multByMatrix(void) const
 {
-  int d = _K.modulus().degree();
+  int d = _K->modulus().degree();
   // creating the basis {1,x,....,x^{d-1}}
   std::vector< NumberFieldElement<R> > basis;
   for (int i = 0; i < d; i++) {
@@ -186,7 +186,7 @@ inline MatrixRat<R> NumberFieldElement<R>::_multByMatrix(void) const
   MatrixRat<R> mat(_elt.baseRing(), d, d);
 
   for (int i = 0; i < d; i++) {
-    UnivariatePolyRat<R> mul = (*this)*basis[i];
+    UnivariatePolyRat<R> mul = ((*this)*basis[i])._elt;
     for (int j = 0; j < d; i++) {
       mat(i,j) = mul.coefficient(j);
     }
