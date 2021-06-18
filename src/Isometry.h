@@ -107,6 +107,24 @@ protected:
   Integer<R> _scale;
 };
 
+namespace std {
+
+  template <typename R, size_t n>
+  struct hash< Isometry<R,n> >
+  {
+    Z64 operator()(const Isometry<R,n> & s) const
+    {
+      Z64 fnv = FNV_OFFSET;
+      for (size_t i = 0; i < n; i++)
+	for (size_t j = 0; j < n; j++) {
+	  Rational<R> elt = s._a(i,j) / s._scale;
+	  fnv = (fnv ^ std::hash< Rational<R> >{}(elt)) * FNV_PRIME;
+	}
+      return fnv;
+    }
+  };
+}
+
 #include "Isometry.inl"
 
 #endif // __ISOMETRY_H_
