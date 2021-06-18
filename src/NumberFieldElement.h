@@ -85,17 +85,14 @@ namespace std
     {
       Z64 fnv = FNV_OFFSET;
 
-      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >(elt.parent().modulus())) * FNV_PRIME;
+      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >{}(elt.parent().modulus())) * FNV_PRIME;
       
-      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >(elt.getPoly())) * FNV_PRIME;
+      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >{}(elt.getPoly())) * FNV_PRIME;
             
       return fnv;
     }
   };
-}
 
-namespace std
-{
   template<typename R>
   struct hash< std::vector< NumberFieldElement<R> > >
   {
@@ -104,7 +101,7 @@ namespace std
       Z64 fnv = FNV_OFFSET;
 
       for (size_t i = 0; i < vec.size(); i++)
-	fnv = (fnv ^ std::hash< NumberFieldElement<R> >(vec[i])) * FNV_PRIME;
+	fnv = (fnv ^ std::hash< NumberFieldElement<R> >{}(vec[i])) * FNV_PRIME;
   
       return fnv;
     }
