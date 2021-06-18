@@ -87,6 +87,9 @@ public:
   inline bool operator==(const Isometry<R,n> & other) const
   {return (other._scale * this->_a == this->_scale * other._a);}
 
+  inline bool operator==(const Isometry<R,n> & other) const
+  {return !((*this) == other); }   
+
   inline bool operator<(const Isometry<R,n> & other) const
   {return (other._scale * this->_a < this->_scale * other._a);}
 
