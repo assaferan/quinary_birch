@@ -67,11 +67,32 @@ public:
 
   inline void print(std::ostream& os) const override
   { _elt.print(os); return; }
+
+  inline const UnivariatePolyRat<R> & getPoly(void) const
+  { return _elt; }
   
 protected:
   std::shared_ptr<const NumberField<R> > _K;
   UnivariatePolyRat<R> _elt;
 };
+
+namespace std
+{
+  template<typename R>
+  struct hash< NumberFieldElement<R> >
+  {
+    Z64 operator()(const NumberFieldElement<R>& elt) const
+    {
+      Z64 fnv = FNV_OFFSET;
+
+      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >(elt.parent().modulus())) * FNV_PRIME;
+      
+      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >(elt.getPoly())) * FNV_PRIME;
+            
+      return fnv;
+    }
+  };
+}
 
 #include "NumberFieldElement.inl"
 
