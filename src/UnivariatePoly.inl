@@ -382,6 +382,9 @@ inline UnivariatePoly<R,Parent> UnivariatePoly<R,Parent>::derivative() const
   R a = this->_base->one();
   for (size_t i = 1; i < this->_coeffs.size(); i++,a++)
     f_prime._coeffs[i-1] = a * this->_coeffs[i];
+
+  // in characteristic ne 0, we might have leading zeros
+  f_prime._eliminateDeg();
   
   return f_prime;
 }
