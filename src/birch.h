@@ -276,7 +276,7 @@ namespace std {
       Z64 max_uint = std::numeric_limits<W64>::max();
       while (tmp != 0) {
 	Z lsb = tmp & max_uint;
-	fnv = (fnv ^ mpz_get_si(lsb).get_mpz_t()) * FNV_PRIME;
+	fnv = (fnv ^ mpz_get_si(lsb.get_mpz_t())) * FNV_PRIME;
 	tmp >>= 64;
       }
       return fnv;
