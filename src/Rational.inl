@@ -41,12 +41,17 @@ inline bool Rational<R>::operator<(const Rational<R> &other) const
   return diff.num() * diff.denom() < Integer<R>::zero(); 
 }
 
+// reducing to the unique form r/s such that s > 0, and r,s relatively prime.
 template<typename R>
 inline void Rational<R>::_reduce(void)
 {
   Integer<R> d = _num.gcd(_denom);
   _num /= d;
   _denom /= d;
+  if (_denom < Integer<R>::zero()) {
+    _num = -_num;
+    _denom = -_denom;
+  }
   return;
 }
 
