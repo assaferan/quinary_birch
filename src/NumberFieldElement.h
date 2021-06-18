@@ -87,7 +87,7 @@ namespace std
   {
     Z64 operator()(const NumberFieldElement<R>& elt) const
     {
-      fnv = std::hash< UnivariatePolyInt<R> >{}(elt.minimalPolyomial());
+      Z64 fnv = std::hash< UnivariatePolyInt<R> >{}(elt.minimalPolyomial());
             
       return fnv;
     }
