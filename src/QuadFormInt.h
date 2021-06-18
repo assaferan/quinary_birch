@@ -4,6 +4,7 @@
 #include <memory>
 #include <set>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "birch.h"
@@ -62,7 +63,7 @@ public:
 				Isometry<R,n> & isom,
 				bool calc_aut = false);
 
-  std::set<Isometry<R,n>> properAutomorphisms() const;
+  std::unordered_set<Isometry<R,n>> properAutomorphisms() const;
 
   static std::vector< QuadFormZZ<R,5> > nippToForms(NippEntry entry);
   
@@ -99,27 +100,27 @@ protected:
   
   static size_t _iReduce(SquareMatrixInt<R,n> & qf,
 			Isometry<R,n> & isom,
-			std::set< Isometry<R,n> > & auts,
+			std::unordered_set< Isometry<R,n> > & auts,
 			bool calc_aut = true);
 
   static bool _permutationReduction(SquareMatrixInt<R,n> & qf,
 				   Isometry<R,n> & isom,
-				   std::set< Isometry<R,n> > & auts,
+				   std::unordered_set< Isometry<R,n> > & auts,
 				   bool calc_aut = true);
   
   static bool _signNormalization(SquareMatrixInt<R,n> & qf,
 				Isometry<R,n> & isom,
-				std::set< Isometry<R,n> > & auts,
+				std::unordered_set< Isometry<R,n> > & auts,
 				bool calc_aut = true);
   
   static bool _normEchelon(SquareMatrixInt<R,n> & qf, Isometry<R,n> & isom);
   
   static bool _neighborReduction(SquareMatrixInt<R,n> & qf,
 				Isometry<R,n> & isom,
-				std::set< Isometry<R,n> > & auts,
+				std::unordered_set< Isometry<R,n> > & auts,
 				bool calc_aut = true);
   
-  static size_t _generateAuts(std::set< Isometry<R,n> > & auts);
+  static size_t _generateAuts(std::unordered_set< Isometry<R,n> > & auts);
 
   static VectorInt<R,n-1> _voronoiBounds(size_t dim = n);
   
@@ -137,7 +138,7 @@ protected:
 
   static bool _signNormalizationSlow(SquareMatrixInt<R,n> & qf,
 				    Isometry<R,n> & isom,
-				    std::set< Isometry<R,n> > & auts);
+				    std::unordered_set< Isometry<R,n> > & auts);
 
   static bool _signNormalizationFast(SquareMatrixInt<R,n> & qf,
 				    Isometry<R,n> & isom);
