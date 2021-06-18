@@ -50,6 +50,8 @@ public:
   inline std::shared_ptr< const NumberField<R> > parent(void) const override
   {return this->_K;}
 
+  UnivariatePolyInt<R> minimalPolynomial(void) const;
+
   bool isZero(void) const override;
   bool isOne(void) const override;
 
@@ -74,6 +76,8 @@ public:
 protected:
   std::shared_ptr<const NumberField<R> > _K;
   UnivariatePolyRat<R> _elt;
+
+  MatrixRat<R> _multByMatrix(void) const;
 };
 
 namespace std
@@ -83,11 +87,7 @@ namespace std
   {
     Z64 operator()(const NumberFieldElement<R>& elt) const
     {
-      Z64 fnv = FNV_OFFSET;
-
-      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >{}(elt.parent()->modulus())) * FNV_PRIME;
-      
-      fnv = (fnv ^ std::hash< UnivariatePolyRat<R> >{}(elt.getPoly())) * FNV_PRIME;
+      fnv = std::hash< UnivariatePolyInt<R> >{}(elt.minimalPolyomial());
             
       return fnv;
     }

@@ -169,3 +169,55 @@ inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const NumberFiel
   }
   return *this;
 }
+
+template<typename R>
+inline MatrixRat<R> NumberFieldElement<R>::_multByMatrix(void) const
+{
+  int d = _K.modulus().degree();
+  // creating the basis {1,x,....,x^{d-1}}
+  std::vector< NumberFieldElement<R> > basis;
+  for (int i = 0; i < d; i++) {
+    NumberFieldElement<R> a(_K, UnivariatePolyRat<R>::x(_elt.baseRing(), i));
+    basis.push_back(a);
+  }
+
+  MatrixRat<R> mat(_elt.baseRing(), d, d);
+
+  for (int i = 0; i < d; i++) {
+    UnivariatePolyRat<R> mul = (*this)*basis[i];
+    for (int j = 0; j < d; i++) {
+      mat(i,j) = mul.coefficient(j);
+    }
+  }
+
+  return mat;
+
+}
+
+template<typename R>
+inline UnivariatePolyInt<R> NumberFieldElement<R>::minimalPolynomial(void) const
+{
+  MatrixRat<R> mult_mat = this->_multByMatrix();
+  UnivariatePolyRat<R> char_poly = mult_mat.charPoly();
+  
+  Integer<R> denom = Integer<R>::one();
+  std::vector< Integer<R> > coeffs_int;
+  for (int i = 0; i <= f.degree(); i++)
+    denom = denom.lcm(char_poly.coefficient(i).denom());
+  char_poly *= denom;
+  for (int i = 0; i <= f.degree(); i++) 
+    coeffs_int.push_back(char_poly.coefficient(i).floor());
+  
+  UnivariatePolyInt<R> char_poly_int(coeffs_int);
+  
+  std::unordered_map< UnivariatePolyInt<R>, size_t > fac = char_poly_int.factor();
+
+  UnivariatePolyInt<R> min_poly = Rational<R>::one();
+
+  // Here we use the fact that all algebraic numbers are separable
+  for (std::pair< UnivariatePolyInt<R>, size_t > fa : fac) {
+    min_poly *= fa.first;
+  }
+
+  return min_poly;
+}
