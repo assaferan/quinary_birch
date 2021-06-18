@@ -1052,9 +1052,11 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::set< Isometry<R,n> > & auts)
   for (Isometry<R,n> s : auts)
     std::cerr << s << std::endl;
   for (typename std::set< Isometry<R,n> >::const_iterator iter1 = auts.begin(); iter1 != auts.end(); iter1++) {
-      for (typename std::set< Isometry<R,n> >::const_iterator iter2 = iter1+1; iter2 != auts.end(); iter2++) {
-	assert(*iter1 != *iter2);
-      }
+    typename std::set< Isometry<R,n> >::const_iterator iter2 = iter1;
+    iter2++;
+    for (; iter2 != auts.end(); iter2++) {
+      assert(*iter1 != *iter2);
+    }
   }
 #endif
   do {
