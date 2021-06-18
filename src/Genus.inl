@@ -1032,7 +1032,9 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 	    }
 	  else if (r == idx)
 	    {
-	      foo.s = cur.s * foo.s * cur.sinv;
+	      const GenusRep<R,n>& rep_inv = this->_inv_hash->get(r_inv);
+	      
+	      foo.s = cur.s * foo.s * rep_inv.sinv;
 	      assert( foo.s.isIsometry(mother.q, mother.q) );
 	      
 	      spin_vals = this->_spinor->norm(foo.s);
