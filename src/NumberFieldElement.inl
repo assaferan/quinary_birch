@@ -202,10 +202,10 @@ inline UnivariatePolyInt<R> NumberFieldElement<R>::minimalPolynomial(void) const
   
   Integer<R> denom = Integer<R>::one();
   std::vector< Integer<R> > coeffs_int;
-  for (int i = 0; i <= f.degree(); i++)
+  for (int i = 0; i <= char_poly.degree(); i++)
     denom = denom.lcm(char_poly.coefficient(i).denom());
   char_poly *= denom;
-  for (int i = 0; i <= f.degree(); i++) 
+  for (int i = 0; i <= char_poly.degree(); i++) 
     coeffs_int.push_back(char_poly.coefficient(i).floor());
   
   UnivariatePolyInt<R> char_poly_int(coeffs_int);
