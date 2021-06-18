@@ -273,12 +273,14 @@ namespace std {
     Z64 operator()(const Z & a) const
     {
       Z64 fnv = FNV_OFFSET;
+      Z modulus = 2;
+      mpz_pow_ui(modulus.get_mpz_t(), modulus.get_mpz_t(), 64);
       Z tmp = a;
-      Z64 max_uint = std::numeric_limits<W64>::max();
+
       while (tmp != 0) {
-	Z lsb = tmp & max_uint;
+	Z lsb = tmp % modulus
 	fnv = (fnv ^ mpz_get_si(lsb.get_mpz_t())) * FNV_PRIME;
-	tmp >>= 64;
+	tmp /= modulus;
       }
       return fnv;
     }
