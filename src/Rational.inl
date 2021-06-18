@@ -4,7 +4,7 @@ inline Rational<R> Rational<R>::operator+(const Rational<R> &other) const
   Rational<R> sum;
   sum._num = (this->_num) * other._denom + (this->_denom) * other._num;
   sum._denom = (this->_denom) * other._denom;
-  sum._reduce();
+  sum.reduce();
   return sum;
 }
 
@@ -14,7 +14,7 @@ inline Rational<R> Rational<R>::operator*(const Rational<R> &other) const
   Rational<R> prod;
   prod._num = (this->_num) * other._num;
   prod._denom = (this->_denom) * other._denom;
-  prod._reduce();
+  prod.reduce();
   return prod;
 }
 
@@ -24,7 +24,7 @@ inline Rational<R> Rational<R>::operator/(const Rational<R> &other) const
   Rational<R> prod;
   prod._num = (this->_num) * other._denom;
   prod._denom = (this->_denom) * other._num;
-  prod._reduce();
+  prod.reduce();
   return prod;
 }
 
@@ -43,7 +43,7 @@ inline bool Rational<R>::operator<(const Rational<R> &other) const
 
 // reducing to the unique form r/s such that s > 0, and r,s relatively prime.
 template<typename R>
-inline void Rational<R>::_reduce(void)
+inline void Rational<R>::reduce(void)
 {
   Integer<R> d = _num.gcd(_denom);
   _num /= d;
