@@ -612,7 +612,7 @@ inline void QuadFormInt<R,n>::greedy(SquareMatrixInt<R,n>& gram,
 
   std::pair<Integer<R>,size_t> perm_pair[n];
   std::shared_ptr<const IntegerRing<size_t> > ZZ = std::make_shared< IntegerRing<size_t> >();
-  VectorInt<size_t,n> perm(ZZ);
+  VectorInt<size_t,n> perm;
   do {
     for (size_t i = 0; i < dim; i++)
       perm_pair[i] = std::make_pair(gram(i,i), i);
