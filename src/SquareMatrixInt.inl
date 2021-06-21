@@ -383,7 +383,7 @@ SquareMatrixInt<R,n>::ldl(SquareMatrixInt<R,n>& L,  VectorInt<R,n> & D) const
 	      L(i,j) += inner_sum;
 	    }
 	  //d = d.gcd(L(i, j));
-	  g = gcd(d, L(i,j));
+	  d = gcd(d, L(i,j));
 	}
       for (size_t j = 0; j <= i; j++)
 	L(i,j) /= d;
