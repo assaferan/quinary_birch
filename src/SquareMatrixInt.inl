@@ -695,7 +695,7 @@ inline std::ostream& operator<<(std::ostream& os, const SquareMatrixInt<R,n>& a)
 
 template<typename R, size_t n>
 inline std::ostream & SquareMatrixInt<R,n>::prettyPrint(std::ostream & os,
-						 size_t upTo) const
+							size_t upTo) const
 {
   for (size_t row = 0; row < upTo-1; row++) {
     for (size_t col = 0; col < upTo; col++)
