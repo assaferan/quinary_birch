@@ -29,6 +29,9 @@ namespace birch_util
   template<typename From, typename To, size_t n>
   GenusRep<To,n> convertGenusRep(const GenusRep<From,n>& from);
 
+  template<typename R, size_t n>
+  MatrixInt<R> convertMatrix(const SquareMatrixInt<R,n> & from);
+  
   // !! TODO - get rid of this redundant method
   template<typename R>
   R myPow(const std::map<R,int>& pairs);
@@ -43,6 +46,7 @@ namespace birch_util
   R xgcd(const R &, const R &, R &, R&);
   
   int charVal(W64 x);
+
 }
 
 #include "birch_util.inl"
