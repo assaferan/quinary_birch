@@ -496,6 +496,11 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 	  assert( rep.sinv.isIsometry(rep.q, mother.q) );
 
 	}
+      else
+	{
+	  // Keeping the inverse
+	  rep.sinv = rep.s.inverse();
+	}
       
     }
 }
