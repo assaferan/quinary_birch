@@ -55,7 +55,7 @@ template<size_t n>
 static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Integer<Z>& p)
 {
   std::shared_ptr<const IntegerRing<Z> > ZZ = std::make_shared< IntegerRing<Z> >();
-  Integer<Z> pp = p*p;
+  Z pp = (p*p).num();
   Z_Vector<n> vec;
   vec[n-1] = 1;
 
@@ -65,24 +65,24 @@ static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Integer<Z>& p)
 
   // Try (0 0 .... 0 1 x) next.
   vec[n-2] = 1;
-  for (Integer<Z> x = ZZ->zero(); x < pp; x++) {
+  for (Z x = 0; x < pp; x++) {
     vec[n-1] = x;
     if ((q.evaluate(vec) % pp).isZero())
       return vec;
   }
     
   // Lastly, try (0 0 .... 0 1 x y).
-  vec[n-3] = 1);
-  for (Integer<Z> x = ZZ->zero(); x < pp; x++) {
+  vec[n-3] = 1;
+  for (Z x = 0; x < pp; x++) {
     vec[n-2] = x;
-    for (Integer<Z> y = ZZ->zero(); y < pp; y++) {
+    for (Z y = 0; y < pp; y++) {
       vec[n-1] = y;
       if ((q.evaluate(vec) % pp).isZero())
 	return vec;
     }
   }
   // Otherwise, return the zero vector to indicate no solution found.
-  for (size_t i = 0; i < n; i++) vec[i].makeZero();
+  for (size_t i = 0; i < n; i++) vec[i] = 0;
   return vec;
 }
 
