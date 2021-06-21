@@ -13,19 +13,20 @@ template<typename R, size_t n>
 class TestBirch
 {
 public:
-  TestBirch(const typename QuadFormZZ<R,n>::SymVec & coeffs);
+  TestBirch(const typename QuadFormZZ<R,n>::SymVec &);
 
-  TestBirch(const BirchExample<R,n> &);
+  TestBirch(const BirchExample<R,n> &, size_t);
 
-  void testDim(const R & spinor_prime, size_t dim) const;
+  void testDim(const R &, size_t) const;
 
-  void testEigenvalues(const R & spinor_prime,
-		       const std::map< R, std::vector< NumberFieldElement<Z> > > & evs) const;
+  void testEigenvalues(const R &,
+		       const std::map< R, std::vector< NumberFieldElement<Z> > > &,
+		       size_t) const;
   
 protected:
   std::shared_ptr< Genus<R,n> > _p_genus;
 
-  inline void _init(const typename QuadFormZZ<R,n>::SymVec & coeffs);
+  inline void _init(const typename QuadFormZZ<R,n>::SymVec &);
   
 };
 
@@ -68,7 +69,7 @@ namespace std {
   };
 }
 
-void runBirchTests(void);
+void runBirchTests(size_t num_evs = 0);
 
 #include "TestBirch.inl"
 
