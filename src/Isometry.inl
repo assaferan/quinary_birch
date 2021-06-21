@@ -57,7 +57,7 @@ inline Isometry<R,n> Isometry<R,n>::inverse(void) const
   // Since this is an isometry, the inverse should be integral
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      a_inv(i,j) = (this->_scale * a_rat(i,j)).floor();
+      a_inv(i,j) = (this->_scale * a_rat(i,j)).floor().num();
 #ifdef DEBUG
   Integer<R> scale2 = (this->_scale)*(this->_scale);
   assert((a_inv * (this->_a) == scale2*SquareMatrixInt<R,n>::identity(ZZ)));
