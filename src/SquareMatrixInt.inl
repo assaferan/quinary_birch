@@ -25,8 +25,10 @@ SquareMatrixInt<R,n> SquareMatrixInt<R,n>::operator*(const SquareMatrixInt & oth
 }
 
 // For now we just use the transpose from the base class and our conversion
+/*
 template<typename R, size_t n>
 SquareMatrixInt<R,n> SquareMatrixInt<R,n>::transpose(void) const
 {
   return this->transpose();
 }
+*/
