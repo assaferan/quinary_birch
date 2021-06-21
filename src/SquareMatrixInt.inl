@@ -31,3 +31,15 @@ SquareMatrixInt<R,n> SquareMatrixInt<R,n>::transpose(void) const
   return SquareMatrix< Integer<R>, IntegerRing<R>, n>::transpose();
 }
 
+template<typename R, size_t n>
+SquareMatrixInt<R,n>  SquareMatrixInt<R,n>::operator/(const Integer<R> & scalar) const
+{
+  assert (!scalar.isZero());
+  
+  SquareMatrixInt<R,n> quo(this->baseRing());
+  for (size_t row = 0; row < n; row++)
+    for (size_t col = 0; col < n; col++)
+      quo(row,col) = (*this)(row,col).num() / scalar.num();
+  return quo;
+}
+
