@@ -79,6 +79,16 @@ namespace birch_util
   }
 
   template<typename R>
+  inline R lcm(const R & x, const R & y)
+  {
+    Z x_Z = convertInteger<R,Z>(x);
+    Z y_Z = convertInteger<R,Z>(y);
+    Z d_Z;
+    mpz_lcm(d_Z.get_mpz_t(), x_Z.get_mpz_t(), y_Z.get_mpz_t());
+    return convertInteger<Z,R>(d_Z);
+  }
+
+  template<typename R>
   inline R xgcd(const R & x, const R & y, R & s, R& t)
   {
     Z x_Z = convertInteger<R,Z>(x);
