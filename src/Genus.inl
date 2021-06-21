@@ -704,6 +704,9 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	  W64 spin_vals;
 	  if (unlikely(rpos == npos))
 	    {
+	      const GenusRep<R,n>& rep_inv = this->_inv_hash->get(r_inv);
+	      
+	      foo.s = cur.s * foo.s * rep_inv.sinv;
 	      assert( foo.s.isIsometry(mother.q, mother.q) );
 #ifdef DEBUG_LEVEL_FULL
 	      std::cerr << "computing spinor norms of " << foo.s << std::endl;
