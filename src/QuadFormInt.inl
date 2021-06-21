@@ -1317,7 +1317,7 @@ bool QuadFormInt<R,n>::_signNormalizationFast(SquareMatrixInt<R,n> & qf,
 	int lead = k;
 	ech_vec = vec;
 
-	if (qf(k,k+j) < Integer<R>::zero())
+	if (qf(k,k+j) < 0)
 	  ech_vec |= (1 << n);
 
 	// while we already have this as pivot, we 
