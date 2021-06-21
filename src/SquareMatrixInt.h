@@ -19,7 +19,7 @@ public:
   
   SquareMatrixInt(const R mat[n][n]);
   SquareMatrixInt(const SquareMatrixInt<R,n> & mat);
-  SquareMatrixInt(const SquareMatrixInt<Integer<R>,IntegerRing<R>,n> & mat)
+  SquareMatrixInt(const SquareMatrix<Integer<R>,IntegerRing<R>,n> & mat)
     : SquareMatrix< Integer<R>, IntegerRing<R>, n>(mat)
   {}
 
