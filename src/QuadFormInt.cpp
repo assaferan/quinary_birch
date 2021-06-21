@@ -416,7 +416,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
   q = Z_QuadForm<3>::reduce(q, s);
 
   // Do one final verification that the symbols are correct.
-  Integer<Z> x = q._B(0,0) * q._B(1,1) - q._B(0,1) * q._B(1,0);
+  Integer<Z> x = Z(q._B(0,0) * q._B(1,1) - q._B(0,1) * q._B(1,0));
   mask = 1LL << primes.size();
   for (const Z_PrimeSymbol& symb : primes)
     {
