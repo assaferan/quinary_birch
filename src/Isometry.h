@@ -94,7 +94,7 @@ public:
   {return (other._scale * this->_a < this->_scale * other._a);}
   */
   inline Rational<R> determinant() const
-  {return Rational<R>(_a.determinant(), _scale^n); }
+  {return Rational<R>(_a.determinant(), Integer<R>(_scale)^n); }
 
   inline bool isOne() const
   {return _a == _scale * SquareMatrixInt<R,n>::identity(); }
