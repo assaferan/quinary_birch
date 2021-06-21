@@ -92,12 +92,12 @@ protected:
 };
 
 // left multiplication
-template<class R, size_t n>
+template<typename R, size_t n>
 inline SquareMatrixInt<R,n> operator*(const R & a, const SquareMatrixInt<R,n> & M)
 { return M*a; }
 
 // printing
-template<class R, size_t n>
+template<typename R, size_t n>
 std::ostream& operator<<(std::ostream&, const SquareMatrixInt<R,n>&);
 
 };
