@@ -52,7 +52,7 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
     std::cerr << "computed eigenvalues: " << computed << std::endl;
 #endif
     num_processed++;
-    if (num_processed == upTo) break;
+    if (num_processed == num_evs) break;
     //    assert(ev.second == _p_genus->eigenvalues(manager, p.num()));
   }
 
