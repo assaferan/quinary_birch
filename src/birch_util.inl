@@ -68,6 +68,28 @@ namespace birch_util
     return x;
   }
 
+  template<typename R>
+  inline R gcd(const R & x, const R & y)
+  {
+    Z x_Z = convertInteger<R,Z>(x);
+    Z y_Z = convertInteger<R,Z>(y);
+    Z d_Z;
+    mpz_gcd(d_Z.get_mpz_t(), x_Z.get_mpz_t(), y_Z.get_mpz_t());
+    return convertInteger<Z,R>(d_Z);
+  }
+
+  template<typename R>
+  inline R xgcd(const R & x, const R & y, R & s, R& t)
+  {
+    Z x_Z = convertInteger<R,Z>(x);
+    Z y_Z = convertInteger<R,Z>(y);
+    Z d_Z, s_Z, t_Z;
+    mpz_gcdext(d_Z.get_mpz_t(), s_Z.get_mpz_t(), t_Z.get_mpz_t(), x_Z.get_mpz_t(), y_Z.get_mpz_t());
+    s = convertInteger<Z,R>(s_Z);
+    t = convertInteger<Z,R>(t_Z);
+    return convertInteger<Z,R>(d_Z);
+  }
+
   extern int char_vals[256];
   
   inline int charVal(W64 x)
