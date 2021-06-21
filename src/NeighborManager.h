@@ -6,7 +6,6 @@
 #include "QuadFormInt.h"
 #include "Isometry.h"
 #include "Fp.h"
-#include "VectorInt.h"
 
 template<typename R, typename S, typename T, size_t n>
 class NeighborManager
