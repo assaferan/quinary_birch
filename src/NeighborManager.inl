@@ -216,7 +216,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
       a = (a / (p*p) + Integer<T>::one())*p*p-a+delta;
       if (a >= (p*p))
 	a -= p*p;
-      Z_new[i] += a * this->_Z[j];
+      Z_new[i] += a.num() * this->_Z[j];
     }
   }
   this->_Z = Z_new;
