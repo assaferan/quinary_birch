@@ -1536,3 +1536,12 @@ inline W64 Z128_QuadForm<n>::hashValue(void) const
       fnv = (fnv ^ this->_B(i,j)) * FNV_PRIME;
   return fnv;
 }
+
+// When n is odd we return the half-discriminant
+template<typename R, size_t n>
+inline R QuadFormInt<R,n>::discriminant(void) const
+{
+  R det = this->_B.determinant();
+  
+  return (n % 2 == 0) ? det : det/2;
+}
