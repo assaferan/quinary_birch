@@ -7,7 +7,8 @@
 #include "birch.h"
 
 namespace birch_util
-{
+{ 
+  
   template<typename From, typename To>
   To convertInteger(const From& x);
 
@@ -32,6 +33,12 @@ namespace birch_util
   template<typename R>
   R myPow(const std::map<R,int>& pairs);
 
+  template<typename R>
+  R gcd(const R &, const R &);
+
+  template<typename R>
+  R xgcd(const R &, const R &, R &, R&);
+  
   int charVal(W64 x);
 }
 
