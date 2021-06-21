@@ -24,8 +24,8 @@ public:
   {}
 
   SquareMatrixInt<R,n> operator*(const SquareMatrixInt &) const;
-  // SquareMatrixInt<R,n> transpose(void) const;
-  using SquareMatrix<Integer<R>,IntegerRing<R>,n>::transpose;
+  SquareMatrixInt<R,n> transpose(void) const;
+
 };
 
 #include "SquareMatrixInt.inl"
