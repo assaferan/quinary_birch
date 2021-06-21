@@ -991,14 +991,14 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 	    break;
 	  }
 	if ((include) &&
-	    (VectorInt<R,n>::innerProduct(c[i-1]*qf, y).abs() >= qf(i,i-1).abs())) {
+	    (abs(VectorInt<R,n>::innerProduct(c[i-1]*qf, y)) >= abs(qf(i,i-1)))) {
 	  c.push_back(y);
 	  ns1.push_back(c);
 	}
 	else {
 	  for (size_t j = 1; j < i; j++) {
-	    if (VectorInt<R,n>::innerProduct(c[j-1]*qf, c[j]).abs() >
-		qf(j,j-1).abs() ) {
+	    if (abs(VectorInt<R,n>::innerProduct(c[j-1]*qf, c[j])) >
+		abs(qf(j,j-1)) ) {
 	      c.push_back(y);
 	      ns1.push_back(c);
 	      break;
