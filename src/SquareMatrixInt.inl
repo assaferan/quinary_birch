@@ -103,7 +103,7 @@ SquareMatrixInt<Z64,4>::operator*(const SquareMatrixInt<Z64,4>& B) const
     __m256i W = ARw * BCw;
 
     __m256i R = X+Y+Z+W;
-    _mm256_store_si256(resultRowPointer, R);
+    _mm256_store_si256((__m256i_u*)resultRowPointer, R);
   }
   
   return C;
