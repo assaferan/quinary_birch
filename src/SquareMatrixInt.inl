@@ -11,6 +11,7 @@ SquareMatrixInt<R,n>::SquareMatrixInt(const SquareMatrixInt<R,n> & mat)
 template<typename R, size_t n>
 SquareMatrixInt<R,n> SquareMatrixInt<R,n>::operator*(const SquareMatrixInt & other) const
 {
+  // Here we avoid construction of multiple Integer<R> objects
   R sum;
   SquareMatrixInt<R,n> prod(this->baseRing());
   for (size_t i = 0; i < n; i++)
@@ -21,4 +22,11 @@ SquareMatrixInt<R,n> SquareMatrixInt<R,n>::operator*(const SquareMatrixInt & oth
       prod(i,j) = sum;
     }
   return prod;
+}
+
+// For now we just use the transpose from the base class and our conversion
+template<typename R, size_t n>
+SquareMatrixInt<R,n> SquareMatrixInt<R,n>::transpose(void) const
+{
+  return this->transpose();
 }
