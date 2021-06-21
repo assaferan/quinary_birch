@@ -251,7 +251,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     gram = __gram(B, false);
   }
   // Lift X so that it is isotropic modulo p^2.
-  std::vector< VectorInt<T,n> > X_new(this->_k, VectorInt<T,n>(ZZ));
+  std::vector< VectorInt<T,n> > X_new(this->_k);
   Integer<T> two = T(2);
   Integer<T> half = (p*p+Integer<T>::one())/two;
   for (size_t i = 0; i < this->_k; i++) {
