@@ -1440,7 +1440,7 @@ QuadFormInt<R,n>::_permutationOrbit() const
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit; 
   std::map<Integer<R>, std::vector<size_t> > stable_sets;
   
-  SquareMatrixInt<R,n> q1(this->baseRing());
+  SquareMatrixInt<R,n> q1;
   
   for (size_t i = 0; i < n; i++) {
     Integer<R> val = this->bilinearForm()(i,i);
