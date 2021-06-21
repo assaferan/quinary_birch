@@ -29,7 +29,7 @@ SquareMatrixInt<R,n>::SquareMatrixInt(const SquareMatrix<Integer<R>,IntegerRing<
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      this->_mat[i][j] = mat(i,j).num();
+      this->_mat[i][j] = other(i,j).num();
 }
 
 // access
