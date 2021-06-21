@@ -217,7 +217,7 @@ public:
   // a more general constructor
   // We adhere to magma convention - giving the rows
   // up to the diagonal
-  QuadFormZZ(const typename QuadFormInt<Z,n>::SymVec& coeffs)
+  QuadFormZZ(const typename R_QuadForm<Z,n>::SymVec& coeffs)
     : QuadFormInt<Z,n>(coeffs) {}
 
   QuadFormZZ(const SquareMatrixInt<Z,n> & B)
@@ -247,7 +247,7 @@ public:
   // a more general constructor
   // We adhere to magma convention - giving the rows
   // up to the diagonal
-  QuadFormZZ(const typename QuadFormInt<Z64,n>::SymVec& coeffs)
+  QuadFormZZ(const typename R_QuadForm<Z64,n>::SymVec& coeffs)
     : QuadFormInt<Z64,n>(coeffs) {}
 
   QuadFormZZ(const SquareMatrixInt<Z64, n> & B)
@@ -277,7 +277,7 @@ public:
   // a more general constructor
   // We adhere to magma convention - giving the rows
   // up to the diagonal
-  QuadFormZZ(const typename QuadFormInt<Z128,n>::SymVec& coeffs)
+  QuadFormZZ(const typename R_QuadForm<Z128,n>::SymVec& coeffs)
     : QuadFormInt<Z128,n>(coeffs) {}
 
   QuadFormZZ(const SquareMatrixInt<Z128,n> & B)
