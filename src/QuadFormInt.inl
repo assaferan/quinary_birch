@@ -186,9 +186,9 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
 template<typename R, size_t n>
 inline int QuadFormInt<R,n>::_hasse(const VectorInt<R,n> & D, const Integer<R> & p)
 {
-  std::shared_ptr<const IntegerRing<R> > ring = D.baseRing();
+  std::shared_ptr<const IntegerRing<R> > ZZ = std::make_shared<const IntegerRing<R> >();
   int hasse = 1;
-  Integer<R> prod = ring->one();
+  Integer<R> prod = ZZ->one();
   for (size_t i = 0; i < n; i++)
     prod *= D[i];
   for (size_t i = 0; i < n-1; i++)
