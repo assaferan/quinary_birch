@@ -335,11 +335,11 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   // The Gram matrix thusfar.
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      B(i,j) = (this->_X[i][j]).num();
+      B(i,j) = this->_X[i][j];
 
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      B(this->_k+i,j) = (this->_Z[i][j]).num();
+      B(this->_k+i,j) = this->_Z[i][j];
 
   gram = __gram(B);
 
