@@ -58,6 +58,7 @@ SquareMatrixInt<R,n>::operator=(const SquareMatrixInt<R,n> & other)
 
 // arithmetic
 
+/*
 template<typename R, size_t n>
 inline SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
@@ -73,6 +74,7 @@ SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
   
   return prod;
 }
+*/
 
 // matrix multiplication is a major bottleneck, hence we attempt to optimize it here
 template<>
@@ -106,10 +108,6 @@ SquareMatrixInt<Z64,4> SquareMatrixInt<Z64,4>::operator*(const SquareMatrixInt<Z
   
   return C;
 }
-
-
-
-
 
 template<typename R, size_t n>
 inline VectorInt<R,n> SquareMatrixInt<R,n>::operator*(const VectorInt<R,n>& vec) const
