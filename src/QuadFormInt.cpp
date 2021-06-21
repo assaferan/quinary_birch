@@ -341,7 +341,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 	  // and then divide p^2 out of the discriminant.
 	  Z_Vector<3> vec = ZisotropicMod_pp(q, p);
 
-	  assert( (q.evaluate(vec) % pp).isZero() );
+	  assert( (q.evaluate(vec) % pp.num()) == 0 );
 
 	  if ((vec[0] != 0) && (vec[1] != 0) && (vec[2] != 0)) break;
 	  else if ((vec[0] != 0) && (vec[1] != 0))
