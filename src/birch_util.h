@@ -37,6 +37,9 @@ namespace birch_util
   R gcd(const R &, const R &);
 
   template<typename R>
+  R lcm(const R &, const R &);
+
+  template<typename R>
   R xgcd(const R &, const R &, R &, R&);
   
   int charVal(W64 x);
