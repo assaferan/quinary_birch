@@ -120,7 +120,7 @@ mod(const VectorInt<R,n> & a, std::shared_ptr< Fp<S,T> > GF)
 {
   VectorFp<S,T,n> vec_mod(GF);
   for (size_t i = 0; i < n; i++)
-    vec_mod[i] = GF->mod(a[i].num());
+    vec_mod[i] = GF->mod(a[i]);
  
   std::shared_ptr< VectorFp<S,T,n> > vec =
     std::make_shared< VectorFp<S,T,n> >(vec_mod);
