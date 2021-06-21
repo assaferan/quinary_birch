@@ -490,9 +490,9 @@ inline void QuadFormInt<R,n>::_closestLatticeVector(SquareMatrixInt<R,n> &q,
   std::shared_ptr<const IntegerRing<R> > ZZ = std::make_shared<const IntegerRing<R> >();
   
   Isometry<R,n> g, min_g;
-  SquareMatrixInt<R,n> x_gram(ZZ);
-  SquareMatrixInt<R,n-1> H_int(ZZ);
-  VectorInt<R,n-1> v_int(ZZ);
+  SquareMatrixInt<R,n> x_gram;
+  SquareMatrixInt<R,n-1> H_int;
+  VectorInt<R,n-1> v_int;
 
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "finding closest_lattice_vector with gram:" << std::endl;
