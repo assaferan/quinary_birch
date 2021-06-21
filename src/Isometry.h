@@ -18,28 +18,28 @@ public:
   // c-tors
   Isometry() :
     _a(SquareMatrixInt<R,n>::identity()),
-    _scale(Integer<R>::one())
+    _scale(1)
   {}
 
-  Isometry(const SquareMatrixInt<R,n> & mat) : _a(mat), _scale(Integer<R>::one()) {}
+  Isometry(const SquareMatrixInt<R,n> & mat) : _a(mat), _scale(1) {}
 
-  Isometry(const SquareMatrixInt<R,n> & mat, const Integer<R> & scale) :
+  Isometry(const SquareMatrixInt<R,n> & mat, const R & scale) :
     _a(mat), _scale(scale) { this->rescale(); }
 
   // access - set/get
   inline const SquareMatrixInt<R,n> & integralMatrix(void) const
   {return this->_a;}
   
-  inline const Integer<R> & getScale(void) const
+  inline const R & getScale(void) const
   { return this->_scale; }
   
   inline void setValues(const SquareMatrixInt<R,n> & mat)
   { this->_a = mat; }
 
   inline void setIdentity(void)
-  { this->_a.setIdentity(); this->_scale = Integer<R>::one(); }
+  { this->_a.setIdentity(); this->_scale = 1; }
 
-  inline void setScale(const Integer<R> & scale)
+  inline void setScale(const R & scale)
   { this->_scale = scale; }
 
   void rescale(void);
@@ -94,17 +94,17 @@ public:
   {return (other._scale * this->_a < this->_scale * other._a);}
   */
   inline Rational<R> determinant() const
-  {return _a.determinant() / (_scale^n); }
+  {return Rational<R>(_a.determinant(), _scale^n); }
 
   inline bool isOne() const
-  {return _a == _scale * SquareMatrixInt<R,n>::identity(_a.baseRing()); }
+  {return _a == _scale * SquareMatrixInt<R,n>::identity(); }
 
   inline SquareMatrixInt<R,n> hermiteForm(const R & d) const
   {return _a.hermiteForm(d); }
   
 protected:
   SquareMatrixInt<R,n> _a;
-  Integer<R> _scale;
+  R _scale;
 };
 
 namespace std {
@@ -117,7 +117,7 @@ namespace std {
       Z64 fnv = FNV_OFFSET;
       for (size_t i = 0; i < n; i++)
 	for (size_t j = 0; j < n; j++) {
-	  Rational<R> elt = s(i,j) / s.getScale();
+	  Rational<R> elt(s(i,j), s.getScale());
 	  fnv = (fnv ^ std::hash< Rational<R> >{}(elt)) * FNV_PRIME;
 	}
       return fnv;
