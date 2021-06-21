@@ -40,7 +40,8 @@ public:
   QuadFormInt<R,n>& operator=(const QuadFormInt<R,n> &);
     
   using R_QuadForm<R,n>::discriminant;
-  using R_QuadForm<R,n>::evaluate;
+  inline R evaluate(const VectorInt<R,n>& vec) const
+  { return VectorInt<R,n>::innerProduct(vec, (this->_B) * vec) / 2; }
 
   struct jordan_data {
     std::vector< MatrixRat<R> > matrices;
