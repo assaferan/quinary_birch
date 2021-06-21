@@ -4,6 +4,7 @@
 #include "birch.h"
 #include "Isometry.h"
 #include "QuadFormInt.h"
+#include "VectorInt.h"
 
 template class QuadFormZZ<Z,3>;
 template class QuadFormZZ<Z64,3>;
