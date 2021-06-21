@@ -486,8 +486,6 @@ inline VectorInt<R,n>
 NeighborManager<R,S,T,n>::transformVector(const GenusRep<T,n>& dst,
 					  VectorInt<R,n> src)
 {
-  std::shared_ptr< const IntegerRing<R> > ZZ_R = std::make_shared< const IntegerRing<R> >();
-
   VectorInt<T,n> temp;
   VectorFp<R,S,n> temp_mod = *mod(src, this->_GF);
   for (size_t i = 0; i < n; i++)
@@ -503,7 +501,7 @@ NeighborManager<R,S,T,n>::transformVector(const GenusRep<T,n>& dst,
   for (size_t i = 0; i < n; i++)
     temp[i] /= sinv.getScale();
 
-  VectorInt<R,n> vec(ZZ_R);
+  VectorInt<R,n> vec;
   for (size_t i = 0; i < n; i++)
     vec[i] = this->_GF->mod(temp[i].num()).lift();
 
