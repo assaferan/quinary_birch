@@ -1313,7 +1313,7 @@ bool QuadFormInt<R,n>::_signNormalizationFast(SquareMatrixInt<R,n> & qf,
     // vec will always have the only the bits k and k+j on 
     vec = 1 | (1 << j);
     for (size_t k = 0; k < n-j; k++) {
-      if (!(qf(k,k+j).isZero())) {
+      if (qf(k,k+j) != 0) {
 	int lead = k;
 	ech_vec = vec;
 
