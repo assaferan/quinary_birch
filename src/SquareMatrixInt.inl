@@ -416,7 +416,7 @@ VectorInt<R,n>
 SquareMatrixInt<R,n>::solve(const VectorInt<R,n> & vec) const
 {
   assert(isSymmetric());
-  Vector<R,n> sol;
+  VectorInt<R,n> sol;
   SquareMatrixInt<R,n> L;
   VectorInt<R,n> D;
   bool is_positive_definite = cholesky(L, D);
