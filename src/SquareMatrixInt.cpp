@@ -1,3 +1,7 @@
+#include <pmmintrin.h>
+#include <immintrin.h>
+
+#include "birch.h"
 #include "SquareMatrixInt.h"
 
 // matrix multiplication is a major bottleneck, hence we attempt to optimize it here
