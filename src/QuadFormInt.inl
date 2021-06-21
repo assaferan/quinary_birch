@@ -484,8 +484,7 @@ template<typename R, size_t n>
 inline VectorInt<R,n-1> QuadFormInt<R,n>::_voronoiBounds(size_t dim)
 {
   // !! TODO - check what the real bounds are !!
-  std::shared_ptr<const IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
-  VectorInt<R,n-1> bounds(ZZ);
+  VectorInt<R,n-1> bounds;
   for (size_t i = 0; i < dim; i++)
     bounds[i].makeOne();
   return bounds;
