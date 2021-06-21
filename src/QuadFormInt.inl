@@ -807,7 +807,7 @@ inline bool QuadFormInt<R,n>::_signNormalizationSlow(SquareMatrixInt<R,n> & qf,
     w_F2(row, ps_ptr->second) = GF2->mod(1);
 
     // the affine coordinate
-    if (qf(ps_ptr->first, ps_ptr->second) < Integer<R>::zero())
+    if (qf(ps_ptr->first, ps_ptr->second) < 0)
       w_F2(row, n) = GF2->mod(1);
     
     ps_ptr++;
