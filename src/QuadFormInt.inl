@@ -1460,7 +1460,7 @@ QuadFormInt<R,n>::_permutationOrbit() const
     std::vector< std::vector<size_t> > val_perms =
       QuadFormInt<R,n>::_allPerms(value.size());
     for (std::vector<size_t> perm : val_perms) {
-      VectorInt<size_t,n> large_perm(ZZ);
+      VectorInt<size_t,n> large_perm;
       for (size_t k = 0; k < n; k++)
 	large_perm[k] = k;
       for (size_t idx = 0; idx < value.size(); idx++) {
