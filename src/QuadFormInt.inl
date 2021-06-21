@@ -890,11 +890,11 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
   bool is_reduced = true;
   std::vector< std::set< VectorInt<R,n> > > local_neighbors(1);
   Isometry<R,n> b0;
-  std::shared_ptr< const IntegerRing<R> > ZZ = qf.baseRing();
-  VectorInt<R,n> vec(ZZ);
-  vec[0].makeOne();
+
+  VectorInt<R,n> vec;
+  vec[0] = 1;
   for (size_t i = 1; i < n; i++)
-    vec[i].makeZero();
+    vec[i] = 0;
   local_neighbors[0].insert(vec);
   size_t num_free = 1;
   for (size_t i = 1; i < n; i++) {
@@ -902,17 +902,17 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
     std::set< VectorInt<R,n> > free_hood;
     for (size_t x_idx = 0; x_idx < num_free; x_idx++) {
       size_t tmp = x_idx;
-      VectorInt<R,n> x(ZZ);
+      VectorInt<R,n> x;
       for (size_t j = 0; j < i; j++) {
 	// we separate because tmp is unsigned, which might lead to overflow
 	x[j] = R(tmp % 3);
 	x[j]--;
 	tmp /= 3;
       }
-      x[i].makeOne();
+      x[i] = 1;
       for (size_t j = i+1; j < n; j++)
-	x[j].makeZero();
-      Integer<R> norm = VectorInt<R,n>::innerProduct(x*qf, x);
+	x[j] = 0;
+      R norm = VectorInt<R,n>::innerProduct(x*qf, x);
       if (norm < qf(i,i)) {
 	// !! TODO - this doesn't really happen
 	// when we start with something which is
@@ -938,9 +938,9 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
     local_neighbors.push_back(free_hood);
   }
 
-  std::map< Integer<R>, std::vector<size_t> > norms;
+  std::map< R, std::vector<size_t> > norms;
   for (size_t i = 0; i < n; i++) {
-    Integer<R> val = qf(i,i);
+    R val = qf(i,i);
     auto search = norms.find(val);
     if (search == norms.end()) {
       std::vector<size_t> empty_vec(0);
@@ -948,7 +948,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
     }
     norms[val].push_back(i);
   }
-  typename std::map< Integer<R>, std::vector<size_t> >::const_iterator iter;
+  typename std::map< R, std::vector<size_t> >::const_iterator iter;
   // !! TODO - here there's duplication.
   // we can simply call local_neighbors[norms[i]],
   // changin local_neighbors to depend on the norm
@@ -978,7 +978,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
   }
   for (size_t i = 1; i < n; i++) {
     std::vector< std::vector< VectorInt<R,n> > > ns1;
-    Integer<R> norm = qf(i,i);
+    R norm = qf(i,i);
     std::vector<size_t> inds;
     for (size_t j = 0; j < i; j++)
       if (qf(j,j) == norm) inds.push_back(j);
