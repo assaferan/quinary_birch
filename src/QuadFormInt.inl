@@ -524,11 +524,7 @@ inline void QuadFormInt<R,n>::_closestLatticeVector(SquareMatrixInt<R,n> &q,
 #endif
   
   VectorInt<R,n-1> voronoi = _voronoiBounds(dim-1);
-  VectorInt<R,n-1> x(ZZ);
-  VectorInt<R,n-1> x_min(ZZ);
-  VectorInt<R,n-1> x_max(ZZ);
-  VectorInt<R,n-1> x_num(ZZ);
-  VectorInt<R,n-1> x_closest(ZZ);
+  VectorInt<R,n-1> x, x_min, x_max, x_num, x_closest;
 
   // This can be calculated more efficiently
   Integer<R> det = Integer<R>::zero();
