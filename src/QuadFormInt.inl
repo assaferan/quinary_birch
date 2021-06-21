@@ -858,10 +858,10 @@ inline bool QuadFormInt<R,n>::_normEchelon(SquareMatrixInt<R,n> & qf,
   for (size_t i = 0; i < n-1; i++) {
     if (qf(i+1,i+1) < qf(i,i)) {
       s.setIdentity();
-      s(i+1,i+1).makeZero();
-      s(i,i).makeZero();
-      s(i,i+1).makeOne();
-      s(i+1,i).makeOne();
+      s(i+1,i+1) = 0;
+      s(i,i) = 0;
+      s(i,i+1) = 1;
+      s(i+1,i) = 1;
       qf = s.transform(qf);
       u0 = u0*s;
 #ifdef DEBUG
