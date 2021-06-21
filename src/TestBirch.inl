@@ -27,7 +27,8 @@ inline void TestBirch<R,n>::testDim(const R & spinor_prime, size_t dim) const
 
 template<typename R, size_t n>
 inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
-					    const  std::map< R, std::vector< NumberFieldElement<Z> > > & evs) const
+					    const  std::map< R, std::vector< NumberFieldElement<Z> > > & evs,
+					    size_t num_evs) const
 {
   EigenvectorManager<R,n> manager;
   std::vector< std::vector< NumberFieldElement<Z> > > evecs = _p_genus->eigenvectors()[spinor_prime];
@@ -41,7 +42,8 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
   for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs) {
     Integer<R> p = ev.first;
     std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num());
-    for (size_t i = 0; i < evecs.size(); i++) {
+    size_t upTo = (num_evs == 0) ? evecs.size() : num_evs); 
+    for (size_t i = 0; i < upTo; i++) {
       evalues[i].vec.push_back(ev.second[i]);
       computed_evalues[i].vec.push_back(computed[i]);
     }
@@ -62,11 +64,11 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
 }
 
 template<typename R, size_t n>
-inline TestBirch<R,n>::TestBirch(const BirchExample<R,n> & example)
+inline TestBirch<R,n>::TestBirch(const BirchExample<R,n> & example, size_t num_evs)
 {
   this->_init(example.coeffs);
   this->testDim(example.spinor_prime, example.dim);
-  this->testEigenvalues(example.spinor_prime, example.evs);
+  this->testEigenvalues(example.spinor_prime, example.evs, num_evs);
 }
 
 template<typename R, size_t n>
@@ -90,7 +92,7 @@ inline void TestBirch<R,n>::_init(const typename QuadFormZZ<R,n>::SymVec & coeff
   this->_p_genus = std::make_shared< Genus<R,n> >(q, symbols);
 }
 
-inline void runBirchTests(void) {
-  TestBirch<Z64,3> test_7_2(BirchExample<Z64,3>::getExample_GV_7_2());
-  TestBirch<Z64,4> test_7_3(BirchExample<Z64,4>::getExample_GV_7_3());
+inline void runBirchTests(size_t num_evs) {
+  TestBirch<Z64,3> test_7_2(BirchExample<Z64,3>::getExample_GV_7_2(), num_evs);
+  TestBirch<Z64,4> test_7_3(BirchExample<Z64,4>::getExample_GV_7_3(), num_evs);
 }
