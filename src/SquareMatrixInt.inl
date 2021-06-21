@@ -63,7 +63,7 @@ SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
 }
 
 template<typename R, size_t n>
-Vector<R,n> SquareMatrixInt<R,n>::operator*(const VectorInt<R,n>& vec) const
+VectorInt<R,n> SquareMatrixInt<R,n>::operator*(const VectorInt<R,n>& vec) const
 {
   Vector<R,n> prod;
   for (size_t i = 0; i < n; i++) {
