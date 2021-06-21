@@ -132,7 +132,6 @@ QuadFormInt<R,n>::getQuinaryForms(const R & disc)
 template<typename R, size_t n>
 inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
 {
-  std::shared_ptr<const IntegerRing<R> > ring = this->baseRing();
   VectorInt<R,n> D;
   SquareMatrixInt<R,n> L;
   R prod_diag = 1;
@@ -176,7 +175,7 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
   // are even, and we are more interested in their half values,
   // which corresponds to the quadratic form.
   for (size_t i = 0; i < n; i++)
-    D[i] /= (ring->one() + ring->one());
+    D[i] /= 2;
   
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "L=" << std::endl << L << std::endl;
