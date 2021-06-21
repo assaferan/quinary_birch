@@ -58,6 +58,7 @@ SOURCES += SetCover.cpp
 SOURCES += SetCover.h
 SOURCES += SquareMatrix.h
 SOURCES += SquareMatrix.inl
+SOURCES += SquareMatrixInt.cpp
 SOURCES += SquareMatrixInt.h
 SOURCES += SquareMatrixInt.inl
 SOURCES += TestBirch.h
