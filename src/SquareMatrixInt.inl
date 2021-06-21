@@ -84,8 +84,8 @@ SquareMatrixInt<Z64,4> SquareMatrixInt<R,n>::_mmul_64_4(const SquareMatrixInt<Z6
     __m256i Z = ARz * BCz;
     __m256i W = ARw * BCw;
 
-    __m256i R = X+Y+Z+W;
-    _mm256_store_si256((__m256i_u*)resultRowPointer, R);
+    __m256i S = X+Y+Z+W;
+    _mm256_store_si256((__m256i_u*)resultRowPointer, S);
   }
   
   return C;
