@@ -467,30 +467,36 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
   for (size_t idx=0; idx<this->_inv_hash->size(); idx++)
     {
       GenusRep<R,n>& rep = this->_inv_hash->at(idx);
-      GenusRep<R,n>& parent = this->_hash->at(rep.parent);
+      
+      // Only compute composite isometries if we are not considering the
+      // mother form.
+      if (rep.parent != -1)
+	{
+	  GenusRep<R,n>& parent = this->_hash->at(rep.parent);
 
-      assert( rep.s.transform(parent.q.bilinearForm()) ==
-	      rep.q.bilinearForm() );
-      assert( parent.s.transform(mother.q.bilinearForm()) ==
-	      parent.q.bilinearForm() );  
+	  assert( rep.s.transform(parent.q.bilinearForm()) ==
+		  rep.q.bilinearForm() );
+	  assert( parent.s.transform(mother.q.bilinearForm()) ==
+		  parent.q.bilinearForm() );  
 
-      // Construct the isometries to/from the mother quadratic form.
-      rep.sinv = rep.s.inverse();
-      rep.sinv = rep.sinv * parent.sinv;
-      rep.s = parent.s * rep.s;
+	  // Construct the isometries to/from the mother quadratic form.
+	  rep.sinv = rep.s.inverse();
+	  rep.sinv = rep.sinv * parent.sinv;
+	  rep.s = parent.s * rep.s;
 
-      // Copy the numerators, and increment the genus rep prime.
-      rep.es = parent.es;
-      ++rep.es[rep.p];
+	  // Copy the numerators, and increment the genus rep prime.
+	  rep.es = parent.es;
+	  ++rep.es[rep.p];
 
-      // Verify that s is an isometry from the mother form to the rep,
-      // and that sinv is an isometry from the rep to the mother form.
-      assert( rep.s.transform(mother.q.bilinearForm()) ==
-	      rep.q.bilinearForm() );
-      assert( rep.s.isIsometry(mother.q, rep.q) );
-      assert( rep.sinv.isIsometry(rep.q, mother.q) );
+	  // Verify that s is an isometry from the mother form to the rep,
+	  // and that sinv is an isometry from the rep to the mother form.
+	  assert( rep.s.transform(mother.q.bilinearForm()) ==
+		  rep.q.bilinearForm() );
+	  assert( rep.s.isIsometry(mother.q, rep.q) );
+	  assert( rep.sinv.isIsometry(rep.q, mother.q) );
 
-     
+	}
+      
     }
 }
 
