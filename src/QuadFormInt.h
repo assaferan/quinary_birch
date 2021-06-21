@@ -16,12 +16,11 @@
 // quadratic forms over the integers
 
 template<typename R, size_t n>
-class QuadFormInt : public R_QuadForm<R,n>
+class QuadFormInt
 {
 public:
   QuadFormInt()
-    : R_QuadForm<R,n>(std::make_shared<IntegerRing<R> >()),
-      _is_reduced(false),
+    : _is_reduced(false),
       _num_aut(0),
       _num_aut_init(false)
   {}
@@ -29,17 +28,22 @@ public:
   // We adhere to magma convention - giving the rows
   // up to the diagonal
   QuadFormInt(const typename R_QuadForm<R,n>::SymVec& coeffs)
-    : R_QuadForm<R,n>(coeffs), _is_reduced(false), _num_aut(0), _num_aut_init(false) {}
+    : _is_reduced(false), _num_aut(0), _num_aut_init(false) {}
 
   QuadFormInt(const SquareMatrix<Integer<R>, IntegerRing<R>, n> & B)
-    : R_QuadForm<R,n>(B), _is_reduced(false), _num_aut(0), _num_aut_init(false)  {}
+    : _is_reduced(false), _num_aut(0), _num_aut_init(false)  {}
 
   QuadFormInt(const SquareMatrixInt<R,n> &);
   
   // assignment
   QuadFormInt<R,n>& operator=(const QuadFormInt<R,n> &);
-    
-  using R_QuadForm<R,n>::discriminant;
+
+  // access
+  inline const R & operator()(size_t i, size_t j) const {return _B(i,j); }
+  inline R & operator()(size_t i, size_t j) {return _B(i,j); }
+  
+  R discriminant(void) const;
+  
   inline R evaluate(const VectorInt<R,n>& vec) const
   { return VectorInt<R,n>::innerProduct(vec, (this->_B) * vec) / 2; }
 
@@ -89,6 +93,7 @@ public:
   
 protected:
 
+  SquareMatrixInt<R,n> _B;
   // we save these for quick access
   
   bool _is_reduced;
