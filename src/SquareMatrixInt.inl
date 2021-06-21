@@ -63,9 +63,9 @@ SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
   SquareMatrixInt<R,n> prod;
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++) {
-      prod(i,j) = 0;
+      prod._mat[i][j] = 0;
       for (size_t k = 0; k < n; k++)
-	prod(i,j) += this->_mat[i][k]*other(k,j);
+	prod._mat[i][j] += this->_mat[i][k]*other._mat[k][j];
     }
   return prod;
 }
