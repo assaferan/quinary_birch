@@ -83,26 +83,26 @@ SquareMatrixInt<Z64,4>::operator*(const SquareMatrixInt<Z64,4>& B) const
   SquareMatrixInt<Z64,4> C;
   const SquareMatrixInt<Z64,4> & A = (*this);
   
-  const __m256 BCx = _mm_load_ps((Z64*)&B._mat[0]);
-  const __m256 BCy = _mm_load_ps((Z64*)&B._mat[1]);
-  const __m256 BCz = _mm_load_ps((Z64*)&B._mat[2]);
-  const __m256 BCw = _mm_load_ps((Z64*)&B._mat[3]);
+  const __m256i BCx = _mm256_loadu_epi64((Z64*)&B._mat[0]);
+  const __m256i BCy = _mm256_loadu_epi64((Z64*)&B._mat[1]);
+  const __m256i BCz = _mm256_loadu_epi64((Z64*)&B._mat[2]);
+  const __m256i BCw = _mm256_loadu_epi64((Z64*)&B._mat[3]);
 
   Z64* leftRowPointer = &A._mat[0];
   Z64* resultRowPointer = &C._mat[0];
 
   for (size_t i = 0; i < 4; ++i, leftRowPointer += 4, resultRowPointer += 4) {
-    __m256 ARx = _mm_set1_ps(leftRowPointer[0]);
-    __m256 ARy = _mm_set1_ps(leftRowPointer[1]);
-    __m256 ARz = _mm_set1_ps(leftRowPointer[2]);
-    __m256 ARw = _mm_set1_ps(leftRowPointer[3]);
+    __m256i ARx = _mm256_set1_epi64x(leftRowPointer[0]);
+    __m256i ARy = _mm256_set1_epi64x(leftRowPointer[1]);
+    __m256i ARz = _mm256_set1_epi64x(leftRowPointer[2]);
+    __m256i ARw = _mm256_set1_epi64x(leftRowPointer[3]);
 
-    __mm256 X = ARx * BCx;
-    __mm256 Y = ARy * BCy;
-    __mm256 Z = ARz * BCz;
-    __mm256 W = ARw * BCw;
+    __mm256i X = ARx * BCx;
+    __mm256i Y = ARy * BCy;
+    __mm256i Z = ARz * BCz;
+    __mm256i W = ARw * BCw;
 
-    __mm256 R = X+Y+Z+W;
+    __mm256i R = X+Y+Z+W;
     _mm_store_ps(resultRowPointer, R);
   }
   
