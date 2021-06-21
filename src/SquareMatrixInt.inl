@@ -28,6 +28,6 @@ SquareMatrixInt<R,n> SquareMatrixInt<R,n>::operator*(const SquareMatrixInt & oth
 template<typename R, size_t n>
 SquareMatrixInt<R,n> SquareMatrixInt<R,n>::transpose(void) const
 {
-  return this->transpose();
+  return SquareMatrix< Integer<R>, IntegerRing<R>, n>::transpose();
 }
 
