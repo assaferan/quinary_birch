@@ -89,6 +89,7 @@ protected:
   VectorInt<R,n> _backwardSubstitution(const VectorInt<R,n> & vec) const;
   SquareMatrixInt<R,n> _inverseLowerTriangular(void) const;
   SquareMatrixInt<R,n> _inverseUpperTriangular(void) const;
+  SquareMatrixInt<Z64,4> _mmul_64_4(const SquareMatrixInt<Z64,4>& B) const;
 };
 
 // left multiplication
