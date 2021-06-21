@@ -1,3 +1,5 @@
+#include <memory>
+
 namespace birch_util
 {
   template<typename From, typename To>
