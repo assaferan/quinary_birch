@@ -177,7 +177,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   
   // Build the coordinate matrix.
   // !! TODO - the mod p is not necessary, good for debugging  
-  SquareMatrixInt<T,n> B(ZZ);
+  SquareMatrixInt<T,n> B;
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       B(i,j) = this->_X[i][j] = Integer<T>(x[i][j].lift()) % p;
