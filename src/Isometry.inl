@@ -4,14 +4,14 @@ template<typename R, size_t n>
 inline SquareMatrixInt<R,n>
 Isometry<R,n>::transform(const SquareMatrixInt<R,n>& from) const
 {
-  return (this->_a).transpose()*from*(this->_a) / (this->_scale.num() * this->_scale.num());
+  return (this->_a).transpose()*from*(this->_a) / (this->_scale * this->_scale);
 }
 
 template<typename R, size_t n>
 inline bool Isometry<R,n>::isIsometry(const QuadFormInt<R,n>& from,
 				      const QuadFormInt<R,n>& to) const
 {
-  Integer<R> scalar = this->_scale * this->_scale;
+  R scalar = this->_scale * this->_scale;
   Integer<R> val;
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++) {
@@ -41,7 +41,6 @@ inline void Isometry<R,n>::updatePerm(const VectorInt<size_t, n> & perm) {
 template<typename R, size_t n>
 inline Isometry<R,n> Isometry<R,n>::inverse(void) const
 {
-  std::shared_ptr< const IntegerRing<R> > ZZ = _a.baseRing();
   std::shared_ptr< const RationalField<R> >
     QQ = std::make_shared< const RationalField<R> >();
   // !! TODO - should be able to invert without using rationals
@@ -54,7 +53,7 @@ inline Isometry<R,n> Isometry<R,n>::inverse(void) const
     }
   a_rat = a_rat.inverse();
   
-  SquareMatrixInt<R,n> a_inv(ZZ);
+  SquareMatrixInt<R,n> a_inv;
   // Since this is an isometry, the inverse should be integral
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
@@ -78,6 +77,6 @@ inline void Isometry<R,n>::rescale(void)
     for (size_t j = 0; j < n; j++)
       this->_a(i,j) /= d.num();
 
-  this->_scale /= d;
+  this->_scale /= d.num();
   return;
 }
