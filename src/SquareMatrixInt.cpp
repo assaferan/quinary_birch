@@ -4,7 +4,22 @@
 #include "birch.h"
 #include "SquareMatrixInt.h"
 
-// matrix multiplication is a major bottleneck, hence we attempt to optimize it here
+// these are specializations we were forces to produce
+template<>
+SquareMatrixInt<Z64,2> SquareMatrixInt<Z64,2>::operator*(const SquareMatrixInt<Z64,2>& other) const
+{
+  SquareMatrixInt<Z64,2> prod;
+
+  for (size_t i = 0; i < 2; i++)
+    for (size_t j = 0; j < 2; j++) {
+      prod._mat[i][j] = 0;
+      for (size_t k = 0; k < 2; k++)
+	prod._mat[i][j] += this->_mat[i][k]*other._mat[k][j];
+    }
+  
+  return prod;
+}
+
 template<>
 SquareMatrixInt<Z64,3> SquareMatrixInt<Z64,3>::operator*(const SquareMatrixInt<Z64,3>& other) const
 {
