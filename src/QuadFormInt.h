@@ -11,7 +11,7 @@
 #include "Integer.h"
 #include "ParseNipp.h"
 #include "QuadForm.h"
-#include "SquareMatrix.h"
+#include "SquareMatrixInt.h"
 
 // quadratic forms over the integers
 
