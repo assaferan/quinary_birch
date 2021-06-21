@@ -60,14 +60,14 @@ static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Integer<Z>& p)
   vec[n-1] = 1;
 
   // Try (0 0 ... 0 1) first.
-  if ((q.evaluate(vec) % pp).isZero())
+  if ((q.evaluate(vec) % pp) == 0)
     return vec;
 
   // Try (0 0 .... 0 1 x) next.
   vec[n-2] = 1;
   for (Z x = 0; x < pp; x++) {
     vec[n-1] = x;
-    if ((q.evaluate(vec) % pp).isZero())
+    if ((q.evaluate(vec) % pp) == 0)
       return vec;
   }
     
@@ -77,7 +77,7 @@ static Z_Vector<n> ZisotropicMod_pp(const Z_QuadForm<n>& q, const Integer<Z>& p)
     vec[n-2] = x;
     for (Z y = 0; y < pp; y++) {
       vec[n-1] = y;
-      if ((q.evaluate(vec) % pp).isZero())
+      if ((q.evaluate(vec) % pp) == 0)
 	return vec;
     }
   }
