@@ -135,9 +135,9 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
   std::shared_ptr<const IntegerRing<R> > ring = this->baseRing();
   VectorInt<R,n> D;
   SquareMatrixInt<R,n> L;
-  Integer<R> prod_diag = ring->one();
-  Integer<R> d = ring->zero();
-  Integer<R> inner_sum = ring->zero();
+  R prod_diag = 1;
+  R d = 0;
+  R inner_sum = 0;
   // This works but inefficiently - for some reason we get O(n^4) operations.
   // !! TODO - check it out later
   // Oh I see - we should do the L update in two passes...
@@ -147,27 +147,29 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
       d = prod_diag;
       for (size_t j = 0; j < i; j++)
 	{
-	  L(i,j).makeZero();
+	  L(i,j) = 0;
 	  for (size_t k = j; k < i; k++)
 	    {
-	      inner_sum.makeZero();
+	      inner_sum = 0;
 	      for (size_t r = 0; r <= k; r++)
 		inner_sum += L(k, r)*(this->_B(i,r))*L(k,j);
 	      inner_sum *= -L(i, i) / D[k];
 	      L(i,j) += inner_sum;
 	    }
-	  d = d.gcd(L(i, j));
+	  // d = d.gcd(L(i, j));
+	  d = gcd(d, L(i,j));
 	}
       for (size_t j = 0; j <= i; j++) {
 	L(i,j) /= d;
       }
-      D[i].makeZero();
+      D[i] = 0;
       for (size_t j = 0; j <= i; j++)
 	for (size_t k = 0; k <= i; k++)
 	  D[i] += L(i, j)*(this->_B(j,k))*L(i, k);
-      prod_diag = prod_diag.lcm(D[i]);
+      //      prod_diag = prod_diag.lcm(D[i]);
+      prod_diag = lcm(prod_diag, D[i]);
       for (size_t j = i+1; j < n; j++)
-	L(i,j).makeZero();
+	L(i,j) = 0;
     }
 
   // Recall that this is an even lattice, so all entries in D
