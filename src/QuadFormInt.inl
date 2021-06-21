@@ -527,33 +527,33 @@ inline void QuadFormInt<R,n>::_closestLatticeVector(SquareMatrixInt<R,n> &q,
   VectorInt<R,n-1> x, x_min, x_max, x_num, x_closest;
 
   // This can be calculated more efficiently
-  Integer<R> det = Integer<R>::zero();
+  R det = 0;
   for (size_t i = 0; i < dim-1; i++)
     det += H_int(0,i)*q(i,0);
-  det = det.abs();
+  det = abs(det);
   for (size_t i = 0; i < dim-1; i++) {
-    Integer<R> tmp =  y_int[i] - det.num()*voronoi[i];
+    R tmp =  y_int[i] - det*voronoi[i];
     // Check tht it now works normally with Integer<R>
-    // x_min[i] = ((tmp >= Integer<R>::zero()) ? tmp+det-1 : tmp)/det;
-    x_min[i] = tmp / det;
+    x_min[i] = ((tmp >= 0) ? tmp+det-1 : tmp)/det;
+    // x_min[i] = tmp / det;
   }
   for (size_t i = 0; i < dim-1; i++) {
-    Integer<R> tmp =  y_int[i] + det*voronoi[i];
+    R tmp =  y_int[i] + det*voronoi[i];
     // Check tht it now works normally with Integer<R>
-    // x_max[i] = ((tmp >= 0) ? tmp : tmp-det+1)/det;
-    x_max[i] = (tmp+det-Integer<R>::one())/det;
+    x_max[i] = ((tmp >= 0) ? tmp : tmp-det+1)/det;
+    // x_max[i] = (tmp+det-Integer<R>::one())/det;
   }
   
   for (size_t i = 0; i < dim-1; i++)
-    x_num[i] = x_max[i] - x_min[i] + Integer<R>::one();
+    x_num[i] = x_max[i] - x_min[i] + 1;
   
-  Integer<R> num_xs = Integer<R>::one();
+  R num_xs = 1;
   for (size_t i = 0; i < dim-1; i++)
     num_xs *= x_num[i];
   // This should be infinity
-  Integer<R> min_dist = std::numeric_limits<R>::max();
-  for (Integer<R> x_idx = Integer<R>::zero(); x_idx < num_xs; x_idx++) {
-    Integer<R> tmp = x_idx;
+  R min_dist = std::numeric_limits<R>::max();
+  for (Integer<R> x_idx = 0; x_idx < num_xs; x_idx++) {
+    R tmp = x_idx;
     for (size_t i = 0; i < dim-1; i++) {
       size_t j = dim-2-i;
       x[j] = x_min[j] + (tmp % x_num[j]);
