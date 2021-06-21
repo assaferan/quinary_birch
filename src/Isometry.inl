@@ -76,7 +76,7 @@ inline void Isometry<R,n>::rescale(void)
   
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      this->_a(i,j) /= d;
+      this->_a(i,j) /= d.num();
 
   this->_scale /= d;
   return;
