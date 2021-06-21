@@ -214,12 +214,19 @@ inline R SquareMatrixInt<R,n>::determinant(void) const
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
       M(row+1, col+1) = this->_mat[row][col];
+  // we initialize the first row and column to 0, even though we don't use them
+  // otherwise the compiler gets mad
+  // !! TODO - use M00 as a single variable outside and have M as nXn matrix
+  for (size_t row = 0; row < n; row++) {
+    M(row+1,0) = 0;
+    M(0,row+1) = 0;
+  }
+  
   for (size_t k = 1; k < n; k++) {
     if (M(k,k) == 0) {
       bool found = false;
       for (size_t i = k+1; i <= n; i++) {
 	if (M(i,k) != 0) {
-	  assert((k != 0) && (i != 0));
 	  M.swapRows(k,i);
 	  sign = -sign;
 	  found = true;
