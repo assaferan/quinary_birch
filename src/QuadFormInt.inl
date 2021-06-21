@@ -166,7 +166,7 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
 	for (size_t k = 0; k <= i; k++)
 	  D[i] += L(i, j)*(this->_B(j,k).num())*L(i, k);
       //      prod_diag = prod_diag.lcm(D[i]);
-      prod_diag = lcm(prod_diag, D[i]);
+      prod_diag = birch_util::lcm(prod_diag, D[i]);
       for (size_t j = i+1; j < n; j++)
 	L(i,j) = 0;
     }
