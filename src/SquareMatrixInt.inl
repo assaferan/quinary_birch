@@ -85,7 +85,7 @@ SquareMatrixInt<Z64,3> SquareMatrixInt<Z64,3>::operator*(const SquareMatrixInt<Z
   for (size_t i = 0; i < 3; i++)
     for (size_t j = 0; j < 3; j++) {
       prod._mat[i][j] = 0;
-      for (size_t k = 0; k < n; k++)
+      for (size_t k = 0; k < 3; k++)
 	prod._mat[i][j] += this->_mat[i][k]*other._mat[k][j];
     }
   
@@ -93,14 +93,14 @@ SquareMatrixInt<Z64,3> SquareMatrixInt<Z64,3>::operator*(const SquareMatrixInt<Z
 }
 
 template<>
-SquareMatrixInt<Z,3> SquareMatrixInt<Z64,3>::operator*(const SquareMatrixInt<Z,3>& other) const
+SquareMatrixInt<Z,3> SquareMatrixInt<Z,3>::operator*(const SquareMatrixInt<Z,3>& other) const
 {
   SquareMatrixInt<Z,3> prod;
 
   for (size_t i = 0; i < 3; i++)
     for (size_t j = 0; j < 3; j++) {
       prod._mat[i][j] = 0;
-      for (size_t k = 0; k < n; k++)
+      for (size_t k = 0; k < 3; k++)
 	prod._mat[i][j] += this->_mat[i][k]*other._mat[k][j];
     }
   
