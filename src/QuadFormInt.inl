@@ -289,7 +289,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
      for (size_t i = 0; i < n; i++)
        for (size_t j = 0; j < n; j++)
 	 G(i, j) =
-	   SquareMatrixInt<R,n>::innerProduct(this->_B, S, i, j);
+	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, i, j);
 #ifdef DEBUG_LEVEL_FULL
      std::cerr << "G = " << std::endl;
      G.prettyPrint(std::cerr);
@@ -348,7 +348,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	 
 	 // T12 = S[k]*F*S[k+1]^t
 	 Rational<R> T12 =
-	   SquareMatrixInt<R,n>::innerProduct(this->_B, S, k, k+1);
+	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, k+1);
 
 	 // multiply S[k] by p^val(T12,p)/T12
 	 // Check whether we have to change to rational here
@@ -357,19 +357,19 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	   S(k,i) *= Rational<R>(val) / T12;
 	 }
 	 Rational<R> T11 =
-	   SquareMatrixInt<R,n>::innerProduct(this->_B, S, k, k);
+	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, k);
 	 Rational<R> T22 =
-	   SquareMatrixInt<R,n>::innerProduct(this->_B, S, k+1, k+1);
-	 T12 = SquareMatrixInt<R,n>::innerProduct(this->_B, S, k, k+1);
+	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k+1, k+1);
+	 T12 = SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, k+1);
 	 Rational<R> d = T11*T22-T12*T12;
 	 for (size_t l = k+2; l < n; l++)
 	   {
 	     Rational<R> tl =
-	       T12*SquareMatrixInt<R,n>::innerProduct(this->_B,S,k+1,l) -
-	       T22*SquareMatrixInt<R,n>::innerProduct(this->_B,S,k,l);
+	       T12*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B,S,k+1,l) -
+	       T22*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B,S,k,l);
 	     Rational<R> ul =
-	       T12*SquareMatrixInt<R,n>::innerProduct(this->_B,S,k,l) -
-	       T11*SquareMatrixInt<R,n>::innerProduct(this->_B,S,k+1,l);
+	       T12*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B,S,k,l) -
+	       T11*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B,S,k+1,l);
 	     for (size_t i = 0; i < n; i++)
 	       S(l,i) += (tl/d)*S(k,i) + (ul/d)*S(k+1,i);
 	   }
@@ -406,7 +406,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	     S.prettyPrint(std::cerr);
 #endif
 	   }
-	 Rational<R> nrm = SquareMatrixInt<R,n>::innerProduct(this->_B, S, k, k);
+	 Rational<R> nrm = SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, k);
 
 #ifdef DEBUG_LEVEL_FULL
 	 std::cerr << "nrm = " << nrm << std::endl;
@@ -414,7 +414,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	 
 	 Rational<R> X[n];
 	 for (size_t i = 0; i < n; i++)
-	   X[i] = SquareMatrixInt<R,n>::innerProduct(this->_B, S, k, i);
+	   X[i] = SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, i);
 	 
 #ifdef DEBUG_LEVEL_FULL
 	 std::cerr << "X = " << X << std::endl;;
