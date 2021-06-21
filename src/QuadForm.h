@@ -25,8 +25,8 @@ class QuadForm
   inline QuadForm<R,Parent,n>& operator=(const QuadForm<R,Parent,n> &);
 
   // access
-  inline const R & operator()(size_t i, size_t j) {return _B(i,j); }
-  inline R & operator(size_t i, size_t j) {return _B(i,j); }
+  inline const R & operator()(size_t i, size_t j) const {return _B(i,j); }
+  inline R & operator()(size_t i, size_t j) {return _B(i,j); }
   
   R discriminant(void) const;
 
