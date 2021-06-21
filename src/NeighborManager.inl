@@ -364,7 +364,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 #ifdef DEBUG
   for (size_t i = 0; i < n-2*this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      this->_U[i][j] = this->_U[i][j] % (p*p);
+      this->_U[i][j] = this->_U[i][j] % (p*p).num();
 
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <U,X+Z> = 0" << std::endl;
@@ -387,7 +387,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   // make sure that all the entries of U are between 0 and p^2
   for (size_t i = 0; i < n-2*this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      this->_U[i][j] = this->_U[i][j] % (p*p);
+      this->_U[i][j] = this->_U[i][j] % (p*p).num();
   
 #endif // DEBUG
 
