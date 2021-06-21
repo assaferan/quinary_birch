@@ -503,14 +503,14 @@ NeighborManager<R,S,T,n>::transformVector(const GenusRep<T,n>& dst,
 
   VectorInt<R,n> vec;
   for (size_t i = 0; i < n; i++)
-    vec[i] = this->_GF->mod(temp[i].num()).lift();
+    vec[i] = this->_GF->mod(temp[i]).lift();
 
   for (size_t i = n; i > 0; i--) {
     if (vec[i-1] != 0)
       {
-	R inv = this->_GF->inverse(vec[i-1].num());
+	R inv = this->_GF->inverse(vec[i-1]);
 	for (size_t j = 0; j < i-1; j++)
-	  vec[j] = this->_GF->mod(this->_GF->mul(vec[j].num(), inv)).lift();
+	  vec[j] = this->_GF->mod(this->_GF->mul(vec[j], inv)).lift();
 	vec[i-1] = 1;
 	break;
       }
