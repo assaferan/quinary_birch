@@ -28,7 +28,7 @@ inline bool Isometry<R,n>::isIsometry(const QuadFormInt<R,n>& from,
 
 template<typename R, size_t n>
 inline void Isometry<R,n>::updatePerm(const VectorInt<size_t, n> & perm) {
-  SquareMatrixInt<R,n> temp(_a.baseRing());
+  SquareMatrixInt<R,n> temp;
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
       temp(i,j) = this->_a(i,j);
