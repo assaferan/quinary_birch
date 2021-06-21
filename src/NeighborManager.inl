@@ -472,7 +472,9 @@ inline GenusRep<T,n> NeighborManager<R,S,T,n>::getReducedNeighborRep(void)
 
   rep.q = this->buildNeighbor(rep.s);
   // rep.q = QuadFormZZ<T,n>::reduce(rep.q, rep.s);
-  rep.q = QuadFormZZ<T,n>::greedy(rep.q.bilinearForm(), rep.s);
+  SquareMatrixInt<T,n> qf = rep.q.bilinearForm();
+  QuadFormZZ<T,n>::greedy(qf, rep.s);
+  rep.q = qf;
   return rep;
 }
 
