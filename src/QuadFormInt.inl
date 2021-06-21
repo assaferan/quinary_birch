@@ -152,7 +152,7 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
 	    {
 	      inner_sum = 0;
 	      for (size_t r = 0; r <= k; r++)
-		inner_sum += L(k, r)*(this->_B(i,r).num())*L(k,j);
+		inner_sum += L(k, r)*(this->_B(i,r))*L(k,j);
 	      inner_sum *= -L(i, i) / D[k];
 	      L(i,j) += inner_sum;
 	    }
