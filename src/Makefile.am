@@ -75,6 +75,8 @@ SOURCES += UnivariatePolyInt.h
 SOURCES += UnivariatePolyInt.inl
 SOURCES += Vector.h
 SOURCES += Vector.inl
+SOURCES += VectorInt.h
+SOURCES += VectorInt.inl
 
 birch_dbg_SOURCES = birch.cpp $(SOURCES)
 birch_dbg_CXXFLAGS = $(DBG_CXXFLAGS)
