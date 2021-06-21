@@ -242,7 +242,8 @@ QuadFormInt<R,n>::invariants(typename QuadFormInt<R,n>::QFInv &F,
   for (size_t i = 0; i < n; i++)
     {
       if (D[i] < 0) I++;
-      typename Integer<R>::FactorData facs = D[i].factorization();
+      Integer<R> d = D[i];
+      typename Integer<R>::FactorData facs = d.factorization();
       for (std::pair<Integer<R>, size_t> fa : facs)
 	  if (fa.second % 2 == 1)
 	    P.insert(fa.first);
