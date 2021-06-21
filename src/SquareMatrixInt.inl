@@ -95,9 +95,6 @@ template<typename R, size_t n>
 inline SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
 {
-  if (n == 4) {
-    return _mmul_64_4(other);
-  }
   SquareMatrixInt<R,n> prod;
 
   for (size_t i = 0; i < n; i++)
