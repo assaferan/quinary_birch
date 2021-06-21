@@ -9,7 +9,6 @@ template <typename R, size_t n>
 class SquareMatrixInt
 {
 public:
- public:
   // c-tor
   SquareMatrixInt() = default;
 
@@ -100,8 +99,6 @@ inline SquareMatrixInt<R,n> operator*(const R & a, const SquareMatrixInt<R,n> & 
 // printing
 template<typename R, size_t n>
 std::ostream& operator<<(std::ostream&, const SquareMatrixInt<R,n>&);
-
-};
 
 #include "SquareMatrixInt.inl"
 
