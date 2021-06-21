@@ -79,7 +79,7 @@ public:
 				Isometry<R,n> & isom,
 				bool calc_aut = false);
 
-  std::unordered_set<Isometry<R,n>> properAutomorphisms() const;
+  std::unordered_set<Isometry<R,n>> properAutomorphisms(void) const;
 
   static std::vector< QuadFormZZ<R,5> > nippToForms(NippEntry entry);
   
