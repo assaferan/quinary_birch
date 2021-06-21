@@ -43,7 +43,7 @@ QuadFormInt<R,n>::mod(std::shared_ptr< Fp<S,T> > GF) const
   SquareMatrixFp<S,T,n> q_mod(GF);
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      q_mod(i,j) = GF->mod(this->_B(i,j).num());
+      q_mod(i,j) = GF->mod(this->_B(i,j));
   R p = GF->prime();
   if (p == 2) {
     for (size_t i = 0; i < n; i++) {
