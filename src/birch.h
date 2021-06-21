@@ -201,7 +201,7 @@ template<typename R, typename S, size_t n>
 using VectorFp = Vector< FpElement<R,S>, Fp<R,S>, n>;
 
 template<typename R, size_t n>
-using VectorInt = Vector<Integer<R>,IntegerRing<R>,n>;
+class VectorInt;
 
 template<size_t n>
 using Z_Vector = VectorInt<Z,n>;
