@@ -184,7 +184,7 @@ template<typename R, size_t n>
 template<size_t m>
 SquareMatrixInt<R,m> SquareMatrixInt<R,n>::submatrix(size_t idxs[m]) const
 {
-  SquareMatrixInt<R,Parent,m> sub;
+  SquareMatrixInt<R,m> sub;
   for (size_t i = 0; i < m; i++)
     for (size_t j = 0; j < m; j++)
       sub(i,j) = (*this)(idxs[i], idxs[j]);
