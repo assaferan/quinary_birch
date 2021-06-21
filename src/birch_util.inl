@@ -54,6 +54,18 @@ namespace birch_util
     return to;
   }
 
+
+  template<typename R, size_t n>
+  inline MatrixInt<R> convertMatrix(const SquareMatrixInt<R,n> & from)
+  {
+    std::shared_ptr<const IntegerRing<R> > ZZ = std::make_shared<const IntegerRing<R> >();
+    MatrixInt<R> mat(ZZ, n, n);
+    for (size_t i = 0; i < n; i++)
+      for (size_t j = 0; j < n; j++)
+	mat(i,j) = from(i,j);
+    return mat;
+  }
+  
   template<typename R>
   inline R myPow(const std::map<R,int>& pairs)
   {
