@@ -1510,7 +1510,7 @@ inline W64 Z_QuadForm<n>::hashValue(void) const
   W64 fnv = FNV_OFFSET;
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j <= i; j++)
-      fnv = (fnv ^ mpz_get_si((this->_B(i,j).num()).get_mpz_t())) * FNV_PRIME;
+      fnv = (fnv ^ mpz_get_si((this->_B(i,j)).get_mpz_t())) * FNV_PRIME;
 
   return fnv;
 }
@@ -1521,7 +1521,7 @@ inline W64 Z64_QuadForm<n>::hashValue(void) const
   W64 fnv = FNV_OFFSET;
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j <= i; j++)
-      fnv = (fnv ^ this->_B(i,j).num()) * FNV_PRIME;
+      fnv = (fnv ^ this->_B(i,j)) * FNV_PRIME;
   return fnv;
 }
 
@@ -1531,6 +1531,6 @@ inline W64 Z128_QuadForm<n>::hashValue(void) const
   W64 fnv = FNV_OFFSET;
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j <= i; j++)
-      fnv = (fnv ^ this->_B(i,j).num()) * FNV_PRIME;
+      fnv = (fnv ^ this->_B(i,j)) * FNV_PRIME;
   return fnv;
 }
