@@ -338,7 +338,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      B(this->_k+i,j) = this->_Z[i][j];
+      B(this->_k+i,j) = (this->_Z[i][j]).num();
 
   gram = __gram(B);
 
