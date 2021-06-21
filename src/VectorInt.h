@@ -78,7 +78,7 @@ namespace std
     {
       Z64 fnv = FNV_OFFSET;
       for (size_t i = 0; i < n; i++)
-	fnv = (fnv ^ vec[i].num()) * FNV_PRIME;
+	fnv = (fnv ^ vec[i]) * FNV_PRIME;
             
       return fnv;
     }
