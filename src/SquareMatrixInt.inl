@@ -24,6 +24,14 @@ SquareMatrixInt<R,n>::SquareMatrixInt(const SquareMatrixInt<R,n> & other)
   _deepCopy(other._mat);
 }
 
+template<typename R, size_t n>
+SquareMatrixInt<R,n>::SquareMatrixInt(const SquareMatrix<Integer<R>,IntegerRing<R>,n> & other)
+{
+  for (size_t i = 0; i < n; i++)
+    for (size_t j = 0; j < n; j++)
+      this->_mat[i][j] = mat(i,j).num();
+}
+
 // access
 template<typename R, size_t n>
 VectorInt<R,n> SquareMatrixInt<R,n>::operator[](size_t i) const
