@@ -976,7 +976,7 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 	  GenusRep<R,n> foo;
 
 	  std::shared_ptr< const IntegerRing<W16> > ZZ = std::make_shared< const IntegerRing<W16> >();
-	  W16_Vector<n> vec(ZZ);
+	  W16_Vector<n> vec;
 	  for (size_t i = 0; i < n; i++)
 	    vec[i] = GF->mod(manager.getIsotropicSubspace()[0][i].num()).lift();
 
