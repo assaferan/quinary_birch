@@ -180,7 +180,7 @@ template<typename R, typename S, size_t n>
 using SquareMatrixFp = SquareMatrix<FpElement<R,S>,Fp<R,S>,n>;
 
 template<typename R, size_t n>
-using SquareMatrixInt = SquareMatrix<Integer<R>,IntegerRing<R>,n>;
+class SquareMatrixInt;
 
 template<typename R, size_t n>
 using SquareMatrixRat = SquareMatrix<Rational<R>,RationalField<R>,n>;
