@@ -45,7 +45,7 @@ public:
   inline const R & operator()(size_t i, size_t j) const {return _B(i,j); }
   inline R & operator()(size_t i, size_t j) {return _B(i,j); }
 
-  inline const SquareMatrix<R,Parent,n> & bilinearForm(void) const
+  inline const SquareMatrixInt<R,n> & bilinearForm(void) const
   { return this->_B; }
   
   inline bool operator==(const QuadFormInt<R,n>& q) const
