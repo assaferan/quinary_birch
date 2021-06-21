@@ -316,7 +316,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
   // Start by building a diagonal form.
   Z_QuadForm<3>::SymVec form;
   Z a = 1;
-  Z c = det;
+  Z c = det.num();
   Z f = 0;
   Z g = 0;
   Z h = 0;
