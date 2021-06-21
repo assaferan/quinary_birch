@@ -156,7 +156,7 @@ inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
 	      L(i,j) += inner_sum;
 	    }
 	  // d = d.gcd(L(i, j));
-	  d = gcd(d, L(i,j));
+	  d = birch_util::gcd(d, L(i,j));
 	}
       for (size_t j = 0; j <= i; j++) {
 	L(i,j) /= d;
