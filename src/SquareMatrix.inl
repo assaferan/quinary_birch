@@ -818,7 +818,7 @@ mod(const SquareMatrixInt<R,n> & a, std::shared_ptr< Fp<S,T> > GF)
   SquareMatrixFp<S,T,n> mat_mod(GF);
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      mat_mod(i,j) = GF->mod(a(i,j).num());
+      mat_mod(i,j) = GF->mod(a(i,j));
  
   std::shared_ptr< SquareMatrixFp<S,T,n> > mat =
     std::make_shared< SquareMatrixFp<S,T,n> >(mat_mod);
