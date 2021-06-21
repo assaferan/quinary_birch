@@ -203,7 +203,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   SquareMatrixInt<T,n> gram = __gram(B);
 
   // Lift Z so that it is in a hyperbolic pair with X modulo p^2.
-  std::vector< VectorInt<T,n> > Z_new(this->_k, VectorInt<T,n>(ZZ));
+  std::vector< VectorInt<T,n> > Z_new(this->_k);
   for (size_t i = 0; i < this->_k; i++) {
     Z_new[i] = this->_Z[i];
     for (size_t j = 0; j < this->_k; j++) {
