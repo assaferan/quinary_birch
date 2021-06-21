@@ -58,88 +58,19 @@ SquareMatrixInt<R,n>::operator=(const SquareMatrixInt<R,n> & other)
 
 // matrix multiplication is a major bottleneck, hence we attempt to optimize it here
 
-// This is based on a post by Nadav Rotem - https://gist.github.com/nadavrot/5b35d44e8ba3dd718e595e40184d03f0
-
-typedef float float8 __attribute__((vector_size(8)));
-
-/// Loads a simd float8 value from \p ptr.
-#define LoadFloat8(PTR) *((const float8 *)(PTR))
-/// Broadcast the input value to a float8.
-#define BroadcastFloat8(VAL) ((float8)(VAL))
-
-/// Perform an unaligned load of a float8 from a float pointer.
-inline float8 LoaduFloat8(const float *p) {
-  float8 res;
-  memcpy(&res, p, sizeof(float8));
-  return res;
-}
-
-/// Perform an unaligned store to a float pointer.
-inline void StoreuFloat8(float *p, float8 v) { memcpy(p, &v, sizeof(float8)); }
-
-/// Perform an unaligned addition to a float pointer.
-inline void AdduFloat8(float *p, float8 v) {
-  StoreuFloat8(p, LoaduFloat8(p) + v);
-}
-
-/// Compute a RAxRB block of C using a vectorized dot product, where RA is the
-/// number of registers to load from matrix A, and RB is the number of registers
-/// to load from matrix B.
-template <unsigned regsA, unsigned regsB>
-void matmul_dot_inner(int k, const float** A, int lda, const float** B, int ldb,
-                      float **C, int ldc) {
-  float8 csum[regsA][regsB] = {{0.0}};
-  for (int p = 0; p < k; p++) {
-
-    // Perform the DOT product.
-    for (int bi = 0; bi < regsB; bi++) {
-      float8 bb = LoadFloat8(&B[p][bi * 8]);
-      for (int ai = 0; ai < regsA; ai++) {
-        float8 aa = BroadcastFloat8(A[ai][p]);
-        csum[ai][bi] += aa * bb;
-      }
-    }
-  }
-
-  // Accumulate the results into C.
-  for (int ai = 0; ai < regsA; ai++) {
-    for (int bi = 0; bi < regsB; bi++) {
-      AdduFloat8(&C[ai][bi * 8], csum[ai][bi]);
-    }
-  }
-}
-
 template<typename R, size_t n>
 inline SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
 {
   SquareMatrixInt<R,n> prod;
-  float prod_f[n][n];
-  float A[n][n];
-  float B[n][n];
-  for (size_t i = 0; i < n; i++)
-    for (size_t j = 0; j < n; j++)
-      A[i][j] = _mat[i][j];
-  for (size_t i = 0; i < n; i++)
-    for (size_t j = 0; j < n; j++)
-      B[i][j] = other._mat[i][j];
-  for (size_t i = 0; i < n; i++)
-    for (size_t j = 0; j < n; j++) {
-      prod_f[i][j] = 0;
-      for (size_t k = 0; k < n; k++)
-	prod_f[i][j] += A[i][k]*B[k][j];
-    }
-  for (size_t i = 0; i < n; i++)
-    for (size_t j = 0; j < n; j++)
-      prod._mat[i][j] = prod_f[i][j];
-  /*
+ 
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++) {
       prod._mat[i][j] = 0;
       for (size_t k = 0; k < n; k++)
 	prod._mat[i][j] += this->_mat[i][k]*other._mat[k][j];
     }
-  */
+  
   return prod;
 }
 
