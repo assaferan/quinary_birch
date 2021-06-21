@@ -707,12 +707,10 @@ inline bool QuadFormInt<R,n>::_permutationReduction(SquareMatrixInt<R,n> & qf,
 {
   bool is_reduced = true;
   std::map<Integer<R>, std::vector<size_t> > stable_sets;
-  Isometry<R, n> s_final;
-  std::shared_ptr<const IntegerRing<R> > ZZ_R = qf.baseRing();
-  std::shared_ptr<const IntegerRing<size_t> >
-    ZZ_uint = std::make_shared< IntegerRing<size_t> >();
-  SquareMatrixInt<R,n> q0(ZZ_R);
-  SquareMatrixInt<R,n> q1(ZZ_R);
+  Isometry<R,n> s_final;
+ 
+  SquareMatrixInt<R,n> q0;
+  SquareMatrixInt<R,n> q1;
   q0 = qf;
   
   for (size_t i = 0; i < n; i++) {
@@ -733,7 +731,7 @@ inline bool QuadFormInt<R,n>::_permutationReduction(SquareMatrixInt<R,n> & qf,
     std::vector<size_t> value = iter->second;
     std::vector< std::vector<size_t> > val_perms = _allPerms(value.size());
     for (std::vector<size_t> perm : val_perms) {
-      VectorInt<size_t, n> large_perm(ZZ_uint);
+      VectorInt<size_t, n> large_perm;
       for (size_t k = 0; k < n; k++)
 	large_perm[k] = k;
       for (size_t idx = 0; idx < value.size(); idx++) {
