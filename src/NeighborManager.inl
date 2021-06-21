@@ -270,7 +270,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 #ifdef DEBUG
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      this->_X[i][j] = this->_X[i][j] % (p*p);
+      this->_X[i][j] = this->_X[i][j] % (p*p).num();
 
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <X,X> = 0" << std::endl;
