@@ -19,7 +19,7 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
   this->_b = qp->bilinearForm();
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      this->_quot_gram(i,j) = this->_q.bilinearForm()(i,j) % (p*p);
+      this->_quot_gram(i,j) = (this->_q.bilinearForm()(i,j) % (p*p)).num();
 	
   this->_GF = GF;
   assert(qp->isotropicVector(this->_vec));
