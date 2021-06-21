@@ -4,7 +4,7 @@
 // SquareMatrixInt
 
 template<typename R, size_t n>
-void SquareMatrixInt<R,n>::_deepCopy(const R mat[n][n])
+inline void SquareMatrixInt<R,n>::_deepCopy(const R mat[n][n])
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
@@ -34,7 +34,7 @@ SquareMatrixInt<R,n>::SquareMatrixInt(const SquareMatrix<Integer<R>,IntegerRing<
 
 // access
 template<typename R, size_t n>
-VectorInt<R,n> SquareMatrixInt<R,n>::operator[](size_t i) const
+inline VectorInt<R,n> SquareMatrixInt<R,n>::operator[](size_t i) const
 {
   assert(i < n);
   VectorInt<R,n> v;
@@ -45,7 +45,7 @@ VectorInt<R,n> SquareMatrixInt<R,n>::operator[](size_t i) const
 
 // assignment
 template<typename R, size_t n>
-SquareMatrixInt<R,n> &
+inline SquareMatrixInt<R,n> &
 SquareMatrixInt<R,n>::operator=(const SquareMatrixInt<R,n> & other)
 {
   if (this !=  &other) {
@@ -57,7 +57,7 @@ SquareMatrixInt<R,n>::operator=(const SquareMatrixInt<R,n> & other)
 // arithmetic
 
 template<typename R, size_t n>
-SquareMatrixInt<R,n>
+inline SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
 {
   SquareMatrixInt<R,n> prod;
@@ -71,7 +71,7 @@ SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
 }
 
 template<typename R, size_t n>
-VectorInt<R,n> SquareMatrixInt<R,n>::operator*(const VectorInt<R,n>& vec) const
+inline VectorInt<R,n> SquareMatrixInt<R,n>::operator*(const VectorInt<R,n>& vec) const
 {
   VectorInt<R,n> prod;
   for (size_t i = 0; i < n; i++) {
@@ -83,7 +83,7 @@ VectorInt<R,n> SquareMatrixInt<R,n>::operator*(const VectorInt<R,n>& vec) const
 }
 
 template<typename R, size_t n>
-SquareMatrixInt<R,n> SquareMatrixInt<R,n>::operator*(const R & scalar) const {
+inline SquareMatrixInt<R,n> SquareMatrixInt<R,n>::operator*(const R & scalar) const {
   SquareMatrixInt<R,n> prod;
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
@@ -92,7 +92,7 @@ SquareMatrixInt<R,n> SquareMatrixInt<R,n>::operator*(const R & scalar) const {
 }
 
 template<typename R, size_t n>
-SquareMatrixInt<R,n>  SquareMatrixInt<R,n>::operator/(const R & scalar) const
+inline SquareMatrixInt<R,n>  SquareMatrixInt<R,n>::operator/(const R & scalar) const
 {
   assert (scalar != 0);
 
@@ -116,7 +116,7 @@ bool SquareMatrixInt<R,n>::operator==(const SquareMatrixInt<R,n>& other) const
 // !! - TODO - replace == and < by compare to save time
 // Also, this is only relevant for integral matrices
 template<typename R, size_t n>
-bool SquareMatrixInt<R,n>::operator<(const SquareMatrixInt<R,n>& other) const
+inline bool SquareMatrixInt<R,n>::operator<(const SquareMatrixInt<R,n>& other) const
 {
   for (size_t i = 0; i < n; i++) {
     if (this->_mat[i][i] < other(i,i)) return true;
@@ -143,7 +143,7 @@ bool SquareMatrixInt<R,n>::operator<(const SquareMatrixInt<R,n>& other) const
 }
 
 template<typename R, size_t n>
-bool SquareMatrixInt<R,n>::isUpperTriangular(void) const
+inline bool SquareMatrixInt<R,n>::isUpperTriangular(void) const
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < i; j++)
@@ -152,7 +152,7 @@ bool SquareMatrixInt<R,n>::isUpperTriangular(void) const
 }
 
 template<typename R, size_t n>
-bool SquareMatrixInt<R,n>::isLowerTriangular(void) const
+inline bool SquareMatrixInt<R,n>::isLowerTriangular(void) const
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = i+1; j < n; j++)
@@ -161,7 +161,7 @@ bool SquareMatrixInt<R,n>::isLowerTriangular(void) const
 }
 
 template<typename R, size_t n>
-bool SquareMatrixInt<R,n>::isSymmetric(void) const
+inline bool SquareMatrixInt<R,n>::isSymmetric(void) const
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < i; j++)
@@ -170,7 +170,7 @@ bool SquareMatrixInt<R,n>::isSymmetric(void) const
 }
 
 template<typename R, size_t n>
-bool SquareMatrixInt<R,n>::isPositiveDefinite(void) const
+inline bool SquareMatrixInt<R,n>::isPositiveDefinite(void) const
 {
   SquareMatrixInt<R,n> L;
   VectorInt<R,n> D;
@@ -179,7 +179,7 @@ bool SquareMatrixInt<R,n>::isPositiveDefinite(void) const
   
 // basic operations
 template<typename R, size_t n>
-SquareMatrixInt<R,n> SquareMatrixInt<R,n>::transpose(void) const
+inline SquareMatrixInt<R,n> SquareMatrixInt<R,n>::transpose(void) const
 {
   SquareMatrixInt<R,n> trans;
   for (size_t i = 0; i < n; i++)
@@ -190,7 +190,7 @@ SquareMatrixInt<R,n> SquareMatrixInt<R,n>::transpose(void) const
 
 template<typename R, size_t n>
 template<size_t m>
-SquareMatrixInt<R,m> SquareMatrixInt<R,n>::submatrix(size_t idxs[m]) const
+inline SquareMatrixInt<R,m> SquareMatrixInt<R,n>::submatrix(size_t idxs[m]) const
 {
   SquareMatrixInt<R,m> sub;
   for (size_t i = 0; i < m; i++)
@@ -201,7 +201,7 @@ SquareMatrixInt<R,m> SquareMatrixInt<R,n>::submatrix(size_t idxs[m]) const
 }
 
 template<typename R, size_t n>
-R SquareMatrixInt<R,n>::determinant(void) const
+inline R SquareMatrixInt<R,n>::determinant(void) const
 {
   // Instead of the previous ad-hoc method, we use Bareiss algorithm
   // to compute the determinant.
@@ -238,7 +238,7 @@ R SquareMatrixInt<R,n>::determinant(void) const
 // this solves using forward substitution in O(n^2)
 // for lower triangular matrices
 template<typename R, size_t n>
-VectorInt<R,n>
+inline VectorInt<R,n>
 SquareMatrixInt<R,n>::_forwardSubstitution(const VectorInt<R,n> & vec) const
 {
   VectorInt<R,n> sol;
@@ -258,7 +258,7 @@ SquareMatrixInt<R,n>::_forwardSubstitution(const VectorInt<R,n> & vec) const
 // this solves using forward substitution in O(n^2)
 // for lower triangular matrices
 template<typename R, size_t n>
-SquareMatrixInt<R,n>
+inline SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::_inverseLowerTriangular(void) const
 {
   SquareMatrixInt<R,n> inv;
@@ -279,7 +279,7 @@ SquareMatrixInt<R,n>::_inverseLowerTriangular(void) const
 }
 
 template<typename R, size_t n>
-SquareMatrixInt<R,n>
+inline SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::_inverseUpperTriangular(void) const
 {
   SquareMatrixInt<R,n> inv;
@@ -302,7 +302,7 @@ SquareMatrixInt<R,n>::_inverseUpperTriangular(void) const
 // this solves using backward substitution in O(n^2)
 // for upper triangular matrices
 template<typename R, size_t n>
-VectorInt<R,n>
+inline VectorInt<R,n>
 SquareMatrixInt<R,n>::_backwardSubstitution(const VectorInt<R,n> & vec) const
 {
   VectorInt<R,n> sol;
@@ -321,7 +321,7 @@ SquareMatrixInt<R,n>::_backwardSubstitution(const VectorInt<R,n> & vec) const
 
 // returns false if the matrix is not positive definite
 template<typename R, size_t n>
-bool
+inline bool
 SquareMatrixInt<R,n>::cholesky(SquareMatrixInt<R,n>& L,
 			       VectorInt<R,n> & D) const
 {
@@ -357,7 +357,7 @@ SquareMatrixInt<R,n>::cholesky(SquareMatrixInt<R,n>& L,
 // !! TODO - This is integral Cholesky - should be able to
 // determine which to call by the class R
 template<typename R, size_t n>
-bool
+inline bool
 SquareMatrixInt<R,n>::ldl(SquareMatrixInt<R,n>& L,  VectorInt<R,n> & D) const
 {
   assert(isSymmetric());
@@ -412,7 +412,7 @@ SquareMatrixInt<R,n>::ldl(SquareMatrixInt<R,n>& L,  VectorInt<R,n> & D) const
 // This solves only for symmetric positive definite matrices
 // using LDL
 template<typename R, size_t n>
-VectorInt<R,n>
+inline VectorInt<R,n>
 SquareMatrixInt<R,n>::solve(const VectorInt<R,n> & vec) const
 {
   assert(isSymmetric());
@@ -429,7 +429,7 @@ SquareMatrixInt<R,n>::solve(const VectorInt<R,n> & vec) const
 }
 
 template<typename R, size_t n>
-void SquareMatrixInt<R,n>::swapRows(size_t row1, size_t row2)
+inline void SquareMatrixInt<R,n>::swapRows(size_t row1, size_t row2)
 {
   assert((row1 < n) && (row2 < n));
   
@@ -448,7 +448,7 @@ void SquareMatrixInt<R,n>::swapRows(size_t row1, size_t row2)
 }
 
 template<typename R, size_t n>
-void SquareMatrixInt<R,n>::swapCols(size_t col1, size_t col2)
+inline void SquareMatrixInt<R,n>::swapCols(size_t col1, size_t col2)
 {
   assert((col1 < n) && (col2 < n));
 
@@ -467,7 +467,7 @@ void SquareMatrixInt<R,n>::swapCols(size_t col1, size_t col2)
 }
 
 template<typename R, size_t n>
-void SquareMatrixInt<R,n>::multiplyRow(size_t row, const R & val)
+inline void SquareMatrixInt<R,n>::multiplyRow(size_t row, const R & val)
 {
   assert(row < n);
 
@@ -477,7 +477,7 @@ void SquareMatrixInt<R,n>::multiplyRow(size_t row, const R & val)
 }
 
 template<typename R, size_t n>
-void SquareMatrixInt<R,n>::multiplyCol(size_t col, const R & val)
+inline void SquareMatrixInt<R,n>::multiplyCol(size_t col, const R & val)
 {
   assert(col < n);
 
@@ -487,7 +487,7 @@ void SquareMatrixInt<R,n>::multiplyCol(size_t col, const R & val)
 }
 
 template<typename R, size_t n>
-void SquareMatrixInt<R,n>::addRow(size_t row_to, size_t row_from, const R & val)
+inline void SquareMatrixInt<R,n>::addRow(size_t row_to, size_t row_from, const R & val)
 {
   assert((row_to < n) && (row_from < n));
 
@@ -498,7 +498,7 @@ void SquareMatrixInt<R,n>::addRow(size_t row_to, size_t row_from, const R & val)
 }
 
 template<typename R, size_t n>
-void SquareMatrixInt<R,n>::addCol(size_t col_to, size_t col_from, const R & val)
+inline void SquareMatrixInt<R,n>::addCol(size_t col_to, size_t col_from, const R & val)
 {
   assert((col_to < n) && (col_from < n));
 
@@ -509,7 +509,7 @@ void SquareMatrixInt<R,n>::addCol(size_t col_to, size_t col_from, const R & val)
 }
 
 template<typename R, size_t n>
-SquareMatrixInt<R,n> SquareMatrixInt<R,n>::adjugate(size_t dim) const
+inline SquareMatrixInt<R,n> SquareMatrixInt<R,n>::adjugate(size_t dim) const
 {
   SquareMatrixInt<R,n> adj;
 #ifdef DEBUG
@@ -612,7 +612,7 @@ SquareMatrixInt<R,n> SquareMatrixInt<R,n>::adjugate(size_t dim) const
 // and that we are looking for the hermite form of the matrix
 // concatenated to the scalar matrix d*I
 template<typename R, size_t n>
-SquareMatrixInt<R,n> SquareMatrixInt<R,n>::hermiteForm(const R & d) const
+inline SquareMatrixInt<R,n> SquareMatrixInt<R,n>::hermiteForm(const R & d) const
 {
   R a = 0;
   R b = 0;
@@ -667,7 +667,7 @@ SquareMatrixInt<R,n> SquareMatrixInt<R,n>::hermiteForm(const R & d) const
 
 // global constants
 template<typename R, size_t n>
-SquareMatrixInt<R,n>
+inline SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::identity()
 {
   SquareMatrixInt<R,n> id;
@@ -679,7 +679,7 @@ SquareMatrixInt<R,n>::identity()
 
 // printing
 template<typename R, size_t n>
-std::ostream& operator<<(std::ostream& os, const SquareMatrixInt<R,n>& a)
+inline std::ostream& operator<<(std::ostream& os, const SquareMatrixInt<R,n>& a)
 {
   os << "Matrix(Integers(), " << n << " , (";
   for (size_t row = 0; row < n-1; row++) {
@@ -694,7 +694,7 @@ std::ostream& operator<<(std::ostream& os, const SquareMatrixInt<R,n>& a)
 }
 
 template<typename R, size_t n>
-std::ostream & SquareMatrixInt<R,n>::prettyPrint(std::ostream & os,
+inline std::ostream & SquareMatrixInt<R,n>::prettyPrint(std::ostream & os,
 						 size_t upTo) const
 {
   for (size_t row = 0; row < upTo-1; row++) {
@@ -710,7 +710,7 @@ std::ostream & SquareMatrixInt<R,n>::prettyPrint(std::ostream & os,
 }
 
 template<typename R, size_t n>
-void SquareMatrixInt<R,n>::setIdentity(void)
+inline void SquareMatrixInt<R,n>::setIdentity(void)
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
