@@ -487,7 +487,7 @@ inline void QuadFormInt<R,n>::_closestLatticeVector(SquareMatrixInt<R,n> &q,
 						   Isometry<R,n> & iso,
 						   size_t dim)
 {
-  std::shared_ptr<const IntegerRing<R> > ZZ = q.baseRing();
+  std::shared_ptr<const IntegerRing<R> > ZZ = std::make_shared<const IntegerRing<R> >();
   
   Isometry<R,n> g, min_g;
   SquareMatrixInt<R,n> x_gram(ZZ);
