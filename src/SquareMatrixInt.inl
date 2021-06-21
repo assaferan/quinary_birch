@@ -9,7 +9,7 @@ SquareMatrixInt<R,n>::SquareMatrixInt(const SquareMatrixInt<R,n> & mat)
 {}
 
 template<typename R, size_t n>
-SquareMatrixInt SquareMatrixInt<R,n>::operator*(const SquareMatrixInt & other) const
+SquareMatrixInt<R,n> SquareMatrixInt<R,n>::operator*(const SquareMatrixInt & other) const
 {
   R sum;
   SquareMatrixInt<R,n> prod(this->baseRing());
