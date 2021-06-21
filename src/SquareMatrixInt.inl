@@ -1,5 +1,7 @@
 // implementation file for SquareMatrixInl.h
 #include <cassert>
+#include <pmmintrin.h>
+#include <immintrin.h>
 
 // SquareMatrixInt
 
