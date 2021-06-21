@@ -10,12 +10,21 @@ class SquareMatrixInt : public virtual SquareMatrix< Integer<R>, IntegerRing<R>,
 {
 public:
    // c-tors
-  SquareMatrixInt() : SquareMatrix< Integer<R>, IntegerRing<R>, n>(std::make_shared<const IntegerRing<R> >()) {}
-
+  SquareMatrixInt()
+    : SquareMatrix< Integer<R>, IntegerRing<R>, n>(std::make_shared<const IntegerRing<R> >())
+  {}
+  SquareMatrixInt(std::shared_ptr<const IntegerRing<R> > base_ring)
+    : SquareMatrix< Integer<R>, IntegerRing<R>, n>(base_ring)
+  {}
+  
   SquareMatrixInt(const R mat[n][n]);
   SquareMatrixInt(const SquareMatrixInt<R,n> & mat);
+  SquareMatrixInt(const SquareMatrixInt<Integer<R>,IntegerRing<R>,n> & mat)
+    : SquareMatrix< Integer<R>, IntegerRing<R>, n>(mat)
+  {}
 
   SquareMatrixInt<R,n> operator*(const SquareMatrixInt &) const;
+
 };
 
 #include "SquareMatrixInt.inl"
