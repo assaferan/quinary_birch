@@ -532,7 +532,7 @@ inline void QuadFormInt<R,n>::_closestLatticeVector(SquareMatrixInt<R,n> &q,
     det += H_int(0,i)*q(i,0);
   det = det.abs();
   for (size_t i = 0; i < dim-1; i++) {
-    Integer<R> tmp =  y_int[i] - det*voronoi[i];
+    Integer<R> tmp =  y_int[i] - det.num()*voronoi[i];
     // Check tht it now works normally with Integer<R>
     // x_min[i] = ((tmp >= Integer<R>::zero()) ? tmp+det-1 : tmp)/det;
     x_min[i] = tmp / det;
