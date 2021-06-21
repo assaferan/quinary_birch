@@ -25,6 +25,9 @@ QuadFormInt<R,n>::QuadFormInt(const typename QuadFormInt<R,n>::SymVec& coeffs)
     }
     this->_B(row,row) = coeffs[idx++];
   }
+  _is_reduced = false;
+  _num_aut = 0;
+  _num_aut_init = false;
 }
 
 template<typename R, size_t n>
