@@ -15,7 +15,7 @@
 
 template<typename R, size_t n>
 QuadFormInt<R,n>::QuadFormInt(const SquareMatrixInt<R,n> & B)
-  : R_QuadForm<R,n>(std::make_shared<IntegerRing<R> >()),  _is_reduced(false), _num_aut(0), _num_aut_init(false)
+  : _is_reduced(false), _num_aut(0), _num_aut_init(false)
 {
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
