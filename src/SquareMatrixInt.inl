@@ -63,7 +63,7 @@ inline SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
 {
   SquareMatrixInt<R,n> prod;
- 
+
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++) {
       prod._mat[i][j] = 0;
@@ -72,6 +72,39 @@ SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
     }
   
   return prod;
+}
+
+template<>
+SquareMatrixInt<Z64, 4>
+SquareMatrixInt<Z64,4>::operator*(const SquareMatrixInt<Z64,4>& B) const
+{
+  SquareMatrixInt<Z64,4> C;
+  const SquareMatrixInt<Z64,4> & A = (*this);
+  
+  const __m256 BCx = _mm_load_ps((Z64*)&B._mat[0]);
+  const __m256 BCy = _mm_load_ps((Z64*)&B._mat[1]);
+  const __m256 BCz = _mm_load_ps((Z64*)&B._mat[2]);
+  const __m256 BCw = _mm_load_ps((Z64*)&B._mat[3]);
+
+  Z64* leftRowPointer = &A._mat[0];
+  Z64* resultRowPointer = &C._mat[0];
+
+  for (size_t i = 0; i < 4; ++i, leftRowPointer += 4, resultRowPointer += 4) {
+    __m256 ARx = _mm_set1_ps(leftRowPointer[0]);
+    __m256 ARy = _mm_set1_ps(leftRowPointer[1]);
+    __m256 ARz = _mm_set1_ps(leftRowPointer[2]);
+    __m256 ARw = _mm_set1_ps(leftRowPointer[3]);
+
+    __mm256 X = ARx * BCx;
+    __mm256 Y = ARy * BCy;
+    __mm256 Z = ARz * BCz;
+    __mm256 W = ARw * BCw;
+
+    __mm256 R = X+Y+Z+W;
+    _mm_store_ps(resultRowPointer, R);
+  }
+  
+  return C;
 }
 
 template<typename R, size_t n>
