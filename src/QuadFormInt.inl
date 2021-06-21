@@ -194,7 +194,7 @@ inline int QuadFormInt<R,n>::_hasse(const VectorInt<R,n> & D, const Integer<R> &
   for (size_t i = 0; i < n-1; i++)
     {
       prod /= D[i];
-      hasse *= D[i].hilbertSymbol(prod, p);
+      hasse *= Integer<R>(D[i]).hilbertSymbol(prod, p);
     }
   return hasse;
 }
