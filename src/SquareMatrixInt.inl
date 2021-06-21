@@ -391,7 +391,7 @@ SquareMatrixInt<R,n>::ldl(SquareMatrixInt<R,n>& L,  VectorInt<R,n> & D) const
 	      L(i,j) += inner_sum;
 	    }
 	  //d = d.gcd(L(i, j));
-	  d = gcd(d, L(i,j));
+	  d = birch_util::gcd(d, L(i,j));
 	}
       for (size_t j = 0; j <= i; j++)
 	L(i,j) /= d;
@@ -401,7 +401,7 @@ SquareMatrixInt<R,n>::ldl(SquareMatrixInt<R,n>& L,  VectorInt<R,n> & D) const
 	  D[i] += L(i, j)*((*this)(j,k))*L(i, k);
       if (D[i] == 0) return false;
       // prod_diag = prod_diag.lcm(D[i]);
-      prod_diag = lcm(prod_diag, D[i]);
+      prod_diag = birch_util::lcm(prod_diag, D[i]);
       for (size_t j = i+1; j < n; j++)
 	L(i,j) = 0;
     }
