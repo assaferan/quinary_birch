@@ -224,7 +224,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 #ifdef DEBUG
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      this->_Z[i][j] = this->_Z[i][j] % (p*p);
+      this->_Z[i][j] = this->_Z[i][j] % (p*p).num();
   
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <X,Z> = 1" << std::endl;
@@ -241,7 +241,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < this->_k; j++)
       // This is beacuse negative % is negative
-      assert((temp(i, this->_k+j) - ((i+j == this->_k-1) ? 1 : 0)) % (p*p) == 0);	
+      assert((temp(i, this->_k+j) - ((i+j == this->_k-1) ? 1 : 0)) % (p*p).num() == 0);	
 #endif // DEBUG
   
   if (p == 2) {
