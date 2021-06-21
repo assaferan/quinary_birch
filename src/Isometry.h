@@ -4,7 +4,7 @@
 #include "birch.h"
 #include "Integer.h"
 #include "QuadForm.h"
-#include "SquareMatrix.h"
+#include "SquareMatrixInt.h"
 #include "Vector.h"
 
 // !! TODO - think if we really need a different class for Isometry
