@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
   }
 
   if (argc == 2) {
-    stringstream num_evs_str(argv[1]);
+    std::stringstream num_evs_str(argv[1]);
     num_evs_str >> num_evs;
   }
   
