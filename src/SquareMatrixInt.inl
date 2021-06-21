@@ -86,16 +86,16 @@ inline void AdduFloat8(float *p, float8 v) {
 /// number of registers to load from matrix A, and RB is the number of registers
 /// to load from matrix B.
 template <unsigned regsA, unsigned regsB>
-void matmul_dot_inner(int k, const float *A, int lda, const float *B, int ldb,
-                      float *c, int ldc) {
+void matmul_dot_inner(int k, const float A[][], int lda, const float B[][], int ldb,
+                      float C[][], int ldc) {
   float8 csum[regsA][regsB] = {{0.0}};
   for (int p = 0; p < k; p++) {
 
     // Perform the DOT product.
     for (int bi = 0; bi < regsB; bi++) {
-      float8 bb = LoadFloat8(&B(p, bi * 8));
+      float8 bb = LoadFloat8(&B[p][bi * 8]);
       for (int ai = 0; ai < regsA; ai++) {
-        float8 aa = BroadcastFloat8(A(ai, p));
+        float8 aa = BroadcastFloat8(A[ai][p]);
         csum[ai][bi] += aa * bb;
       }
     }
@@ -104,7 +104,7 @@ void matmul_dot_inner(int k, const float *A, int lda, const float *B, int ldb,
   // Accumulate the results into C.
   for (int ai = 0; ai < regsA; ai++) {
     for (int bi = 0; bi < regsB; bi++) {
-      AdduFloat8(&C(ai, bi * 8), csum[ai][bi]);
+      AdduFloat8(&C[ai][bi * 8], csum[ai][bi]);
     }
   }
 }
