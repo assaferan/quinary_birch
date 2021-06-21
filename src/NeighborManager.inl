@@ -262,7 +262,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
       scalar = (scalar / (p*p) + Integer<T>::one())*p*p-scalar;
       if (scalar >= p*p)
 	scalar -= p*p;
-      X_new[i] +=  scalar  * this->_Z[j];
+      X_new[i] +=  scalar.num()  * this->_Z[j];
     }
   }
   this->_X = X_new;
