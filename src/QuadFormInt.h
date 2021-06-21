@@ -31,7 +31,7 @@ public:
   QuadFormInt(const typename R_QuadForm<R,n>::SymVec& coeffs)
     : R_QuadForm<R,n>(coeffs), _is_reduced(false), _num_aut(0), _num_aut_init(false) {}
 
-  QuadFormInt(const SquareMatrixInt<R,n> & B)
+  QuadFormInt(const SquareMatrix<Integer<R>, IntegerRing<R>, n> & B)
     : R_QuadForm<R,n>(B), _is_reduced(false), _num_aut(0), _num_aut_init(false)  {}
 
   // assignment
