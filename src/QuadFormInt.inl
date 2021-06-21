@@ -47,7 +47,7 @@ QuadFormInt<R,n>::mod(std::shared_ptr< Fp<S,T> > GF) const
   R p = GF->prime();
   if (p == 2) {
     for (size_t i = 0; i < n; i++) {
-      R value = this->_B(i,i).num() / 2;
+      R value = this->_B(i,i) / 2;
       q_mod(i,i) = GF->mod(value);
     }
   }
