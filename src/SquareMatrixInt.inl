@@ -59,7 +59,7 @@ SquareMatrixInt<R,n>::operator=(const SquareMatrixInt<R,n> & other)
 // arithmetic
 
 // matrix multiplication is a major bottleneck, hence we attempt to optimize it here
-
+template<typename R, size_t n>
 SquareMatrixInt<Z64,4> SquareMatrixInt<R,n>::mmul_64_4(const SquareMatrixInt<Z64,4>& B) const
 {
   SquareMatrixInt<Z64,4> C;
