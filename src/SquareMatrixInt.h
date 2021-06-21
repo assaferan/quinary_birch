@@ -23,7 +23,7 @@ public:
     : SquareMatrix< Integer<R>, IntegerRing<R>, n>(mat)
   {}
 
-  SquareMatrixInt<R,n> operator*(const SquareMatrixInt &) const;
+  SquareMatrixInt<R,n> operator*(const SquareMatrixInt &) const override;
 
 };
 
