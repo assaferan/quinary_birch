@@ -133,8 +133,8 @@ template<typename R, size_t n>
 inline VectorInt<R,n> QuadFormInt<R,n>::orthogonalizeGram(void) const
 {
   std::shared_ptr<const IntegerRing<R> > ring = this->baseRing();
-  VectorInt<R,n> D(ring);
-  SquareMatrixInt<R,n> L(ring);
+  VectorInt<R,n> D;
+  SquareMatrixInt<R,n> L;
   Integer<R> prod_diag = ring->one();
   Integer<R> d = ring->zero();
   Integer<R> inner_sum = ring->zero();
