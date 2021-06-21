@@ -343,10 +343,10 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 
 	  assert( (q.evaluate(vec) % pp).isZero() );
 
-	  if (vec[0].isZero() && vec[1].isZero() && vec[2].isZero()) break;
-	  else if (vec[0].isZero() && vec[1].isZero())
+	  if ((vec[0] != 0) && (vec[1] != 0) && (vec[2] != 0)) break;
+	  else if ((vec[0] != 0) && (vec[1] != 0))
             {
-	      assert( vec[2].isOne() );
+	      assert( vec[2] == 1 );
 	      assert( (g % p).isZero() );
 	      assert( (f % p).isZero() );
 	      assert( (c % pp).isZero() );
