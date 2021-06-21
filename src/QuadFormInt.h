@@ -212,10 +212,8 @@ public:
   QuadFormZZ(const typename QuadFormInt<Z,n>::SymVec& coeffs)
     : QuadFormInt<Z,n>(coeffs) {}
 
-  QuadFormZZ(const SquareMatrix<Integer<Z>,IntegerRing<Z>,n> & B)
+  QuadFormZZ(const SquareMatrixInt<Z,n> & B)
     : QuadFormInt<Z,n>(B) {}
-
-  QuadFormZZ(const SquareMatrixInt<Z,n> & B);
 
   using QuadFormInt<Z,n>::operator==;
     
@@ -244,10 +242,8 @@ public:
   QuadFormZZ(const typename QuadFormInt<Z64,n>::SymVec& coeffs)
     : QuadFormInt<Z64,n>(coeffs) {}
 
-  QuadFormZZ(const SquareMatrix<Integer<Z64>, IntegerRing<Z64>, n> & B)
+  QuadFormZZ(const SquareMatrixInt<Z64, n> & B)
     : QuadFormInt<Z64,n>(B) {}
-
-  QuadFormZZ(const SquareMatrixInt<Z64,n> & B);
 
   using QuadFormInt<Z64,n>::operator==;
     
@@ -276,10 +272,8 @@ public:
   QuadFormZZ(const typename QuadFormInt<Z128,n>::SymVec& coeffs)
     : QuadFormInt<Z128,n>(coeffs) {}
 
-  QuadFormZZ(const SquareMatrix< Integer<Z128>, IntegerRing<Z128>, n> & B)
+  QuadFormZZ(const SquareMatrixInt<Z128,n> & B)
     : QuadFormInt<Z128,n>(B) {}
-
-  QuadFormZZ(const SquareMatrixInt<Z128,n> & B);
 
   using QuadFormInt<Z128,n>::operator==;
     
