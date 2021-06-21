@@ -28,6 +28,8 @@ public:
   SquareMatrixInt<R,n> operator/(const Integer<R> & scalar) const;
   SquareMatrixInt<R,n> transpose(void) const;
 
+protected:
+  R _int_mat[n][n];
 };
 
 #include "SquareMatrixInt.inl"
