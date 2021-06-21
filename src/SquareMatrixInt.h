@@ -14,6 +14,8 @@ public:
 
   SquareMatrixInt(const R mat[n][n]);
   SquareMatrixInt(const SquareMatrixInt<R,n> & mat);
+
+  SquareMatrixInt operator*(const SquareMatrixInt &) const;
 };
 
 #include "SquareMatrixInt.inl"
