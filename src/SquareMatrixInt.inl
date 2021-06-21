@@ -60,7 +60,7 @@ SquareMatrixInt<R,n>::operator=(const SquareMatrixInt<R,n> & other)
 
 // This is based on a post by Nadav Rotem - https://gist.github.com/nadavrot/5b35d44e8ba3dd718e595e40184d03f0
 
-typedef float float8 __attribute__((ext_vector_type(8)));
+typedef float float8 __attribute__((vector_size(8)));
 
 /// Loads a simd float8 value from \p ptr.
 #define LoadFloat8(PTR) *((const float8 *)(PTR))
