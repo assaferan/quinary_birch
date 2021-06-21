@@ -17,7 +17,7 @@ class Isometry
 public:
   // c-tors
   Isometry() :
-    _a(SquareMatrixInt<R,n>::identity(std::make_shared< IntegerRing<R> >())),
+    _a(SquareMatrixInt<R,n>::identity()),
     _scale(Integer<R>::one())
   {}
 
