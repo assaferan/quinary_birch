@@ -24,7 +24,7 @@ public:
   {}
 
   SquareMatrixInt<R,n> operator*(const SquareMatrixInt &) const override;
-
+  SquareMatrixInt<R,n> transpose(void) const;
 };
 
 #include "SquareMatrixInt.inl"
