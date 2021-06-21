@@ -215,6 +215,8 @@ public:
   QuadFormZZ(const SquareMatrix<Integer<Z>,IntegerRing<Z>,n> & B)
     : QuadFormInt<Z,n>(B) {}
 
+  QuadFormZZ(const SquareMatrixInt<Z,n> & B);
+
   using QuadFormInt<Z,n>::operator==;
     
   using QuadFormInt<Z,n>::discriminant;
@@ -245,6 +247,8 @@ public:
   QuadFormZZ(const SquareMatrix<Integer<Z64>, IntegerRing<Z64>, n> & B)
     : QuadFormInt<Z64,n>(B) {}
 
+  QuadFormZZ(const SquareMatrixInt<Z64,n> & B);
+
   using QuadFormInt<Z64,n>::operator==;
     
   using QuadFormInt<Z64,n>::discriminant;
@@ -274,6 +278,8 @@ public:
 
   QuadFormZZ(const SquareMatrix< Integer<Z128>, IntegerRing<Z128>, n> & B)
     : QuadFormInt<Z128,n>(B) {}
+
+  QuadFormZZ(const SquareMatrixInt<Z128,n> & B);
 
   using QuadFormInt<Z128,n>::operator==;
     
