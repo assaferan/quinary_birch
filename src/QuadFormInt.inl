@@ -486,7 +486,7 @@ inline VectorInt<R,n-1> QuadFormInt<R,n>::_voronoiBounds(size_t dim)
   // !! TODO - check what the real bounds are !!
   VectorInt<R,n-1> bounds;
   for (size_t i = 0; i < dim; i++)
-    bounds[i].makeOne();
+    bounds[i] = 1;
   return bounds;
 }
 
