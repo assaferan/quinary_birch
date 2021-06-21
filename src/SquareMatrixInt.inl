@@ -39,7 +39,7 @@ SquareMatrixInt<R,n>  SquareMatrixInt<R,n>::operator/(const Integer<R> & scalar)
   SquareMatrixInt<R,n> quo(this->baseRing());
   for (size_t row = 0; row < n; row++)
     for (size_t col = 0; col < n; col++)
-      quo(row,col) = (*this)(row,col).num() / scalar.num();
+      quo(row,col) = R((*this)(row,col).num() / scalar.num());
   return quo;
 }
 
