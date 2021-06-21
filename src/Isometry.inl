@@ -4,7 +4,7 @@ template<typename R, size_t n>
 inline SquareMatrixInt<R,n>
 Isometry<R,n>::transform(const SquareMatrixInt<R,n>& from) const
 {
-  return (this->_a).transpose()*from*(this->_a) / (this->_scale * this->_scale);
+  return (this->_a).transpose()*from*(this->_a) / (this->_scale.num() * this->_scale.num());
 }
 
 template<typename R, size_t n>
