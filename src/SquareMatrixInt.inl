@@ -58,9 +58,25 @@ SquareMatrixInt<R,n>::operator=(const SquareMatrixInt<R,n> & other)
 
 // arithmetic
 
-// matrix multiplication is a major bottleneck, hence we attempt to optimize it here
 template<typename R, size_t n>
-SquareMatrixInt<Z64,4> SquareMatrixInt<R,n>::_mmul_64_4(const SquareMatrixInt<Z64,4>& B) const
+inline SquareMatrixInt<R,n>
+SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
+{
+  SquareMatrixInt<R,n> prod;
+
+  for (size_t i = 0; i < n; i++)
+    for (size_t j = 0; j < n; j++) {
+      prod._mat[i][j] = 0;
+      for (size_t k = 0; k < n; k++)
+	prod._mat[i][j] += this->_mat[i][k]*other._mat[k][j];
+    }
+  
+  return prod;
+}
+
+// matrix multiplication is a major bottleneck, hence we attempt to optimize it here
+template<>
+SquareMatrixInt<Z64,4> SquareMatrixInt<Z64,4>::operator*(const SquareMatrixInt<Z64,4>& B) const
 {
   SquareMatrixInt<Z64,4> C;
   const SquareMatrixInt<Z64,4>& A = *this;
@@ -91,21 +107,7 @@ SquareMatrixInt<Z64,4> SquareMatrixInt<R,n>::_mmul_64_4(const SquareMatrixInt<Z6
   return C;
 }
 
-template<typename R, size_t n>
-inline SquareMatrixInt<R,n>
-SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
-{
-  SquareMatrixInt<R,n> prod;
 
-  for (size_t i = 0; i < n; i++)
-    for (size_t j = 0; j < n; j++) {
-      prod._mat[i][j] = 0;
-      for (size_t k = 0; k < n; k++)
-	prod._mat[i][j] += this->_mat[i][k]*other._mat[k][j];
-    }
-  
-  return prod;
-}
 
 
 
