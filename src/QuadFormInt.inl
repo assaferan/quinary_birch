@@ -1485,7 +1485,7 @@ QuadFormInt<R,n>::_signOrbit(void) const
 {
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit;
   Isometry<R,n> s;
-  SquareMatrixInt<R,n> q(this->baseRing());
+  SquareMatrixInt<R,n> q;
   
   for (size_t signs = 0; signs < (1 << n); signs++) {
     size_t tmp = signs;
