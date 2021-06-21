@@ -322,7 +322,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
   Z h = 0;
   form[0] = 2*a;
   form[1] = h;
-  form[2] = 2*b;
+  form[2] = 2*b.num();
   form[3] = g;
   form[4] = f;
   form[5] = 2*c;
