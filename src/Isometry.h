@@ -48,7 +48,7 @@ public:
   { return this->_a(i,j); }
 
   inline Integer<R> & operator()(size_t i, size_t j)
-  { return this->_a(i,j); }
+  { Integer<R> a_int = this->_a(i,j); return a_int; }
 
   // basic operations
   
