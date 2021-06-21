@@ -2,6 +2,7 @@
 #include "PolynomialRing.h"
 #include "QuadFormFp.h"
 #include "SquareMatrixInt.h"
+#include "VectorInt.h"
 
 template<typename R, typename S, typename T, size_t n>
 inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
