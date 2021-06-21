@@ -42,7 +42,7 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
   for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs) {
     Integer<R> p = ev.first;
     std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num());
-    size_t upTo = (num_evs == 0) ? evecs.size() : num_evs); 
+    size_t upTo = (num_evs == 0) ? evecs.size() : num_evs; 
     for (size_t i = 0; i < upTo; i++) {
       evalues[i].vec.push_back(ev.second[i]);
       computed_evalues[i].vec.push_back(computed[i]);
