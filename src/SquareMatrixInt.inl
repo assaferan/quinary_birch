@@ -219,6 +219,7 @@ inline R SquareMatrixInt<R,n>::determinant(void) const
       bool found = false;
       for (size_t i = k+1; i <= n; i++) {
 	if (M(i,k) != 0) {
+	  assert((k != 0) && (i != 0));
 	  M.swapRows(k,i);
 	  sign = -sign;
 	  found = true;
