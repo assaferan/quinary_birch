@@ -42,6 +42,9 @@ public:
   inline const R & operator()(size_t i, size_t j) const {return _B(i,j); }
   inline R & operator()(size_t i, size_t j) {return _B(i,j); }
   
+  inline bool operator==(const QuadFormInt<R,n>& q) const
+  { return (this->_B == q._B); }
+  
   R discriminant(void) const;
   
   inline R evaluate(const VectorInt<R,n>& vec) const
