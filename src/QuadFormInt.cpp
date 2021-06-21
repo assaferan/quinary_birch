@@ -315,17 +315,17 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
 
   // Start by building a diagonal form.
   Z_QuadForm<3>::SymVec form;
-  Z a = 1;
-  Z c = det.num();
-  Z f = 0;
-  Z g = 0;
-  Z h = 0;
-  form[0] = 2*a;
-  form[1] = h;
+  Integer<Z> a = Z(1);
+  Integer<Z> c = det;
+  Integer<Z> f = Z(0);
+  Integer<Z> g = Z(0);
+  Integer<Z> h = Z(0);
+  form[0] = 2*a.num();
+  form[1] = h.num();
   form[2] = 2*b.num();
-  form[3] = g;
-  form[4] = f;
-  form[5] = 2*c;
+  form[3] = g.num();
+  form[4] = f.num();
+  form[5] = 2*c.num();
   Z_QuadForm<3> q(form);
   Integer<Z> N = q.discriminant();
 
@@ -416,7 +416,7 @@ Z_QuadForm<3> Z_QuadForm<3>::getQuadForm(const std::vector<Z_PrimeSymbol>& input
   q = Z_QuadForm<3>::reduce(q, s);
 
   // Do one final verification that the symbols are correct.
-  Integer<Z> x = Z(q._B(0,0) * q._B(1,1) - q._B(0,1) * q._B(1,0));
+  Integer<Z> x = q._B(0,0) * q._B(1,1) - q._B(0,1) * q._B(1,0);
   mask = 1LL << primes.size();
   for (const Z_PrimeSymbol& symb : primes)
     {
