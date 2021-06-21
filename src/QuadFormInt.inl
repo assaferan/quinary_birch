@@ -26,8 +26,8 @@ template<typename R, size_t n>
 inline QuadFormInt<R,n>&
 QuadFormInt<R,n>::operator=(const QuadFormInt<R,n> & other)
 {
-  R_QuadForm<R,n>::operator=(other);
   if (this != &other) {
+    this->_B = other._B;
     this->_is_reduced = other._is_reduced;
     this->_num_aut = other._num_aut;
     this->_num_aut_init = other._num_aut_init;
