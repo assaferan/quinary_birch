@@ -274,7 +274,7 @@ template<typename R, size_t n>
 SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::_inverseUpperTriangular(void) const
 {
-  SquareMatrixInt<R,n> inv(_base);
+  SquareMatrixInt<R,n> inv;
   inv.setIdentity();
   R sum = 0;
   assert(isUpperTriangular());
