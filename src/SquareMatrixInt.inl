@@ -88,7 +88,7 @@ SquareMatrixInt<Z64,4>::operator*(const SquareMatrixInt<Z64,4>& B) const
   const __m256i BCz = _mm256_loadu_si256((const __m256i_u*)&B._mat[2]);
   const __m256i BCw = _mm256_loadu_si256((const __m256i_u*)&B._mat[3]);
 
-  auto leftRowPointer = &A._mat[0];
+  const Z64* leftRowPointer = &(A._mat[0]);
   auto resultRowPointer = &C._mat[0];
 
   for (size_t i = 0; i < 4; ++i, leftRowPointer += 4, resultRowPointer += 4) {
