@@ -606,7 +606,7 @@ inline QuadFormZZ<T,n> NeighborManager<R,S,T,n>::buildNeighbor(Isometry<T,n>& s)
   T p = this->_GF->prime();
   T p2 = p*p;
   T p3 = p2*p;
-  std::shared_ptr<const IntegerRing<T> > ZZ =std::make_shared< const IntegerRing<T> >(); 
+  std::shared_ptr<const IntegerRing<T> > ZZ = std::make_shared< const IntegerRing<T> >(); 
   SquareMatrixInt<T,n> qq(ZZ);
 
   // fill the isomtery by the X,Z,U
