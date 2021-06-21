@@ -15,6 +15,7 @@ public:
 
   SquareMatrixInt(const R mat[n][n]);
   SquareMatrixInt(const SquareMatrixInt<R,n> & mat);
+  SquareMatrixInt(const SquareMatrix<Integer<R>,IntegerRing<R>,n> & );
 
   // assignment
   SquareMatrixInt<R,n> & operator=(const SquareMatrixInt<R,n> &);
