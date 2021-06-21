@@ -34,6 +34,8 @@ public:
   QuadFormInt(const SquareMatrix<Integer<R>, IntegerRing<R>, n> & B)
     : R_QuadForm<R,n>(B), _is_reduced(false), _num_aut(0), _num_aut_init(false)  {}
 
+  QuadFormInt(const SquareMatrixInt<R,n> &);
+  
   // assignment
   QuadFormInt<R,n>& operator=(const QuadFormInt<R,n> &);
     
