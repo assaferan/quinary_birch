@@ -61,8 +61,8 @@ public:
   VectorInt<R,n> solve(const VectorInt<R,n> & vec) const;
 
   // more complex operations that might be useful outside the class
-  bool cholesky(SquareMatrixInt<R,n>& L, Vector<R,n> & D) const;
-  bool ldl(SquareMatrixInt<R,n>& L, Vector<R,n> & D) const;
+  bool cholesky(SquareMatrixInt<R,n>& L, VectorInt<R,n> & D) const;
+  bool ldl(SquareMatrixInt<R,n>& L, VectorInt<R,n> & D) const;
   
   // elementary operations
   void swapRows(size_t row1, size_t row2);
