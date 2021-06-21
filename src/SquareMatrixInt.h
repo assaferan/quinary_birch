@@ -23,6 +23,7 @@ public:
     : SquareMatrix< Integer<R>, IntegerRing<R>, n>(mat)
   {}
 
+  using SquareMatrix<Integer<R>,IntegerRing<R>,n>::operator*;
   SquareMatrixInt<R,n> operator*(const SquareMatrixInt &) const;
   SquareMatrixInt<R,n> transpose(void) const;
 
