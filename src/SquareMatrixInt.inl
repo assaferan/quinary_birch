@@ -1,5 +1,8 @@
 // implementation file for SquareMatrixInl.h
 #include <cassert>
+#include <iostream>
+
+#include "birch_util.h"
 
 // SquareMatrixInt
 
