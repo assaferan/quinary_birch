@@ -86,7 +86,7 @@ inline Rational<Z> Genus<R,n>::_combine(const QuadFormZZ<R,n>& q,
   // !! We might run into trouble at 2 here
   // check if we need disc or half-disc
   // size_t v = Math<R>::valuation(q.discriminant(), p);
-  MatrixInt<R> q_mat = q.bilinearForm();
+  MatrixInt<R> q_mat = birch_util::convertMatrix(q.bilinearForm());
   size_t v = q_mat.determinant().valuation(p);
   if ((n % 2 == 0) && (v % 2 == 1)) {
     Rational<Z64> n_rat = (Z64)n;
