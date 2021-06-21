@@ -44,8 +44,8 @@ public:
       W16_MatrixFp s_mat(*s_p);
       // we rescale to get the matrix corresponding to s
       // the constructor expects an unsigned
-      bool is_neg =  (s.getScale().num() < 0);
-      W16_FpElement scale(GF, s.getScale().abs().num());
+      bool is_neg =  (s.getScale() < 0);
+      W16_FpElement scale(GF, abs(s.getScale()));
       if (is_neg)
 	scale = -scale;
       s_mat *= scale.inverse();
