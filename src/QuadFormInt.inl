@@ -11,6 +11,7 @@
 #include "ParseNipp.h"
 #include "Matrix.h"
 #include "SquareMatrix.h"
+#include "VectorInt.h"
 
 template<typename R, size_t n>
 QuadFormInt<R,n>::QuadFormInt(const SquareMatrixInt<R,n> & B)
