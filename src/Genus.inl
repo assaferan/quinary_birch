@@ -194,7 +194,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
       seed = rd();
     }
   
-  this->_disc = q.discriminant().num();
+  this->_disc = q.discriminant();
   this->_seed = seed;
   
   this->_prime_divisors.reserve(symbols.size());
