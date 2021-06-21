@@ -60,9 +60,10 @@ SquareMatrixInt<R,n>::operator=(const SquareMatrixInt<R,n> & other)
 
 // matrix multiplication is a major bottleneck, hence we attempt to optimize it here
 
-SquareMatrixInt<Z64,4> mmul_64_4(const SquareMatrixInt<Z64,4>& A, const SquareMatrixInt<Z64,4>& B)
+SquareMatrixInt<Z64,4> SquareMatrixInt<R,n>::mmul_64_4(const SquareMatrixInt<Z64,4>& B) const
 {
   SquareMatrixInt<Z64,4> C;
+  const SquareMatrixInt<Z64,4>& A = *this;
   
   const __m256i BCx = _mm256_loadu_si256((const __m256i_u*)&B._mat[0]);
   const __m256i BCy = _mm256_loadu_si256((const __m256i_u*)&B._mat[1]);
@@ -95,7 +96,7 @@ inline SquareMatrixInt<R,n>
 SquareMatrixInt<R,n>::operator*(const SquareMatrixInt<R,n>& other) const
 {
   if (n == 4) {
-    return mmul_64_4(*this, other);
+    return mmul_64_4(other);
   }
   SquareMatrixInt<R,n> prod;
 
