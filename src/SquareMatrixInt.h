@@ -58,7 +58,7 @@ public:
   SquareMatrixInt<R,m> submatrix(size_t idxs[m]) const;
   R determinant(void) const;
 
-  Vector<R,Parent,n> solve(const Vector<R,n> & vec) const;
+  VectorInt<R,n> solve(const VectorInt<R,n> & vec) const;
 
   // more complex operations that might be useful outside the class
   bool cholesky(SquareMatrixInt<R,n>& L, Vector<R,n> & D) const;
