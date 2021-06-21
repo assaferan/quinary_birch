@@ -13,6 +13,20 @@
 #include "SquareMatrix.h"
 #include "VectorInt.h"
 
+// c-tors
+template<typename R, size_t n>
+QuadFormInt<R,n>::QuadFormInt(const typename QuadFormInt<R,n>::SymVec& coeffs)
+{
+  size_t idx = 0;
+  for (size_t row = 0; row < n; row++)  {
+    for (size_t col = 0; col < row; col++)	{	
+      this->_B(row,col) = coeffs[idx];
+      this->_B(col,row) = coeffs[idx++];
+    }
+    this->_B(row,row) = coeffs[idx++];
+  }
+}
+
 template<typename R, size_t n>
 QuadFormInt<R,n>::QuadFormInt(const SquareMatrixInt<R,n> & B)
   : _is_reduced(false), _num_aut(0), _num_aut_init(false)
