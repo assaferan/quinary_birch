@@ -86,7 +86,7 @@ inline void AdduFloat8(float *p, float8 v) {
 /// number of registers to load from matrix A, and RB is the number of registers
 /// to load from matrix B.
 template <unsigned regsA, unsigned regsB>
-void matmul_dot_inner(int k, const float *a, int lda, const float *b, int ldb,
+void matmul_dot_inner(int k, const float *A, int lda, const float *B, int ldb,
                       float *c, int ldc) {
   float8 csum[regsA][regsB] = {{0.0}};
   for (int p = 0; p < k; p++) {
