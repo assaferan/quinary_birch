@@ -266,13 +266,15 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 {
   bool even = (p == R(2));
   std::shared_ptr< const RationalField<R> > QQ = std::make_shared< RationalField<R> >();
+  std::shared_ptr< const IntegerRing<R> > ZZ = std::make_shared< IntegerRing<R> >();
   SquareMatrixRat<R,n> S = SquareMatrixRat<R,n>::identity(QQ);
   SquareMatrixRat<R,n> G(QQ);
   MatrixRat<R> F(QQ,n,n);
+  SquareMatrix<Integer<R>,IntegerRing<R>,n> B(ZZ);
   
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      F(i,j) = this->_B(i,j);
+      F(i,j) = (B(i,j) = this->_B(i,j));
   
   size_t k = 0;
   // virtually infinity
@@ -290,7 +292,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
      for (size_t i = 0; i < n; i++)
        for (size_t j = 0; j < n; j++)
 	 G(i, j) =
-	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, i, j);
+	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B, S, i, j);
 #ifdef DEBUG_LEVEL_FULL
      std::cerr << "G = " << std::endl;
      G.prettyPrint(std::cerr);
@@ -349,7 +351,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	 
 	 // T12 = S[k]*F*S[k+1]^t
 	 Rational<R> T12 =
-	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, k+1);
+	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B, S, k, k+1);
 
 	 // multiply S[k] by p^val(T12,p)/T12
 	 // Check whether we have to change to rational here
@@ -358,19 +360,19 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	   S(k,i) *= Rational<R>(val) / T12;
 	 }
 	 Rational<R> T11 =
-	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, k);
+	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B, S, k, k);
 	 Rational<R> T22 =
-	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k+1, k+1);
-	 T12 = SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, k+1);
+	   SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B, S, k+1, k+1);
+	 T12 = SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B, S, k, k+1);
 	 Rational<R> d = T11*T22-T12*T12;
 	 for (size_t l = k+2; l < n; l++)
 	   {
 	     Rational<R> tl =
-	       T12*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B,S,k+1,l) -
-	       T22*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B,S,k,l);
+	       T12*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B,S,k+1,l) -
+	       T22*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B,S,k,l);
 	     Rational<R> ul =
-	       T12*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B,S,k,l) -
-	       T11*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B,S,k+1,l);
+	       T12*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B,S,k,l) -
+	       T11*SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B,S,k+1,l);
 	     for (size_t i = 0; i < n; i++)
 	       S(l,i) += (tl/d)*S(k,i) + (ul/d)*S(k+1,i);
 	   }
@@ -407,7 +409,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	     S.prettyPrint(std::cerr);
 #endif
 	   }
-	 Rational<R> nrm = SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, k);
+	 Rational<R> nrm = SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B, S, k, k);
 
 #ifdef DEBUG_LEVEL_FULL
 	 std::cerr << "nrm = " << nrm << std::endl;
@@ -415,7 +417,7 @@ QuadFormInt<R,n>::jordanDecomposition(const Integer<R> & p) const
 	 
 	 Rational<R> X[n];
 	 for (size_t i = 0; i < n; i++)
-	   X[i] = SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(this->_B, S, k, i);
+	   X[i] = SquareMatrix<Integer<R>,IntegerRing<R>,n>::innerProduct(B, S, k, i);
 	 
 #ifdef DEBUG_LEVEL_FULL
 	 std::cerr << "X = " << X << std::endl;;
