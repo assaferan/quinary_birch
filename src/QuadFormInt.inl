@@ -784,7 +784,7 @@ inline bool QuadFormInt<R,n>::_signNormalizationSlow(SquareMatrixInt<R,n> & qf,
 	w_F2(boundary_basis.size(), col) = GF2->mod(0);
       w_F2(boundary_basis.size(), k) = GF2->mod(1);
       w_F2(boundary_basis.size(), k+j) = GF2->mod(1);
-      if ((w_F2.rank() > count) && (!(qf(k,k+j).isZero()))) {
+      if ((w_F2.rank() > count) && (qf(k,k+j) != 0)) {
 	priority_set.insert(std::make_pair(k,k+j));
 	W16_VectorFp<n> last_row(GF2);
 	for (size_t col = 0; col < n; col++)
