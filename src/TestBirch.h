@@ -20,7 +20,7 @@ public:
   void testDim(const R &, size_t) const;
 
   void testEigenvalues(const R &,
-		       const std::map< R, std::vector< NumberFieldElement<Z> > > &,
+		       const std::vector< std::map< R, std::vector< NumberFieldElement<Z> > > > &,
 		       size_t) const;
   
 protected:
