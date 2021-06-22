@@ -151,3 +151,23 @@ inline BirchExample<Z64,4> BirchExample<R,n>::getExample_GV_7_3(void)
 
   return example;
 }
+
+template<typename R, size_t n>
+inline BirchExample<Z64,5> BirchExample<R,n>::getExample_RT_Table1(void)
+{
+  std::vector< std::vector< std::vector<Z64> > > aps(2);
+
+  // initialize the cusp form
+  std::vector<Z64> traces1 = {-8,-10,-4,-14,-22,-4,-47,-12,41,50,-504,-102,174,30,42,156,-252,472,106,-481,-744,927,-632,-297,2,-992,-1222,1436,-954,19,516,-258, 1080, 1030, -974, -1119, 1152, 108, -2707, -182, 2568, -2804, -3035, 583, 2276, 6754, 360, 3569, -3346, 2220, -2780, -3878, -819, 6112, -5343, -808, 3592, 2954, -8334, -2942, 6360, -856, 3548, -6322, -9443, 108, 1596, -2129, 1856, 480, 1704, 4601, 6298, -4998, 7706, -18293, 5316, 4324, -4679, -3476, -910, 3552, -4878, 15213, -6909, -7130, 12908, -4005, -7334, -77, 12248, 6447, -14197, 1960, 3288};
+
+  std::vector<Z64> traces2 = {10,11,-44,-9,-67,-158,260,41,-198,-187,2744,-730,800,442,-5052};
+
+  aps[0].push_back(traces1);
+  aps[1].push_back(traces2);
+
+  QuadFormZZ<Z64,5>::SymVec coeffs = {2,0,2,1,0,6};
+  
+  BirchExample<Z64,3> example(coeffs, 1, 2, aps);
+
+  return example;
+}
