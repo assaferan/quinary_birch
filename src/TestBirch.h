@@ -22,6 +22,10 @@ public:
   void testEigenvalues(const R &,
 		       const std::vector< std::map< R, std::vector< NumberFieldElement<Z> > > > &,
 		       size_t) const;
+
+  void testEigenvalueTraces(const R &,
+			    const std::vector< std::map< R, std::vector<R> > > &,
+			    size_t) const;
   
 protected:
   std::shared_ptr< Genus<R,n> > _p_genus;
