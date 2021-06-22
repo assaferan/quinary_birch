@@ -622,7 +622,7 @@ Eigenvector<R> Genus<R,n>::eigenvector(const std::vector< NumberFieldElement<Z> 
 template<typename R, size_t n>
 std::vector< NumberFieldElement<Z> >
 Genus<R,n>::eigenvalues(EigenvectorManager<R,n>& vector_manager,
-			const R& p) const
+			const R& p, size_t k) const
 {
   R bits16 = birch_util::convertInteger<Z64,R>(1LL << 16);
   R bits32 = birch_util::convertInteger<Z64,R>(1LL << 32);
@@ -631,25 +631,25 @@ Genus<R,n>::eigenvalues(EigenvectorManager<R,n>& vector_manager,
     {
       W16 prime = 2;
       std::shared_ptr<W16_F2> GF = std::make_shared<W16_F2>(prime, this->seed());
-      return this->_eigenvectors<W16,W32>(vector_manager, GF, p);
+      return this->_eigenvectors<W16,W32>(vector_manager, GF, p, k);
     }
   else if (p < bits16)
     {
       W16 prime = birch_util::convertInteger<R,W16>(p);
       std::shared_ptr<W16_Fp> GF = std::make_shared<W16_Fp>(prime, this->seed(), true);
-      return this->_eigenvectors<W16,W32>(vector_manager, GF, p);
+      return this->_eigenvectors<W16,W32>(vector_manager, GF, p, k);
     }
   else if (p < bits32)
     {
       W32 prime = birch_util::convertInteger<R,W32>(p);
       std::shared_ptr<W32_Fp> GF = std::make_shared<W32_Fp>(prime, this->seed(), false);
-      return this->_eigenvectors<W32,W64>(vector_manager, GF, p);
+      return this->_eigenvectors<W32,W64>(vector_manager, GF, p, k);
     }
   else
     {
       W64 prime = birch_util::convertInteger<R,W64>(p);
       std::shared_ptr<W64_Fp> GF = std::make_shared<W64_Fp>(prime, this->seed(), false);
-      return this->_eigenvectors<W64,W128>(vector_manager, GF, p);
+      return this->_eigenvectors<W64,W128>(vector_manager, GF, p, k);
     }
 }
 
@@ -657,7 +657,7 @@ template<typename R, size_t n>
 template<typename S, typename T>
 std::vector< NumberFieldElement<Z> >
 Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
-			  std::shared_ptr<Fp<S,T>> GF, const R& p, size_t k = 1) const
+			  std::shared_ptr<Fp<S,T>> GF, const R& p, size_t k) const
 {
   const NumberFieldElement<Z> *stride_ptr = vector_manager._strided_eigenvectors.data();
   std::vector< NumberFieldElement<Z> > eigenvalues(vector_manager.size(), stride_ptr->parent());
@@ -673,7 +673,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
     {
       size_t npos = static_cast<size_t>(vector_manager._indices[index]);
       const GenusRep<R,n>& cur = this->_hash->get(npos);
-      NeighborManager<S,T,R,n> neighbor_manager(cur.q, GF);
+      NeighborManager<S,T,R,n> neighbor_manager(cur.q, GF, k);
       neighbor_manager.getNextNeighbor();
       bool done = neighbor_manager.getIsotropicSubspace().empty();
 
