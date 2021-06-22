@@ -310,7 +310,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 	  // Build the affine quadratic form for debugging purposes.
 	  std::shared_ptr< W16_QuadForm<n> > qp = mother.mod(GF);
 #endif
-	  manager.getNextNeighbor();
+	  //	  manager.getNextNeighbor();
 	  bool prime_done = manager.getIsotropicSubspace().empty();
 	  while ((!done) && (!prime_done))
 	    {     
@@ -674,7 +674,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
       size_t npos = static_cast<size_t>(vector_manager._indices[index]);
       const GenusRep<R,n>& cur = this->_hash->get(npos);
       NeighborManager<S,T,R,n> neighbor_manager(cur.q, GF, k);
-      neighbor_manager.getNextNeighbor();
+      //      neighbor_manager.getNextNeighbor();
       bool done = neighbor_manager.getIsotropicSubspace().empty();
 
 #ifdef DEBUG_LEVEL_FULL
@@ -818,7 +818,7 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
       const GenusRep<R,n>& cur = this->_hash->get(idx);
       NeighborManager<W16,W32,R,n> manager(cur.q, GF);
 
-      manager.getNextNeighbor();
+      //      manager.getNextNeighbor();
       bool done = manager.getIsotropicSubspace().empty();
 
       while (!done)
@@ -968,7 +968,7 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
       const GenusRep<R,n>& cur = this->_hash->get(idx);
       NeighborManager<W16,W32,R,n> manager(cur.q, GF);
 
-      manager.getNextNeighbor();
+      //      manager.getNextNeighbor();
       bool done = manager.getIsotropicSubspace().empty();
 
       while (!done)
