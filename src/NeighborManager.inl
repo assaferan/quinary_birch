@@ -572,6 +572,8 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
       Integer<T> val = (*(this->_p_skew))(i,j).reducedLift();
       this->_X[i] += p.num() * (val.num() * this->_Z[j]);
     }
+    for (size_t j = 0; j < n; j++)
+      this->_X[i][j] = (this->_X[i][j]) % (p*p).num();
   }
 }
 
