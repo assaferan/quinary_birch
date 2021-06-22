@@ -566,14 +566,15 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
   for (size_t i = 0; i < this->_k ; i++) {
+    this->_X_skew[i] = this->_X[i];
     for (size_t j = 0; j < this->_k; j++){
       // !! TODO - I got rid here of X_skew,
       // check that it didn't destroy anything
       Integer<T> val = (*(this->_p_skew))(i,j).reducedLift();
-      this->_X[i] += p.num() * (val.num() * this->_Z[j]);
+      this->_X_skew[i] += p.num() * (val.num() * this->_Z[j]);
     }
     for (size_t j = 0; j < n; j++)
-      this->_X[i][j] = (this->_X[i][j]) % (p*p).num();
+      this->_X_skew[i][j] = (this->_X_skew[i][j]) % (p*p).num();
   }
 }
 
