@@ -17,6 +17,7 @@ public:
 
   static BirchExample<Z64,3> getExample_GV_7_2(void);
   static BirchExample<Z64,4> getExample_GV_7_3(void);
+  static BirchExample<Z64,3> getExample_CMF_49_2_a_a(void);
 
   typename QuadFormZZ<R,n>::SymVec coeffs;
   R spinor_prime;
