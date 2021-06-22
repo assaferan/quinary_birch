@@ -61,19 +61,6 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
     std::unordered_set< EigenvalueVector > computed_set(computed_evalues.begin(), computed_evalues.end());
 
     assert( evalue_set == computed_set);
-
-  // Here we start testing k = 2
-    /*
-  if (n == 4) {
-    for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs) {
-      Integer<R> p = ev.first;
-      std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num(), 2);
-#ifdef DEBUG
-      std::cerr << "p = " << ev.first << std::endl;
-      std::cerr << "computed eigenvalues: " << computed << std::endl;
-#endif
-    }
-    */
   }
   
   return;
@@ -111,4 +98,5 @@ inline void TestBirch<R,n>::_init(const typename QuadFormZZ<R,n>::SymVec & coeff
 inline void runBirchTests(size_t num_evs) {
   TestBirch<Z64,3> test_7_2(BirchExample<Z64,3>::getExample_GV_7_2(), num_evs);
   TestBirch<Z64,4> test_7_3(BirchExample<Z64,4>::getExample_GV_7_3(), num_evs);
+  
 }
