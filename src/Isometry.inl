@@ -68,15 +68,16 @@ inline Isometry<R,n> Isometry<R,n>::inverse(void) const
 template<typename R, size_t n>
 inline void Isometry<R,n>::rescale(void)
 {
-  Integer<R> d = this->_scale;
+  R d = this->_scale;
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      d = d.gcd(this->_a(i,j));
+      //d = d.gcd(this->_a(i,j));
+      d = birch_util::gcd(d, _a(i,j));
   
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
-      this->_a(i,j) /= d.num();
+      this->_a(i,j) /= d;
 
-  this->_scale /= d.num();
+  this->_scale /= d;
   return;
 }
