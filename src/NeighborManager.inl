@@ -845,7 +845,7 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
 
 #ifdef DEBUG
   // Verify that we didn't screw up somewhere along the line.
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
   std::cerr << "testing parametrization" << std::endl;
 #endif // DEBUG_LEVEL_FULL
   for (size_t i = 0; i < this->_k; i++)
@@ -854,12 +854,12 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
       for (size_t r = 0; r < n; r++)
 	vec.push_back((i == j) ? (*this->_p_isotropic_param)(i,r) :
 		      (*this->_p_isotropic_param)(i,r) + (*this->_p_isotropic_param)(j,r));
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
       std::cerr << "Substituting vec = " << vec << std::endl;
       std::cerr << " in q_std = " << (*this->_p_q_std) << std::endl;
 #endif // DEBUG_LEVEL_FULL
       PolynomialFp<R,S> f = this->_p_q_std->evaluate(vec);
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG //_LEVEL_FULL
       std::cerr << " yields f = " << f << std::endl;
 #endif // DEBUG_LEVEL_FULL
       assert(f == zero);
