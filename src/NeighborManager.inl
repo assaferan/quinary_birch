@@ -683,7 +683,7 @@ NeighborManager<R,S,T,n>::__pivots(size_t dim, size_t aniso, size_t k)
   std::vector< std::vector<size_t> > pivs;
   // Base case.
   if (k == 1) {
-    for (size_t i = 0; i < dim - aniso; i++) {
+    for (size_t i = 0; i + aniso < dim; i++) {
       std::vector<size_t> singleton(1);
       singleton[0] = i;
       pivs.push_back(singleton);
