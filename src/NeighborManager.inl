@@ -75,6 +75,9 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
   this->_k = k;
   this->_skew_dim = k*(k-1)/2;
   this->_p_skew = std::make_shared< MatrixFp<R,S> >(this->_GF, k, k);
+
+  this->nextIsotropicSubspace();
+  this->_liftSubspace();
 }
 
 //!! TODO - make gram work only modulo p^2
