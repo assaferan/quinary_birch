@@ -61,6 +61,17 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
 
   assert( evalue_set == computed_set);
 
+  // Here we start testing k = 2
+  
+  for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs) {
+    Integer<R> p = ev.first;
+    std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num());
+#ifdef DEBUG
+    std::cerr << "p = " << ev.first << std::endl;
+    std::cerr << "computed eigenvalues: " << computed << std::endl;
+#endif
+  }
+  
   return;
 }
 
