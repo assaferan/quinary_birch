@@ -62,6 +62,7 @@ parseNextGenus(std::ifstream& nippFile, const std::string & line)
     for (size_t i = 0; i < LatticeRecord::VecSize; i++)
       nippFile >> lattice.form[i]; 
     next_char = nippFile.get();
+    std::cerr << "For some reason next_char = " << next_char << std::endl;
     assert(next_char == ';');
     nippFile >> lattice.numAut;
     entry.lattices.push_back(lattice);
