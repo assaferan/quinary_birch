@@ -69,7 +69,7 @@ template<typename R, size_t n>
 inline BirchExample<Z64,4> BirchExample<R,n>::getExample_GV_7_3(void)
 {
   // aps[k][j] are the T_p^(k+1) eigenvalues of the form f_j
-  std::vector< std::vector< std::vector<Z64> > > > aps(2);
+  std::vector< std::vector< std::vector<Z64> > > aps(2);
   
   std::vector<Z64> eis,cusp,eis2,a,b;
 
