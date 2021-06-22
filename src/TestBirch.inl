@@ -96,8 +96,14 @@ inline void TestBirch<R,n>::_init(const typename QuadFormZZ<R,n>::SymVec & coeff
 }
 
 inline void runBirchTests(size_t num_evs) {
-  TestBirch<Z64,3> test_7_2(BirchExample<Z64,3>::getExample_GV_7_2(), num_evs);
-  TestBirch<Z64,4> test_7_3(BirchExample<Z64,4>::getExample_GV_7_3(), num_evs);
-  std::vector< std::vector< QuadFormZZ<Z64,5> > > qfs = QuadFormZZ<Z64,5>::getQuinaryForms(256);
+  // tetss reading from Nipp's tables
+  std::vector< std::vector< QuadFormZZ<Z64,5> > > qfs;
+  qfs = QuadFormZZ<Z64,5>::getQuinaryForms(256);
   qfs = QuadFormZZ<Z64,5>::getQuinaryForms(300);
+  
+  TestBirch<Z64,3> test_7_2(BirchExample<Z64,3>::getExample_GV_7_2(), num_evs);
+  TestBirch<Z64,3> test_cmf_49_2_a_a(BirchExample<Z64,3>::getExample_CMF_49_2_a_a(), num_evs);
+  
+  TestBirch<Z64,4> test_7_3(BirchExample<Z64,4>::getExample_GV_7_3(), num_evs);
+  
 }
