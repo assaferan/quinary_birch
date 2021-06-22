@@ -65,6 +65,8 @@ parseNextGenus(std::ifstream& nippFile, const std::string & line)
     assert(next_char == ';');
     nippFile >> lattice.numAut;
     entry.lattices.push_back(lattice);
+    if (nippFile.eof())
+      return entry;
     next_char = nippFile.get();
     assert(next_char == '\n');
     next_char = nippFile.peek();
