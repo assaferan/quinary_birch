@@ -111,9 +111,9 @@ inline BirchExample<Z64,4> BirchExample<R,n>::getExample_GV_7_3(void)
   for (size_t i = 0; i < cusp.size(); i++)
     b_2[i] = cusp[i]*cusp[i] + eis[i]*(eis[i]-2);
 
-  aps[1].push_back(eis2);
-  aps[1].push_back(a);
-  aps[1].push_back(b);
+  aps[1].push_back(eis2_2);
+  aps[1].push_back(a_2);
+  aps[1].push_back(b_2);
   
   QuadFormZZ<Z64,4>::SymVec coeffs = {2,0,2,0,1,6,1,0,0,6};
   
