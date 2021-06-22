@@ -343,7 +343,38 @@ template<typename R, typename S, size_t n>
 bool QuadFormFp<R,S,n>::_isotropicVector_p2(VectorFp<R,S,n> & vec,
 					    size_t start) const
 {
-  FpElement<R,S> g;
+  std::shared_ptr< const Fp<R,S> > GF = this->_B.baseRing();
+  FpElement<R,S> g(GF);
+  
+  if (start + 2 == n) {
+    for (size_t j = 0; j < 2; j++) {
+      if ((*this)(start+j,start+j).isZero()) {
+	vec[start+j].makeOne();
+	return true;
+      }
+    }
+    FpElement<R,S> a = (*this)(start,start);
+    FpElement<R,S> b = (*this)(start,start+1);
+    FpElement<R,S> c = (*this)(start+1,start+1);
+
+    if (b.isZero()) {
+      g = a / c;
+      assert(g.isSquare());
+      g = g.sqrt();
+      vec[start].makeOne();
+      vec[start+1] = g;
+      return true;
+    }
+
+    // if we are here we should have a = b = c = 1, which is anisotropic
+    assert(a.isOne());
+    assert(b.isOne());
+    assert(c.isOne());
+    
+    return false;
+  
+  }
+  
   // If we can find a pair of orthogonal basis vectors,
   //  we can easily construct an isotropic vector.
   for (size_t i = start; i < n-1; i++)
