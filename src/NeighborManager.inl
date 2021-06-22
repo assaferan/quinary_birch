@@ -632,7 +632,7 @@ inline QuadFormZZ<T,n> NeighborManager<R,S,T,n>::buildNeighbor(Isometry<T,n>& s)
   
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      s(i,j) = this->_X[i][j];
+      s(i,j) = this->_X_skew[i][j];
 
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
