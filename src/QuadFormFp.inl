@@ -345,14 +345,17 @@ bool QuadFormFp<R,S,n>::_isotropicVector_p2(VectorFp<R,S,n> & vec,
 {
   std::shared_ptr< const Fp<R,S> > GF = this->_B.baseRing();
   FpElement<R,S> g(GF);
+
+  // Check the diagonal for an isotropic basis vector.
+  for (size_t j = start; j < n; j++) {
+    if ((*this)(j,j).isZero()) {
+      vec[j].makeOne();
+      return true;
+    }
+  }
   
   if (start + 2 == n) {
-    for (size_t j = 0; j < 2; j++) {
-      if ((*this)(start+j,start+j).isZero()) {
-	vec[start+j].makeOne();
-	return true;
-      }
-    }
+    
     FpElement<R,S> a = (*this)(start,start);
     FpElement<R,S> b = (*this)(start,start+1);
     FpElement<R,S> c = (*this)(start+1,start+1);
