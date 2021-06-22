@@ -107,6 +107,7 @@ NeighborManager<R,S,T,n>::__gram(const SquareMatrixInt<T,n> & B, bool quot) cons
 template<typename R, typename S, typename T, size_t n>
 inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 {
+  if ((this->_iso_subspace).empty()) return;
   Integer<T> p = this->_GF->prime();
 
   assert(this->_pivot_ptr >= 1);
