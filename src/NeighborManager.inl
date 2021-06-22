@@ -78,6 +78,8 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
 
   this->nextIsotropicSubspace();
   this->_liftSubspace();
+
+  this->_X_skew = this->_X;
 }
 
 //!! TODO - make gram work only modulo p^2
