@@ -556,6 +556,9 @@ inline void NeighborManager<R,S,T,n>::_updateSkewMatrix(size_t & row, size_t & c
 template<typename R, typename S, typename T, size_t n>
 inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
 {
+  assert(this->_X.size() == this->_k);
+  assert(this->_Z.size() == this->_k);
+  
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
   for (size_t i = 0; i < this->_k ; i++) {
