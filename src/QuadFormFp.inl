@@ -425,18 +425,16 @@ inline bool QuadFormFp<R,S,n>::isotropicVector(VectorFp<R,S,n> & vec,
       vec[start+i] = rad(0,i);
     return true;
   }
-  // Check the diagonal
-  for (size_t i = start; i < n; i++)
-    if (this->_B(i,i) == 0) {
-      vec[i] = 1;
-      return true;
-    }
 
   size_t dim = n - start;
 
-  // if the one vector was isotropic, we would have found it above.
-  if (dim == 1)
+  if (dim == 1) {
+    if (this->_B(0,0).isZero()) {
+      vec[0].makeOne();
+      return true;
+    }
     return false;
+  }
 
   std::shared_ptr<const Fp<R,S> > GF = this->_B.baseRing();
   
@@ -460,6 +458,13 @@ inline bool QuadFormFp<R,S,n>::isotropicVector(VectorFp<R,S,n> & vec,
   }
 
   assert(dim >= 3);
+
+  // Check the diagonal
+  for (size_t i = start; i < n; i++)
+    if (this->_B(i,i) == 0) {
+      vec[i] = 1;
+      return true;
+    }
 
   // isometry on the submatrix of 3 first variables
   SquareMatrixFp<R,S,3> basis = SquareMatrixFp<R,S,3>::identity(GF);
