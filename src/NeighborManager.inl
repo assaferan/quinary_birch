@@ -604,6 +604,7 @@ inline void NeighborManager<R,S,T,n>::getNextNeighbor(void)
   // Lift the subspace if we haven't reached the end of the list.
   if (!(this->_iso_subspace.empty())) {
     this->_liftSubspace();
+    this->_X_skew = this->_X;
   }
   else {
     this->_X.clear();
