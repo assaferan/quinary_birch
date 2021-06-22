@@ -1,5 +1,6 @@
 #include <cassert>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -62,9 +63,11 @@ parseNextGenus(std::ifstream& nippFile, const std::string & line)
     for (size_t i = 0; i < LatticeRecord::VecSize; i++)
       nippFile >> lattice.form[i]; 
     next_char = nippFile.get();
-    assert(next_char == ';');
+    //    assert(next_char == ';');
     nippFile >> lattice.numAut;
     entry.lattices.push_back(lattice);
+    if (nippFile.eof())
+      return entry;
     next_char = nippFile.get();
     assert(next_char == '\n');
     next_char = nippFile.peek();

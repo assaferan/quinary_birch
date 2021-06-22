@@ -93,13 +93,13 @@ Integer<R>::euclideanDivision(const Integer<R>& other) const
 }
 
 // We do only trial divison, since our numbers are always small enough
-// (in all our use cases, num will be in the order of 1000 at most)
+// (in all our use cases, num will be 1000-smooth)
 
 template <typename R>
 inline typename Integer<R>::FactorData Integer<R>::factorization(void) const
 {
   Integer<R> num = *this;
-  assert(num < R(10000));
+  //  assert(num < R(10000));
   typename Integer<R>::FactorData factors;
   Integer<R> temp_num = num.abs();
   size_t exp;
