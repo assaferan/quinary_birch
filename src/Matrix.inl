@@ -148,10 +148,21 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
 	for (size_t col = pivot_col + 1; col < echelon.ncols(); col++) {
 	  echelon(row,col) -= factor * echelon(pivot_row, col);
 	}
+	/*
 	for (size_t col = 0; col < trans.ncols(); col++) {
 	  trans(row,col) -= factor * trans(pivot_row, col);
 	}
+	*/
       }
+
+      for (size_t row = 0; row < pivot_row; row++) {
+	R factor = echelon(row,pivot_col);
+	echelon(row, pivot_col).makeZero();
+	for (size_t col = pivot_col + 1; col < echelon.ncols(); col++) {
+	  echelon(row,col) -= factor * echelon(pivot_row, col);
+	}
+      }
+      
 #ifdef DEBUG_LEVEL_FULL
       std::cerr << "echelon = " << std::endl << echelon << std::endl;
       std::cerr << "trans = " << std::endl << echelon << std::endl;
