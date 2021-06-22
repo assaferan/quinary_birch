@@ -748,6 +748,9 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 #endif
 	      spin_vals = this->_spinor->norm(foo.s);
 	    }
+
+	  // !! TODO - for some reason Jeff computes directly each of the eigenvalues
+	  // instead of computing the sum of the values, and then multiplying in the end.
 	  
 	  for (Z64 vpos : vector_manager._position_lut[index])
 	    {
