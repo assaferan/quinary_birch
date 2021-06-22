@@ -67,6 +67,47 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
 }
 
 template<typename R, size_t n>
+inline void TestBirch<R,n>::testEigenvalueTraces(const R & spinor_prime,
+						 const  std::vector< std::map< R, std::vector<R> > > & traces,
+						 size_t num_evs) const
+{
+  EigenvectorManager<R,n> manager;
+  std::vector< std::vector< NumberFieldElement<Z> > > evecs = _p_genus->eigenvectors()[spinor_prime];
+  for (std::vector< NumberFieldElement<Z> > evec : evecs)
+      manager.addEigenvector(_p_genus->eigenvector(evec, spinor_prime));
+  manager.finalize();
+
+  std::vector< std::vector<R> > evalues(evecs.size());
+  std::vector< std::vector<R> > computed_evalues(evecs.size());
+
+  for (size_t k = 0; k < evs.size(); k++) {
+    size_t num_processed = 0;
+    for (std::pair< R, std::vector<R> > ev_tr : traces[k]) {
+      Integer<R> p = ev_tr.first;
+      std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num(), k+1);
+      for (size_t i = 0; i < evecs.size(); i++) {
+	evalues[i].vec.push_back(ev_tr.second[i]);
+	computed_evalues[i].vec.push_back(birch_util::convertInteger<R,Z>(computed[i].trace()));
+      }
+#ifdef DEBUG
+      std::cerr << "ev_tr.second = " << ev_tr.second << std::endl;
+      std::cerr << "computed eigenvalues: " << computed << std::endl;
+#endif
+      num_processed++;
+      if (num_processed == num_evs) break;
+      //    assert(ev.second == _p_genus->eigenvalues(manager, p.num()));
+    }
+
+    std::unordered_set< std::vector<R> > evalue_set(evalues.begin(), evalues.end());
+    std::unordered_set< std::vector<R> > computed_set(computed_evalues.begin(), computed_evalues.end());
+
+    assert( evalue_set == computed_set);
+  }
+  
+  return;
+}
+
+template<typename R, size_t n>
 inline TestBirch<R,n>::TestBirch(const BirchExample<R,n> & example, size_t num_evs)
 {
   this->_init(example.coeffs);
