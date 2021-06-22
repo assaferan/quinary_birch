@@ -64,7 +64,7 @@ protected:
   std::vector<FpElement<R,S> > _params;
   std::shared_ptr<Matrix<PolynomialFp<R,S>, PolynomialRingFp<R,S> > > _p_isotropic_param;
   std::vector< VectorFp<R,S,n> > _iso_subspace;
-  std::vector< VectorInt<T,n> > _X, _Z, _U;
+  std::vector< VectorInt<T,n> > _X, _Z, _U, _X_skew;
 
   // The 2-isotropic vectors were stored in binary within each of the
   // coordinates of `vec` and so we use this function to unpack them into

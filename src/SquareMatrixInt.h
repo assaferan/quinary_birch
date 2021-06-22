@@ -1,6 +1,8 @@
 #ifndef __SQUARE_MATRIX_INT_H_
 #define __SQUARE_MATRIX_INT_H_
 
+#include <stdalign.h>
+
 // We create this one to mkae matrix operations more efficient when the underlying class is integral
 // At first tries to let it inherit from SquareMatrix<Integer<R>, IntegerRing<R>, n>
 // but just access to elements was inefficient
@@ -80,7 +82,7 @@ public:
   std::ostream & prettyPrint(std::ostream &, size_t upTo = n) const;
   
 protected:
-  R _mat[n][n];
+  alignas(32) R _mat[n][n];
   
   // helper functions
   void _deepCopy(const R mat[n][n]);
@@ -89,6 +91,7 @@ protected:
   VectorInt<R,n> _backwardSubstitution(const VectorInt<R,n> & vec) const;
   SquareMatrixInt<R,n> _inverseLowerTriangular(void) const;
   SquareMatrixInt<R,n> _inverseUpperTriangular(void) const;
+  
 };
 
 // left multiplication

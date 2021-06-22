@@ -343,7 +343,41 @@ template<typename R, typename S, size_t n>
 bool QuadFormFp<R,S,n>::_isotropicVector_p2(VectorFp<R,S,n> & vec,
 					    size_t start) const
 {
-  FpElement<R,S> g;
+  std::shared_ptr< const Fp<R,S> > GF = this->_B.baseRing();
+  FpElement<R,S> g(GF);
+
+  // Check the diagonal for an isotropic basis vector.
+  for (size_t j = start; j < n; j++) {
+    if ((*this)(j,j).isZero()) {
+      vec[j].makeOne();
+      return true;
+    }
+  }
+  
+  if (start + 2 == n) {
+    
+    FpElement<R,S> a = (*this)(start,start);
+    FpElement<R,S> b = (*this)(start,start+1);
+    FpElement<R,S> c = (*this)(start+1,start+1);
+
+    if (b.isZero()) {
+      g = a / c;
+      assert(g.isSquare());
+      g = g.sqrt();
+      vec[start].makeOne();
+      vec[start+1] = g;
+      return true;
+    }
+
+    // if we are here we should have a = b = c = 1, which is anisotropic
+    assert(a.isOne());
+    assert(b.isOne());
+    assert(c.isOne());
+    
+    return false;
+  
+  }
+  
   // If we can find a pair of orthogonal basis vectors,
   //  we can easily construct an isotropic vector.
   for (size_t i = start; i < n-1; i++)
@@ -425,18 +459,16 @@ inline bool QuadFormFp<R,S,n>::isotropicVector(VectorFp<R,S,n> & vec,
       vec[start+i] = rad(0,i);
     return true;
   }
-  // Check the diagonal
-  for (size_t i = start; i < n; i++)
-    if (this->_B(i,i) == 0) {
-      vec[i] = 1;
-      return true;
-    }
 
   size_t dim = n - start;
 
-  // if the one vector was isotropic, we would have found it above.
-  if (dim == 1)
+  if (dim == 1) {
+    if (this->_B(start,start).isZero()) {
+      vec[start].makeOne();
+      return true;
+    }
     return false;
+  }
 
   std::shared_ptr<const Fp<R,S> > GF = this->_B.baseRing();
   
@@ -460,6 +492,13 @@ inline bool QuadFormFp<R,S,n>::isotropicVector(VectorFp<R,S,n> & vec,
   }
 
   assert(dim >= 3);
+
+  // Check the diagonal
+  for (size_t i = start; i < n; i++)
+    if (this->_B(i,i) == 0) {
+      vec[i] = 1;
+      return true;
+    }
 
   // isometry on the submatrix of 3 first variables
   SquareMatrixFp<R,S,3> basis = SquareMatrixFp<R,S,3>::identity(GF);

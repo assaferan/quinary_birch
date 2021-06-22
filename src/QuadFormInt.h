@@ -16,6 +16,9 @@
 // quadratic forms over the integers
 
 template<typename R, size_t n>
+std::ostream& operator<<(std::ostream&, const QuadFormInt<R,n> &);
+
+template<typename R, size_t n>
 class QuadFormInt
 {
 public:

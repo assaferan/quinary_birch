@@ -111,6 +111,9 @@ inline void EigenvectorManager<R,n>::finalize(void)
 	}
     }
 
+  // !! TOOO - this was truw when all eigenvectors and eigenvalues were rational
+  // Figure out a way to still reap some benefits from it
+  
   // Next, we stride the eigenvector coodinate data so that we can compute
   // eigenvalues in a cache friendly way. If we have the following
   // eigenvectors:

@@ -1,8 +1,8 @@
 bin_PROGRAMS = birch birch_dbg
 lib_LTLIBRARIES = libbirch.la
 
-OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11
-DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
+OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11 -msse3 -mavx
+DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG -msse3 -mavx # -DDEBUG_LEVEL_FULL
 OPT_CXXFLAGS += -fvar-tracking-assignments-toggle
 OPT_CXXFLAGS += -fomit-frame-pointer
 OPT_CXXFLAGS += -funroll-all-loops
@@ -58,6 +58,7 @@ SOURCES += SetCover.cpp
 SOURCES += SetCover.h
 SOURCES += SquareMatrix.h
 SOURCES += SquareMatrix.inl
+SOURCES += SquareMatrixInt.cpp
 SOURCES += SquareMatrixInt.h
 SOURCES += SquareMatrixInt.inl
 SOURCES += TestBirch.h

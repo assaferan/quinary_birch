@@ -75,6 +75,11 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
   this->_k = k;
   this->_skew_dim = k*(k-1)/2;
   this->_p_skew = std::make_shared< MatrixFp<R,S> >(this->_GF, k, k);
+
+  this->nextIsotropicSubspace();
+  this->_liftSubspace();
+
+  this->_X_skew = this->_X;
 }
 
 //!! TODO - make gram work only modulo p^2
@@ -104,6 +109,7 @@ NeighborManager<R,S,T,n>::__gram(const SquareMatrixInt<T,n> & B, bool quot) cons
 template<typename R, typename S, typename T, size_t n>
 inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
 {
+  if ((this->_iso_subspace).empty()) return;
   Integer<T> p = this->_GF->prime();
 
   assert(this->_pivot_ptr >= 1);
@@ -556,15 +562,21 @@ inline void NeighborManager<R,S,T,n>::_updateSkewMatrix(size_t & row, size_t & c
 template<typename R, typename S, typename T, size_t n>
 inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
 {
+  assert(this->_X.size() == this->_k);
+  assert(this->_Z.size() == this->_k);
+  
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
   for (size_t i = 0; i < this->_k ; i++) {
+    this->_X_skew[i] = this->_X[i];
     for (size_t j = 0; j < this->_k; j++){
       // !! TODO - I got rid here of X_skew,
-      // check that it sisn't destroy anything
-      Integer<T> val = (*(this->_p_skew))(i,j).lift();
-      this->_X[i] += p.num() * (val.num() * this->_Z[j]);
+      // check that it didn't destroy anything
+      Integer<T> val = (*(this->_p_skew))(i,j).reducedLift();
+      this->_X_skew[i] += p.num() * (val.num() * this->_Z[j]);
     }
+    for (size_t j = 0; j < n; j++)
+      this->_X_skew[i][j] = (this->_X_skew[i][j]) % (p*p).num();
   }
 }
 
@@ -592,6 +604,7 @@ inline void NeighborManager<R,S,T,n>::getNextNeighbor(void)
   // Lift the subspace if we haven't reached the end of the list.
   if (!(this->_iso_subspace.empty())) {
     this->_liftSubspace();
+    this->_X_skew = this->_X;
   }
   else {
     this->_X.clear();
@@ -620,7 +633,7 @@ inline QuadFormZZ<T,n> NeighborManager<R,S,T,n>::buildNeighbor(Isometry<T,n>& s)
   
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      s(i,j) = this->_X[i][j];
+      s(i,j) = this->_X_skew[i][j];
 
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
@@ -676,7 +689,7 @@ NeighborManager<R,S,T,n>::__pivots(size_t dim, size_t aniso, size_t k)
   std::vector< std::vector<size_t> > pivs;
   // Base case.
   if (k == 1) {
-    for (size_t i = 0; i < dim - aniso; i++) {
+    for (size_t i = 0; i + aniso < dim; i++) {
       std::vector<size_t> singleton(1);
       singleton[0] = i;
       pivs.push_back(singleton);
@@ -691,8 +704,11 @@ NeighborManager<R,S,T,n>::__pivots(size_t dim, size_t aniso, size_t k)
       pivs[i][j]++;
 
   size_t num = pivs.size();
+  for (size_t i = 0; i < num; i++){
+    pivs.push_back(pivs[i]);
+  }
   // Determine the first set of pivots.
-  pivs.insert(pivs.end(), pivs.begin(), pivs.end());
+
   for (size_t i = 0; i < num; i++){
     pivs[i].insert(pivs[i].begin(), 0);
     pivs[i+num].push_back(dim-aniso-1);
@@ -789,7 +805,7 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
     }
 
 #ifdef DEBUG_LEVEL_FULL
-  std::cerr << "The matrix before echelon is mat = " << mat << std::endl;
+  std::cerr << "The matrix before echelon is mat = " << std::endl << mat << std::endl;
   std::cerr << "The last entry is the quadratic data = " << data << std::endl;
 #endif
   
@@ -797,6 +813,10 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
   MatrixFp<R,S> trans(this->_GF, rows, rows);
   MatrixFp<R,S>::rowEchelon(mat, trans);
 
+#ifdef DEBUG_LEVEL_FULL
+  std::cerr << "The matrix after echelon is mat = " << std::endl << mat << std::endl;
+#endif
+  
   // The evaluation list for replacing variables with their dependence
   //  relations.
   std::vector< PolynomialFp<R,S> > eval_list;
@@ -842,7 +862,7 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
   std::cerr << "testing parametrization" << std::endl;
 #endif // DEBUG_LEVEL_FULL
   for (size_t i = 0; i < this->_k; i++)
-    for (size_t j = 0; j < this->_k; j++) {
+    for (size_t j = i; j < this->_k; j++) {
       std::vector<PolynomialFp<R,S> > vec;
       for (size_t r = 0; r < n; r++)
 	vec.push_back((i == j) ? (*this->_p_isotropic_param)(i,r) :

@@ -1562,3 +1562,10 @@ inline R QuadFormInt<R,n>::discriminant(void) const
   
   return (n % 2 == 0) ? det : det/2;
 }
+
+template<typename R, size_t n>
+inline std::ostream& operator<<(std::ostream& os, const QuadFormInt<R,n> & q)
+{
+  os << q.bilinearForm();
+  return os;
+}

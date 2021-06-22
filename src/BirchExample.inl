@@ -8,7 +8,7 @@ template<typename R, size_t n>
 BirchExample<R,n>::BirchExample(const typename QuadFormZZ<R,n>::SymVec & q,
 				const R & spinor,
 				size_t d,
-				const std::vector< std::vector<R> > & aps)
+				const std::vector< std::vector< std::vector<R> > > & aps)
 {
   for (size_t i = 0; i < n*(n+1)/2; i++)
     coeffs[i] = q[i];
@@ -18,24 +18,27 @@ BirchExample<R,n>::BirchExample(const typename QuadFormZZ<R,n>::SymVec & q,
   std::shared_ptr<const RationalField<Z> > QQ = std::make_shared<const RationalField<Z> >();
   UnivariatePolyRat<Z> f = UnivariatePolyRat<Z>::x(QQ) - Rational<Z>::one();
   std::shared_ptr< const NumberField<Z> > QNF = std::make_shared< const NumberField<Z> >(f);
-  
-  Integer<R> p = R(2);
-  for (size_t j = 0; j < aps[0].size(); j++) {
-    std::vector< NumberFieldElement<Z> > vec;
-    for (size_t i = 0; i < aps.size(); i++) {
-      Rational<Z> ap_rat = birch_util::convertInteger<R,Z>(aps[i][j]);
-      NumberFieldElement<Z> ap_nf(QNF, ap_rat);
-      vec.push_back(ap_nf);
+
+  evs.resize(aps.size());
+  for (size_t k = 0; k < aps.size(); k++) {
+    Integer<R> p = R(2);
+    for (size_t j = 0; j < aps[k][0].size(); j++) {
+      std::vector< NumberFieldElement<Z> > vec;
+      for (size_t i = 0; i < aps[k].size(); i++) {
+	Rational<Z> ap_rat = birch_util::convertInteger<R,Z>(aps[k][i][j]);
+	NumberFieldElement<Z> ap_nf(QNF, ap_rat);
+	vec.push_back(ap_nf);
+      }
+      evs[k][p.num()] = vec;
+      p = p.nextPrime();
     }
-    evs[p.num()] = vec;
-    p = p.nextPrime();
   }
 }
 
 template<typename R, size_t n>
 inline BirchExample<Z64,3> BirchExample<R,n>::getExample_GV_7_2(void)
 {
-  std::vector< std::vector<Z64> > aps;
+  std::vector< std::vector< std::vector<Z64> > > aps(1);
   std::vector<Z64> eis;
   std::vector<Z64> cusp;
 
@@ -52,8 +55,8 @@ inline BirchExample<Z64,3> BirchExample<R,n>::getExample_GV_7_2(void)
   // initialize the cusp form
   cusp = {-2, -1, 1, -2, 0, 4, -2, 0, -1, 0, 7, 3, -8, -6, 8, -6, 5, 12, -7, -3, 4, -10, -6, 15, -7};
 
-  aps.push_back(eis);
-  aps.push_back(cusp);
+  aps[0].push_back(eis);
+  aps[0].push_back(cusp);
 
   QuadFormZZ<Z64,3>::SymVec coeffs = {2,0,2,1,0,6};
   
@@ -65,7 +68,9 @@ inline BirchExample<Z64,3> BirchExample<R,n>::getExample_GV_7_2(void)
 template<typename R, size_t n>
 inline BirchExample<Z64,4> BirchExample<R,n>::getExample_GV_7_3(void)
 {
-  std::vector< std::vector<Z64> > aps;
+  // aps[k][j] are the T_p^(k+1) eigenvalues of the form f_j
+  std::vector< std::vector< std::vector<Z64> > > aps(2);
+  
   std::vector<Z64> eis,cusp,eis2,a,b;
 
   // initialize the eisenstein form
@@ -91,10 +96,25 @@ inline BirchExample<Z64,4> BirchExample<R,n>::getExample_GV_7_3(void)
   for (size_t i = 0; i < cusp.size(); i++)
     b[i] = eis[i]*cusp[i];
   
-  aps.push_back(eis2);
-  aps.push_back(a);
-  aps.push_back(b);
+  aps[0].push_back(eis2);
+  aps[0].push_back(a);
+  aps[0].push_back(b);
 
+  std::vector<Z64> eis2_2,a_2,b_2;
+  eis2_2.resize(cusp.size());
+  a_2.resize(cusp.size());
+  b_2.resize(cusp.size());
+  for (size_t i = 0; i < cusp.size(); i++)
+    eis2_2[i] = 2*eis[i]*(eis[i]-1);
+  for (size_t i = 0; i < cusp.size(); i++)
+    a_2[i] = 2*(cusp[i]*cusp[i] - eis[i]);
+  for (size_t i = 0; i < cusp.size(); i++)
+    b_2[i] = cusp[i]*cusp[i] + eis[i]*(eis[i]-2);
+
+  aps[1].push_back(eis2_2);
+  aps[1].push_back(a_2);
+  aps[1].push_back(b_2);
+  
   QuadFormZZ<Z64,4>::SymVec coeffs = {2,0,2,0,1,6,1,0,0,6};
   
   BirchExample<Z64,4> example(coeffs, 1, 3, aps);

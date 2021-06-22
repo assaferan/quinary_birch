@@ -27,7 +27,7 @@ inline void TestBirch<R,n>::testDim(const R & spinor_prime, size_t dim) const
 
 template<typename R, size_t n>
 inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
-					    const  std::map< R, std::vector< NumberFieldElement<Z> > > & evs,
+					    const  std::vector< std::map< R, std::vector< NumberFieldElement<Z> > > > & evs,
 					    size_t num_evs) const
 {
   EigenvectorManager<R,n> manager;
@@ -39,28 +39,43 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
   std::vector< EigenvalueVector > evalues(evecs.size());
   std::vector< EigenvalueVector > computed_evalues(evecs.size());
 
-  size_t num_processed = 0;
-  for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs) {
-    Integer<R> p = ev.first;
-    std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num());
-    for (size_t i = 0; i < evecs.size(); i++) {
-      evalues[i].vec.push_back(ev.second[i]);
-      computed_evalues[i].vec.push_back(computed[i]);
-    }
+  for (size_t k = 0; k < evs.size(); k++) {
+    size_t num_processed = 0;
+    for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs[k]) {
+      Integer<R> p = ev.first;
+      std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num(), k+1);
+      for (size_t i = 0; i < evecs.size(); i++) {
+	evalues[i].vec.push_back(ev.second[i]);
+	computed_evalues[i].vec.push_back(computed[i]);
+      }
 #ifdef DEBUG
-    std::cerr << "ev.second = " << ev.second << std::endl;
-    std::cerr << "computed eigenvalues: " << computed << std::endl;
+      std::cerr << "ev.second = " << ev.second << std::endl;
+      std::cerr << "computed eigenvalues: " << computed << std::endl;
 #endif
-    num_processed++;
-    if (num_processed == num_evs) break;
-    //    assert(ev.second == _p_genus->eigenvalues(manager, p.num()));
+      num_processed++;
+      if (num_processed == num_evs) break;
+      //    assert(ev.second == _p_genus->eigenvalues(manager, p.num()));
+    }
+
+    std::unordered_set< EigenvalueVector > evalue_set(evalues.begin(), evalues.end());
+    std::unordered_set< EigenvalueVector > computed_set(computed_evalues.begin(), computed_evalues.end());
+
+    assert( evalue_set == computed_set);
+
+  // Here we start testing k = 2
+    /*
+  if (n == 4) {
+    for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs) {
+      Integer<R> p = ev.first;
+      std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num(), 2);
+#ifdef DEBUG
+      std::cerr << "p = " << ev.first << std::endl;
+      std::cerr << "computed eigenvalues: " << computed << std::endl;
+#endif
+    }
+    */
   }
-
-  std::unordered_set< EigenvalueVector > evalue_set(evalues.begin(), evalues.end());
-  std::unordered_set< EigenvalueVector > computed_set(computed_evalues.begin(), computed_evalues.end());
-
-  assert( evalue_set == computed_set);
-
+  
   return;
 }
 
