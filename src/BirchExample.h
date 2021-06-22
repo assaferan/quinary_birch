@@ -26,7 +26,9 @@ public:
   QuadFormZZ<R,n> qf;
   R spinor_prime;
   size_t dim;
+  // some examples will have the eigenvalues and some only the traces
   std::vector< std::map< R, std::vector<R> > > traces;
+  std::vector< std::map< R, std::vector< NumberFieldElement<Z> > > > evs;
   
 };
 
