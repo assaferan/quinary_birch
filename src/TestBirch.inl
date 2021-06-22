@@ -10,9 +10,9 @@
 #include "QuadFormInt.h"
 
 template<typename R, size_t n>
-TestBirch<R,n>::TestBirch(const typename QuadFormZZ<R,n>::SymVec & coeffs)
+TestBirch<R,n>::TestBirch(const QuadFormZZ<R,n> & q)
 {
-  this->_init(coeffs);
+  this->_init(q);
 }
 
 template<typename R, size_t n>
@@ -110,16 +110,14 @@ inline void TestBirch<R,n>::testEigenvalueTraces(const R & spinor_prime,
 template<typename R, size_t n>
 inline TestBirch<R,n>::TestBirch(const BirchExample<R,n> & example, size_t num_evs)
 {
-  this->_init(example.coeffs);
+  this->_init(example.qf);
   this->testDim(example.spinor_prime, example.dim);
   this->testEigenvalues(example.spinor_prime, example.evs, num_evs);
 }
 
 template<typename R, size_t n>
-inline void TestBirch<R,n>::_init(const typename QuadFormZZ<R,n>::SymVec & coeffs)
+inline void TestBirch<R,n>::_init(const QuadFormZZ<R,n> & q)
 {
-   QuadFormZZ<R,n> q(coeffs);
-
   Integer<R> disc = q.discriminant();
   typename Integer<R>::FactorData facs = disc.factorization();
 
