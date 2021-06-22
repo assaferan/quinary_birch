@@ -569,7 +569,7 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
     for (size_t j = 0; j < this->_k; j++){
       // !! TODO - I got rid here of X_skew,
       // check that it didn't destroy anything
-      Integer<T> val = (*(this->_p_skew))(i,j).lift();
+      Integer<T> val = (*(this->_p_skew))(i,j).lift() % p;
       this->_X[i] += p.num() * (val.num() * this->_Z[j]);
     }
   }
