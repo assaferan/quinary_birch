@@ -5,31 +5,31 @@
 #include "QuadFormInt.h"
 
 template<typename R, size_t n>
-BirchExample<R,n>::BirchExample(const typename QuadFormZZ<R,n>::SymVec & q,
+BirchExample<R,n>::BirchExample(const QuadFormZZ<R,n> & q,
 				const R & spinor,
 				size_t d,
 				const std::vector< std::vector< std::vector<R> > > & aps)
 {
-  for (size_t i = 0; i < n*(n+1)/2; i++)
-    coeffs[i] = q[i];
+  qf = q;
   spinor_prime = spinor;
   dim = d;
 
-  std::shared_ptr<const RationalField<Z> > QQ = std::make_shared<const RationalField<Z> >();
-  UnivariatePolyRat<Z> f = UnivariatePolyRat<Z>::x(QQ) - Rational<Z>::one();
-  std::shared_ptr< const NumberField<Z> > QNF = std::make_shared< const NumberField<Z> >(f);
+  // std::shared_ptr<const RationalField<Z> > QQ = std::make_shared<const RationalField<Z> >();
+  // UnivariatePolyRat<Z> f = UnivariatePolyRat<Z>::x(QQ) - Rational<Z>::one();
+  // std::shared_ptr< const NumberField<Z> > QNF = std::make_shared< const NumberField<Z> >(f);
 
-  evs.resize(aps.size());
+  traces.resize(aps.size());
   for (size_t k = 0; k < aps.size(); k++) {
     Integer<R> p = R(2);
     for (size_t j = 0; j < aps[k][0].size(); j++) {
-      std::vector< NumberFieldElement<Z> > vec;
+      // std::vector< NumberFieldElement<Z> > vec;
       for (size_t i = 0; i < aps[k].size(); i++) {
-	Rational<Z> ap_rat = birch_util::convertInteger<R,Z>(aps[k][i][j]);
-	NumberFieldElement<Z> ap_nf(QNF, ap_rat);
-	vec.push_back(ap_nf);
+	// Rational<Z> ap_rat = birch_util::convertInteger<R,Z>(aps[k][i][j]);
+	// NumberFieldElement<Z> ap_nf(QNF, ap_rat);
+	// vec.push_back(ap_nf);
+	vec.push_back([aps[k][i][j]);
       }
-      evs[k][p.num()] = vec;
+      traces[k][p.num()] = vec;
       p = p.nextPrime();
     }
   }
@@ -59,8 +59,9 @@ inline BirchExample<Z64,3> BirchExample<R,n>::getExample_GV_7_2(void)
   aps[0].push_back(cusp);
 
   QuadFormZZ<Z64,3>::SymVec coeffs = {2,0,2,1,0,6};
-  
-  BirchExample<Z64,3> example(coeffs, 1, 2, aps);
+  QuadFormZZ<Z64,3> qf(coeffs);
+    
+  BirchExample<Z64,3> example(qf, 1, 2, aps);
 
   return example;
 }
@@ -89,8 +90,9 @@ inline BirchExample<Z64,3> BirchExample<R,n>::getExample_CMF_49_2_a_a(void)
   aps[0].push_back(cusp);
 
   QuadFormZZ<Z64,3>::SymVec coeffs = {6,1,6,1,-1,20};
+  QuadFormZZ<Z64,3> qf(coeffs);
   
-  BirchExample<Z64,3> example(coeffs, 1, 2, aps);
+  BirchExample<Z64,3> example(qf, 1, 2, aps);
 
   return example;
 }
@@ -146,8 +148,9 @@ inline BirchExample<Z64,4> BirchExample<R,n>::getExample_GV_7_3(void)
   aps[1].push_back(b_2);
   
   QuadFormZZ<Z64,4>::SymVec coeffs = {2,0,2,0,1,6,1,0,0,6};
+  QuadFormZZ<Z64,3> qf(coeffs);
   
-  BirchExample<Z64,4> example(coeffs, 1, 3, aps);
+  BirchExample<Z64,4> example(qf, 1, 3, aps);
 
   return example;
 }
@@ -165,9 +168,9 @@ inline BirchExample<Z64,5> BirchExample<R,n>::getExample_RT_Table1(void)
   aps[0].push_back(traces1);
   aps[1].push_back(traces2);
 
-  QuadFormZZ<Z64,5>::SymVec coeffs = {2,0,2,1,0,6};
+  QuadFormZZ<Z64,5> qf = QuadFormZZ<Z64,5>::getQuinaryForms(167);
   
-  BirchExample<Z64,5> example(coeffs, 1, 2, aps);
+  BirchExample<Z64,5> example(qf, 167, 1, aps);
 
   return example;
 }
