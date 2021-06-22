@@ -429,8 +429,8 @@ inline bool QuadFormFp<R,S,n>::isotropicVector(VectorFp<R,S,n> & vec,
   size_t dim = n - start;
 
   if (dim == 1) {
-    if (this->_B(0,0).isZero()) {
-      vec[0].makeOne();
+    if (this->_B(start,start).isZero()) {
+      vec[start].makeOne();
       return true;
     }
     return false;
