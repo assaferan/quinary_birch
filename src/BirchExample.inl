@@ -66,6 +66,36 @@ inline BirchExample<Z64,3> BirchExample<R,n>::getExample_GV_7_2(void)
 }
 
 template<typename R, size_t n>
+inline BirchExample<Z64,3> BirchExample<R,n>::getExample_CMF_49_2_a_a(void)
+{
+  std::vector< std::vector< std::vector<Z64> > > aps(1);
+  std::vector<Z64> eis;
+  std::vector<Z64> cusp;
+
+  // initialize the eisenstein form
+  Integer<Z64> p = 2;
+  while (p.num() < 100) {
+    if (p.num() == 7)
+      eis.push_back(0);
+    else
+      eis.push_back(p.num()+1);
+    p = p.nextPrime();
+  }
+
+  // initialize the cusp form
+  cusp = { 1, 0, 0, 0, 4, 0, 0, 0, 8, 2, 0, -6, 0, -12, 0, -10, 0, 0, 4, 16, 0, 8, 0, 0, 0};
+
+  aps[0].push_back(eis);
+  aps[0].push_back(cusp);
+
+  QuadFormZZ<Z64,3>::SymVec coeffs = {6,1,6,1,-1,20};
+  
+  BirchExample<Z64,3> example(coeffs, 1, 2, aps);
+
+  return example;
+}
+
+template<typename R, size_t n>
 inline BirchExample<Z64,4> BirchExample<R,n>::getExample_GV_7_3(void)
 {
   // aps[k][j] are the T_p^(k+1) eigenvalues of the form f_j
