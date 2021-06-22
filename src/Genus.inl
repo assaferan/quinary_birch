@@ -657,7 +657,7 @@ template<typename R, size_t n>
 template<typename S, typename T>
 std::vector< NumberFieldElement<Z> >
 Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
-			  std::shared_ptr<Fp<S,T>> GF, const R& p, size_t k = 1) const
+			  std::shared_ptr<Fp<S,T>> GF, const R& p) const
 {
   const NumberFieldElement<Z> *stride_ptr = vector_manager._strided_eigenvectors.data();
   std::vector< NumberFieldElement<Z> > eigenvalues(vector_manager.size(), stride_ptr->parent());
