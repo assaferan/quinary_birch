@@ -12,7 +12,7 @@ template<typename R, size_t n>
 class BirchExample
 {
 public:
-  BirchExample(const typename QuadFormZZ<R,n>::SymVec &, const R &, size_t,
+  BirchExample(const QuadFormZZ<R,n> &, const R &, size_t,
 	       const std::vector< std::vector< std::vector<R> > > &);
 
   // n = 3
@@ -20,9 +20,10 @@ public:
   static BirchExample<Z64,3> getExample_CMF_49_2_a_a(void);
   // n = 4
   static BirchExample<Z64,4> getExample_GV_7_3(void);
- 
+  // n = 5
+  static BirchExample<Z64,5> getExample_RT_Table1(void);
 
-  typename QuadFormZZ<R,n>::SymVec coeffs;
+  QuadFormZZ<R,n> qf;
   R spinor_prime;
   size_t dim;
   std::vector< std::map< R, std::vector< NumberFieldElement<Z> > > > evs;
