@@ -147,6 +147,6 @@ inline void runBirchTests(size_t num_evs) {
   
   TestBirch<Z64,4> test_7_3(BirchExample<Z64,4>::getExample_GV_7_3(), num_evs);
 
-  TestBirch<Z64,5> test_RT_table1(BirchExample<Z64,t>::getExample_RT_Table1(), num_evs);
+  TestBirch<Z64,5> test_RT_table1(BirchExample<Z64,5>::getExample_RT_Table1(), num_evs);
   
 }
