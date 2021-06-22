@@ -804,6 +804,10 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
   MatrixFp<R,S> trans(this->_GF, rows, rows);
   MatrixFp<R,S>::rowEchelon(mat, trans);
 
+#ifdef DEBUG //_LEVEL_FULL
+  std::cerr << "The matrix after echelon is mat = " << std::endl << mat << std::endl;
+#endif
+  
   // The evaluation list for replacing variables with their dependence
   //  relations.
   std::vector< PolynomialFp<R,S> > eval_list;
