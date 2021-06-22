@@ -80,7 +80,7 @@ inline void TestBirch<R,n>::testEigenvalueTraces(const R & spinor_prime,
   std::vector< std::vector<R> > evalues(evecs.size());
   std::vector< std::vector<R> > computed_evalues(evecs.size());
 
-  for (size_t k = 0; k < evs.size(); k++) {
+  for (size_t k = 0; k < traces.size(); k++) {
     size_t num_processed = 0;
     for (std::pair< R, std::vector<R> > ev_tr : traces[k]) {
       Integer<R> p = ev_tr.first;
