@@ -853,7 +853,7 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
   std::cerr << "testing parametrization" << std::endl;
 #endif // DEBUG_LEVEL_FULL
   for (size_t i = 0; i < this->_k; i++)
-    for (size_t j = 0; j < this->_k; j++) {
+    for (size_t j = i; j < this->_k; j++) {
       std::vector<PolynomialFp<R,S> > vec;
       for (size_t r = 0; r < n; r++)
 	vec.push_back((i == j) ? (*this->_p_isotropic_param)(i,r) :
