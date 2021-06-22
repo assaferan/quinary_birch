@@ -91,7 +91,7 @@ public:
 
   Eigenvector<R> eigenvector(const std::vector< NumberFieldElement<Z> >&, const R& ) const;
 
-  std::vector< NumberFieldElement<Z> > eigenvalues(EigenvectorManager<R,n>&, const R&) const;
+  std::vector< NumberFieldElement<Z> > eigenvalues(EigenvectorManager<R,n>& manager, const R& p, size_t k = 1) const;
 
   inline const GenusRep<R,n>& representative(size_t idx) const
   { return this->_hash->get(idx); }
@@ -120,8 +120,8 @@ protected:
   W64 _seed;
 
   template<typename S, typename T>
-  std::vector< NumberFieldElement<Z> > _eigenvectors(EigenvectorManager<R, n>&,
-						     std::shared_ptr<Fp<S,T>>, const R& ) const;
+  std::vector< NumberFieldElement<Z> > _eigenvectors(EigenvectorManager<R,n>& manager,
+						     std::shared_ptr<Fp<S,T>> GF, const R& p, size_t k) const;
 
   Rational<Z> _getMass(const QuadFormZZ<R,n>&,
 		       const std::vector<PrimeSymbol<R>>&);
