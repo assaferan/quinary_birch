@@ -796,7 +796,7 @@ inline void NeighborManager<R,S,T,n>::__initializePivots(void)
     }
 
 #ifdef DEBUG //_LEVEL_FULL
-  std::cerr << "The matrix before echelon is mat = " << mat << std::endl;
+  std::cerr << "The matrix before echelon is mat = " << std::endl << mat << std::endl;
   std::cerr << "The last entry is the quadratic data = " << data << std::endl;
 #endif
   
