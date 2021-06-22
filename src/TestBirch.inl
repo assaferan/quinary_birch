@@ -100,6 +100,4 @@ inline void runBirchTests(size_t num_evs) {
   TestBirch<Z64,4> test_7_3(BirchExample<Z64,4>::getExample_GV_7_3(), num_evs);
   std::vector< std::vector< QuadFormZZ<Z64,5> > > qfs = QuadFormZZ<Z64,5>::getQuinaryForms(256);
   qfs = QuadFormZZ<Z64,5>::getQuinaryForms(300);
-
-  std::cerr << qfs << std::endl;
 }
