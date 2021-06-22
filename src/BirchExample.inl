@@ -4,6 +4,7 @@
 #include "Integer.h"
 #include "QuadFormInt.h"
 
+// In this constructor we assume the aps are the actual eigenvalues and use them to populate both evs and traces
 template<typename R, size_t n>
 BirchExample<R,n>::BirchExample(const QuadFormZZ<R,n> & q,
 				const R & spinor,
@@ -14,21 +15,24 @@ BirchExample<R,n>::BirchExample(const QuadFormZZ<R,n> & q,
   spinor_prime = spinor;
   dim = d;
 
-  // std::shared_ptr<const RationalField<Z> > QQ = std::make_shared<const RationalField<Z> >();
-  // UnivariatePolyRat<Z> f = UnivariatePolyRat<Z>::x(QQ) - Rational<Z>::one();
-  // std::shared_ptr< const NumberField<Z> > QNF = std::make_shared< const NumberField<Z> >(f);
+  std::shared_ptr<const RationalField<Z> > QQ = std::make_shared<const RationalField<Z> >();
+  UnivariatePolyRat<Z> f = UnivariatePolyRat<Z>::x(QQ) - Rational<Z>::one();
+  std::shared_ptr< const NumberField<Z> > QNF = std::make_shared< const NumberField<Z> >(f);
 
+  evs.resize(aps.size());
   traces.resize(aps.size());
   for (size_t k = 0; k < aps.size(); k++) {
     Integer<R> p = R(2);
     for (size_t j = 0; j < aps[k][0].size(); j++) {
-      // std::vector< NumberFieldElement<Z> > vec;
+      std::vector< NumberFieldElement<Z> > vec_nf;
+      std::vector<R> vec;
       for (size_t i = 0; i < aps[k].size(); i++) {
-	// Rational<Z> ap_rat = birch_util::convertInteger<R,Z>(aps[k][i][j]);
-	// NumberFieldElement<Z> ap_nf(QNF, ap_rat);
-	// vec.push_back(ap_nf);
-	vec.push_back([aps[k][i][j]);
+	Rational<Z> ap_rat = birch_util::convertInteger<R,Z>(aps[k][i][j]);
+	NumberFieldElement<Z> ap_nf(QNF, ap_rat);
+	vec_nf.push_back(ap_nf);
+	vec.push_back(aps[k][i][j]);
       }
+      evs[k][p.num()] = vec_nf;
       traces[k][p.num()] = vec;
       p = p.nextPrime();
     }
