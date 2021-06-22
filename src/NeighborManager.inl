@@ -698,8 +698,11 @@ NeighborManager<R,S,T,n>::__pivots(size_t dim, size_t aniso, size_t k)
       pivs[i][j]++;
 
   size_t num = pivs.size();
+  for (size_t i = 0; i < num; i++){
+    pivs.push_back(pivs[i]);
+  }
   // Determine the first set of pivots.
-  pivs.insert(pivs.end(), pivs.begin(), pivs.end());
+
   for (size_t i = 0; i < num; i++){
     pivs[i].insert(pivs[i].begin(), 0);
     pivs[i+num].push_back(dim-aniso-1);
