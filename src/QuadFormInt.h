@@ -81,6 +81,9 @@ public:
 				Isometry<R,n> & isom,
 				bool calc_aut = false);
 
+  static QuadFormZZ<R,n> reduceNonUnique(const QuadFormZZ<R,n> & q,
+					 Isometry<R,n> & isom);
+
   std::unordered_set<Isometry<R,n>> properAutomorphisms(void) const;
 
   static std::vector< QuadFormZZ<R,5> > nippToForms(NippEntry entry);
