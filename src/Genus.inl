@@ -999,10 +999,7 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 	  */
 	  // Build the neighbor and reduce it.
 	  foo.q = manager.buildNeighbor(foo.s);
-	  SquareMatrixInt<R,n> qf = foo.q.bilinearForm();
-	  QuadFormZZ<R,n>::greedy(qf, foo.s);
-	  QuadFormZZ<R,n> qred(qf);
-	  foo.q = qred;
+	  foo.q = QuadFormZZ<R,n>::reduceNonUnique(foo.q, foo.s);
 
 	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
