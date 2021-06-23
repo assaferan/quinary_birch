@@ -471,17 +471,14 @@ inline void NeighborManager<R,S,T,n>::nextIsotropicSubspace(void)
   return;
 }
 
-// !! TODO - Is it enough to use greedy here as well?
 template<typename R, typename S, typename T, size_t n>
 inline GenusRep<T,n> NeighborManager<R,S,T,n>::getReducedNeighborRep(void)
 {
   GenusRep<T,n> rep;
 
   rep.q = this->buildNeighbor(rep.s);
-  // rep.q = QuadFormZZ<T,n>::reduce(rep.q, rep.s);
-  SquareMatrixInt<T,n> qf = rep.q.bilinearForm();
-  QuadFormZZ<T,n>::greedy(qf, rep.s);
-  rep.q = qf;
+  rep.q = QuadFormZZ<T,n>::reduceNonUnique(rep.q, rep.s);
+  
   return rep;
 }
 
