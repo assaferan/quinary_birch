@@ -1149,6 +1149,19 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 }
 
 template<typename R, size_t n>
+inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> & q,
+							 Isometry<R,n> & isom)
+{
+  assert(q.bilinearForm().isPositiveDefinite());
+
+  SquareMatrixInt<R,n> qf = q.bilinearForm();
+  greedy(qf, isom);
+  QuadFormZZ<R,n> q_red(qf);
+  
+  return q_red;
+}
+
+template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::_iReduce(SquareMatrixInt<R,n> & qf,
 					Isometry<R,n> & isom,
 					std::unordered_set< Isometry<R,n> > & auts,
