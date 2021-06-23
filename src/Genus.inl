@@ -1149,7 +1149,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
   if (V_basis.nrows() == 0)
     return evecs;
 
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
   std::cerr << "Decomposing space of dimension " << this->_dims[k];
   std::cerr << " using T_" << p << "." << std::endl;
 #endif
@@ -1169,19 +1169,19 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     for (size_t col = 0; col < V_basis.ncols(); col++)
       basis_rat(row,col) = V_basis(row,col);
 
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
   std::cerr << "Restricting T_ " << p << " to V = " << std::endl << basis_rat << "." << std::endl;
 #endif
   
   MatrixRat<Z> T_p_res = T_p.restrict(basis_rat);
   
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
   std::cerr << "Computing characteristic polynomial of T_" << p << "." << std::endl;
 #endif
     
   UnivariatePolyRat<Z> f = T_p_res.charPoly();
   
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
   std::cerr << "f = " << f << std::endl;
   std::cerr << "multiplying by common denominator." << std::endl;
 #endif
@@ -1196,7 +1196,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
   
   UnivariatePolyInt<Z> f_int(coeffs_int);
 
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
   std::cerr << "factoring characteristic polynomial f_int = " << f_int << std::endl;
 #endif
   
@@ -1206,7 +1206,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     UnivariatePolyInt<Z> f = fa.first;
     size_t a = fa.second;
     
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG_ // LEVEL_FULL
     std::cerr << "Cutting out subspace using f(T_" << p;
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
@@ -1217,7 +1217,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     assert (W_basis.nrows() != 0);
     
     if (a == 1) {
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
       std::cerr << "Found irreducible subspace W = " << W_basis << std::endl;
       std::cerr << "computing eigenvector." << std::endl;
 #endif
@@ -1237,13 +1237,13 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
 	}
       NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(T_p.baseRing()));
       T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T_p.nrows());
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
       std::cerr << "Computing kernel of " << std::endl << T_K << std::endl;
 #endif
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       assert(nullsp.nrows() == 1);
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
       std::cerr << "found eigenvector: " << vec << std::endl;
 #endif
       evecs.push_back(vec);
