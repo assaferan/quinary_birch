@@ -64,7 +64,7 @@ public:
 
   // more complex operations that might be useful outside the class
   bool cholesky(SquareMatrixInt<R,n>& L, VectorInt<R,n> & D) const;
-  // should have sizeof(S) > 3*sizeof(R)
+  // should have sizeof(S) > 3*sizeof(R)+log(n)
   template <typename S>
   bool ldl(SquareMatrixInt<S,n>& L, VectorInt<S,n> & D) const;
   
