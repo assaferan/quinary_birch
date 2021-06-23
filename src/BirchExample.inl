@@ -152,7 +152,7 @@ inline BirchExample<Z64,4> BirchExample<R,n>::getExample_GV_7_3(void)
   aps[1].push_back(b_2);
   
   QuadFormZZ<Z64,4>::SymVec coeffs = {2,0,2,0,1,6,1,0,0,6};
-  QuadFormZZ<Z64,3> qf(coeffs);
+  QuadFormZZ<Z64,4> qf(coeffs);
   
   BirchExample<Z64,4> example(qf, 1, 3, aps);
 
