@@ -64,7 +64,9 @@ public:
 
   // more complex operations that might be useful outside the class
   bool cholesky(SquareMatrixInt<R,n>& L, VectorInt<R,n> & D) const;
-  bool ldl(SquareMatrixInt<R,n>& L, VectorInt<R,n> & D) const;
+  // should have sizeof(S) > 3*sizeof(R)
+  template <typename S>
+  bool ldl(SquareMatrixInt<S,n>& L, VectorInt<S,n> & D) const;
   
   // elementary operations
   void swapRows(size_t row1, size_t row2);
