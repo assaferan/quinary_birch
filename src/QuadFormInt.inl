@@ -999,7 +999,6 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
   
   std::vector< std::vector< VectorInt<R,n> > > & neighbor_space = ns;
   std::vector< std::vector< VectorInt<R,n> > > & ns1 = ns0;
-  std::vector< std::vector< VectorInt<R,n> > > & tmp;
   
   for (size_t i = 1; i < n; i++) {
     ns1.clear();
@@ -1033,7 +1032,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
       }
     }
     // swap pointers
-    tmp = neighbor_space;
+    std::vector< std::vector< VectorInt<R,n> > > & tmp = neighbor_space;
     neighbor_space = ns1;
     ns1 = tmp;
   }
