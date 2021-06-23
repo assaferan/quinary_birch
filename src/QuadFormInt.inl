@@ -1168,7 +1168,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
     for (size_t j = 1; j < n; j++)
       all_eq = (all_eq) && (q_red(j,j) == q_red(0,0));
     if (all_eq) {
-      q_red = reduce(q_red, isom)
+      q_red = reduce(q_red, isom);
     }
   }
   
