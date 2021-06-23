@@ -31,6 +31,9 @@ namespace birch_util
 
   template<typename R, size_t n>
   MatrixInt<R> convertMatrix(const SquareMatrixInt<R,n> & from);
+
+  template<typename From, typename To, size_t n>
+  SquareMatrixInt<To,n> convertSquareMatrix(const SquareMatrixInt<From,n>& q);
   
   // !! TODO - get rid of this redundant method
   template<typename R>
