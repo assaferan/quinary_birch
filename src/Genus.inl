@@ -314,8 +314,10 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 	  bool prime_done = manager.getIsotropicSubspace().empty();
 	  while ((!done) && (!prime_done))
 	    {
+#ifdef DEBUG
 	      // we must update the reference, because every access to the hash map might invalidate it
 	      const QuadFormZZ<R,n>& mother = this->_hash->get(current).q;
+#endif
 	      // Verify that the appropriate vector is isotropic.
 	      assert(!manager.getIsotropicSubspace().empty());
 	      assert( mother.evaluate(manager.getIsotropicSubspace()[0]) % prime == 0 );
