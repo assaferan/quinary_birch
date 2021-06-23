@@ -180,8 +180,9 @@ inline bool SquareMatrixInt<R,n>::isSymmetric(void) const
 template<typename R, size_t n>
 inline bool SquareMatrixInt<R,n>::isPositiveDefinite(void) const
 {
-  SquareMatrixInt<R,n> L;
-  VectorInt<R,n> D;
+  // Optimally, we should choose a type S of minimal size to accomodate the result.
+  SquareMatrixInt<Z,n> L;
+  VectorInt<Z,n> D;
   return ldl(L,D);
 }
   
