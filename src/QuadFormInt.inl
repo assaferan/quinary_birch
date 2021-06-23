@@ -1157,6 +1157,20 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
   SquareMatrixInt<R,n> qf = q.bilinearForm();
   greedy(qf, isom);
   QuadFormZZ<R,n> q_red(qf);
+
+  // if n == 5 and all 5 shortest vectors are of the same length
+  // the orbit would be very large and we prefer not to try and compute it.
+  // !! TODO - it seems that the orbit itself would not be very large.
+  // However, determining it takes a long time. (verifying that we covered everything).
+  // Can we figure out a way to make sure we covered everything more efficiently?
+  if (n == 5) {
+    bool all_eq = true;
+    for (size_t j = 1; j < n; j++)
+      all_eq = (all_eq) && (q_red(j,j) == q_red(0,0));
+    if (all_eq) {
+      q_red = reduce(q_red, isom)
+    }
+  }
   
   return q_red;
 }
