@@ -423,7 +423,8 @@ SquareMatrixInt<R,n>::ldl(SquareMatrixInt<S,n>& L,  VectorInt<S,n> & D) const
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
       diag(i,j) = (i == j) ? D[i] :0;
-  assert(L*birch_util::convertSquareMatrix<R,S>(*this)*L.transpose() == diag);
+  SquareMatrixInt<S,n> this_S = birch_util::convertSquareMatrix<R,S>(*this);
+  assert(L*this_S*L.transpose() == diag);
 #endif
   return true;
 }
