@@ -56,6 +56,16 @@ namespace birch_util
     return to;
   }
 
+  template<typename From, typename To, size_t n>
+  inline SquareMatrixInt<To,n> convertSquareMatrix(const SquareMatrixInt<From,n>& m)
+  {
+    SquareMatrixInt<To,n> mat;
+    for (size_t i = 0; i < n; i++)
+      for (size_t j = 0; j < n; j++)
+	mat(i,j) = convertInteger<From,To>(m(i,j));
+    
+    return mat;
+  }
 
   template<typename R, size_t n>
   inline MatrixInt<R> convertMatrix(const SquareMatrixInt<R,n> & from)
