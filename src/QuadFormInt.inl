@@ -1454,6 +1454,21 @@ QuadFormInt<R,n>::generateOrbit(void) const
   typename std::unordered_map< QuadFormZZ<R,n>,
 			       Isometry<R,n> >::const_iterator i, j;
   orbit[qf] = s;
+  
+  // if n == 5 and all 5 shortest vectors are of the same length
+  // the orbit would be very large and we prefer not to try and compute it.
+  // !! TODO - it seems that the orbit itself would not be very large.
+  // However, determining it takes a long time. (verifying that we covered everything).
+  // Can we figure out a way to make sure we covered everything more efficiently?
+  if (n == 5) {
+    bool all_eq = true;
+    for (size_t j = 1; j < n; j++)
+      all_eq = (all_eq) && (qf(j,j) == qf(0,0));
+    if (all_eq) {
+      return orbit;
+    }
+  }
+  
   while (num < orbit.size()) {
     num = orbit.size();
     for (i = orbit.begin(); i != orbit.end(); i++) {
