@@ -172,7 +172,7 @@ inline BirchExample<Z64,5> BirchExample<R,n>::getExample_RT_Table1(void)
   aps[0].push_back(traces1);
   aps[1].push_back(traces2);
 
-  QuadFormZZ<Z64,5> qf = QuadFormZZ<Z64,5>::getQuinaryForms(167);
+  QuadFormZZ<Z64,5> qf = QuadFormZZ<Z64,5>::getQuinaryForms(167)[0][0];
   
   BirchExample<Z64,5> example(qf, 167, 1, aps);
 
