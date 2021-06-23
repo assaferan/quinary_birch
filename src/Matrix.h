@@ -86,6 +86,7 @@ public:
   Matrix<R,Parent> transpose() const;
 
   // arithmetic
+  Matrix<R,Parent> operator-() const;
   Matrix<R,Parent> operator+(const Matrix<R,Parent> &) const;
   Matrix<R,Parent> operator*(const Matrix<R,Parent> &) const;
 
