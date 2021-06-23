@@ -1173,8 +1173,11 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
   // Can we figure out a way to make sure we covered everything more efficiently?
   if (n == 5) {
     bool all_eq = true;
+    // for now, when n == 5, we always reduce completely
+    /*
     for (size_t j = 1; j < n; j++)
       all_eq = (all_eq) && (q_red(j,j) == q_red(0,0));
+    */
     if (all_eq) {
       q_red = reduce(q_red, isom);
     }
@@ -1470,8 +1473,11 @@ QuadFormInt<R,n>::generateOrbit(void) const
   // Can we figure out a way to make sure we covered everything more efficiently?
   if (n == 5) {
     bool all_eq = true;
+    // for now when n==5 we always reduce completely
+    /*
     for (size_t j = 1; j < n; j++)
       all_eq = (all_eq) && (qf(j,j) == qf(0,0));
+    */
     if (all_eq) {
       return orbit;
     }
