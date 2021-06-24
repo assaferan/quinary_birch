@@ -197,11 +197,11 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       B(2*this->_k+i,j) = (this->_U[i][j] = (u[i][j].lift()) % p.num());
 
-  // #ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "X = " << this->_X << std::endl;
   std::cerr << "Z = " << this->_Z << std::endl;
   std::cerr << "U = " << this->_U << std::endl;
-  // #endif
+#endif
   
   // Compute the Gram matrix of the subspace with respect to the spaces
   //  we will perform the following computations upon.
@@ -232,10 +232,10 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       this->_Z[i][j] = this->_Z[i][j] % (p*p).num();
   
-  // #ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <X,Z> = 1" << std::endl;
   std::cerr << "Z = " << this->_Z << std::endl;
-  // #endif // DEBUG_LEVEL_FULL
+#endif // DEBUG_LEVEL_FULL
   
 #ifdef DEBUG
   // Verify that X and Z form a hyperbolic pair.
@@ -280,10 +280,10 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       this->_X[i][j] = this->_X[i][j] % (p*p).num();  
   
-  // #ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <X,X> = 0" << std::endl;
   std::cerr << "X = " << this->_X << std::endl;
-  // #endif // DEBUG_LEVEL_FULL
+#endif // DEBUG_LEVEL_FULL
   
 #ifdef DEBUG
   // Verify that X is isotropic modulo p^2.
@@ -321,10 +321,10 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       this->_Z[i][j] = this->_Z[i][j] % (p*p).num();
 
-  // #ifdef DEBUG_LEVEL_FULL
+ #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <Z,Z> = 0" << std::endl;
   std::cerr << "Z = " << this->_Z << std::endl;
-  // #endif // DEBUG_LEVEL_FULL
+ #endif // DEBUG_LEVEL_FULL
   
 #ifdef DEBUG
   // Verify that Z is isotropic modulo p^2.
@@ -375,10 +375,10 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       this->_U[i][j] = this->_U[i][j] % (p*p).num();
 
-  // #ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <U,X+Z> = 0" << std::endl;
   std::cerr << "U = " << this->_U << std::endl;
-  // #endif // DEBUG_LEVEL_FULL
+#endif // DEBUG_LEVEL_FULL
 
 #ifdef DEBUG
   // Verify that U is now orthogonal to X+Z.
@@ -574,9 +574,11 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
   
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
-  //  std::cerr << " _X = " << this->_X << std::endl;
-  // std::cerr << " _Z = " << this->_Z << std::endl;
-  //std::cerr << " skew = " << std::endl << skew << std::endl;
+#ifdef DEBUG_LEVEL_FULL
+  std::cerr << " _X = " << this->_X << std::endl;
+  std::cerr << " _Z = " << this->_Z << std::endl;
+  std::cerr << " skew = " << std::endl << skew << std::endl;
+#endif
   for (size_t i = 0; i < this->_k ; i++) {
     //std::cerr << "i = " << i << std::endl;
     this->_X_skew[i] = this->_X[i];
@@ -591,7 +593,9 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
     for (size_t j = 0; j < n; j++)
       this->_X_skew[i][j] = (this->_X_skew[i][j]) % (p*p).num();
   }
-  //std::cerr << "_X_skew = " << this->_X_skew << std::endl;
+#ifdef DEBUG_LEVEL_FULL
+  std::cerr << "_X_skew = " << this->_X_skew << std::endl;
+#endif
 }
 
 template<typename R, typename S, typename T, size_t n>
