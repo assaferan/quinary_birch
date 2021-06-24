@@ -227,7 +227,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   }
   this->_Z = Z_new;
   
-#ifdef DEBUG
+
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       this->_Z[i][j] = this->_Z[i][j] % (p*p).num();
@@ -237,6 +237,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   std::cerr << "Z = " << this->_Z << std::endl;
 #endif // DEBUG_LEVEL_FULL
   
+#ifdef DEBUG
   // Verify that X and Z form a hyperbolic pair.
   // Compute the Gram matrix thusfar.
   for (size_t i = 0; i < this->_k; i++)
@@ -317,7 +318,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   }
   this->_Z = Z_new;
 
-#ifdef DEBUG
+
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       this->_Z[i][j] = this->_Z[i][j] % (p*p).num();
@@ -327,6 +328,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   std::cerr << "Z = " << this->_Z << std::endl;
 #endif // DEBUG_LEVEL_FULL
   
+#ifdef DEBUG
   // Verify that Z is isotropic modulo p^2.
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
@@ -371,7 +373,6 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
       this->_U[j] += scalar.num() * this->_Z[i];
     }
 
-#ifdef DEBUG
   for (size_t i = 0; i < n-2*this->_k; i++)
     for (size_t j = 0; j < n; j++)
       this->_U[i][j] = this->_U[i][j] % (p*p).num();
@@ -380,7 +381,8 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   std::cerr << "after setting <U,X+Z> = 0" << std::endl;
   std::cerr << "U = " << this->_U << std::endl;
 #endif // DEBUG_LEVEL_FULL
-  
+
+#ifdef DEBUG
   // Verify that U is now orthogonal to X+Z.
   for (size_t i = 0; i < n-2*this->_k; i++)
     for (size_t j = 0; j < n; j++)
