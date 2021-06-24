@@ -8,7 +8,7 @@ template<typename R, typename S, typename T, size_t n>
 inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
 						 std::shared_ptr<Fp<R,S>> GF,
 						 size_t k)
-  : _vec(GF), _b(GF), _quot_gram()
+  : _vec(GF), _b(GF), _quot_gram(), _p_skew(NULL)
 {
   T p = GF->prime();
   
