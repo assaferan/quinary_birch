@@ -273,11 +273,14 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   }
   this->_X = X_new;
 
-#ifdef DEBUG
+  // we are reducing to keep the sizes small
+  
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       this->_X[i][j] = this->_X[i][j] % (p*p).num();
-
+  
+#ifdef DEBUG
+  
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <X,X> = 0" << std::endl;
   std::cerr << "X = " << this->_X << std::endl;
