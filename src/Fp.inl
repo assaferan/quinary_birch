@@ -26,8 +26,11 @@ inline FpElement<R,S> Fp<R,S>::mod(const T& a) const
 {
   // we relax this for now to enable Z128 support
   //        static_assert(std::is_integral<T>::value, "Undefined type.");
+  // std::cerr << "a = " << a << std::endl;
   T value = (T)a % this->_p;
+  // std::cerr << "value = " << value << std::endl;
   R r_val = (value < 0) ? (R)(value+this->_p) : (R)value;
+  // std::cerr << "r_val = " << r_val << std::endl;
   return FpElement<R,S>(this->getPtr(), r_val);
 }
 

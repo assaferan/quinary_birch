@@ -8,7 +8,7 @@ template<typename R, typename S, typename T, size_t n>
 inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
 						 std::shared_ptr<Fp<R,S>> GF,
 						 size_t k)
-  : _vec(GF), _b(GF), _quot_gram()
+  : _vec(GF), _b(GF), _quot_gram(), _p_skew(std::make_shared< MatrixFp<R,S> >(GF, k, k))
 {
   T p = GF->prime();
   
@@ -74,7 +74,7 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
   this->_pivot_ptr = 0;
   this->_k = k;
   this->_skew_dim = k*(k-1)/2;
-  this->_p_skew = std::make_shared< MatrixFp<R,S> >(this->_GF, k, k);
+  //  this->_p_skew = std::make_shared< MatrixFp<R,S> >(this->_GF, k, k);
 
   this->nextIsotropicSubspace();
   this->_liftSubspace();
@@ -227,7 +227,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   }
   this->_Z = Z_new;
   
-#ifdef DEBUG
+
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       this->_Z[i][j] = this->_Z[i][j] % (p*p).num();
@@ -237,6 +237,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   std::cerr << "Z = " << this->_Z << std::endl;
 #endif // DEBUG_LEVEL_FULL
   
+#ifdef DEBUG
   // Verify that X and Z form a hyperbolic pair.
   // Compute the Gram matrix thusfar.
   for (size_t i = 0; i < this->_k; i++)
@@ -273,16 +274,18 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   }
   this->_X = X_new;
 
-#ifdef DEBUG
+  // we are reducing to keep the sizes small
+  
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      this->_X[i][j] = this->_X[i][j] % (p*p).num();
-
+      this->_X[i][j] = this->_X[i][j] % (p*p).num();  
+  
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <X,X> = 0" << std::endl;
   std::cerr << "X = " << this->_X << std::endl;
 #endif // DEBUG_LEVEL_FULL
   
+#ifdef DEBUG
   // Verify that X is isotropic modulo p^2.
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
@@ -313,16 +316,17 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   }
   this->_Z = Z_new;
 
-#ifdef DEBUG
+
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       this->_Z[i][j] = this->_Z[i][j] % (p*p).num();
 
-#ifdef DEBUG_LEVEL_FULL
+ #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <Z,Z> = 0" << std::endl;
   std::cerr << "Z = " << this->_Z << std::endl;
-#endif // DEBUG_LEVEL_FULL
+ #endif // DEBUG_LEVEL_FULL
   
+#ifdef DEBUG
   // Verify that Z is isotropic modulo p^2.
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
@@ -367,7 +371,6 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
       this->_U[j] += scalar.num() * this->_Z[i];
     }
 
-#ifdef DEBUG
   for (size_t i = 0; i < n-2*this->_k; i++)
     for (size_t j = 0; j < n; j++)
       this->_U[i][j] = this->_U[i][j] % (p*p).num();
@@ -376,7 +379,8 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   std::cerr << "after setting <U,X+Z> = 0" << std::endl;
   std::cerr << "U = " << this->_U << std::endl;
 #endif // DEBUG_LEVEL_FULL
-  
+
+#ifdef DEBUG
   // Verify that U is now orthogonal to X+Z.
   for (size_t i = 0; i < n-2*this->_k; i++)
     for (size_t j = 0; j < n; j++)
@@ -561,20 +565,57 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
 {
   assert(this->_X.size() == this->_k);
   assert(this->_Z.size() == this->_k);
+  assert(this->_p_skew != NULL);
+
+  if (this->_p_skew == NULL)
+    return;
+
+  MatrixFp<R,S> skew = *(this->_p_skew);
   
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
+#ifdef DEBUG_LEVEL_FULL
+  std::cerr << " _X = " << this->_X << std::endl;
+  std::cerr << " _Z = " << this->_Z << std::endl;
+  std::cerr << " skew = " << std::endl << skew << std::endl;
+#endif
   for (size_t i = 0; i < this->_k ; i++) {
+    //    std::cerr << "i = " << i << std::endl;
     this->_X_skew[i] = this->_X[i];
+    //std::cerr << "_X_skew = " << _X_skew << std::endl;
     for (size_t j = 0; j < this->_k; j++){
-      // !! TODO - I got rid here of X_skew,
-      // check that it didn't destroy anything
-      Integer<T> val = (*(this->_p_skew))(i,j).reducedLift();
+      //std::cerr << "j = " << j << std::endl;
+      Integer<T> val = birch_util::convertInteger<R,T>(skew(i,j).reducedLift());
+      //std::cerr << "val = " << val << std::endl;
       this->_X_skew[i] += p.num() * (val.num() * this->_Z[j]);
+      //std::cerr << "_X_skew = " << _X_skew << std::endl;
     }
     for (size_t j = 0; j < n; j++)
       this->_X_skew[i][j] = (this->_X_skew[i][j]) % (p*p).num();
   }
+#ifdef DEBUG_LEVEL_FULL
+  std::cerr << "_X_skew = " << this->_X_skew << std::endl;
+#endif
+
+
+  // Verifying X-skew is isotropic modulo p^2
+#ifdef DEBUG
+  SquareMatrixInt<T,n> B, temp;
+
+  // Verify that X_skew is isotropic modulo p^2.
+  for (size_t i = 0; i < this->_k; i++)
+    for (size_t j = 0; j < n; j++)
+      B(i,j) = this->_X_skew[i][j];
+
+  // The Gram matrix on this basis.
+  temp = B * _q.bilinearForm() * B.transpose();
+
+  // Verify all is well.
+  for (size_t i = 0; i < this->_k; i++)
+    for (size_t j = 0; j < this->_k; j++)
+      assert(temp(i,j) % (p*p).num() == 0);
+  
+#endif // DEBUG
 }
 
 template<typename R, typename S, typename T, size_t n>

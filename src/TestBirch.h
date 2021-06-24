@@ -17,13 +17,13 @@ public:
 
   TestBirch(const BirchExample<R,n> &, size_t);
 
-  void testDim(const R &, size_t) const;
+  bool testDim(const R &, size_t) const;
 
-  void testEigenvalues(const R &,
+  bool testEigenvalues(const R &,
 		       const std::vector< std::map< R, std::vector< NumberFieldElement<Z> > > > &,
 		       size_t) const;
 
-  void testEigenvalueTraces(const R &,
+  bool testEigenvalueTraces(const R &,
 			    const std::vector< std::map< R, std::vector<R> > > &,
 			    size_t) const;
   

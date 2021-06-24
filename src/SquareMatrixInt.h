@@ -84,7 +84,8 @@ public:
   std::ostream & prettyPrint(std::ostream &, size_t upTo = n) const;
   
 protected:
-  alignas(32) R _mat[n][n];
+  // alignas(32) R _mat[n][n];
+  R _mat[n][n];
   
   // helper functions
   void _deepCopy(const R mat[n][n]);

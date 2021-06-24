@@ -16,17 +16,15 @@ TestBirch<R,n>::TestBirch(const QuadFormZZ<R,n> & q)
 }
 
 template<typename R, size_t n>
-inline void TestBirch<R,n>::testDim(const R & spinor_prime, size_t dim) const
+inline bool TestBirch<R,n>::testDim(const R & spinor_prime, size_t dim) const
 {
   std::map<R,size_t> dims = this->_p_genus->dimensionMap();
 
-  assert(dims[spinor_prime] == dim);
-
-  return;
+  return (dims[spinor_prime] == dim);
 }
 
 template<typename R, size_t n>
-inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
+inline bool TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
 					    const  std::vector< std::map< R, std::vector< NumberFieldElement<Z> > > > & evs,
 					    size_t num_evs) const
 {
@@ -60,14 +58,15 @@ inline void TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
     std::unordered_set< EigenvalueVector > evalue_set(evalues.begin(), evalues.end());
     std::unordered_set< EigenvalueVector > computed_set(computed_evalues.begin(), computed_evalues.end());
 
-    assert( evalue_set == computed_set);
+    if ( evalue_set != computed_set)
+      return false;
   }
   
-  return;
+  return true;
 }
 
 template<typename R, size_t n>
-inline void TestBirch<R,n>::testEigenvalueTraces(const R & spinor_prime,
+inline bool TestBirch<R,n>::testEigenvalueTraces(const R & spinor_prime,
 						 const  std::vector< std::map< R, std::vector<R> > > & traces,
 						 size_t num_evs) const
 {
@@ -101,18 +100,26 @@ inline void TestBirch<R,n>::testEigenvalueTraces(const R & spinor_prime,
     std::unordered_set< std::vector<R> > evalue_set(evalues.begin(), evalues.end());
     std::unordered_set< std::vector<R> > computed_set(computed_evalues.begin(), computed_evalues.end());
 
-    assert( evalue_set == computed_set);
+    if ( evalue_set != computed_set)
+      return false;
   }
   
-  return;
+  return true;
 }
 
 template<typename R, size_t n>
 inline TestBirch<R,n>::TestBirch(const BirchExample<R,n> & example, size_t num_evs)
 {
   this->_init(example.qf);
-  this->testDim(example.spinor_prime, example.dim);
-  this->testEigenvalues(example.spinor_prime, example.evs, num_evs);
+  bool pass_dim = this->testDim(example.spinor_prime, example.dim);
+  if (!pass_dim)
+    throw std::runtime_error("Dimension test failed.\n");
+  else {
+    bool pass_ev = this->testEigenvalues(example.spinor_prime, example.evs, num_evs);
+    if (!pass_ev)
+      throw std::runtime_error("Eigenvalue test failed.\n");
+  }
+  
 }
 
 template<typename R, size_t n>

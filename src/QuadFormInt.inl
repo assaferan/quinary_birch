@@ -40,6 +40,15 @@ QuadFormInt<R,n>::QuadFormInt(const SquareMatrixInt<R,n> & B)
 }
 
 template<typename R, size_t n>
+QuadFormInt<R,n>::QuadFormInt(const QuadFormInt<R,n> & B)
+  : _is_reduced(false), _num_aut(0), _num_aut_init(false)
+{
+  for (size_t i = 0; i < n; i++)
+    for (size_t j = 0; j < n; j++)
+      (*this)(i,j) = B(i,j);
+}
+
+template<typename R, size_t n>
 inline QuadFormInt<R,n>&
 QuadFormInt<R,n>::operator=(const QuadFormInt<R,n> & other)
 {
@@ -81,7 +90,8 @@ QuadFormInt<R,n>::nippToForms(NippEntry entry)
   size_t triangular[5];
   for (size_t j = 0; j < 5; j++)
     triangular[j] = j*(j-1)/2;
-  typename QuadFormInt<R,5>::SymVec form;
+  typename QuadFormInt<R,5>::SymVec form_vec;
+ 
   for (LatticeRecord lat : entry.lattices)
     {
       size_t form_idx = 0;
@@ -89,10 +99,15 @@ QuadFormInt<R,n>::nippToForms(NippEntry entry)
 	{
 	  for (size_t row = 0; row < col; row++)
 	    {
-	      form[form_idx++] = R(lat.form[5+triangular[col]+row]); 
+	      form_vec[form_idx++] = R(lat.form[5+triangular[col]+row]); 
 	    }
-	  form[form_idx++] = R(2*lat.form[col]);
+	  form_vec[form_idx++] = R(2*lat.form[col]);
 	}
+      QuadFormZZ<R,5> form(form_vec);
+      //      This fails on alignment - should prbably modify access accordingly.
+      //      std::cerr << "form_vec = " << form_vec << std::endl;
+      //      std::cerr << "Trying to push back " << std::endl << form << std::endl;
+      //      std::cerr << "forms.size() = " << forms.size() << std::endl;
       forms.push_back(form);
     }
   return forms;
