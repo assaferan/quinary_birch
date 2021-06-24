@@ -72,6 +72,12 @@ public:
 
   inline const UnivariatePolyRat<R> & getPoly(void) const
   { return _elt; }
+
+  inline R trace(void) const
+  { UnivariatePolyInt<R> f = this->minimalPolynomial(); return f.coefficient(f.degree()-1); }
+
+  inline R norm(void) const
+  { UnivariatePolyInt<R> f = this->minimalPolynomial(); R sign = (f.degree() % 2 == 0) ? 1 : -1; return sign*f.coefficient(0);}
   
 protected:
   std::shared_ptr<const NumberField<R> > _K;

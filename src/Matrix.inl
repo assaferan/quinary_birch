@@ -368,6 +368,17 @@ inline Matrix<R,Parent>& Matrix<R,Parent>::operator*=(const Matrix<R,Parent> & o
 }
 
 template<class R, class Parent>
+inline Matrix<R,Parent> Matrix<R,Parent>::operator-() const
+{
+  Matrix<R,Parent> neg(this->_base, this->nrows(), this->ncols());
+  for (size_t row = 0; row < this->nrows(); row++)
+    for (size_t col = 0; col < this->ncols(); col++)
+      neg(row, col) = -(*this)(row,col);
+  
+  return neg;
+}
+
+template<class R, class Parent>
 inline Matrix<R,Parent> Matrix<R,Parent>::operator+(const Matrix<R,Parent> & other) const
 {
   Matrix<R,Parent> sum(this->_base, this->nrows(), this->ncols());

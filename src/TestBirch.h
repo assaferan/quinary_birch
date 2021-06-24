@@ -13,7 +13,7 @@ template<typename R, size_t n>
 class TestBirch
 {
 public:
-  TestBirch(const typename QuadFormZZ<R,n>::SymVec &);
+  TestBirch(const QuadFormZZ<R,n> &);
 
   TestBirch(const BirchExample<R,n> &, size_t);
 
@@ -22,11 +22,15 @@ public:
   void testEigenvalues(const R &,
 		       const std::vector< std::map< R, std::vector< NumberFieldElement<Z> > > > &,
 		       size_t) const;
+
+  void testEigenvalueTraces(const R &,
+			    const std::vector< std::map< R, std::vector<R> > > &,
+			    size_t) const;
   
 protected:
   std::shared_ptr< Genus<R,n> > _p_genus;
 
-  inline void _init(const typename QuadFormZZ<R,n>::SymVec &);
+  inline void _init(const QuadFormZZ<R,n> &);
   
 };
 

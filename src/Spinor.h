@@ -49,6 +49,11 @@ public:
       if (is_neg)
 	scale = -scale;
       s_mat *= scale.inverse();
+      // To obtain an element of the special orthogonal group (we let the center act trivially)
+      if ((n % 2 == 1) && (s_mat.determinant() == -GF->one()))
+	s_mat = -s_mat;
+      // We still have a problem when n is even
+      assert((s_mat.determinant() == GF->one()) || (s_mat.determinant() == -GF->one()));
       W16_MatrixFp rad = this->_rads.at(prime);
 #ifdef DEBUG_LEVEL_FULL
       std::cerr << "rad = " << std::endl << rad << std::endl;

@@ -989,14 +989,19 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
   std::cerr << "Original NeighborSpace size: " << nbs_size << std::endl;
 #endif
   
-  std::vector< std::vector< VectorInt<R,n> > > neighbor_space;
+  std::vector< std::vector< VectorInt<R,n> > > ns;
   for (VectorInt<R,n> x : local_neighbors[0]) {
     std::vector< VectorInt<R,n> > singleton;
     singleton.push_back(x);
-    neighbor_space.push_back(singleton);
+    ns.push_back(singleton);
   }
+  std::vector< std::vector< VectorInt<R,n> > > ns0;
+  
+  std::vector< std::vector< VectorInt<R,n> > > & neighbor_space = ns;
+  std::vector< std::vector< VectorInt<R,n> > > & ns1 = ns0;
+  
   for (size_t i = 1; i < n; i++) {
-    std::vector< std::vector< VectorInt<R,n> > > ns1;
+    ns1.clear();
     R norm = qf(i,i);
     std::vector<size_t> inds;
     for (size_t j = 0; j < i; j++)
@@ -1026,7 +1031,10 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 	}
       }
     }
+    // swap pointers
+    std::vector< std::vector< VectorInt<R,n> > > & tmp = neighbor_space;
     neighbor_space = ns1;
+    ns1 = tmp;
   }
   
 #ifdef DEBUG_LEVEL_FULL
@@ -1145,6 +1153,36 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     q_red._num_aut_init = true;
   }
   q_red._is_reduced = true;
+  return q_red;
+}
+
+template<typename R, size_t n>
+inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> & q,
+							 Isometry<R,n> & isom)
+{
+  assert(q.bilinearForm().isPositiveDefinite());
+
+  SquareMatrixInt<R,n> qf = q.bilinearForm();
+  greedy(qf, isom);
+  QuadFormZZ<R,n> q_red(qf);
+
+  // if n == 5 and all 5 shortest vectors are of the same length
+  // the orbit would be very large and we prefer not to try and compute it.
+  // !! TODO - it seems that the orbit itself would not be very large.
+  // However, determining it takes a long time. (verifying that we covered everything).
+  // Can we figure out a way to make sure we covered everything more efficiently?
+  if (n == 5) {
+    bool all_eq = true;
+    // for now, when n == 5, we always reduce completely
+    /*
+    for (size_t j = 1; j < n; j++)
+      all_eq = (all_eq) && (q_red(j,j) == q_red(0,0));
+    */
+    if (all_eq) {
+      q_red = reduce(q_red, isom);
+    }
+  }
+  
   return q_red;
 }
 
@@ -1427,6 +1465,24 @@ QuadFormInt<R,n>::generateOrbit(void) const
   typename std::unordered_map< QuadFormZZ<R,n>,
 			       Isometry<R,n> >::const_iterator i, j;
   orbit[qf] = s;
+  
+  // if n == 5 and all 5 shortest vectors are of the same length
+  // the orbit would be very large and we prefer not to try and compute it.
+  // !! TODO - it seems that the orbit itself would not be very large.
+  // However, determining it takes a long time. (verifying that we covered everything).
+  // Can we figure out a way to make sure we covered everything more efficiently?
+  if (n == 5) {
+    bool all_eq = true;
+    // for now when n==5 we always reduce completely
+    /*
+    for (size_t j = 1; j < n; j++)
+      all_eq = (all_eq) && (qf(j,j) == qf(0,0));
+    */
+    if (all_eq) {
+      return orbit;
+    }
+  }
+  
   while (num < orbit.size()) {
     num = orbit.size();
     for (i = orbit.begin(); i != orbit.end(); i++) {

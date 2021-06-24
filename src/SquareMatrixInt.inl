@@ -180,8 +180,9 @@ inline bool SquareMatrixInt<R,n>::isSymmetric(void) const
 template<typename R, size_t n>
 inline bool SquareMatrixInt<R,n>::isPositiveDefinite(void) const
 {
-  SquareMatrixInt<R,n> L;
-  VectorInt<R,n> D;
+  // Optimally, we should choose a type S of minimal size to accomodate the result.
+  SquareMatrixInt<Z,n> L;
+  VectorInt<Z,n> D;
   return ldl(L,D);
 }
   
@@ -372,20 +373,22 @@ SquareMatrixInt<R,n>::cholesky(SquareMatrixInt<R,n>& L,
 
 // !! TODO - This is integral Cholesky - should be able to
 // determine which to call by the class R
-template<typename R, size_t n>
+template <typename R, size_t n>
+// S should be larger than R, should have roughly sizeof(S) = 3*sizeof(R)
+template <typename S>
 inline bool
-SquareMatrixInt<R,n>::ldl(SquareMatrixInt<R,n>& L,  VectorInt<R,n> & D) const
+SquareMatrixInt<R,n>::ldl(SquareMatrixInt<S,n>& L,  VectorInt<S,n> & D) const
 {
   assert(isSymmetric());
-  R prod_diag = 1;
-  R d = 0;
-  R inner_sum = 0;
+  S prod_diag = 1;
+  S d = 0;
+  S inner_sum = 0;
   // This works but inefficiently - for some reason we get O(n^4) operations.
   // !! TODO - check it out later
   // Oh I see - we should do the L update in two passes...
   for (size_t i = 0; i < n; i++)
     {
-      L(i, i) = prod_diag;
+      L(i,i) = prod_diag;
       d = prod_diag;
       for (size_t j = 0; j < i; j++)
 	{
@@ -394,8 +397,8 @@ SquareMatrixInt<R,n>::ldl(SquareMatrixInt<R,n>& L,  VectorInt<R,n> & D) const
 	    {
 	      inner_sum = 0;
 	      for (size_t r = 0; r <= k; r++)
-		inner_sum += L(k, r)*((*this)(i,r))*L(k,j);
-	      inner_sum *= -L(i, i) / D[k];
+		inner_sum += L(k,r)*((*this)(i,r))*L(k,j);
+	      inner_sum *= -L(i,i) / D[k];
 	      L(i,j) += inner_sum;
 	    }
 	  //d = d.gcd(L(i, j));
@@ -416,11 +419,12 @@ SquareMatrixInt<R,n>::ldl(SquareMatrixInt<R,n>& L,  VectorInt<R,n> & D) const
   
 #ifdef DEBUG
   // verify that L*Q*L^t = D
-  SquareMatrixInt<R,n> diag;
+  SquareMatrixInt<S,n> diag;
   for (size_t i = 0; i < n; i++)
     for (size_t j = 0; j < n; j++)
       diag(i,j) = (i == j) ? D[i] :0;
-  assert(L*(*this)*L.transpose() == diag);
+  SquareMatrixInt<S,n> this_S = birch_util::convertSquareMatrix<R,S>(*this);
+  assert(L*this_S*L.transpose() == diag);
 #endif
   return true;
 }

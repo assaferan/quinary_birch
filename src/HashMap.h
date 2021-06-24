@@ -150,6 +150,7 @@ private:
     {
         this->capacity_ <<= 1;
         this->mask = (this->capacity_ << 1)-1;
+	// problem - this might invalidate existing references to the HashMap (e.g. mother)
         this->keys_.reserve(this->capacity_);
         this->vals.reserve(this->capacity_);
 
