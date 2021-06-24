@@ -602,13 +602,14 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
 #ifdef DEBUG
   MatrixInt<R> B(_k, n);
   MatrixInt<R> temp(_k, _k);
+  MatrixInt<R> Q(_q.bilinearForm());
   // Verify that X_skew is isotropic modulo p^2.
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
       B(i,j) = this->_X_skew[i][j];
 
   // The Gram matrix on this basis.
-  temp = __gram(B);
+  temp = B * Q * Transpose(B);
 
   // Verify all is well.
   for (size_t i = 0; i < this->_k; i++)
