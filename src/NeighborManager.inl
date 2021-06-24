@@ -232,10 +232,10 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       this->_Z[i][j] = this->_Z[i][j] % (p*p).num();
   
-#ifdef DEBUG_LEVEL_FULL
+  // #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <X,Z> = 1" << std::endl;
   std::cerr << "Z = " << this->_Z << std::endl;
-#endif // DEBUG_LEVEL_FULL
+  // #endif // DEBUG_LEVEL_FULL
   
 #ifdef DEBUG
   // Verify that X and Z form a hyperbolic pair.
@@ -278,9 +278,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
-      this->_X[i][j] = this->_X[i][j] % (p*p).num();
-  
-  
+      this->_X[i][j] = this->_X[i][j] % (p*p).num();  
   
   // #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <X,X> = 0" << std::endl;
@@ -323,10 +321,10 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       this->_Z[i][j] = this->_Z[i][j] % (p*p).num();
 
-#ifdef DEBUG_LEVEL_FULL
+  // #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <Z,Z> = 0" << std::endl;
   std::cerr << "Z = " << this->_Z << std::endl;
-#endif // DEBUG_LEVEL_FULL
+  // #endif // DEBUG_LEVEL_FULL
   
 #ifdef DEBUG
   // Verify that Z is isotropic modulo p^2.
@@ -377,10 +375,10 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       this->_U[i][j] = this->_U[i][j] % (p*p).num();
 
-#ifdef DEBUG_LEVEL_FULL
+  // #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <U,X+Z> = 0" << std::endl;
   std::cerr << "U = " << this->_U << std::endl;
-#endif // DEBUG_LEVEL_FULL
+  // #endif // DEBUG_LEVEL_FULL
 
 #ifdef DEBUG
   // Verify that U is now orthogonal to X+Z.
@@ -570,11 +568,12 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
   
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
+  std::cerr << " _X = " << this->_X << std::endl;
+  std::cerr << " _Z = " << this->_Z << std::endl;
+  std::cerr << " _skew = " << (*this->_p_skew) << std::endl;
   for (size_t i = 0; i < this->_k ; i++) {
     this->_X_skew[i] = this->_X[i];
     for (size_t j = 0; j < this->_k; j++){
-      // !! TODO - I got rid here of X_skew,
-      // check that it didn't destroy anything
       Integer<T> val = (*(this->_p_skew))(i,j).reducedLift();
       this->_X_skew[i] += p.num() * (val.num() * this->_Z[j]);
     }
