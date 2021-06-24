@@ -565,6 +565,7 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
 {
   assert(this->_X.size() == this->_k);
   assert(this->_Z.size() == this->_k);
+  assert(this->_p_skew != NULL);
   
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
