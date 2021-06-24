@@ -574,24 +574,24 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
   
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
-  std::cerr << " _X = " << this->_X << std::endl;
-  std::cerr << " _Z = " << this->_Z << std::endl;
-  std::cerr << " skew = " << std::endl << skew << std::endl;
+  //  std::cerr << " _X = " << this->_X << std::endl;
+  // std::cerr << " _Z = " << this->_Z << std::endl;
+  //std::cerr << " skew = " << std::endl << skew << std::endl;
   for (size_t i = 0; i < this->_k ; i++) {
-    std::cerr << "i = " << i << std::endl;
+    //std::cerr << "i = " << i << std::endl;
     this->_X_skew[i] = this->_X[i];
-    std::cerr << "_X_skew = " << _X_skew << std::endl;
+    //std::cerr << "_X_skew = " << _X_skew << std::endl;
     for (size_t j = 0; j < this->_k; j++){
-      std::cerr << "j = " << j << std::endl;
+      //std::cerr << "j = " << j << std::endl;
       Integer<T> val = birch_util::convertInteger<R,T>(skew(i,j).reducedLift());
-      std::cerr << "val = " << val << std::endl;
+      //std::cerr << "val = " << val << std::endl;
       this->_X_skew[i] += p.num() * (val.num() * this->_Z[j]);
-      std::cerr << "_X_skew = " << _X_skew << std::endl;
+      //std::cerr << "_X_skew = " << _X_skew << std::endl;
     }
     for (size_t j = 0; j < n; j++)
       this->_X_skew[i][j] = (this->_X_skew[i][j]) % (p*p).num();
   }
-  std::cerr << "_X_skew = " << this->_X_skew << std::endl;
+  //std::cerr << "_X_skew = " << this->_X_skew << std::endl;
 }
 
 template<typename R, typename S, typename T, size_t n>
