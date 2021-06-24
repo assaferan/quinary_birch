@@ -609,7 +609,7 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
       B(i,j) = this->_X_skew[i][j];
 
   // The Gram matrix on this basis.
-  temp = B * Q * Transpose(B);
+  temp = B * Q * B.transpose();
 
   // Verify all is well.
   for (size_t i = 0; i < this->_k; i++)
