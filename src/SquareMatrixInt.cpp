@@ -110,7 +110,25 @@ SquareMatrixInt<Z,5> SquareMatrixInt<Z,5>::operator*(const SquareMatrixInt<Z,5>&
   return prod;
 }
 
+// we postpone optimization until everything else works
+
+template<>
+SquareMatrixInt<Z64,4> SquareMatrixInt<Z64,4>::operator*(const SquareMatrixInt<Z64,4>& other) const
+{
+  SquareMatrixInt<Z64,4> prod;
+
+  for (size_t i = 0; i < 4; i++)
+    for (size_t j = 0; j < 4; j++) {
+      prod._mat[i][j] = 0;
+      for (size_t k = 0; k < 4; k++)
+	prod._mat[i][j] += this->_mat[i][k]*other._mat[k][j];
+    }
+  
+  return prod;
+}
+
 // matrix multiplication is a major bottleneck, hence we attempt to optimize it here
+/*
 template<>
 SquareMatrixInt<Z64,4> SquareMatrixInt<Z64,4>::operator*(const SquareMatrixInt<Z64,4>& B) const
 {
@@ -142,3 +160,4 @@ SquareMatrixInt<Z64,4> SquareMatrixInt<Z64,4>::operator*(const SquareMatrixInt<Z
   
   return C;
 }
+*/
