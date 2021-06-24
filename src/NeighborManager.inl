@@ -197,11 +197,11 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       B(2*this->_k+i,j) = (this->_U[i][j] = (u[i][j].lift()) % p.num());
 
-#ifdef DEBUG_LEVEL_FULL
+  // #ifdef DEBUG_LEVEL_FULL
   std::cerr << "X = " << this->_X << std::endl;
   std::cerr << "Z = " << this->_Z << std::endl;
   std::cerr << "U = " << this->_U << std::endl;
-#endif
+  // #endif
   
   // Compute the Gram matrix of the subspace with respect to the spaces
   //  we will perform the following computations upon.
@@ -279,12 +279,12 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < n; j++)
       this->_X[i][j] = this->_X[i][j] % (p*p).num();
   
-#ifdef DEBUG
+  // #ifdef DEBUG
   
-#ifdef DEBUG_LEVEL_FULL
+  // #ifdef DEBUG_LEVEL_FULL
   std::cerr << "after setting <X,X> = 0" << std::endl;
   std::cerr << "X = " << this->_X << std::endl;
-#endif // DEBUG_LEVEL_FULL
+  // #endif // DEBUG_LEVEL_FULL
   
   // Verify that X is isotropic modulo p^2.
   for (size_t i = 0; i < this->_k; i++)
@@ -299,7 +299,7 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
     for (size_t j = 0; j < this->_k; j++)
       assert(temp(i,j) % (p*p).num() == 0);
   
-#endif // DEBUG
+  // #endif // DEBUG
 
   // Lift Z so that it is isotropic modulo p^2.
   for (size_t i = 0; i < this->_k; i++) {
