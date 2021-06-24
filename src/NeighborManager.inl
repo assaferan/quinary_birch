@@ -600,8 +600,8 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
 
   // Verifying X-skew is isotropic modulo p^2
 #ifdef DEBUG
-  MatrixFp<R,S> B(_GF, _k, n);
-  MatrixFp<R,S> temp(_GF, _k, _k);
+  MatrixInt<R> B(_k, n);
+  MatrixInt<R> temp(_k, _k);
   // Verify that X_skew is isotropic modulo p^2.
   for (size_t i = 0; i < this->_k; i++)
     for (size_t j = 0; j < n; j++)
