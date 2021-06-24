@@ -8,7 +8,7 @@ template<typename R, typename S, typename T, size_t n>
 inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
 						 std::shared_ptr<Fp<R,S>> GF,
 						 size_t k)
-  : _vec(GF), _b(GF), _quot_gram(), _p_skew(NULL)
+  : _vec(GF), _b(GF), _quot_gram()
 {
   T p = GF->prime();
   
@@ -566,6 +566,9 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
   assert(this->_X.size() == this->_k);
   assert(this->_Z.size() == this->_k);
   assert(this->_p_skew != NULL);
+
+  if (this->_p_skew == NULL)
+    return;
   
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
