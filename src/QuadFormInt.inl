@@ -104,9 +104,10 @@ QuadFormInt<R,n>::nippToForms(NippEntry entry)
 	  form_vec[form_idx++] = R(2*lat.form[col]);
 	}
       QuadFormZZ<R,5> form(form_vec);
-      std::cerr << "form_vec = " << form_vec << std::endl;
-      std::cerr << "Trying to push back " << std::endl << form << std::endl;
-      std::cerr << "forms.size() = " << forms.size() << std::endl;
+      //      This fails on alignment - should prbably modify access accordingly.
+      //      std::cerr << "form_vec = " << form_vec << std::endl;
+      //      std::cerr << "Trying to push back " << std::endl << form << std::endl;
+      //      std::cerr << "forms.size() = " << forms.size() << std::endl;
       forms.push_back(form);
     }
   return forms;
