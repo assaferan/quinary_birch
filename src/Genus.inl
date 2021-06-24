@@ -681,20 +681,20 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
       //      neighbor_manager.getNextNeighbor();
       bool done = neighbor_manager.getIsotropicSubspace().empty();
 
-      // #ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
       std::cerr << "Working on index " << index << std::endl;
       std::cerr << "npos = " << npos << std::endl;
       std::cerr << "cur.q = " << std::endl << cur.q << std::endl;
-      // #endif
+#endif
 
       while (!done)
 	{
 	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep();
 
-	  // #ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
 	  std::cerr << "foo.q = " << std::endl << foo.q << std::endl;
 	  std::cerr << "foo.s = " << std::endl << foo.s << std::endl;
-	  // #endif
+#endif
 	  
 	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
@@ -702,10 +702,10 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	  //	  size_t rpos = this->_hash->indexof(foo);
 	  size_t rpos = this->_inv_map.at(r_inv);
 	  
-	  // #ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
 	  std::cerr << "r_inv = " << r_inv << std::endl;
 	  std::cerr << "rpos = " << rpos << std::endl;
-	  // #endif
+#endif
 	  
 	  size_t offset = vector_manager._stride * rpos;
 	  __builtin_prefetch(stride_ptr + offset, 0, 0);
