@@ -569,19 +569,21 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
 
   if (this->_p_skew == NULL)
     return;
+
+  MatrixFp<R,S> skew = *(this->_p_skew);
   
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
   std::cerr << " _X = " << this->_X << std::endl;
   std::cerr << " _Z = " << this->_Z << std::endl;
-  std::cerr << " _skew = " << std::endl << (*this->_p_skew) << std::endl;
+  std::cerr << " skew = " << std::endl << skew << std::endl;
   for (size_t i = 0; i < this->_k ; i++) {
     std::cerr << "i = " << i << std::endl;
     this->_X_skew[i] = this->_X[i];
     std::cerr << "_X_skew = " << _X_skew << std::endl;
     for (size_t j = 0; j < this->_k; j++){
       std::cerr << "j = " << j << std::endl;
-      Integer<T> val = (*(this->_p_skew))(i,j).reducedLift();
+      Integer<T> val = skew(i,j).reducedLift();
       std::cerr << "val = " << val << std::endl;
       this->_X_skew[i] += p.num() * (val.num() * this->_Z[j]);
       std::cerr << "_X_skew = " << _X_skew << std::endl;
