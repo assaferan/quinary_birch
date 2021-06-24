@@ -61,12 +61,6 @@ namespace birch_util
   {
     return (W16)x;
   }
-
-  template<>
-  W32 convertInteger<W16>(const W16& x)
-  {
-    return (W32)x;
-  }
   
   template<>
   W32 convertInteger<Z64>(const Z64& x)
@@ -140,6 +134,24 @@ namespace birch_util
   Z32 convertInteger<Z>(const Z& x)
   {
     return mpz_get_si(x.get_mpz_t());
+  }
+
+  template<>
+  Z64 convertInteger<W16>(const W16& x)
+  {
+    return (Z64)x;
+  }
+
+  template<>
+  Z64 convertInteger<W32>(const W32& x)
+  {
+    return (Z64)x;
+  }
+
+  template<>
+  Z64 convertInteger<W64>(const W64& x)
+  {
+    return (Z64)x;
   }
   
   template<>
