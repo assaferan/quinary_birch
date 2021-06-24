@@ -574,7 +574,7 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
   
   Integer<T> p = this->_GF->prime();
   // Update the skew space.
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << " _X = " << this->_X << std::endl;
   std::cerr << " _Z = " << this->_Z << std::endl;
   std::cerr << " skew = " << std::endl << skew << std::endl;
@@ -584,11 +584,11 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
     this->_X_skew[i] = this->_X[i];
     //std::cerr << "_X_skew = " << _X_skew << std::endl;
     for (size_t j = 0; j < this->_k; j++){
-      //std::cerr << "j = " << j << std::endl;
+      // std::cerr << "j = " << j << std::endl;
       Integer<T> val = birch_util::convertInteger<R,T>(skew(i,j).reducedLift());
-      //std::cerr << "val = " << val << std::endl;
+      // std::cerr << "val = " << val << std::endl;
       this->_X_skew[i] += p.num() * (val.num() * this->_Z[j]);
-      //std::cerr << "_X_skew = " << _X_skew << std::endl;
+      // std::cerr << "_X_skew = " << _X_skew << std::endl;
     }
     for (size_t j = 0; j < n; j++)
       this->_X_skew[i][j] = (this->_X_skew[i][j]) % (p*p).num();
