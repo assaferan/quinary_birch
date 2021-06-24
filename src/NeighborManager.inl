@@ -8,7 +8,7 @@ template<typename R, typename S, typename T, size_t n>
 inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
 						 std::shared_ptr<Fp<R,S>> GF,
 						 size_t k)
-  : _vec(GF), _b(GF), _quot_gram()
+  : _vec(GF), _b(GF), _quot_gram(), _p_skew(std::make_shared< MatrixFp<R,S> >(GF, k, k))
 {
   T p = GF->prime();
   
@@ -74,7 +74,7 @@ inline NeighborManager<R,S,T,n>::NeighborManager(const QuadFormZZ<T,n>& q,
   this->_pivot_ptr = 0;
   this->_k = k;
   this->_skew_dim = k*(k-1)/2;
-  this->_p_skew = std::make_shared< MatrixFp<R,S> >(this->_GF, k, k);
+  //  this->_p_skew = std::make_shared< MatrixFp<R,S> >(this->_GF, k, k);
 
   this->nextIsotropicSubspace();
   this->_liftSubspace();
