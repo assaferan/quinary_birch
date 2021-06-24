@@ -139,8 +139,8 @@ namespace birch_util
   template<>
   Z64 convertInteger<W16>(const W16& x)
   {
-    Z64 y = x;
-    return y;
+    Z16 y = x;
+    return (Z64)y;
   }
 
   template<>
