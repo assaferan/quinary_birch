@@ -596,6 +596,26 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "_X_skew = " << this->_X_skew << std::endl;
 #endif
+
+
+  // Verifying X-skew is isotropic modulo p^2
+#ifdef DEBUG
+  MatrixFp<R,S> B(_GF, _k, n);
+  MatrixFp<R,S> temp(_GF, _k, _k);
+  // Verify that X_skew is isotropic modulo p^2.
+  for (size_t i = 0; i < this->_k; i++)
+    for (size_t j = 0; j < n; j++)
+      B(i,j) = this->_X_skew[i][j];
+
+  // The Gram matrix on this basis.
+  temp = __gram(B);
+
+  // Verify all is well.
+  for (size_t i = 0; i < this->_k; i++)
+    for (size_t j = 0; j < this->_k; j++)
+      assert(temp(i,j) % (p*p).num() == 0);
+  
+#endif // DEBUG
 }
 
 template<typename R, typename S, typename T, size_t n>
