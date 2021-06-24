@@ -21,7 +21,7 @@ public:
 
   // access = get methods
   inline const R & lift(void) const {return _val; }
-  inline const R & reducedLift(void) const {return _GF->mod(_val).lift(); }
+  inline R reducedLift(void) const {return _GF->mod(_val).lift(); }
   inline std::shared_ptr< const Fp<R,S> > parent(void) const override
   {return _GF; }
 
