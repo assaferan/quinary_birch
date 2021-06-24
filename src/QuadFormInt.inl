@@ -81,7 +81,8 @@ QuadFormInt<R,n>::nippToForms(NippEntry entry)
   size_t triangular[5];
   for (size_t j = 0; j < 5; j++)
     triangular[j] = j*(j-1)/2;
-  typename QuadFormInt<R,5>::SymVec form;
+  typename QuadFormInt<R,5>::SymVec form_vec;
+ 
   for (LatticeRecord lat : entry.lattices)
     {
       size_t form_idx = 0;
@@ -89,14 +90,15 @@ QuadFormInt<R,n>::nippToForms(NippEntry entry)
 	{
 	  for (size_t row = 0; row < col; row++)
 	    {
-	      form[form_idx++] = R(lat.form[5+triangular[col]+row]); 
+	      form_vec[form_idx++] = R(lat.form[5+triangular[col]+row]); 
 	    }
-	  form[form_idx++] = R(2*lat.form[col]);
+	  form_vec[form_idx++] = R(2*lat.form[col]);
 	}
+      QuadFormZZ<R,5> form(form_vec);
+      std::cerr << "form_vec = " << form_vec << std::endl;
       std::cerr << "Trying to push back " << std::endl << form << std::endl;
       std::cerr << "forms.size() = " << forms.size() << std::endl;
       forms.push_back(form);
-      
     }
   return forms;
 }
