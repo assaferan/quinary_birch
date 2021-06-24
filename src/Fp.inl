@@ -30,7 +30,7 @@ inline FpElement<R,S> Fp<R,S>::mod(const T& a) const
   T value = (T)a % this->_p;
   std::cerr << "value = " << value << std::endl;
   R r_val = (value < 0) ? (R)(value+this->_p) : (R)value;
-  std::cerr << "r_val = " << rval << std::endl;
+  std::cerr << "r_val = " << r_val << std::endl;
   return FpElement<R,S>(this->getPtr(), r_val);
 }
 
