@@ -93,7 +93,10 @@ QuadFormInt<R,n>::nippToForms(NippEntry entry)
 	    }
 	  form[form_idx++] = R(2*lat.form[col]);
 	}
+      std::cerr << "Trying to push back " << std::endl << form << std::endl;
+      std::cerr << "forms.size() = " << forms.size() << std::endl;
       forms.push_back(form);
+      
     }
   return forms;
 }
