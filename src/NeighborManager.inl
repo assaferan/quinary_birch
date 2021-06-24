@@ -581,6 +581,7 @@ inline void NeighborManager<R,S,T,n>::_updateSkewSpace(void)
     for (size_t j = 0; j < n; j++)
       this->_X_skew[i][j] = (this->_X_skew[i][j]) % (p*p).num();
   }
+  std::cerr << "_X_skew = " << this->_X_skew << std::endl;
 }
 
 template<typename R, typename S, typename T, size_t n>
