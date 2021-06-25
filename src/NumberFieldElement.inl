@@ -243,7 +243,7 @@ void NumberFieldElement<R>::_initAntic(void) {
     fmpq_poly_set_array_mpq(poly, (const mpq_t *)c_mpq, _elt.degree()+1);
     nf_elem_set_fmpq_poly(_nf_elt_antic, poly, _K->antic());
     fmpq_poly_clear(poly);
-    for (int i = 0; i <= _f.degree(); i++)
+    for (int i = 0; i <= _elt.degree(); i++)
       mpq_clear(c_mpq[i]);
     flint_free(c_mpq);
   }
