@@ -85,9 +85,7 @@ public:
   {
     // apparently when the element is zero, antic tries to free the polynomial
     // that was not allocated
-    if (nf_elem_is_zero)
-      free(_nf_elt_antic);
-    else
+    if (nf_elem_is_zero == 0)
       nf_elem_clear(_nf_elt_antic, _K->antic());
   }
   
