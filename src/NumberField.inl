@@ -9,7 +9,11 @@ NumberField<R>::NumberField(const UnivariatePolyInt<R> & mod)
   }
 }
 
-
+template<typename R>
+void NumberField<R>::_initAntic(void)
+{
+  
+}
 
 
 
