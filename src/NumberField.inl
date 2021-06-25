@@ -19,7 +19,7 @@ void NumberField<R>::_initAntic(void)
   fmpq_poly_init(poly);
   assert(!_f.isZero());
       
-  mpq_t* c_mpq = new mpq_t(_f.degree()+1);
+  mpq_t* c_mpq = new mpq_t[_f.degree()+1];
     
   for (int i = 0; i <= _f.degree(); i++) {
     Rational<R> c = _f.coefficient(i);
