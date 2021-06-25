@@ -9,24 +9,8 @@ class NumberField : public virtual Ring< NumberField<R>, NumberFieldElement<R> >
 {
 public:
   NumberField(const UnivariatePolyRat<R> & mod) : _f(mod)
-  {
-    fmpq_poly_t poly;
-    fmpq_poly_init(poly);
-    assert(!mod.isZero());
-      
-    mpq_t* c_mpq = new mpq_t(mod.degree()+1);
-    
-    for (int i = 0; i <= mod.degree(); i++) {
-      Rational<R> c = mod.coefficient(i);
-      fmpq_set_si(c_mpq[i], c.num().num(), c.denom().num());
-    }
-    
-    fmpq_poly_set_array_mpq(poly, c_mpq, mod.degree()+1);
-    nf_init(_nf_antic, poly);
-
-    fmpq_poly_clear(poly);
-    delete[] c_mpq;
-  }
+  {_initAntic(); }
+  
   NumberField(const UnivariatePolyInt<R> &);
 
   inline const UnivariatePolyRat<R> & modulus(void) const
@@ -42,9 +26,7 @@ public:
   {return NumberFieldElement<R>::one(this->getPtr()); }
 
   ~NumberField()
-  {
-    nf_clear(_nf_antic);
-  }
+  { nf_clear(_nf_antic); }
   
 protected:
   UnivariatePolyRat<R> _f;
