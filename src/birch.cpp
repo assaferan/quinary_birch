@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
   nf_elem_trace(ctrace, c, nf);
   fmpq_add(ctrace2, atrace, btrace);
 
-  result = (fmpq_equal(ctrace, ctrace2));
+  bool result = (fmpq_equal(ctrace, ctrace2));
 
   fmpq_poly_print_pretty(nf->pol, "x"); std::cerr << std::endl;
   nf_elem_print_pretty(a, nf, "x"); std::cerr << std::endl;
