@@ -31,6 +31,8 @@ int main(int argc, char* argv[])
   flint_rand_t state;
 
   flint_randinit(state);
+
+  nf_init_randtest(nf, state, 25, 200);
   
   nf_elem_init(a, nf);
   nf_elem_init(b, nf);
