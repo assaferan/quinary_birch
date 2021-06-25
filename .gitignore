@@ -41,3 +41,7 @@ src/birch_dbg
 src/libbirch.la
 src/*.o
 src/*.lo
+Makefile~
+core
+gmon.out
+src/Makefile~
