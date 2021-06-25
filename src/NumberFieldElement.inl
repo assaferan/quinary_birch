@@ -230,6 +230,7 @@ void NumberFieldElement<R>::_initAntic(void) {
   
   if (!(_elt.isZero())) {
     fmpq_poly_t poly;
+    mpq_t* c_mpq;
 
     fmpq_poly_init(poly);
     c_mpq = (mpq_t *)flint_malloc((_elt.degree()+1)*sizeof(mpq_t));
