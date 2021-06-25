@@ -80,6 +80,9 @@ public:
 
   inline R norm(void) const
   { UnivariatePolyInt<R> f = this->minimalPolynomial(); R sign = (f.degree() % 2 == 0) ? 1 : -1; return sign*f.coefficient(0);}
+
+  ~NumberFieldElement()
+  { nf_elem_clear(_nf_elt_antic); }
   
 protected:
   std::shared_ptr<const NumberField<R> > _K;
