@@ -26,7 +26,7 @@ void NumberField<R>::_initAntic(void)
   for (int i = 0; i <= _f.degree(); i++) {
     Rational<R> c = _f.coefficient(i);
     mpq_init(c_mpq[i]);
-    fmpq_set_si(c_mpq[i], c.num().num(), c.denom().num());
+    mpq_set_si(c_mpq[i], c.num().num(), c.denom().num());
   }
     
   fmpq_poly_set_array_mpq(poly, (const mpq_t *)c_mpq, _f.degree()+1);
