@@ -24,8 +24,10 @@ depcomp
 install-sh
 libs/libantic.so
 libs/libflint.so
-libs/libmpfr.a
 libs/libmpfr.so
+libs/libantic.a
+libs/libflint.a
+libs/libmpfr.a
 libtool
 ltmain.sh
 m4/
