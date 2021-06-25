@@ -1,6 +1,8 @@
 #ifndef __NUMBER_FIELD_ELEMENT_H_
 #define __NUMBER_FIELD_ELEMENT_H_
 
+#include "antic/nf_elem.h"
+
 #include "birch.h"
 #include "FieldElement.h"
 #include "UnivariatePoly.h"
@@ -82,8 +84,10 @@ public:
 protected:
   std::shared_ptr<const NumberField<R> > _K;
   UnivariatePolyRat<R> _elt;
+  nf_elem_t _nf_elt_antic;
 
   MatrixRat<R> _multByMatrix(void) const;
+  void _initAntic(void);
 };
 
 namespace std
