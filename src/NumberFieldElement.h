@@ -12,18 +12,18 @@ class NumberFieldElement : public virtual FieldElement< NumberFieldElement<R>, N
 {
 public:
   NumberFieldElement() = default;
-  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld) : _K(fld), _elt(std::make_shared< const RationalField<R> >()) {}
+  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld) : _K(fld), _elt(std::make_shared< const RationalField<R> >()) { _initAntic(); }
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const UnivariatePolyRat<R> & poly)
-    : _K(fld), _elt(poly) {}
+    : _K(fld), _elt(poly) {_initAntic(); }
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const R & a)
-    : _K(fld), _elt(a) {}
+    : _K(fld), _elt(a) { _initAntic(); }
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const Integer<R> & a)
-    : _K(fld), _elt(a) {} 
+    : _K(fld), _elt(a) { _initAntic(); } 
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
-		     const Rational<R> & a) : _K(fld), _elt(a) {}
+		     const Rational<R> & a) : _K(fld), _elt(a) { _initAntic(); }
 
   // assignment operator
   NumberFieldElement<R> & operator=(const NumberFieldElement<R> &) override;
