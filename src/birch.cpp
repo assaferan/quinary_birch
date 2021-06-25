@@ -4,8 +4,8 @@
 
 // flint/antic includes
 
-#include "nf.h"
-#include "nf_elem.h"
+#include "antic/nf.h"
+#include "antic/nf_elem.h"
 
 #include "TestBirch.h"
 
