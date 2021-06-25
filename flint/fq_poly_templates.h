@@ -1,29 +1,15 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2012 Andres Goens
     Copyright (C) 2012 Sebastian Pancratz
     Copyright (C) 2013 Mike Hansen
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
+*/
 
 #ifdef T
 
@@ -68,7 +54,7 @@ FLINT_DLL void TEMPLATE(T, poly_clear)(TEMPLATE(T, poly_t) poly,
 FLINT_DLL void _TEMPLATE(T, poly_normalise)(TEMPLATE(T, poly_t) poly,
                              const TEMPLATE(T, ctx_t) ctx);
 
-FLINT_DLL void _TEMPLATE(T, poly_normalise2)(TEMPLATE(T, struct) *poly, slong *length,
+FLINT_DLL void _TEMPLATE(T, poly_normalise2)(const TEMPLATE(T, struct) *poly, slong *length,
                               const TEMPLATE(T, ctx_t) ctx);
 
 FQ_POLY_TEMPLATES_INLINE void
@@ -134,6 +120,14 @@ FLINT_DLL void TEMPLATE(T, poly_set)(TEMPLATE(T, poly_t) rop, const TEMPLATE(T, 
 
 FLINT_DLL void TEMPLATE3(T, poly_set, T)(TEMPLATE(T, poly_t) poly, const TEMPLATE(T, t) c,
                           const TEMPLATE(T, ctx_t) ctx);
+
+FLINT_DLL void TEMPLATE(T, poly_set_fmpz_mod_poly)(TEMPLATE(T, poly_t) rop,
+                                                   const fmpz_mod_poly_t op,
+                                                   const TEMPLATE(T, ctx_t) ctx);
+
+FLINT_DLL void TEMPLATE(T, poly_set_nmod_poly)(TEMPLATE(T, poly_t) rop, 
+                                               const nmod_poly_t op,
+                                               const TEMPLATE(T, ctx_t) ctx);
 
 FLINT_DLL void TEMPLATE(T, poly_swap)(TEMPLATE(T, poly_t) op1, TEMPLATE(T, poly_t) op2,
                        const TEMPLATE(T, ctx_t) ctx);
@@ -267,6 +261,10 @@ FLINT_DLL void TEMPLATE(T, poly_add)(TEMPLATE(T, poly_t) rop, const TEMPLATE(T, 
                       const TEMPLATE(T, poly_t) op2,
                       const TEMPLATE(T, ctx_t) ctx);
 
+FLINT_DLL void TEMPLATE(T, poly_add_si)(TEMPLATE(T, poly_t) rop,
+                                    const TEMPLATE(T, poly_t) op1, slong c,
+                                                 const TEMPLATE(T, ctx_t) ctx);
+
 FLINT_DLL void TEMPLATE(T, poly_add_series)(TEMPLATE(T, poly_t) rop, const TEMPLATE(T, poly_t) op1,
                       const TEMPLATE(T, poly_t) op2,
                       slong n, const TEMPLATE(T, ctx_t) ctx);
@@ -304,11 +302,6 @@ FLINT_DLL void TEMPLATE3(T, poly_scalar_mul, T)(TEMPLATE(T, poly_t) rop,
                                  const TEMPLATE(T, poly_t) op,
                                  const TEMPLATE(T, t) x,
                                  const TEMPLATE(T, ctx_t) ctx);
-
-FLINT_DLL void _TEMPLATE3(T, poly_scalar_addmul, T)(TEMPLATE(T, struct) *rop,
-                                     const TEMPLATE(T, struct) *op, slong len,
-                                     const TEMPLATE(T, t) x,
-                                     const TEMPLATE(T, ctx_t) ctx);
 
 FLINT_DLL void _TEMPLATE3(T, poly_scalar_div, T)(TEMPLATE(T, struct) *rop,
                                   const TEMPLATE(T, struct) *op, slong len,
@@ -362,6 +355,16 @@ FLINT_DLL void TEMPLATE(T, poly_mul_reorder)(TEMPLATE(T, poly_t) rop,
                               const TEMPLATE(T, poly_t) op2,
                               const TEMPLATE(T, ctx_t) ctx);
 
+FLINT_DLL void _TEMPLATE(T, poly_mul_univariate)(TEMPLATE(T, struct) *rop,
+                          const TEMPLATE(T, struct) *op1, slong len1,
+                          const TEMPLATE(T, struct) *op2, slong len2,
+                          const TEMPLATE(T, ctx_t) ctx);
+
+FLINT_DLL void TEMPLATE(T, poly_mul_univariate)(TEMPLATE(T, poly_t) rop,
+                         const TEMPLATE(T, poly_t) op1,
+                         const TEMPLATE(T, poly_t) op2,
+                         const TEMPLATE(T, ctx_t) ctx);
+
 FLINT_DLL void _TEMPLATE(T, poly_mul_KS)(TEMPLATE(T, struct) *rop,
                           const TEMPLATE(T, struct) *op1, slong len1,
                           const TEMPLATE(T, struct) *op2, slong len2,
@@ -401,6 +404,18 @@ FLINT_DLL void _TEMPLATE(T, poly_mullow_KS)(TEMPLATE(T, struct) *rop,
                              const TEMPLATE(T, ctx_t) ctx);
 
 FLINT_DLL void TEMPLATE(T, poly_mullow_KS)(TEMPLATE(T, poly_t) rop,
+                            const TEMPLATE(T, poly_t) op1,
+                            const TEMPLATE(T, poly_t) op2,
+                            slong n,
+                            const TEMPLATE(T, ctx_t) ctx);
+
+FLINT_DLL void _TEMPLATE(T, poly_mullow_univariate)(TEMPLATE(T, struct) *rop,
+                             const TEMPLATE(T, struct) *op1, slong len1,
+                             const TEMPLATE(T, struct) *op2, slong len2,
+                             slong n,
+                             const TEMPLATE(T, ctx_t) ctx);
+
+FLINT_DLL void TEMPLATE(T, poly_mullow_univariate)(TEMPLATE(T, poly_t) rop,
                             const TEMPLATE(T, poly_t) op1,
                             const TEMPLATE(T, poly_t) op2,
                             slong n,
@@ -510,6 +525,21 @@ FLINT_DLL void TEMPLATE(T, poly_pow)(TEMPLATE(T, poly_t) rop,
                       const TEMPLATE(T, poly_t) op,
                       ulong e,
                       const TEMPLATE(T, ctx_t) ctx);
+
+FLINT_DLL void _TEMPLATE(T, poly_pow_trunc_binexp) (TEMPLATE(T, struct) * res,
+                                   const TEMPLATE(T, struct) * poly,  ulong e,
+			            slong trunc, const TEMPLATE(T, ctx_t) ctx);
+
+FLINT_DLL void TEMPLATE(T, poly_pow_trunc_binexp) (TEMPLATE(T, poly_t) res,
+                                     const TEMPLATE(T, poly_t) poly, ulong e,
+                                    slong trunc, const TEMPLATE(T, ctx_t) ctx);
+
+FLINT_DLL void _TEMPLATE(T, poly_pow_trunc) (TEMPLATE(T, struct) * res,
+                                   const TEMPLATE(T, struct) * poly,  ulong e,
+                                    slong trunc, const TEMPLATE(T, ctx_t) ctx);
+
+FLINT_DLL void TEMPLATE(T, poly_pow_trunc) (TEMPLATE(T, poly_t) res,
+                                     const TEMPLATE(T, poly_t) poly, ulong e,                                                 slong trunc, const TEMPLATE(T, ctx_t) ctx);
 
 FLINT_DLL void _TEMPLATE(T, poly_powmod_fmpz_binexp)(TEMPLATE(T, struct) * res,
                                       const TEMPLATE(T, struct) * poly,
@@ -1206,6 +1236,38 @@ FLINT_DLL char * _TEMPLATE(T, poly_get_str)(const TEMPLATE(T, struct) * poly, sl
 
 FLINT_DLL char * TEMPLATE(T, poly_get_str)(const TEMPLATE(T, poly_t) poly,
                           const TEMPLATE(T, ctx_t) ctx);
+
+/* Characteristic polynomial ************************************************/
+
+FLINT_DLL 
+void TEMPLATE(T, mat_charpoly_danilevsky) (TEMPLATE(T, poly_t) p,
+                      const TEMPLATE(T, mat_t) A, const TEMPLATE(T, ctx_t) ctx);
+
+FQ_POLY_TEMPLATES_INLINE
+void TEMPLATE(T, mat_charpoly)(TEMPLATE(T, poly_t) p,
+                       const TEMPLATE(T, mat_t) M, const TEMPLATE(T, ctx_t) ctx)
+{
+   TEMPLATE(T, mat_t) A;
+
+   TEMPLATE(T, mat_init) (A, M->r, M->c, ctx);
+   TEMPLATE(T, mat_set) (A, M, ctx);
+
+   if (A->r != A->c)
+   {
+       flint_printf("Exception (fq_mat_charpoly).  Non-square matrix.\n");
+       flint_abort();
+   }
+
+   TEMPLATE(T, mat_charpoly_danilevsky) (p, A, ctx);
+
+   TEMPLATE(T, mat_clear) (A, ctx);
+}
+
+/* Minimal polynomial ************************************************/
+
+FLINT_DLL 
+void TEMPLATE(T, mat_minpoly) (TEMPLATE(T, poly_t) p, 
+                      const TEMPLATE(T, mat_t) X, const TEMPLATE(T, ctx_t) ctx);
 
 #ifdef __cplusplus
 }

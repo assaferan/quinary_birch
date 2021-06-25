@@ -1,27 +1,13 @@
-/*============================================================================
+/*
+    Copyright (C) 2010-2012 Fredrik Johansson
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-===============================================================================*/
-/******************************************************************************
-
- Copyright (C) 2010-2012 Fredrik Johansson
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
+*/
 
 #ifndef ARITH_H
 #define ARITH_H
@@ -182,12 +168,12 @@ FLINT_DLL void arith_cos_minpoly(fmpz_poly_t poly, ulong n);
 
 /* Hypergeometric polynomials ************************************************/
 
-FLINT_DLL void arith_legendre_polynomial(fmpq_poly_t poly, ulong n);
-
 #define _arith_chebyshev_t_polynomial _fmpz_poly_chebyshev_t
 #define arith_chebyshev_t_polynomial fmpz_poly_chebyshev_t
 #define _arith_chebyshev_u_polynomial _fmpz_poly_chebyshev_u
 #define arith_chebyshev_u_polynomial fmpz_poly_chebyshev_u
+
+#define arith_legendre_polynomial fmpq_poly_legendre_p
 
 /* Swinnerton-Dyer polynomials ***********************************************/
 
@@ -201,9 +187,6 @@ FLINT_DLL void arith_landau_function_vec(fmpz * res, slong len);
 /* Dedekind sums *************************************************************/
 
 #define arith_dedekind_sum_naive fmpq_dedekind_sum_naive
-#define arith_dedekind_sum_coprime_d fmpq_dedekind_sum_coprime_d
-#define arith_dedekind_sum_coprime_large fmpq_dedekind_sum_coprime_large
-#define arith_dedekind_sum_coprime fmpq_dedekind_sum_coprime
 #define arith_dedekind_sum fmpq_dedekind_sum
 
 /* Exponential sums **********************************************************/
@@ -232,6 +215,8 @@ void trig_prod_init(trig_prod_t sum)
 FLINT_DLL void arith_hrr_expsum_factored(trig_prod_t prod, mp_limb_t k, mp_limb_t n);
 
 /* Number of partitions ******************************************************/
+
+FLINT_DLL extern const unsigned int partitions_lookup[128];
 
 FLINT_DLL void arith_number_of_partitions_nmod_vec(mp_ptr res, slong len, nmod_t mod);
 FLINT_DLL void arith_number_of_partitions_vec(fmpz * res, slong len);

@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2013 Tom Bachmann
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Tom Bachmann
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
+*/
 
 #ifndef ARITHXX_H
 #define ARITHXX_H
@@ -285,10 +271,6 @@ template<> struct outsize<operations::landau_function_vec_op>
 
 ARITHXX_DEFINE_BINOP(dedekind_sum_naive, fmpqxx,
         FMPZXX_COND_S, FMPZXX_COND_S)
-ARITHXX_DEFINE_BINOP(dedekind_sum_coprime_large, fmpqxx,
-        FMPZXX_COND_S, FMPZXX_COND_S)
-ARITHXX_DEFINE_BINOP(dedekind_sum_coprime, fmpqxx,
-        FMPZXX_COND_S, FMPZXX_COND_S)
 ARITHXX_DEFINE_BINOP(dedekind_sum, fmpqxx,
         FMPZXX_COND_S, FMPZXX_COND_S)
 
@@ -325,8 +307,6 @@ inline double bell_number_size(ulong n) {return arith_bell_number_size(n);}
 inline double bernoulli_number_size(ulong n)
     {return arith_bernoulli_number_size(n);}
 inline double euler_number_size(ulong n) {return arith_euler_number_size(n);}
-inline double dedekind_sum_coprime_d(double h, double k)
-    {return arith_dedekind_sum_coprime_d(h, k);}
 
 template<class Fmpz>
 inline typename mp::enable_if<traits::is_fmpzxx<Fmpz>, int>::type moebius_mu(

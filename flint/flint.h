@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2009 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2009 William Hart
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
+*/
 
 #ifndef FLINT_H
 #define FLINT_H
@@ -32,10 +18,11 @@
 #include <sys/param.h> /* for BSD define */
 #endif
 #include <gmp.h>
-#include "mpfr/mpfr.h"
+#include <mpfr.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h> /* for alloca on FreeBSD */
-#if !defined(BSD) && !defined(__MINGW64__) && !defined(__MINGW32__) && !defined(_MSC_VER)
+#if (!defined(BSD) && !defined(__MINGW64__) && !defined(__MINGW32__) && !defined(_MSC_VER)) || defined(__GNU__)
 /* MinGW and FreeBSD have alloca, but not alloca.h */
 #include <alloca.h>
 #endif
@@ -44,14 +31,20 @@
 #endif
 #include "limits.h"
 #include "longlong.h"
-#include "config.h"
+#include "flint-config.h"
 #undef ulong
 
-#if HAVE_GC
+#ifdef FLINT_INLINES_C
+#define FLINT_INLINE FLINT_DLL
+#else
+#define FLINT_INLINE static __inline__
+#endif
+
+#if FLINT_USES_GC
 #include "gc.h"
 #endif
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
 #include <assert.h>
 #endif
 
@@ -62,9 +55,9 @@
 /* flint version number */
 
 #define __FLINT_VERSION 2
-#define __FLINT_VERSION_MINOR 5 
-#define __FLINT_VERSION_PATCHLEVEL 2 
-#define FLINT_VERSION "2.5.2"
+#define __FLINT_VERSION_MINOR 7
+#define __FLINT_VERSION_PATCHLEVEL 0
+#define FLINT_VERSION "2.7.0"
 #define __FLINT_RELEASE (__FLINT_VERSION * 10000 + \
                          __FLINT_VERSION_MINOR * 100 + \
                          __FLINT_VERSION_PATCHLEVEL)
@@ -81,7 +74,7 @@
 #endif
 
 /*
-   We define alternative key words for "asm" and "inline", allowing 
+   We define alternative key words for "asm" and "inline", allowing
    the code to be compiled with the "-ansi" flag under GCC
  */
 #ifndef __GNUC__
@@ -89,56 +82,89 @@
     #define __inline__  inline
 #endif
 
-extern char version[];
+extern char flint_version[];
 
 #define ulong mp_limb_t
 #define slong mp_limb_signed_t
 
-void * flint_malloc(size_t size);
-void * flint_realloc(void * ptr, size_t size);
-void * flint_calloc(size_t num, size_t size);
+FLINT_DLL void * flint_malloc(size_t size);
+FLINT_DLL void * flint_realloc(void * ptr, size_t size);
+FLINT_DLL void * flint_calloc(size_t num, size_t size);
 FLINT_DLL void flint_free(void * ptr);
 
 typedef void (*flint_cleanup_function_t)(void);
 FLINT_DLL void flint_register_cleanup_function(flint_cleanup_function_t cleanup_function);
 FLINT_DLL void flint_cleanup(void);
+FLINT_DLL void flint_cleanup_master(void);
+
+FLINT_DLL void __flint_set_memory_functions(void *(*alloc_func) (size_t),
+     void *(*calloc_func) (size_t, size_t), void *(*realloc_func) (void *, size_t),
+                                                              void (*free_func) (void *));
+
+#ifdef __GNUC__
+#define FLINT_NORETURN __attribute__ ((noreturn))
+#else
+#define FLINT_NORETURN
+#endif
+
+FLINT_DLL FLINT_NORETURN void flint_abort(void);
+FLINT_DLL void flint_set_abort(FLINT_NORETURN void (*func)(void));
+  /* flint_abort is calling abort by default
+   * if flint_set_abort is used, then instead of abort this function
+   * is called. EXPERIMENTALLY use at your own risk!
+   * May disappear in future versions.
+   */
+
 
 #if defined(_WIN64) || defined(__mips64)
+#if defined(__MINGW64__)
+#define WORD_FMT "%I64"
+#define WORD_WIDTH_FMT "%*I64"
+#else
 #define WORD_FMT "%ll"
 #define WORD_WIDTH_FMT "%*ll"
+#endif
 #define WORD(xx) (xx##LL)
 #define UWORD(xx) (xx##ULL)
+#ifndef FLINT_NO_WORDMAC
 #define UWORD_MAX ULLONG_MAX
 #define UWORD_MIN ULLONG_MIN
 #define WORD_MAX LLONG_MAX
 #define WORD_MIN LLONG_MIN
+#endif
 #else
 #define WORD_FMT "%l"
 #define WORD_WIDTH_FMT "%*l"
 #define WORD(xx) (xx##L)
 #define UWORD(xx) (xx##UL)
+#ifndef FLINT_NO_WORDMAC
 #define UWORD_MAX ULONG_MAX
 #define UWORD_MIN ULONG_MIN
 #define WORD_MAX LONG_MAX
 #define WORD_MIN LONG_MIN
+#endif
 #endif
 
 #if GMP_LIMB_BITS == 64
     #define FLINT_BITS 64
     #define FLINT_D_BITS 53
     #define FLINT64 1
-#else 
+#else
     #define FLINT_BITS 32
     #define FLINT_D_BITS 31
 #endif
 
-#define mp_bitcnt_t ulong
+#define flint_bitcnt_t ulong
 
-#if HAVE_TLS
-#ifdef _MSC_VER
+#if FLINT_USES_TLS
+#if __STDC_VERSION__ >= 201112L
+#define FLINT_TLS_PREFIX _Thread_local
+#elif defined(_MSC_VER)
 #define FLINT_TLS_PREFIX __declspec(thread)
-#else
+#elif defined(__GNUC__)
 #define FLINT_TLS_PREFIX __thread
+#else
+#error "thread local prefix defined in C11 or later"
 #endif
 #else
 #define FLINT_TLS_PREFIX
@@ -146,8 +172,13 @@ FLINT_DLL void flint_cleanup(void);
 
 FLINT_DLL int flint_get_num_threads(void);
 FLINT_DLL void flint_set_num_threads(int num_threads);
+FLINT_DLL void _flint_set_num_workers(int num_workers);
+FLINT_DLL int flint_set_num_workers(int num_workers);
+FLINT_DLL void flint_reset_num_workers(int max_workers);
+FLINT_DLL int flint_set_thread_affinity(int * cpus, slong length);
+FLINT_DLL int flint_restore_thread_affinity();
 
-FLINT_DLL int flint_test_multiplier(void);
+int flint_test_multiplier(void);
 
 typedef struct
 {
@@ -159,7 +190,7 @@ typedef struct
 
 typedef flint_rand_s flint_rand_t[1];
 
-static __inline__
+FLINT_INLINE
 void flint_randinit(flint_rand_t state)
 {
    state->gmp_init = 0;
@@ -172,14 +203,22 @@ void flint_randinit(flint_rand_t state)
 #endif
 }
 
-static __inline__
+FLINT_INLINE
 void flint_randseed(flint_rand_t state, ulong seed1, ulong seed2)
 {
    state->__randval = seed1;
    state->__randval2 = seed2;
 }
 
-static __inline__
+FLINT_INLINE
+void flint_get_randseed(ulong * seed1, ulong * seed2, flint_rand_t state)
+{
+   *seed1 = state->__randval;
+   *seed2 = state->__randval2;
+}
+
+
+FLINT_INLINE
 void _flint_rand_init_gmp(flint_rand_t state)
 {
     if (!state->gmp_init)
@@ -189,14 +228,26 @@ void _flint_rand_init_gmp(flint_rand_t state)
     }
 }
 
-static __inline__
+FLINT_INLINE
 void flint_randclear(flint_rand_t state)
 {
     if (state->gmp_init)
         gmp_randclear(state->gmp_state);
 }
 
-#if HAVE_GC
+FLINT_INLINE
+flint_rand_s * flint_rand_alloc(void)
+{
+    return (flint_rand_s *) flint_malloc(sizeof(flint_rand_s));
+}
+
+FLINT_INLINE
+void flint_rand_free(flint_rand_s * state)
+{
+    flint_free(state);
+}
+
+#if FLINT_USES_GC
 #define FLINT_GC_INIT() GC_init()
 #else
 #define FLINT_GC_INIT()
@@ -209,28 +260,38 @@ void flint_randclear(flint_rand_t state)
 
 #define FLINT_TEST_CLEANUP(xxx) \
    flint_randclear(xxx); \
-   flint_cleanup();
+   flint_cleanup_master();
 
 /*
   We define this here as there is no mpfr.h
  */
-typedef __mpfr_struct mpfr;
+typedef __mpfr_struct flint_mpfr;
 
-#if WANT_ASSERT
+#if FLINT_WANT_ASSERT
 #define FLINT_ASSERT(param) assert(param)
-#else 
+#else
 #define FLINT_ASSERT(param)
 #endif
 
 #if defined(__GNUC__)
 #define FLINT_UNUSED(x) UNUSED_ ## x __attribute__((unused))
+#define FLINT_SET_BUT_UNUSED(x) x __attribute__((unused))
+#if __GNUC__ >= 4
+#define FLINT_WARN_UNUSED __attribute__((warn_unused_result))
 #else
+#define FLINT_WARN_UNUSED
+#endif
+#else
+#define __attribute__(x)
 #define FLINT_UNUSED(x) x
+#define FLINT_SET_BUT_UNUSED(x) x
+#define FLINT_WARN_UNUSED
 #endif
 
 #define FLINT_MAX(x, y) ((x) > (y) ? (x) : (y))
 #define FLINT_MIN(x, y) ((x) > (y) ? (y) : (x))
 #define FLINT_ABS(x) ((slong)(x) < 0 ? (-(x)) : (x))
+#define FLINT_SIGN_EXT(x) (-(ulong)((slong)(x) < 0))
 
 #define MP_PTR_SWAP(x, y) \
     do { \
@@ -238,6 +299,27 @@ typedef __mpfr_struct mpfr;
         __txxx = x; \
         x = y; \
         y = __txxx; \
+    } while (0)
+
+#define SLONG_SWAP(A, B)    \
+    do {                    \
+        slong __t_m_p_ = A; \
+        A = B;              \
+        B = __t_m_p_;       \
+    } while (0)
+
+#define ULONG_SWAP(A, B)    \
+    do {                    \
+        ulong __t_m_p_ = A; \
+        A = B;              \
+        B = __t_m_p_;       \
+    } while (0)
+
+#define MP_LIMB_SWAP(A, B)      \
+    do {                        \
+        mp_limb_t __t_m_p_ = A; \
+        A = B;                  \
+        B = __t_m_p_;           \
     } while (0)
 
 #define r_shift(in, shift) \
@@ -250,10 +332,11 @@ typedef __mpfr_struct mpfr;
 FLINT_DLL extern const unsigned char __flint_clz_tab[128];
 #endif
 
+/* Beware when using the unsigned return value in signed arithmetic */
 static __inline__
-unsigned int FLINT_BIT_COUNT(mp_limb_t x)
+mp_limb_t FLINT_BIT_COUNT(mp_limb_t x)
 {
-   unsigned int zeros = FLINT_BITS;
+   mp_limb_t zeros = FLINT_BITS;
    if (x) count_leading_zeros(zeros, x);
    return FLINT_BITS - zeros;
 }
@@ -292,6 +375,9 @@ unsigned int FLINT_BIT_COUNT(mp_limb_t x)
          (xxx)[ixxx] = yyy; \
    } while (0)
 
+/* common usage of flint_malloc */
+#define FLINT_ARRAY_ALLOC(n, T) (T *) flint_malloc((n)*sizeof(T))
+
 /* temporary allocation */
 #define TMP_INIT \
    typedef struct __tmp_struct { \
@@ -304,13 +390,22 @@ unsigned int FLINT_BIT_COUNT(mp_limb_t x)
 #define TMP_START \
    __tmp_root = NULL
 
+#if FLINT_WANT_ASSERT
 #define TMP_ALLOC(size) \
-   ((size) > 8192 ? \
+   (__tpx = (__tmp_t *) alloca(sizeof(__tmp_t)), \
+       __tpx->next = __tmp_root, \
+       __tmp_root = __tpx, \
+       __tpx->block = flint_malloc(size))
+#else
+#define TMP_ALLOC(size) \
+   (((size) > 8192) ? \
       (__tpx = (__tmp_t *) alloca(sizeof(__tmp_t)), \
        __tpx->next = __tmp_root, \
        __tmp_root = __tpx, \
        __tpx->block = flint_malloc(size)) : \
       alloca(size))
+#endif
+
 
 #define TMP_END \
    while (__tmp_root) { \
@@ -368,6 +463,7 @@ mpn_tdiv_q(mp_ptr qp, mp_srcptr np, mp_size_t nn, mp_srcptr dp, mp_size_t dn)
 FLINT_DLL int parse_fmt(int * floating, const char * fmt);
 
 FLINT_DLL int flint_printf(const char * str, ...); /* flint version of printf */
+FLINT_DLL int flint_vprintf(const char * str, va_list ap); /* va_list version of flint_printf */
 FLINT_DLL int flint_fprintf(FILE * f, const char * str, ...); /* flint version of fprintf */
 FLINT_DLL int flint_sprintf(char * s, const char * str, ...); /* flint version of sprintf */
 
@@ -375,11 +471,24 @@ FLINT_DLL int flint_scanf(const char * str, ...); /* flint version of scanf */
 FLINT_DLL int flint_fscanf(FILE * f, const char * str, ...); /* flint version of fscanf */
 FLINT_DLL int flint_sscanf(const char * s, const char * str, ...); /* flint version of sscanf */
 
+FLINT_INLINE slong flint_mul_sizes(slong x, slong y)
+{
+    ulong hi, lo;
+
+    umul_ppmm(hi, lo, (ulong) x, (ulong) y);
+    if (hi != 0 || lo > WORD_MAX)
+    {
+        flint_printf("Exception (flint). Overflow creating size %wd x %wd object.\n", x, y);
+        flint_abort();
+    }
+    return lo;
+}
+
 #include "gmpcompat.h"
+#include "exception.h"
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-

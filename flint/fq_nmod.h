@@ -1,29 +1,15 @@
-/*=============================================================================
-
-    This file is part of FLINT.
-
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
+/*
     Copyright (C) 2011 Sebastian Pancratz
     Copyright (C) 2012 Andres Goens
     Copyright (C) 2013 Mike Hansen
 
-******************************************************************************/
+    This file is part of FLINT.
+
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
+*/
 
 #ifndef FQ_NMOD_H
 #define FQ_NMOD_H
@@ -37,6 +23,7 @@
 #endif
 
 #include "nmod_poly.h"
+#include "nmod_mat.h"
 #include "ulong_extras.h"
 
 /* Data types and context ****************************************************/
@@ -53,6 +40,7 @@ typedef struct
     nmod_t mod;
 
     int sparse_modulus;
+    int is_conway; /* whether field was generated using Flint Conway table (assures primitivity */
 
     mp_limb_t *a;
     slong *j;
@@ -85,6 +73,11 @@ FLINT_DLL void fq_nmod_ctx_randtest(fq_nmod_ctx_t ctx, flint_rand_t state);
 FLINT_DLL void fq_nmod_ctx_randtest_reducible(fq_nmod_ctx_t ctx, flint_rand_t state);
 
 FLINT_DLL void fq_nmod_ctx_clear(fq_nmod_ctx_t ctx);
+
+FQ_NMOD_INLINE const nmod_poly_struct* fq_nmod_ctx_modulus(const fq_nmod_ctx_t ctx)
+{
+    return ctx->modulus;
+}
 
 FQ_NMOD_INLINE slong fq_nmod_ctx_degree(const fq_nmod_ctx_t ctx)
 {
@@ -180,25 +173,21 @@ FQ_NMOD_INLINE void fq_nmod_clear(fq_nmod_t rop, const fq_nmod_ctx_t ctx)
 FQ_NMOD_INLINE 
 void _fq_nmod_sparse_reduce(mp_limb_t *R, slong lenR, const fq_nmod_ctx_t ctx)
 {
+    slong i, k;
     const slong d = ctx->j[ctx->len - 1];
 
     NMOD_VEC_NORM(R, lenR);
 
-    if (lenR > d)
+    for (i = lenR - 1; i >= d; i--)
     {
-        slong i, k;
-
-        for (i = lenR - 1; i >= d; i--)
+        for (k = ctx->len - 2; k >= 0; k--)
         {
-            for (k = ctx->len - 2; k >= 0; k--)
-            {
-                
-                R[ctx->j[k] + i - d] = n_submod(R[ctx->j[k] + i - d],
-                                                n_mulmod2_preinv(R[i], ctx->a[k], ctx->mod.n, ctx->mod.ninv),
-                                                ctx->mod.n);
-            }
-            R[i] = UWORD(0);
+            /* TODO clean this mess up */
+            R[ctx->j[k] + i - d] = n_submod(R[ctx->j[k] + i - d],
+                                            n_mulmod2_preinv(R[i], ctx->a[k], ctx->mod.n, ctx->mod.ninv),
+                                            ctx->mod.n);
         }
+        R[i] = UWORD(0);
     }
 }
 
@@ -211,7 +200,7 @@ FQ_NMOD_INLINE void _fq_nmod_dense_reduce(mp_limb_t* R, slong lenR, const fq_nmo
         _nmod_vec_reduce(R, R, lenR, ctx->mod);
         return;
     }
-    
+
     q = _nmod_vec_init(lenR - ctx->modulus->length + 1);
     r = _nmod_vec_init(ctx->modulus->length - 1);
 
@@ -236,6 +225,7 @@ FQ_NMOD_INLINE void _fq_nmod_reduce(mp_limb_t* R, slong lenR, const fq_nmod_ctx_
 
 FQ_NMOD_INLINE void fq_nmod_reduce(fq_nmod_t rop, const fq_nmod_ctx_t ctx)
 {
+    FLINT_ASSERT(rop->length <= 2*(ctx->modulus->length - 1));
     _fq_nmod_reduce(rop->coeffs, rop->length, ctx);
     rop->length = FLINT_MIN(rop->length, ctx->modulus->length - 1);
     _nmod_poly_normalise(rop);
@@ -243,33 +233,54 @@ FQ_NMOD_INLINE void fq_nmod_reduce(fq_nmod_t rop, const fq_nmod_ctx_t ctx)
 
 /* Basic arithmetic **********************************************************/
 
-FLINT_DLL void fq_nmod_add(fq_nmod_t rop, const fq_nmod_t op1, const fq_nmod_t op2, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_add(fq_nmod_t rop, const fq_nmod_t op1,
+                                 const fq_nmod_t op2, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_sub(fq_nmod_t rop, const fq_nmod_t op1, const fq_nmod_t op2, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_sub(fq_nmod_t rop, const fq_nmod_t op1,
+                                 const fq_nmod_t op2, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_sub_one(fq_nmod_t rop, const fq_nmod_t op1, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_sub_one(fq_nmod_t rop,
+                                 const fq_nmod_t op1, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_neg(fq_nmod_t rop, const fq_nmod_t op1, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_neg(fq_nmod_t rop,
+                                 const fq_nmod_t op1, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_mul(fq_nmod_t rop, const fq_nmod_t op1, const fq_nmod_t op2, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_mul(fq_nmod_t rop,
+            const fq_nmod_t op1, const fq_nmod_t op2, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_mul_fmpz(fq_nmod_t rop, const fq_nmod_t op, const fmpz_t x, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_mul_fmpz(fq_nmod_t rop,
+                  const fq_nmod_t op, const fmpz_t x, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_mul_si(fq_nmod_t rop, const fq_nmod_t op, slong x, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_mul_si(fq_nmod_t rop,
+                         const fq_nmod_t op, slong x, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_mul_ui(fq_nmod_t rop, const fq_nmod_t op, ulong x, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_mul_ui(fq_nmod_t rop,
+                         const fq_nmod_t op, ulong x, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_sqr(fq_nmod_t rop, const fq_nmod_t op, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_sqr(fq_nmod_t rop,
+                                  const fq_nmod_t op, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_inv(fq_nmod_t rop, const fq_nmod_t op1, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_inv(fq_nmod_t rop,
+                                 const fq_nmod_t op1, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void _fq_nmod_pow(mp_limb_t *rop, const mp_limb_t *op, slong len, const fmpz_t e, const fq_nmod_ctx_t ctx);
+FLINT_DLL void _fq_nmod_pow(mp_limb_t *rop, const mp_limb_t *op,
+                           slong len, const fmpz_t e, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_pow(fq_nmod_t rop, const fq_nmod_t op1, const fmpz_t e, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_pow(fq_nmod_t rop, const fq_nmod_t op1,
+                                      const fmpz_t e, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_pow_ui(fq_nmod_t rop, const fq_nmod_t op1, const ulong e, const fq_nmod_ctx_t ctx);
+FLINT_DLL void fq_nmod_pow_ui(fq_nmod_t rop,
+                  const fq_nmod_t op1, const ulong e, const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_pth_root(fq_nmod_t rop, const fq_nmod_t op1, const fq_nmod_ctx_t ctx);
+/* Roots ********************************************************************/
+
+FLINT_DLL int fq_nmod_sqrt(fq_nmod_t rop, const fq_nmod_t op,
+                                                      const fq_nmod_ctx_t ctx);
+
+FLINT_DLL void fq_nmod_pth_root(fq_nmod_t rop,
+                                 const fq_nmod_t op1, const fq_nmod_ctx_t ctx);
+
+FLINT_DLL int fq_nmod_is_square(const fq_nmod_t op, const fq_nmod_ctx_t ctx);
 
 /* Randomisation *************************************************************/
 
@@ -278,6 +289,11 @@ FLINT_DLL void fq_nmod_randtest(fq_nmod_t rop, flint_rand_t state, const fq_nmod
 FLINT_DLL void fq_nmod_randtest_dense(fq_nmod_t rop, flint_rand_t state, const fq_nmod_ctx_t ctx);
 
 FLINT_DLL void fq_nmod_randtest_not_zero(fq_nmod_t rop, flint_rand_t state, const fq_nmod_ctx_t ctx);
+
+FLINT_DLL void fq_nmod_rand(fq_nmod_t rop, flint_rand_t state, const fq_nmod_ctx_t ctx);
+
+FLINT_DLL void fq_nmod_rand_not_zero(fq_nmod_t rop, flint_rand_t state, const fq_nmod_ctx_t ctx);
+
 
 /* Comparison ****************************************************************/
 
@@ -296,6 +312,10 @@ FQ_NMOD_INLINE int fq_nmod_is_one(const fq_nmod_t op, const fq_nmod_ctx_t ctx)
 {
     return nmod_poly_is_one(op);
 }
+
+FLINT_DLL int fq_nmod_cmp(const fq_nmod_t a, const fq_nmod_t b,
+                                                      const fq_nmod_ctx_t ctx);
+
 
 /* Assignments and conversions ***********************************************/
 
@@ -350,10 +370,25 @@ FQ_NMOD_INLINE void fq_nmod_one(fq_nmod_t rop,  const fq_nmod_ctx_t ctx)
 
 FQ_NMOD_INLINE void fq_nmod_gen(fq_nmod_t rop, const fq_nmod_ctx_t ctx)
 {
-    nmod_poly_zero(rop);
-    nmod_poly_set_coeff_ui(rop, 0, 0);
-    nmod_poly_set_coeff_ui(rop, 1, 1);
+    if (ctx->modulus->length == 2)
+    {
+        nmod_poly_set_coeff_ui(rop, 0,
+              nmod_neg(nmod_div(ctx->modulus->coeffs[0],
+              ctx->modulus->coeffs[1], ctx->mod), ctx->mod));
+    }
+    else
+    {
+        nmod_poly_zero(rop);
+        nmod_poly_set_coeff_ui(rop, 0, 0);
+        nmod_poly_set_coeff_ui(rop, 1, 1);
+    }
 }
+
+FLINT_DLL void fq_nmod_get_nmod_poly(nmod_poly_t a, const fq_nmod_t b,
+                                                      const fq_nmod_ctx_t ctx);
+
+FLINT_DLL void fq_nmod_set_nmod_poly(fq_nmod_t a, const nmod_poly_t b,
+                                                      const fq_nmod_ctx_t ctx);
 
 /* Output ********************************************************************/
 
@@ -404,11 +439,15 @@ FLINT_DLL void fq_nmod_norm(fmpz_t rop, const fq_nmod_t op, const fq_nmod_ctx_t 
 
 /* Bit packing ******************************************************/
 
-FLINT_DLL void fq_nmod_bit_pack(fmpz_t f, const fq_nmod_t op, mp_bitcnt_t bit_size,
+FLINT_DLL void fq_nmod_bit_pack(fmpz_t f, const fq_nmod_t op, flint_bitcnt_t bit_size,
                  const fq_nmod_ctx_t ctx);
 
-FLINT_DLL void fq_nmod_bit_unpack(fq_nmod_t rop, const fmpz_t f, mp_bitcnt_t bit_size,
+FLINT_DLL void fq_nmod_bit_unpack(fq_nmod_t rop, const fmpz_t f, flint_bitcnt_t bit_size,
                    const fq_nmod_ctx_t ctx);
+
+/* Inlines *******************************************************************/
+
+FLINT_DLL void __fq_nmod_ctx_prime(fmpz_t p, fq_nmod_ctx_t ctx);
 
 #ifdef T
 #undef T
@@ -416,7 +455,9 @@ FLINT_DLL void fq_nmod_bit_unpack(fq_nmod_t rop, const fmpz_t f, mp_bitcnt_t bit
 
 #define T fq_nmod
 #define CAP_T FQ_NMOD
+#define B nmod
 #include "fq_templates.h"
+#undef B
 #undef CAP_T
 #undef T
 

@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2010 Sebastian Pancratz
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2010 Sebastian Pancratz
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
+*/
 
 #ifndef LONG_EXTRAS_H
 #define LONG_EXTRAS_H
@@ -34,6 +20,7 @@
 
 #include <gmp.h>
 #include "flint.h"
+#include "longlong.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -42,6 +29,29 @@
 /* Properties ****************************************************************/
 
 FLINT_DLL size_t z_sizeinbase(slong n, int b);
+
+/* Checked arithmetic ********************************************************/
+
+LONG_EXTRAS_INLINE int z_mul_checked(slong * a, slong b, slong c)
+{
+	ulong ahi, alo;
+	smul_ppmm(ahi, alo, b, c);
+	*a = alo;
+	return FLINT_SIGN_EXT(alo) != ahi;
+}
+
+LONG_EXTRAS_INLINE int z_add_checked(slong * a, slong b, slong c)
+{
+/*
+	ulong ahi, alo;
+	add_ssaaaa(ahi, alo, 0, b, 0, c);
+	*a = alo;
+	return FLINT_SIGN_EXT(alo) != ahi;
+*/
+    int of = (b > 0 && c > WORD_MAX - b) || (b < 0 && c < WORD_MIN - b);
+    *a = b + c;
+    return of;
+}
 
 /* Randomisation  ************************************************************/
 

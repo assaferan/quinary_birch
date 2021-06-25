@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2013 William Hart
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 William Hart
-
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +16,20 @@
 #ifndef GMP_COMPAT_H
 #define GMP_COMPAT_H
 
-#if (defined(__MINGW64__) || defined(__mips64)) && !defined(__MPIR_VERSION)
+#define FLINT_MPZ_REALLOC(z, len)       \
+    ((len) > ((z)->_mp_alloc)           \
+        ? (mp_ptr) _mpz_realloc(z, len) \
+        : ((z)->_mp_d))
+
+#define FLINT_MPZ_PTR_SWAP(a, b)    \
+  do {                              \
+    mpz_ptr __tmp = (a);            \
+    (a) = (b);                      \
+    (b) = __tmp;                    \
+  } while (0)
+
+
+#if defined(__MINGW64__) && !defined(__MPIR_VERSION)
 
 #define FLINT_MOCK_MPZ_UI(xxx, yyy) \
    __mpz_struct (xxx)[1] = {{ 1, 0, NULL }}; \
@@ -58,6 +57,14 @@
 static __inline__
 void flint_mpz_set_si(mpz_ptr r, slong s)
 {
+   /* GMP 6.2 lazily performs allocation, deal with that if necessary
+      (in older GMP versions, this code is simply never triggered) */
+   if (r->_mp_alloc == 0)
+   {
+      r->_mp_d = (mp_ptr) flint_malloc(sizeof(mp_limb_t));
+      r->_mp_alloc = 1;
+   }
+
    if (s < 0) {
       r->_mp_size = -1;
       r->_mp_d[0] = -s;
@@ -70,6 +77,14 @@ void flint_mpz_set_si(mpz_ptr r, slong s)
 static __inline__
 void flint_mpz_set_ui(mpz_ptr r, ulong u)
 {
+   /* GMP 6.2 lazily performs allocation, deal with that if necessary
+      (in older GMP versions, this code is simply never triggered) */
+   if (r->_mp_alloc == 0)
+   {
+      r->_mp_d = (mp_ptr) flint_malloc(sizeof(mp_limb_t));
+      r->_mp_alloc = 1;
+   }
+
    r->_mp_d[0] = u; 
    r->_mp_size = u != 0;
 }
@@ -431,7 +446,7 @@ void flint_mpz_pow_ui(mpz_ptr r, mpz_srcptr b, ulong exp)
 {
    if (exp >= (UWORD(1) << 32)) {
       printf("Exception (flint_mpz_pow_ui). Power too large.\n");
-      abort();
+      flint_abort();
    }
    
    mpz_pow_ui(r, b, (unsigned long) exp);
@@ -442,7 +457,7 @@ void flint_mpz_fac_ui(mpz_ptr r, ulong n)
 {
    if (n >= (UWORD(1) << 32)) {
       printf("Exception (flint_mpz_fac_ui). Value n too large.\n");
-      abort();
+      flint_abort();
    }
    
    mpz_fac_ui(r, (unsigned long) n);
@@ -453,12 +468,12 @@ void flint_mpz_bin_uiui(mpz_ptr r, ulong n, ulong k)
 {
    if (n >= (UWORD(1) << 32)) {
       printf("Exception (flint_mpz_bin_uiui). Value n too large.\n");
-      abort();
+      flint_abort();
    }
    
    if (k >= (UWORD(1) << 32)) {
       printf("Exception (flint_mpz_bin_uiui). Value k too large.\n");
-      abort();
+      flint_abort();
    }
    
    mpz_bin_uiui(r, (unsigned long) n, (unsigned long) k);
@@ -469,7 +484,7 @@ void flint_mpz_fib_ui(mpz_ptr r, ulong n)
 {
    if (n >= (UWORD(1) << 32)) {
       printf("Exception (flint_mpz_fib_ui). Value n too large.\n");
-      abort();
+      flint_abort();
    }
    
    mpz_fib_ui(r, (unsigned long) n);
@@ -718,6 +733,55 @@ int flint_mpf_fits_slong_p(mpf_srcptr f)
   return fl <= (fs >= 0 ? (mp_limb_t) WORD_MAX : - (mp_limb_t) WORD_MIN);
 }
 
+/* double mpf_get_d_2exp (signed long int *exp, mpf_t src).
+
+Copyright 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+
+This file is part of the GNU MP Library.
+
+The GNU MP Library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or (at your
+option) any later version.
+
+The GNU MP Library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with the GNU MP Library; see the file COPYING.LIB.  If not, write to
+the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+MA 02110-1301, USA. */
+
+extern double __gmpn_get_d(mp_limb_t *, size_t, size_t, long);
+
+static __inline__
+double flint_mpf_get_d_2exp(slong * exp2, mpf_srcptr src)
+{
+  mp_size_t size, abs_size;
+  mp_limb_t * ptr;
+  int cnt;
+  slong exp;
+
+  size = src->_mp_size;
+  if (size == 0)
+    {
+      *exp2 = 0;
+      return 0.0;
+    }
+
+  ptr = src->_mp_d;
+  abs_size = FLINT_ABS(size);
+  count_leading_zeros (cnt, ptr[abs_size - 1]);
+
+  exp = src->_mp_exp * FLINT_BITS - cnt;
+  *exp2 = exp;
+
+  return __gmpn_get_d (ptr, abs_size, size,
+                    (long) - (abs_size * FLINT_BITS - cnt));
+}
+
 #else
 
 #define flint_mpz_get_si mpz_get_si
@@ -767,6 +831,7 @@ int flint_mpf_fits_slong_p(mpf_srcptr f)
 #define flint_mpf_get_si mpf_get_si
 #define flint_mpf_cmp_ui mpf_cmp_ui
 #define flint_mpf_fits_slong_p mpf_fits_slong_p
+#define flint_mpf_get_d_2exp mpf_get_d_2exp
 
 #endif
 

@@ -1,27 +1,13 @@
-/*=============================================================================
+/*
+    Copyright (C) 2013 Mike Hansen
 
     This file is part of FLINT.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-=============================================================================*/
-/******************************************************************************
-
-    Copyright (C) 2013 Mike Hansen
- 
-******************************************************************************/
+    FLINT is free software: you can redistribute it and/or modify it under
+    the terms of the GNU Lesser General Public License (LGPL) as published
+    by the Free Software Foundation; either version 2.1 of the License, or
+    (at your option) any later version.  See <https://www.gnu.org/licenses/>.
+*/
 
 #ifndef FQ_ZECH_H
 #define FQ_ZECH_H
@@ -62,6 +48,7 @@ typedef struct
 
     fq_nmod_ctx_struct *fq_nmod_ctx;
     int owns_fq_nmod_ctx;
+    int is_conway; /* whether field was generated using Flint Conway tables (assures primitivity) */
 
 } fq_zech_ctx_struct;
 
@@ -75,6 +62,8 @@ FLINT_DLL int _fq_zech_ctx_init_conway(fq_zech_ctx_t ctx, const fmpz_t p, slong 
 
 FLINT_DLL void fq_zech_ctx_init_conway(fq_zech_ctx_t ctx, const fmpz_t p, slong d, const char *var);
 
+FLINT_DLL void fq_zech_ctx_init_random(fq_zech_ctx_t ctx, const fmpz_t p, slong d, const char *var);
+
 FLINT_DLL void fq_zech_ctx_init_modulus(fq_zech_ctx_t ctx,
                               const nmod_poly_t modulus,
                               const char *var);
@@ -84,6 +73,11 @@ FLINT_DLL void fq_zech_ctx_randtest(fq_zech_ctx_t ctx, flint_rand_t state);
 FLINT_DLL void fq_zech_ctx_randtest_reducible(fq_zech_ctx_t ctx, flint_rand_t state);
 
 FLINT_DLL void fq_zech_ctx_clear(fq_zech_ctx_t ctx);
+
+FQ_ZECH_INLINE const nmod_poly_struct* fq_zech_ctx_modulus(const fq_zech_ctx_t ctx)
+{
+    return fq_nmod_ctx_modulus(ctx->fq_nmod_ctx);
+}
 
 FQ_ZECH_INLINE slong
 fq_zech_ctx_degree(const fq_zech_ctx_t ctx)
@@ -188,7 +182,15 @@ FLINT_DLL void fq_zech_pow(fq_zech_t rop, const fq_zech_t op1, const fmpz_t e,
 FLINT_DLL void fq_zech_pow_ui(fq_zech_t rop, const fq_zech_t op1, const ulong e,
                     const fq_zech_ctx_t ctx);
 
-FLINT_DLL void fq_zech_pth_root(fq_zech_t rop, const fq_zech_t op1, const fq_zech_ctx_t ctx);
+/* Roots *********************************************************************/
+
+FLINT_DLL int fq_zech_sqrt(fq_zech_t rop, const fq_zech_t op1,
+		                                      const fq_zech_ctx_t ctx);
+
+FLINT_DLL void fq_zech_pth_root(fq_zech_t rop,
+		                 const fq_zech_t op1, const fq_zech_ctx_t ctx);
+
+FLINT_DLL int fq_zech_is_square(const fq_zech_t op1, const fq_zech_ctx_t ctx);
 
 /* Randomisation *************************************************************/
 
@@ -197,6 +199,12 @@ FLINT_DLL void fq_zech_randtest(fq_zech_t rop, flint_rand_t state,
 
 FLINT_DLL void fq_zech_randtest_not_zero(fq_zech_t rop, flint_rand_t state,
                                const fq_zech_ctx_t ctx);
+
+FLINT_DLL void fq_zech_rand(fq_zech_t rop, flint_rand_t state,
+                                                      const fq_zech_ctx_t ctx);
+
+FLINT_DLL void fq_zech_rand_not_zero(fq_zech_t rop, flint_rand_t state,
+                                                      const fq_zech_ctx_t ctx);
 
 /* Comparison ****************************************************************/
 
@@ -273,9 +281,17 @@ fq_zech_gen(fq_zech_t rop, const fq_zech_ctx_t ctx)
     rop->value = 1;
 }
 
-FLINT_DLL void fq_zech_set_fq_nmod(fq_zech_t rop, const fq_nmod_t op, const fq_zech_ctx_t ctx);
+FLINT_DLL void fq_zech_set_fq_nmod(fq_zech_t rop, const fq_nmod_t op,
+                                                      const fq_zech_ctx_t ctx);
 
-FLINT_DLL void fq_zech_get_fq_nmod(fq_nmod_t rop, const fq_zech_t op, const fq_zech_ctx_t ctx);
+FLINT_DLL void fq_zech_get_fq_nmod(fq_nmod_t rop, const fq_zech_t op,
+                                                      const fq_zech_ctx_t ctx);
+
+FLINT_DLL void fq_zech_get_nmod_poly(nmod_poly_t a, const fq_zech_t b,
+                                                      const fq_zech_ctx_t ctx);
+
+FLINT_DLL void fq_zech_set_nmod_poly(fq_zech_t a, const nmod_poly_t b,
+                                                      const fq_zech_ctx_t ctx);
 
 
 /* Output ********************************************************************/
@@ -319,11 +335,15 @@ FLINT_DLL void fq_zech_norm(fmpz_t rop, const fq_zech_t op, const fq_zech_ctx_t 
 
 /* Bit packing ******************************************************/
 
-FLINT_DLL void fq_zech_bit_pack(fmpz_t f, const fq_zech_t op, mp_bitcnt_t bit_size,
+FLINT_DLL void fq_zech_bit_pack(fmpz_t f, const fq_zech_t op, flint_bitcnt_t bit_size,
                  const fq_zech_ctx_t ctx);
 
-FLINT_DLL void fq_zech_bit_unpack(fq_zech_t rop, const fmpz_t f, mp_bitcnt_t bit_size,
+FLINT_DLL void fq_zech_bit_unpack(fq_zech_t rop, const fmpz_t f, flint_bitcnt_t bit_size,
                    const fq_zech_ctx_t ctx);
+
+/* Inlines *******************************************************************/
+
+FLINT_DLL void __fq_zech_ctx_prime(fmpz_t p, fq_zech_ctx_t ctx);
 
 #ifdef T
 #undef T
@@ -331,7 +351,9 @@ FLINT_DLL void fq_zech_bit_unpack(fq_zech_t rop, const fmpz_t f, mp_bitcnt_t bit
 
 #define T fq_zech
 #define CAP_T FQ_ZECH
+#define B nmod
 #include "fq_templates.h"
+#undef B
 #undef CAP_T
 #undef T
     
