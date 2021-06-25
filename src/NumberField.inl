@@ -16,21 +16,26 @@ template<typename R>
 void NumberField<R>::_initAntic(void)
 {
   fmpq_poly_t poly;
+  mpq_t* c_mpq;
+  
   fmpq_poly_init(poly);
   assert(!_f.isZero());
       
-  mpq_t* c_mpq = new mpq_t[_f.degree()+1];
+  c_mpq = (mpq_t *)flint_malloc((_f.degree()+1)*sizeof(mpq_t));
     
   for (int i = 0; i <= _f.degree(); i++) {
     Rational<R> c = _f.coefficient(i);
+    mpq_init(c_mpq[i]);
     fmpq_set_si(c_mpq[i], c.num().num(), c.denom().num());
   }
     
-  fmpq_poly_set_array_mpq(poly, c_mpq, _f.degree()+1);
+  fmpq_poly_set_array_mpq(poly, (const mpq_t *)c_mpq, _f.degree()+1);
   nf_init(_nf_antic, poly);
 
   fmpq_poly_clear(poly);
-  delete[] c_mpq;
+  for (int i = 0; i <= _f.degree(); i++)
+    mpq_clear(c_mpq[i]);
+  flint_free(c_mpq);
 }
 
 
