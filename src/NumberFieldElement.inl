@@ -243,8 +243,7 @@ void NumberFieldElement<R>::_initAntic(void) {
     fmpq_poly_set_array_mpq(poly, (const mpq_t *)c_mpq, _elt.degree()+1);
     nf_elem_set_fmpq_poly(_nf_elt_antic, poly, _K->antic());
 
-    // we do not clear poly, because apparently (!?) the number field element still uses it, and clears it on its own
-    // fmpq_poly_clear(poly);
+    fmpq_poly_clear(poly);
     
     for (int i = 0; i <= _elt.degree(); i++)
       mpq_clear(c_mpq[i]);
