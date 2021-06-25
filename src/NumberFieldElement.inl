@@ -223,3 +223,8 @@ inline UnivariatePolyInt<R> NumberFieldElement<R>::minimalPolynomial(void) const
 
   return min_poly;
 }
+
+template<typename R>
+void NumberFieldElement<R>::_initAntic(void) {
+  nf_elem_init(_nf_elt_antic, _K->nf_antic());
+}
