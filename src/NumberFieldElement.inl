@@ -226,5 +226,28 @@ inline UnivariatePolyInt<R> NumberFieldElement<R>::minimalPolynomial(void) const
 
 template<typename R>
 void NumberFieldElement<R>::_initAntic(void) {
-  nf_elem_init(_nf_elt_antic, _K->nf_antic());
+  nf_elem_init(_nf_elt_antic, _K->antic());
+  
+  if (!(_elt.isZero())) {
+    fmpq_poly_t poly;
+
+    fmpq_poly_init(poly);
+    c_mpq = (mpq_t *)flint_malloc((_elt.degree()+1)*sizeof(mpq_t));
+    for (int i = 0; i <= _elt.degree(); i++) {
+      Rational<R> c = _elt.coefficient(i);
+      mpq_init(c_mpq[i]);
+      mpq_set_si(c_mpq[i], birch_util::convertInteger<R,Z64>(c.num().num()), birch_util::convertInteger<R,W64>(c.denom().num()));
+    }
+    
+    fmpq_poly_set_array_mpq(poly, (const mpq_t *)c_mpq, _elt.degree()+1);
+    nf_elem_set_fmpq_poly(_nf_elt_antic, poly, _K->antic());
+    fmpq_poly_clear(poly);
+    for (int i = 0; i <= _f.degree(); i++)
+      mpq_clear(c_mpq[i]);
+    flint_free(c_mpq);
+  }
+  else {
+    nf_elem_zero(_nf_elt_antic, _K->antic());
+  }
+  
 }
