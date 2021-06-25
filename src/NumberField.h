@@ -49,6 +49,8 @@ public:
 protected:
   UnivariatePolyRat<R> _f;
   nf_t _nf_antic;
+
+  void _initAntic(void);
 };
 
 #include "NumberField.inl"
