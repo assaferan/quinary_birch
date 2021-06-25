@@ -18,7 +18,7 @@
 #include <sys/param.h> /* for BSD define */
 #endif
 #include <gmp.h>
-#include <mpfr.h>
+#include "mpfr/mpfr.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h> /* for alloca on FreeBSD */
