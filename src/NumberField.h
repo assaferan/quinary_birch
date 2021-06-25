@@ -28,6 +28,8 @@ public:
 
   ~NumberField()
   { nf_clear(_nf_antic); }
+
+  inline const nf_t & antic(void) const {return _nf_antic; }
   
 protected:
   UnivariatePolyRat<R> _f;
