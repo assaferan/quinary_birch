@@ -1,12 +1,12 @@
 bin_PROGRAMS = birch birch_dbg
 lib_LTLIBRARIES = libbirch.la
 
-OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11 -msse3 -mavx -I../
-DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG -I../ # -DDEBUG_LEVEL_FULL
+OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11 -msse3 -mavx
+DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
 OPT_CXXFLAGS += -fvar-tracking-assignments-toggle
 OPT_CXXFLAGS += -fomit-frame-pointer
 OPT_CXXFLAGS += -funroll-all-loops
-DBG_LDFLAGS = -lm -lgmp -lgmpxx
+DBG_LDFLAGS = -lm -lgmp -lgmpxx -L../libs -lantic -lflint
 
 SOURCES = birch.h
 SOURCES += birch_util.cpp
