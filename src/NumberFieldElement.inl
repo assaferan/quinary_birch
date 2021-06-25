@@ -249,5 +249,6 @@ void NumberFieldElement<R>::_initAntic(void) {
   else {
     nf_elem_zero(_nf_elt_antic, _K->antic());
   }
-  
+
+  return;
 }
