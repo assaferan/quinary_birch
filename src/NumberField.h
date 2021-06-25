@@ -1,8 +1,9 @@
 #ifndef __NUMBER_FIELD_H_
 #define __NUMBER_FIELD_H_
 
+#include "antic/nf.h"
+
 #include "birch.h"
-#include "nf.h"
 
 template<typename R>
 class NumberField : public virtual Ring< NumberField<R>, NumberFieldElement<R> >
