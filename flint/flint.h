@@ -32,7 +32,7 @@
 #include <sys/param.h> /* for BSD define */
 #endif
 #include <gmp.h>
-#include <mpfr.h>
+#include "mpfr/mpfr.h"
 #include <stdio.h>
 #include <stdlib.h> /* for alloca on FreeBSD */
 #if !defined(BSD) && !defined(__MINGW64__) && !defined(__MINGW32__) && !defined(_MSC_VER)
