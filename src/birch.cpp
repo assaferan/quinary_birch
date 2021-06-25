@@ -1,5 +1,14 @@
+// std includes
+
 #include <sstream>
+
+// flint/antic includes
+
+#include "nf.h"
+#include "nf_elem.h"
+
 #include "TestBirch.h"
+
 
 int main(int argc, char* argv[])
 {
@@ -14,9 +23,56 @@ int main(int argc, char* argv[])
     std::stringstream num_evs_str(argv[1]);
     num_evs_str >> num_evs;
   }
-  
-  runBirchTests(num_evs);
 
+  nf_t nf;
+  nf_elem_t a,b,c;
+  fmpq_t atrace, btrace, ctrace, ctrace2;
+
+  flint_rand_t state;
+
+  flint_randinit(state);
+  
+  nf_elem_init(a, nf);
+  nf_elem_init(b, nf);
+  nf_elem_init(c, nf);
+
+  fmpq_init(atrace);
+  fmpq_init(btrace);
+  fmpq_init(ctrace);
+  fmpq_init(ctrace2);
+
+  nf_elem_add(c, a, b, nf);
+  nf_elem_trace(atrace, a, nf);
+  nf_elem_trace(btrace, b, nf);
+  nf_elem_trace(ctrace, c, nf);
+  fmpq_add(ctrace2, atrace, btrace);
+
+  result = (fmpq_equal(ctrace, ctrace2));
+
+  fmpq_poly_print_pretty(nf->pol, "x"); std::cerr << std::endl;
+  nf_elem_print_pretty(a, nf, "x"); std::cerr << std::endl;
+  nf_elem_print_pretty(b, nf, "x"); std::cerr << std::endl;
+  nf_elem_print_pretty(c, nf, "x"); std::cerr << std::endl;
+  fmpq_print(atrace); std::cerr << std::endl;
+  fmpq_print(btrace); std::cerr << std::endl;
+  fmpq_print(ctrace); std::cerr << std::endl;
+  fmpq_print(ctrace2); std::cerr << std::endl;
+
+  fmpq_clear(atrace);
+  fmpq_clear(btrace);
+  fmpq_clear(ctrace);
+  fmpq_clear(ctrace2);
+
+  nf_elem_clear(a, nf);
+  nf_elem_clear(b, nf);
+  nf_elem_clear(c, nf);
+
+  nf_clear(nf);
+
+  flint_randclear(state);
+  flint_cleanup();
+
+  runBirchTests(num_evs);
   
   return 0;
 }
