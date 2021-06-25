@@ -36,6 +36,8 @@ void NumberField<R>::_initAntic(void)
   for (int i = 0; i <= _f.degree(); i++)
     mpq_clear(c_mpq[i]);
   flint_free(c_mpq);
+
+  return;
 }
 
 
