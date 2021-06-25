@@ -27,6 +27,16 @@
  extern "C" {
 #endif
 
+/* antic version number */
+
+#define __ANTIC_VERSION 0
+#define __ANTIC_VERSION_MINOR 2
+#define __ANTIC_VERSION_PATCHLEVEL 4
+#define ANTIC_VERSION "0.2.4"
+#define __ANTIC_RELEASE (__ANTIC_VERSION * 10000 + \
+                         __ANTIC_VERSION_MINOR * 100 + \
+                         __ANTIC_VERSION_PATCHLEVEL)
+
 long int antic_test_multiplier(void);
 
 typedef struct {
@@ -51,6 +61,7 @@ typedef nf_struct nf_t[1];
 #define NF_MONIC 1
 #define NF_LINEAR 2
 #define NF_QUADRATIC 4
+#define NF_GAUSSIAN 8
 
 /******************************************************************************
 

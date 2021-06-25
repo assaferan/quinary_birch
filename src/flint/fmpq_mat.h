@@ -77,6 +77,16 @@ FLINT_DLL void fmpq_mat_clear(fmpq_mat_t mat);
 
 FLINT_DLL void fmpq_mat_swap(fmpq_mat_t mat1, fmpq_mat_t mat2);
 
+FMPQ_MAT_INLINE void
+fmpq_mat_swap_entrywise(fmpq_mat_t mat1, fmpq_mat_t mat2)
+{
+    slong i, j;
+
+    for (i = 0; i < fmpq_mat_nrows(mat1); i++)
+        for (j = 0; j < fmpq_mat_ncols(mat1); j++)
+            fmpq_swap(fmpq_mat_entry(mat2, i, j), fmpq_mat_entry(mat1, i, j));
+}
+
 /* Windows and concatenation */
 
 FLINT_DLL void fmpq_mat_window_init(fmpq_mat_t window, const fmpq_mat_t mat, slong r1,
@@ -300,6 +310,12 @@ FLINT_DLL int fmpq_mat_solve_dixon(fmpq_mat_t X, const fmpq_mat_t A, const fmpq_
 
 FLINT_DLL int fmpq_mat_solve_fmpz_mat_multi_mod(fmpq_mat_t X, const fmpz_mat_t A, const fmpz_mat_t B);
 FLINT_DLL int fmpq_mat_solve_multi_mod(fmpq_mat_t X, const fmpq_mat_t A, const fmpq_mat_t B);
+
+FLINT_DLL int fmpq_mat_can_solve_fmpz_mat_multi_mod(fmpq_mat_t X,
+                                        const fmpz_mat_t A, const fmpz_mat_t B);
+
+FLINT_DLL int fmpq_mat_can_solve_multi_mod(fmpq_mat_t X,
+                                        const fmpq_mat_t A, const fmpq_mat_t B);
 
 FLINT_DLL int fmpq_mat_solve_fmpz_mat(fmpq_mat_t X, const fmpz_mat_t A, const fmpz_mat_t B);
 FLINT_DLL int fmpq_mat_solve(fmpq_mat_t X, const fmpq_mat_t A, const fmpq_mat_t B);

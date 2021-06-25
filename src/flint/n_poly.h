@@ -32,6 +32,7 @@
  extern "C" {
 #endif
 
+/* arrays of ulong */
 typedef struct
 {
     mp_limb_t * coeffs;
@@ -45,7 +46,7 @@ typedef n_poly_struct n_fq_poly_struct;
 
 typedef n_poly_t n_fq_poly_t;
 
-
+/* arrays of arrays of ulong */
 typedef struct
 {
     n_poly_struct * coeffs;
@@ -59,7 +60,7 @@ typedef n_bpoly_struct n_fq_bpoly_struct;
 
 typedef n_bpoly_t n_fq_bpoly_t;
 
-
+/* arrays of arrays of arrays of ulong */
 typedef struct
 {
     n_bpoly_struct * coeffs;
@@ -73,13 +74,7 @@ typedef n_tpoly_struct n_fq_tpoly_struct;
 
 typedef n_tpoly_t n_fq_tpoly_t;
 
-
-typedef struct
-{
-    ulong exp;
-    mp_limb_t coeff;
-} n_polyu_term_struct;
-
+/* sparse arrays of ulong */
 typedef struct
 {
     ulong * exps;
@@ -94,28 +89,27 @@ typedef n_polyu_struct n_fq_polyu_struct;
 
 typedef n_polyu_t n_fq_polyu_t;
 
-
+/*
+    sparse arrays of arrays of ulong
+    n_polyu1n => one exponent is in the exps[i]
+    n_polyu2n => two exponents are packed into the exps[i]
+    ...
+*/
 typedef struct
 {
-    ulong exp;
-    n_poly_t coeff;
-} n_polyun_term_struct;
-
-typedef struct
-{
-    n_polyun_term_struct * terms;
+    n_poly_struct * coeffs;
+    ulong * exps;
     slong length;
     slong alloc;
 } n_polyun_struct;
 
 typedef n_polyun_struct n_polyun_t[1];
 
-typedef n_polyun_term_struct n_fq_polyun_term_struct;
-
 typedef n_polyun_struct n_fq_polyun_struct;
 
 typedef n_polyun_t n_fq_polyun_t;
 
+/* n_poly stack */
 typedef struct
 {
     n_poly_struct ** array;
@@ -125,7 +119,7 @@ typedef struct
 
 typedef n_poly_stack_struct n_poly_stack_t[1];
 
-
+/* n_bpoly stack */
 typedef struct
 {
     n_bpoly_struct ** array;
@@ -135,13 +129,30 @@ typedef struct
 
 typedef n_bpoly_stack_struct n_bpoly_stack_t[1];
 
-
 typedef struct {
     n_poly_stack_t poly_stack;
     n_bpoly_stack_t bpoly_stack;
 } n_poly_bpoly_stack_struct;
 
 typedef n_poly_bpoly_stack_struct n_poly_bpoly_stack_t[1];
+
+/* n_polyun stack */
+typedef struct
+{
+    n_polyun_struct ** array;
+    slong alloc;
+    slong top;
+} n_polyun_stack_struct;
+
+typedef n_polyun_stack_struct n_polyun_stack_t[1];
+
+typedef struct {
+    n_poly_stack_t poly_stack;
+    n_polyun_stack_t polyun_stack;
+} n_poly_polyun_stack_struct;
+
+typedef n_poly_polyun_stack_struct n_poly_polyun_stack_t[1];
+
 
 /*****************************************************************************/
 
@@ -170,6 +181,8 @@ void n_poly_clear(n_poly_t A)
     if (A->alloc > 0)
         flint_free(A->coeffs);
 }
+
+FLINT_DLL int n_poly_is_canonical(const n_poly_t A);
 
 FLINT_DLL void n_poly_realloc(n_poly_t A, slong len);
 
@@ -236,6 +249,13 @@ N_POLY_INLINE
 int n_poly_is_one(const n_poly_t A)
 {
     return A->length == 1 && A->coeffs[0] == 1;
+}
+
+N_POLY_INLINE
+mp_limb_t n_poly_lead(const n_poly_t A)
+{
+    FLINT_ASSERT(A->length > 0);
+    return A->coeffs[A->length - 1];
 }
 
 N_POLY_INLINE
@@ -738,6 +758,11 @@ FLINT_DLL void n_fq_get_fq_nmod(
 FLINT_DLL void n_fq_set_fq_nmod(
     mp_limb_t * a,
     const fq_nmod_t b,
+    const fq_nmod_ctx_t ctx);
+
+FLINT_DLL void n_fq_get_n_poly(
+    n_poly_t a,
+    const mp_limb_t * b,
     const fq_nmod_ctx_t ctx);
 
 FLINT_DLL void _n_fq_set_n_poly(
@@ -1480,6 +1505,10 @@ FLINT_DLL int n_bpoly_mod_gcd_brown_smprime(n_bpoly_t G, n_bpoly_t Abar,
                                     n_bpoly_t Bbar, n_bpoly_t A, n_bpoly_t B,
                                           nmod_t ctx, n_poly_bpoly_stack_t Sp);
 
+FLINT_DLL int n_polyu1n_mod_gcd_brown_smprime(n_polyun_t G, n_polyun_t Abar,
+                                n_polyun_t Bbar,n_polyun_t A, n_polyun_t B,
+                                         nmod_t ctx, n_poly_polyun_stack_t St);
+
 /*****************************************************************************/
 
 FLINT_DLL int n_fq_bpoly_equal(
@@ -1779,10 +1808,13 @@ FLINT_DLL void n_fq_evals_fmma(n_fq_poly_t a, n_fq_poly_t b, n_fq_poly_t c,
 N_POLY_INLINE
 void n_polyun_init(n_polyun_t A)
 {
-    A->terms = NULL;
+    A->coeffs = NULL;
+    A->exps = NULL;
     A->length = 0;
     A->alloc = 0;
 }
+
+FLINT_DLL int n_polyun_is_canonical(const n_polyun_t A);
 
 FLINT_DLL void n_polyun_clear(n_polyun_t A);
 
@@ -1795,13 +1827,7 @@ void n_polyun_fit_length(n_polyun_t A, slong len)
         n_polyun_realloc(A, len);
 }
 
-N_POLY_INLINE
-void n_polyun_term_swap(n_polyun_term_struct * A, n_polyun_term_struct * B)
-{
-    n_polyun_term_struct T = *A;
-    *A = *B;
-    *B = T;
-}
+FLINT_DLL int n_polyun_mod_is_canonical(const n_polyun_t A, nmod_t mod);
 
 N_POLY_INLINE
 void n_polyun_swap(n_polyun_t A, n_polyun_t B)
@@ -1813,6 +1839,9 @@ void n_polyun_swap(n_polyun_t A, n_polyun_t B)
 
 FLINT_DLL void n_polyun_set(n_polyun_t A, const n_polyun_t B);
 
+FLINT_DLL void n_polyu1n_print_pretty(const n_polyun_t A,
+                                      const char * var0, const char * varlast);
+
 FLINT_DLL void n_polyu2n_print_pretty(const n_polyun_t A, const char * gen0,
                                       const char * gen1, const char * varlast);
 
@@ -1821,6 +1850,26 @@ FLINT_DLL void n_polyu3n_print_pretty(const n_polyun_t A, const char * gen0,
 
 FLINT_DLL void n_fq_polyun_set(n_fq_polyun_t A, const n_fq_polyun_t B,
                                                       const fq_nmod_ctx_t ctx);
+
+
+FLINT_DLL int n_polyun_equal(const n_polyun_t A, const n_polyun_t B);
+
+N_POLY_INLINE
+void n_polyun_one(n_polyun_t A)
+{
+    n_polyun_fit_length(A, 1);
+    A->length = 1;
+    A->exps[0] = 0;
+    n_poly_one(A->coeffs + 0);
+}
+
+N_POLY_INLINE
+ulong n_polyu1n_bidegree(n_polyun_t A)
+{
+    ulong x = A->exps[0];
+    ulong y = A->coeffs[0].length - 1;
+    return (x << (FLINT_BITS/2)) + y;
+}
 
 /*****************************************************************************/
 
@@ -1963,33 +2012,44 @@ slong n_bpoly_stack_size(const n_bpoly_stack_t S)
 
 /*****************************************************************************/
 
-typedef struct {
-    ulong key;
-    slong up;
-    slong left;
-    slong right;
-    int color;
-} mpoly_rbnode_ui_struct;
+FLINT_DLL void n_polyun_stack_init(n_polyun_stack_t S);
 
-typedef struct {
-    slong length;
-    mpoly_rbnode_ui_struct * nodes;
-    slong node_alloc;
-    char * data;
-    slong data_alloc;
-} mpoly_rbtree_ui_struct;
+FLINT_DLL void n_polyun_stack_clear(n_polyun_stack_t S);
 
-typedef mpoly_rbtree_ui_struct mpoly_rbtree_ui_t[1];
+FLINT_DLL n_polyun_struct ** n_polyun_stack_fit_request(n_polyun_stack_t S, slong k);
 
-FLINT_DLL void mpoly_rbtree_ui_init(mpoly_rbtree_ui_t T);
+N_POLY_INLINE
+n_polyun_struct ** n_polyun_stack_request(n_polyun_stack_t S, slong k)
+{
+    n_polyun_struct ** polyun_top;
+    polyun_top = n_polyun_stack_fit_request(S, k);
+    S->top += k;
+    return polyun_top;
+}
 
-FLINT_DLL void mpoly_rbtree_ui_clear(mpoly_rbtree_ui_t T);
+N_POLY_INLINE
+n_polyun_struct * n_polyun_stack_take_top(n_polyun_stack_t S)
+{
+    /* assume the request for 1 has already been fitted */
+    n_polyun_struct ** polyun_top;
+    FLINT_ASSERT(S->top + 1 <= S->alloc);
+    polyun_top = S->array + S->top;
+    S->top += 1;
+    return polyun_top[0];
+}
 
-FLINT_DLL void * mpoly_rbtree_ui_lookup(
-    mpoly_rbtree_ui_t T,
-    int * its_new,
-    ulong rcx,
-    slong dsize);
+N_POLY_INLINE
+void n_polyun_stack_give_back(n_polyun_stack_t S, slong k)
+{
+    FLINT_ASSERT(S->top >= k);
+    S->top -= k;
+}
+
+N_POLY_INLINE
+slong n_polyun_stack_size(const n_polyun_stack_t S)
+{
+    return S->top;
+}
 
 
 #ifdef __cplusplus

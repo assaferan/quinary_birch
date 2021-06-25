@@ -377,6 +377,12 @@ slong fmpq_mpoly_total_degree_si(const fmpq_mpoly_t A,
                                              A->zpoly->bits, ctx->zctx->minfo);
 }
 
+FMPQ_MPOLY_INLINE
+void fmpq_mpoly_used_vars(int * used, const fmpq_mpoly_t A,
+                                                    const fmpq_mpoly_ctx_t ctx)
+{
+    fmpz_mpoly_used_vars(used, A->zpoly, ctx->zctx);
+}
 
 /* Coefficients **************************************************************/
 
@@ -386,6 +392,9 @@ void fmpq_mpoly_get_denominator(fmpz_t d, const fmpq_mpoly_t A,
 {
     fmpz_set(d, fmpq_denref(A->content));
 }
+
+FLINT_DLL int fmpq_mpoly_is_monic(const fmpq_mpoly_t A,
+                                                   const fmpq_mpoly_ctx_t ctx);
 
 FLINT_DLL void fmpq_mpoly_get_coeff_fmpq_monomial(fmpq_t c,
                               const fmpq_mpoly_t A, const fmpq_mpoly_t M,
@@ -416,6 +425,17 @@ FLINT_DLL void fmpq_mpoly_get_coeff_fmpq_ui(fmpq_t c, const fmpq_mpoly_t A,
 FLINT_DLL void fmpq_mpoly_get_coeff_vars_ui(fmpq_mpoly_t C,
                  const fmpq_mpoly_t A, const slong * vars, const ulong * exps,
                                      slong length, const fmpq_mpoly_ctx_t ctx);
+
+/* conversion ****************************************************************/
+
+FLINT_DLL int fmpq_mpoly_is_fmpq_poly(const fmpq_mpoly_t A,
+                                        slong var, const fmpq_mpoly_ctx_t ctx);
+
+FLINT_DLL int fmpq_mpoly_get_fmpq_poly(fmpq_poly_t A,  const fmpq_mpoly_t B,
+                                        slong var, const fmpq_mpoly_ctx_t ctx);
+
+FLINT_DLL void fmpq_mpoly_set_fmpq_poly(fmpq_mpoly_t A, const fmpq_poly_t B,
+                                        slong var, const fmpq_mpoly_ctx_t ctx);
 
 /* comparison ****************************************************************/
 
@@ -727,6 +747,19 @@ FLINT_DLL void fmpq_mpoly_divrem_ideal(fmpq_mpoly_struct ** q, fmpq_mpoly_t r,
     const fmpq_mpoly_t poly2, fmpq_mpoly_struct * const * poly3, slong len,
                                                    const fmpq_mpoly_ctx_t ctx);
 
+/* Square root ***************************************************************/
+
+FLINT_DLL int fmpq_mpoly_sqrt(fmpq_mpoly_t Q, const fmpq_mpoly_t A,
+                                                   const fmpq_mpoly_ctx_t ctx);
+
+FMPQ_MPOLY_INLINE
+int fmpq_mpoly_is_square(const fmpq_mpoly_t A, const fmpq_mpoly_ctx_t ctx)
+{
+    return fmpz_is_square(fmpq_numref(A->content)) &&
+           fmpz_is_square(fmpq_denref(A->content)) &&
+           fmpz_mpoly_is_square(A->zpoly, ctx->zctx);
+}
+
 /* GCD ***********************************************************************/
 
 FMPQ_MPOLY_INLINE
@@ -752,6 +785,26 @@ FLINT_DLL int fmpq_mpoly_gcd_cofactors(fmpq_mpoly_t G, fmpq_mpoly_t Abar,
              fmpq_mpoly_t Bbar, const fmpq_mpoly_t A, const fmpq_mpoly_t B,
                                                    const fmpq_mpoly_ctx_t ctx);
 
+FLINT_DLL int fmpq_mpoly_gcd_hensel(fmpq_mpoly_t G,
+       const fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx);
+
+FLINT_DLL int fmpq_mpoly_gcd_brown(fmpq_mpoly_t G,
+       const fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx);
+
+FLINT_DLL int fmpq_mpoly_gcd_subresultant(fmpq_mpoly_t G,
+       const fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx);
+
+FLINT_DLL int fmpq_mpoly_gcd_zippel(fmpq_mpoly_t G,
+       const fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx);
+
+FLINT_DLL int fmpq_mpoly_gcd_zippel2(fmpq_mpoly_t G,
+       const fmpq_mpoly_t A, const fmpq_mpoly_t B, const fmpq_mpoly_ctx_t ctx);
+
+FLINT_DLL int fmpq_mpoly_resultant(fmpq_mpoly_t R, const fmpq_mpoly_t A,
+                  const fmpq_mpoly_t B, slong var, const fmpq_mpoly_ctx_t ctx);
+
+FLINT_DLL int fmpq_mpoly_discriminant(fmpq_mpoly_t R, const fmpq_mpoly_t A,
+                                        slong var, const fmpq_mpoly_ctx_t ctx);
 
 /******************************************************************************
 
@@ -759,9 +812,11 @@ FLINT_DLL int fmpq_mpoly_gcd_cofactors(fmpq_mpoly_t G, fmpq_mpoly_t Abar,
 
 ******************************************************************************/
 
-FLINT_DLL int fmpq_mpoly_repack_bits(fmpq_mpoly_t A, const fmpq_mpoly_t B,
-                                flint_bitcnt_t Abits, const fmpq_mpoly_ctx_t ctx);
+FLINT_DLL void mpoly_void_ring_init_fmpq_mpoly_ctx(mpoly_void_ring_t R,
+                                                   const fmpq_mpoly_ctx_t ctx);
 
+FLINT_DLL int fmpq_mpoly_repack_bits(fmpq_mpoly_t A, const fmpq_mpoly_t B,
+                             flint_bitcnt_t Abits, const fmpq_mpoly_ctx_t ctx);
 
 /* Univariates ***************************************************************/
 
@@ -836,72 +891,6 @@ void fmpq_mpoly_univar_swap_term_coeff(fmpq_mpoly_t c,
     fmpq_mpoly_swap(c, A->coeffs + i, ctx);
 }
 
-
-/* geobuckets ****************************************************************/
-typedef struct fmpq_mpoly_geobucket
-{
-    fmpq_mpoly_struct polys[FLINT_BITS/2];
-    slong length;
-} fmpq_mpoly_geobucket_struct;
-
-typedef fmpq_mpoly_geobucket_struct fmpq_mpoly_geobucket_t[1];
-
-FLINT_DLL void fmpq_mpoly_geobucket_init(fmpq_mpoly_geobucket_t B,
-                                                   const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_clear(fmpq_mpoly_geobucket_t B,
-                                                   const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_empty(fmpq_mpoly_t p,
-                         fmpq_mpoly_geobucket_t B, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_print(fmpq_mpoly_geobucket_t B,
-                                  const char ** x, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_fit_length(fmpq_mpoly_geobucket_t B,
-                                          slong i, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void _fmpq_mpoly_geobucket_fix(fmpq_mpoly_geobucket_t B, slong i,
-                                                   const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_set(fmpq_mpoly_geobucket_t B,
-                                   fmpq_mpoly_t p, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_add(fmpq_mpoly_geobucket_t B,
-                                   fmpq_mpoly_t p, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_sub(fmpq_mpoly_geobucket_t B,
-                                   fmpq_mpoly_t p, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_set_fmpz(fmpq_mpoly_geobucket_t B,
-                                         fmpz_t c, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_set_fmpq(fmpq_mpoly_geobucket_t B,
-                                         fmpq_t c, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_gen(fmpq_mpoly_geobucket_t B, slong var,
-                                                   const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_add_inplace(fmpq_mpoly_geobucket_t B1,
-                        fmpq_mpoly_geobucket_t B2, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_sub_inplace(fmpq_mpoly_geobucket_t B1,
-                        fmpq_mpoly_geobucket_t B2, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_neg_inplace(fmpq_mpoly_geobucket_t B1,
-                                                   const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_mul_inplace(fmpq_mpoly_geobucket_t B1,
-                        fmpq_mpoly_geobucket_t B2, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_pow_ui_inplace(fmpq_mpoly_geobucket_t B1,
-                                          ulong k, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL void fmpq_mpoly_geobucket_pow_fmpz_inplace(fmpq_mpoly_geobucket_t B1,
-                                   const fmpz_t k, const fmpq_mpoly_ctx_t ctx);
-
-FLINT_DLL int fmpq_mpoly_geobucket_divides_inplace(fmpq_mpoly_geobucket_t B1,
-                        fmpq_mpoly_geobucket_t B2, const fmpq_mpoly_ctx_t ctx);
 
 /******************************************************************************
 

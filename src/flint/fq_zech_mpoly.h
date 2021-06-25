@@ -596,6 +596,11 @@ FLINT_DLL void fq_zech_mpoly_evaluate_one_fq_zech(fq_zech_mpoly_t A,
                     const fq_zech_mpoly_t B, slong var, const fq_zech_t val,
                                                 const fq_zech_mpoly_ctx_t ctx);
 
+FLINT_DLL void _fq_zech_mpoly_eval_all_fq_zech(fq_zech_t eval,
+               const fq_zech_struct * Acoeffs, const ulong * Aexps, slong Alen,
+                    flint_bitcnt_t Abits, fq_zech_struct * const * alphas,
+                            const mpoly_ctx_t mctx, const fq_zech_ctx_t fqctx);
+
 FLINT_DLL void fq_zech_mpoly_evaluate_all_fq_zech(fq_zech_t ev, const fq_zech_mpoly_t A,
                  fq_zech_struct * const * vals, const fq_zech_mpoly_ctx_t ctx);
 
@@ -684,13 +689,6 @@ FLINT_DLL void fq_zech_mpoly_divrem_ideal_monagan_pearce(
                         fq_zech_mpoly_struct ** q, fq_zech_mpoly_t r,
             const fq_zech_mpoly_t poly2, fq_zech_mpoly_struct * const * poly3,
                                       slong len, const fq_zech_mpoly_ctx_t ctx);
-
-FLINT_DLL slong _fq_zech_mpoly_divides_monagan_pearce(
-                  fq_zech_struct ** coeff1,      ulong ** exp1, slong * alloc,
-             const fq_zech_struct * coeff2, const ulong * exp2, slong len2,
-             const fq_zech_struct * coeff3, const ulong * exp3, slong len3,
-  flint_bitcnt_t bits, slong N, const ulong * cmpmask, const fq_zech_ctx_t fqctx);
-
 
 /* GCD ***********************************************************************/
 

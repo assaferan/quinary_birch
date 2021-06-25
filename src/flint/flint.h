@@ -18,7 +18,7 @@
 #include <sys/param.h> /* for BSD define */
 #endif
 #include <gmp.h>
-#include "mpfr/mpfr.h"
+#include <mpfr.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h> /* for alloca on FreeBSD */
@@ -55,9 +55,9 @@
 /* flint version number */
 
 #define __FLINT_VERSION 2
-#define __FLINT_VERSION_MINOR 7
+#define __FLINT_VERSION_MINOR 8
 #define __FLINT_VERSION_PATCHLEVEL 0
-#define FLINT_VERSION "2.7.0"
+#define FLINT_VERSION "2.8.0"
 #define __FLINT_RELEASE (__FLINT_VERSION * 10000 + \
                          __FLINT_VERSION_MINOR * 100 + \
                          __FLINT_VERSION_PATCHLEVEL)
@@ -292,6 +292,7 @@ typedef __mpfr_struct flint_mpfr;
 #define FLINT_MIN(x, y) ((x) > (y) ? (y) : (x))
 #define FLINT_ABS(x) ((slong)(x) < 0 ? (-(x)) : (x))
 #define FLINT_SIGN_EXT(x) (-(ulong)((slong)(x) < 0))
+#define FLINT_SGN(x) ((0 < (slong)(x)) - ((slong)(x) < 0))
 
 #define MP_PTR_SWAP(x, y) \
     do { \
@@ -320,6 +321,13 @@ typedef __mpfr_struct flint_mpfr;
         mp_limb_t __t_m_p_ = A; \
         A = B;                  \
         B = __t_m_p_;           \
+    } while (0)
+
+#define DOUBLE_SWAP(A, B)    \
+    do {                     \
+        double __t_m_p_ = A; \
+        A = B;               \
+        B = __t_m_p_;        \
     } while (0)
 
 #define r_shift(in, shift) \
@@ -377,6 +385,7 @@ mp_limb_t FLINT_BIT_COUNT(mp_limb_t x)
 
 /* common usage of flint_malloc */
 #define FLINT_ARRAY_ALLOC(n, T) (T *) flint_malloc((n)*sizeof(T))
+#define FLINT_ARRAY_REALLOC(p, n, T) (T *) flint_realloc(p, (n)*sizeof(T))
 
 /* temporary allocation */
 #define TMP_INIT \
@@ -406,6 +415,7 @@ mp_limb_t FLINT_BIT_COUNT(mp_limb_t x)
       alloca(size))
 #endif
 
+#define TMP_ARRAY_ALLOC(n, T) (T *) TMP_ALLOC((n)*sizeof(T))
 
 #define TMP_END \
    while (__tmp_root) { \

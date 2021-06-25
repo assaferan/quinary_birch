@@ -25,7 +25,7 @@
 #undef ulong
 
 #include <gmp.h>
-#include "mpfr/mpfr.h"
+#include <mpfr.h>
 #define ulong mp_limb_t
 #include "flint.h"
 #include "fmpz.h"
