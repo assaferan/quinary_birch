@@ -70,7 +70,9 @@ public:
   inline const NumberFieldElement<R>* getPtr(void) const override {return this;}
 
   inline void print(std::ostream& os) const override
-  { nf_elem_print_pretty(_nf_elt_antic, _K->antic(), "x"); return; }
+  { char* elt_str = nf_elem_get_str_pretty(_nf_elt_antic, "x", _K->antic());
+    os << elt_str;
+    nf_elem_print_pretty(_nf_elt_antic, _K->antic(), "x"); return; }
 
   inline const UnivariatePolyRat<R> & getPoly(void) const
   { return _elt; }
