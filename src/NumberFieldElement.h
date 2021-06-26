@@ -71,8 +71,7 @@ public:
 
   inline void print(std::ostream& os) const override
   { char* elt_str = nf_elem_get_str_pretty(_nf_elt_antic, "x", _K->antic());
-    os << elt_str;
-    nf_elem_print_pretty(_nf_elt_antic, _K->antic(), "x"); return; }
+    os << elt_str; return; }
 
   inline const UnivariatePolyRat<R> & getPoly(void) const
   { return _elt; }
