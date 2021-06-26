@@ -120,6 +120,8 @@ protected:
   MatrixRat<R> _multByMatrix(void) const;
   void _initAntic(void);
   void _initAntic(const UnivariatePolyInt<R> &);
+  void _initAntic(const Rational<R> &);
+  void _initAntic(const UnivariatePolyRat<R> &);
 };
 
 namespace std

@@ -267,7 +267,21 @@ void NumberFieldElement<R>::_initAntic(void) {
 }
 
 template<typename R>
+void NumberFieldElement<R>::_initAntic(const Rational<R> & a) {
+  UnivariatePolyRat<R> f(a);
+  _initAntic(f);
+  return;
+}
+
+template<typename R>
 void NumberFieldElement<R>::_initAntic(const UnivariatePolyInt<R> & f) {
+  UnivariatePolyRat<R> f_int(f);
+  _initAntic(f_int);
+  return;
+}
+
+template<typename R>
+void NumberFieldElement<R>::_initAntic(const UnivariatePolyRat<R> & f) {
   nf_elem_init(_nf_elt_antic, _K->antic());
 
   if (!(f.isZero())) {
