@@ -1170,7 +1170,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
       basis_rat(row,col) = V_basis(row,col);
 
 #ifdef DEBUG // _LEVEL_FULL
-  std::cerr << "Restricting T_ " << p << " to V = " << std::endl << basis_rat << "." << std::endl;
+  std::cerr << "Restricting T_" << p << " to V = " << std::endl << basis_rat << "." << std::endl;
 #endif
   
   MatrixRat<Z> T_p_res = T_p.restrict(basis_rat);
