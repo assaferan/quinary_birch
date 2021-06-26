@@ -52,7 +52,7 @@ NumberFieldElement<R>::operator*(const NumberFieldElement<R> & other) const
 {
   NumberFieldElement<R> prod(this->_K);
   prod._elt = (this->_elt)  * other._elt % (this->_K->modulus());
-  nf_elem_mul(mul._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+  nf_elem_mul(prod._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
   
   return prod;
 }
