@@ -6,9 +6,9 @@
 
 template<typename R>
 NumberFieldElement<R>::NumberFieldElement(const NumberFieldElement<R> & other)
+  : _K(other._K), _elt(other._elt)
 {
-  this->_K = other._K;
-  this->_elt = other._elt;
+  nf_elem_init(_nf_elt_antic, _K->antic());
   nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
 }
 
