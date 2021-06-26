@@ -91,17 +91,14 @@ public:
   }
 
   inline R norm(void) const
-  { UnivariatePolyInt<R> f = this->minimalPolynomial(); R sign = (f.degree() % 2 == 0) ? 1 : -1;
-    Rational<R> norm = sign*f.coefficient(0);
+  { R norm;
+    Z num, denom;
     fmpq_t fnorm;
-    fmpq_t fnorm2;
     fmpq_init(fnorm);
-    fmpq_init(fnorm2);
-    nf_elem_trace(fnorm, _nf_elt_antic, _K->antic());
-    fmpq_set_si(fnorm2, birch_util::convertInteger<R,Z64>(norm.num().num()), birch_util::convertInteger<R,W64>(norm.denom().num()));
-    assert(fmpq_equal(fnorm, fnorm2));
+    nf_elem_norm(fnorm, _nf_elt_antic, _K->antic());
+    fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), fnorm);
     fmpq_clear(fnorm);
-    fmpq_clear(fnorm2);
+    
     return norm;
   }
 
