@@ -61,25 +61,49 @@ public:
   static NumberFieldElement<R> one(std::shared_ptr<const NumberField<R> > fld);
   
   inline NumberFieldElement<R>& makeZero(void) override
-  { _elt.makeZero(); return *this; }
+  { _elt.makeZero(); nf_elem_zero(_nf_elt_antic, _K->antic()); return *this; }
 
   inline NumberFieldElement<R>& makeOne(void) override
-  { _elt.makeOne(); return *this; }
+  { _elt.makeOne(); nf_elem_one(_nf_elt_antic, _K->antic()); return *this; }
 
   inline NumberFieldElement<R>* getPtr(void) override {return this;}
   inline const NumberFieldElement<R>* getPtr(void) const override {return this;}
 
   inline void print(std::ostream& os) const override
-  { _elt.print(os); return; }
+  { _elt.print(os); nf_elem_print_pretty(_nf_elt_antic, _K->antic(), "x"); return; }
 
   inline const UnivariatePolyRat<R> & getPoly(void) const
   { return _elt; }
 
   inline R trace(void) const
-  { UnivariatePolyInt<R> f = this->minimalPolynomial(); return f.coefficient(f.degree()-1); }
+  { UnivariatePolyInt<R> f = this->minimalPolynomial();
+    Rational<R> trace = f.coefficient(f.degree()-1);
+    fmpq_t ftrace;
+    fmpq_t ftrace2;
+    fmpq_init(ftrace);
+    fmpq_init(ftrace2);
+    nf_elem_trace(ftrace, _nf_elt_antic, _K->antic());
+    fmpq_set_si(ftrace2, birch_util::convertInteger<R,Z64>(trace.num().num()), birch_util::convertInteger<R,W64>(trace.denom().num()));
+    assert(fmpq_equal(ftrace, ftrace2));
+    fmpq_clear(ftrace);
+    fmpq_clear(ftrace2);
+    return trace;
+  }
 
   inline R norm(void) const
-  { UnivariatePolyInt<R> f = this->minimalPolynomial(); R sign = (f.degree() % 2 == 0) ? 1 : -1; return sign*f.coefficient(0);}
+  { UnivariatePolyInt<R> f = this->minimalPolynomial(); R sign = (f.degree() % 2 == 0) ? 1 : -1;
+    Rational<R> norm = sign*f.coefficient(0);
+    fmpq_t fnorm;
+    fmpq_t fnorm2;
+    fmpq_init(fnorm);
+    fmpq_init(fnorm2);
+    nf_elem_trace(fnorm, _nf_elt_antic, _K->antic());
+    fmpq_set_si(fnorm2, birch_util::convertInteger<R,Z64>(norm.num().num()), birch_util::convertInteger<R,W64>(norm.denom().num()));
+    assert(fmpq_equal(fnorm, fnorm2));
+    fmpq_clear(fnorm);
+    fmpq_clear(fnorm2);
+    return norm;
+  }
 
   ~NumberFieldElement()
   {
