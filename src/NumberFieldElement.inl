@@ -219,7 +219,7 @@ inline MatrixRat<R> NumberFieldElement<R>::_multByMatrix(void) const
   Z num, denom;
   fmpq_init(fcoeff);
   for (int i = 0; i < d; i++) {
-    const nf_elem_t mul = ((*this)*basis[i])._nf_elt_antic;
+    const nf_elem_t & mul = ((*this)*basis[i])._nf_elt_antic;
     for (int j = 0; j < d; j++) {
       nf_elem_get_coeff_fmpq(fcoeff, mul, j, _K->antic());
       fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), fcoeff);
