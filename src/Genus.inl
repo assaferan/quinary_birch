@@ -1196,7 +1196,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
   
   UnivariatePolyInt<Z> f_int(coeffs_int);
 
-#ifdef DEBUG // _LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "factoring characteristic polynomial f_int = " << f_int << std::endl;
 #endif
   
@@ -1206,7 +1206,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     UnivariatePolyInt<Z> f = fa.first;
     size_t a = fa.second;
     
-#ifdef DEBUG_ // LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
     std::cerr << "Cutting out subspace using f(T_" << p;
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
@@ -1245,7 +1245,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       assert(nullsp.nrows() == 1);
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
-#ifdef DEBUG // _LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
       std::cerr << "found eigenvector: " << vec << std::endl;
 #endif
       evecs.push_back(vec);
