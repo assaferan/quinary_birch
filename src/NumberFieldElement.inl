@@ -1,9 +1,15 @@
 #include <unordered_map>
 
+#include "antic/nf_elem.h"
+
+#include "birch_util.h"
+
 template<typename R>
 inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const R & a)
 {
   this->_elt = a;
+  nf_elem_set_si(this->_nf_elt_antic, birch_util::convertInteger<R,slong>(a),this->_K->antic());
+  
   return (*this);
 }
 
@@ -12,6 +18,7 @@ inline NumberFieldElement<R> NumberFieldElement<R>::operator-(void) const
 {
   NumberFieldElement<R> neg(this->_K);
   neg._elt = -(this->_elt);
+  nf_elem_neg(neg._nf_elt_antic, this->_nf_elt_antic, this->_K->antic());
   
   return neg;
 }
@@ -22,6 +29,7 @@ NumberFieldElement<R>::operator+(const NumberFieldElement<R> & other) const
 {
   NumberFieldElement<R> sum(this->_K);
   sum._elt = (this->_elt) + other._elt;
+  nf_elem_add(sum._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
   
   return sum;
 }
@@ -30,7 +38,12 @@ template<typename R>
 inline NumberFieldElement<R>
 NumberFieldElement<R>::operator-(const NumberFieldElement<R> & other) const
 {
-  return (*this)+(-other);
+  // return (*this)+(-other);
+  NumberFieldElement<R> diff(this->_K);
+  diff._elt = (this->_elt) - other._elt;
+  nf_elem_sub(diff._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+  
+  return diff;
 }
 
 template<typename R>
@@ -39,7 +52,8 @@ NumberFieldElement<R>::operator*(const NumberFieldElement<R> & other) const
 {
   NumberFieldElement<R> prod(this->_K);
   prod._elt = (this->_elt)  * other._elt % (this->_K->modulus());
-
+  nf_elem_mul(mul._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+  
   return prod;
 }
 
@@ -47,7 +61,17 @@ template<typename R>
 inline NumberFieldElement<R>
 NumberFieldElement<R>::operator/(const NumberFieldElement<R> & other) const
 {
-  return (*this) * other.inverse();
+  // return (*this) * other.inverse();
+  NumberFieldElement<R> quo(this->_K);
+  std::shared_ptr<const RationalField<R> > QQ = this->_elt.baseRing();
+  UnivariatePolyRat<R> s(QQ);
+  UnivariatePolyRat<R> t(QQ);
+  UnivariatePolyRat<R>::xgcd(other._elt, this->_K->modulus(), s, t);
+  quo._elt = (this->_elt * s) % (this->_K->modulus());
+  
+  nf_elem_div(quo._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+  
+  return quo;
 }
 
 template<typename R>
@@ -55,6 +79,7 @@ inline NumberFieldElement<R> NumberFieldElement<R>::operator*(const R & a) const
 {
   NumberFieldElement<R> prod(this->_K);
   prod._elt = (this->_elt) * a;
+  nf_elem_scalar_mul_si(prod._nf_elt_antic, this->_nf_elt_antic, birch_util::convertInteger<R,slong>(a), this->_K->antic());
 
   return prod;
 }
@@ -64,7 +89,8 @@ inline NumberFieldElement<R> NumberFieldElement<R>::operator/(const R & a) const
 {
   NumberFieldElement<R> quo(this->_K);
   quo._elt = (this->_elt) / a;
-
+  nf_elem_scalar_div_si(quo._nf_elt_antic, this->_nf_elt_antic, birch_util::convertInteger<R,slong>(a), this->_K->antic());
+ 
   return quo;
 }
 
@@ -73,6 +99,8 @@ inline NumberFieldElement<R> &
 NumberFieldElement<R>::operator+=(const NumberFieldElement<R> & other)
 {
   this->_elt += other._elt;
+  nf_elem_add(this->_nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+  
   return (*this);
 }
 
@@ -81,6 +109,8 @@ inline NumberFieldElement<R> &
 NumberFieldElement<R>::operator-=(const NumberFieldElement<R> & other)
 {
   this->_elt -= other._elt;
+  nf_elem_sub(this->_nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+  
   return (*this);
 }
 
@@ -88,7 +118,10 @@ template<typename R>
 inline NumberFieldElement<R> &
 NumberFieldElement<R>::operator*=(const NumberFieldElement<R> & other)
 {
-  *this = (*this)*other;
+  // *this = (*this)*other;
+  this->_elt = (this->_elt)  * other._elt % (this->_K->modulus());
+  nf_elem_mul(this->_nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+  
   return (*this);
 }
 
@@ -96,7 +129,15 @@ template<typename R>
 inline NumberFieldElement<R> &
 NumberFieldElement<R>::operator/=(const NumberFieldElement<R> & other)
 {
-  *this = (*this)/other;
+  // *this = (*this)/other;
+  std::shared_ptr<const RationalField<R> > QQ = this->_elt.baseRing();
+  UnivariatePolyRat<R> s(QQ);
+  UnivariatePolyRat<R> t(QQ);
+  UnivariatePolyRat<R>::xgcd(this->_elt, this->_K->modulus(), s, t);
+  UnivariatePolyRat<R>::xgcd(other._elt, this->_K->modulus(), s, t);
+  this->_elt = (this->_elt * s) % (this->_K->modulus());
+  nf_elem_div(this->_nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+  
   return (*this);
 }
 
@@ -104,6 +145,8 @@ template<typename R>
 inline NumberFieldElement<R>& NumberFieldElement<R>::operator*=(const R & a)
 {
   this->_elt *= a;
+  nf_elem_scalar_mul_si(this->_nf_elt_antic, this->_nf_elt_antic, birch_util::convertInteger<R,slong>(a), this->_K->antic());
+   
   return (*this);
 }
 
@@ -111,6 +154,8 @@ template<typename R>
 inline NumberFieldElement<R>& NumberFieldElement<R>::operator/=(const R & a)
 {
   this->_elt /= a;
+  nf_elem_scalar_div_si(this->_nf_elt_antic, this->_nf_elt_antic, birch_util::convertInteger<R,slong>(a), this->_K->antic());
+  
   return (*this);
 }
 
@@ -125,6 +170,8 @@ NumberFieldElement<R>::inverse(void) const
   UnivariatePolyRat<R>::xgcd(this->_elt, this->_K->modulus(), s, t);
   
   NumberFieldElement<R> inv(this->_K, s);
+
+  nf_elem_inv(inv._nf_elt_antic, this->_nf_elt_antic, this->_K->antic());
 
   assert(((*this)*inv).isOne());
   return inv;
@@ -153,12 +200,14 @@ NumberFieldElement<R>::one(std::shared_ptr<const NumberField<R> > fld)
 template<typename R>
 inline bool NumberFieldElement<R>::isZero(void) const
 {
+  assert (_elt.isZero() == nf_elem_is_zero(_nf_elt_antic, _K->antic()));
   return _elt.isZero();
 }
 
 template<typename R>
 inline bool NumberFieldElement<R>::isOne(void) const
 {
+  assert (_elt.isOne() == nf_elem_is_one(_nf_elt_antic, _K->antic()));
   return _elt.isOne();
 }
 
@@ -168,6 +217,7 @@ inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const NumberFiel
   if (this != &other) {
     this->_K = other._K;
     this->_elt = other._elt;
+    nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
   }
   return *this;
 }
