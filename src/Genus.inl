@@ -1236,7 +1236,8 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
 	  T_K(row,col) = NumberFieldElement<Z>(K, elt);
 	}
       NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(T_p.baseRing()));
-      T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T_p.nrows());
+      Matrix< NumberFieldElement<Z>, NumberField<Z> > id_mat = Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T_p.nrows());
+      T_K -= lambda * id_mat;
 #ifdef DEBUG // _LEVEL_FULL
       std::cerr << "Computing kernel of " << std::endl << T_K << std::endl;
 #endif
