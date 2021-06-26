@@ -5,6 +5,14 @@
 #include "birch_util.h"
 
 template<typename R>
+NumberFieldElement<R>::NumberFieldElement(const NumberFieldElement<R> & other)
+{
+  this->_K = other._K;
+  this->_elt = other._elt;
+  nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+}
+
+template<typename R>
 inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const R & a)
 {
   this->_elt = a;
