@@ -25,6 +25,8 @@ public:
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const Rational<R> & a) : _K(fld), _elt(a) { _initAntic(); }
 
+  NumberFieldElement(const NumberFieldElement<R> &);
+
   // assignment operator
   NumberFieldElement<R> & operator=(const NumberFieldElement<R> &) override;
   NumberFieldElement<R> & operator=(const R &);
