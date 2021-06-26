@@ -12,7 +12,8 @@ class NumberFieldElement : public virtual FieldElement< NumberFieldElement<R>, N
 {
 public:
   NumberFieldElement() = default;
-  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld) : _K(fld) { _initAntic(); }
+  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld)
+    : _K(fld) { _initAntic(); }
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const UnivariatePolyRat<R> & poly)
     : _K(fld) {_initAntic(poly); }
@@ -23,7 +24,8 @@ public:
 		     const Integer<R> & a)
     : _K(fld) { _initAntic(a); } 
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
-		     const Rational<R> & a) : _K(fld) { _initAntic(a); }
+		     const Rational<R> & a)
+    : _K(fld) { _initAntic(a); }
 
   NumberFieldElement(const NumberFieldElement<R> &);
 
@@ -63,54 +65,24 @@ public:
   static NumberFieldElement<R> one(std::shared_ptr<const NumberField<R> > fld);
   
   inline NumberFieldElement<R>& makeZero(void) override
-  { nf_elem_zero(_nf_elt_antic, _K->antic()); return *this; }
+  { nf_elem_zero(_nf_elt_antic, _K->antic()); return (*this); }
 
   inline NumberFieldElement<R>& makeOne(void) override
-  { nf_elem_one(_nf_elt_antic, _K->antic()); return *this; }
+  { nf_elem_one(_nf_elt_antic, _K->antic()); return (*this); }
 
   inline NumberFieldElement<R>* getPtr(void) override {return this;}
   inline const NumberFieldElement<R>* getPtr(void) const override {return this;}
 
-  inline void print(std::ostream& os) const override
-  { char* elt_str = nf_elem_get_str_pretty(_nf_elt_antic, "x", _K->antic());
-    os << elt_str; return; }
+  void print(std::ostream& os) const override;
 
   inline const nf_elem_t & getPoly(void) const
   { return _nf_elt_antic; }
 
-  inline R trace(void) const
-  { R trace;
-    Z num, denom;
-    fmpq_t ftrace;
-    fmpq_init(ftrace);
-    nf_elem_trace(ftrace, _nf_elt_antic, _K->antic());
-    fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), ftrace);
-    fmpq_clear(ftrace);
+  R trace(void) const;
 
-    trace = birch_util::convertInteger<Z,R>(num);
-    return trace;
-  }
+  R norm(void) const;
 
-  inline R norm(void) const
-  { R norm;
-    Z num, denom;
-    fmpq_t fnorm;
-    fmpq_init(fnorm);
-    nf_elem_norm(fnorm, _nf_elt_antic, _K->antic());
-    fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), fnorm);
-    fmpq_clear(fnorm);
-
-    trace = birch_util::convertInteger<Z,R>(num);
-    return norm;
-  }
-
-  ~NumberFieldElement()
-  {
-    // apparently when the element is zero, antic tries to free the polynomial
-    // that was not allocated
-    if (!nf_elem_is_zero(_nf_elt_antic, _K->antic()))
-      nf_elem_clear(_nf_elt_antic, _K->antic());
-  }
+  ~NumberFieldElement();
   
 protected:
   std::shared_ptr<const NumberField<R> > _K;
@@ -129,7 +101,7 @@ namespace std
   template<typename R>
   struct hash< NumberFieldElement<R> >
   {
-    Z64 operator()(const NumberFieldElement<R>& elt) const
+    inline Z64 operator()(const NumberFieldElement<R>& elt) const
     {
       Z64 fnv = std::hash< UnivariatePolyInt<R> >{}(elt.minimalPolynomial());
             

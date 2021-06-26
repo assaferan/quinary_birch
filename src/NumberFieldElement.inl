@@ -311,3 +311,50 @@ void NumberFieldElement<R>::_initAntic(const UnivariatePolyRat<R> & f) {
 
   return;
 }
+
+template<typename R>
+inline void NumberFieldElement<R>::print(std::ostream& os) const
+{
+  char* elt_str = nf_elem_get_str_pretty(_nf_elt_antic, "x", _K->antic());
+  os << elt_str;
+  return;
+}
+
+template<typename R>
+inline R NumberFieldElement<R>::trace(void) const
+{
+  R trace;
+  Z num, denom;
+  fmpq_t ftrace;
+  fmpq_init(ftrace);
+  nf_elem_trace(ftrace, _nf_elt_antic, _K->antic());
+  fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), ftrace);
+  fmpq_clear(ftrace);
+
+  trace = birch_util::convertInteger<Z,R>(num);
+  return trace;
+}
+
+template<typename R>
+inline R NumberFieldElement<R>::norm(void) const
+{
+  R norm;
+  Z num, denom;
+  fmpq_t fnorm;
+  fmpq_init(fnorm);
+  nf_elem_norm(fnorm, _nf_elt_antic, _K->antic());
+  fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), fnorm);
+  fmpq_clear(fnorm);
+
+  trace = birch_util::convertInteger<Z,R>(num);
+  return norm;
+}
+
+template<typename R>
+NumberFieldElement<R>::~NumberFieldElement()
+{
+  // apparently when the element is zero, antic tries to free the polynomial
+  // that was not allocated
+  if (!nf_elem_is_zero(_nf_elt_antic, _K->antic()))
+    nf_elem_clear(_nf_elt_antic, _K->antic());
+}
