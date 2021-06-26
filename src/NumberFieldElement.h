@@ -86,7 +86,8 @@ public:
     nf_elem_trace(ftrace, _nf_elt_antic, _K->antic());
     fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), ftrace);
     fmpq_clear(ftrace);
-    
+
+    trace = birch_util::convertInteger<Z,R>(num);
     return trace;
   }
 
@@ -98,7 +99,8 @@ public:
     nf_elem_norm(fnorm, _nf_elt_antic, _K->antic());
     fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), fnorm);
     fmpq_clear(fnorm);
-    
+
+    trace = birch_util::convertInteger<Z,R>(num);
     return norm;
   }
 

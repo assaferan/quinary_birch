@@ -209,18 +209,25 @@ inline MatrixRat<R> NumberFieldElement<R>::_multByMatrix(void) const
   // creating the basis {1,x,....,x^{d-1}}
   std::vector< NumberFieldElement<R> > basis;
   for (int i = 0; i < d; i++) {
-    NumberFieldElement<R> a(_K, UnivariatePolyRat<R>::x(_elt.baseRing(), i));
+    NumberFieldElement<R> a(_K, UnivariatePolyRat<R>::x(_K->modulus().baseRing(), i));
     basis.push_back(a);
   }
 
-  MatrixRat<R> mat(_elt.baseRing(), d, d);
+  MatrixRat<R> mat(_K->modulus().baseRing(), d, d);
 
+  fmpq_t fcoeff;
+  Z num, denom;
+  fmpq_init(fcoeff);
   for (int i = 0; i < d; i++) {
-    UnivariatePolyRat<R> mul = ((*this)*basis[i])._elt;
+    nf_elem_t mul = ((*this)*basis[i])._nf_elt_antic;
     for (int j = 0; j < d; j++) {
-      mat(i,j) = mul.coefficient(j);
+      nf_elem_get_coeff_fmpq(fcoeff, mul, j, _K->antic());
+      fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), fcoeff);
+      Rational<R> c(birch_util::convertInteger<Z,R>(num), birch_util::convertInteger<Z,R>(denom));
+      mat(i,j) = c;
     }
   }
+  fmpq_clear(fcoeff);
 
   return mat;
 
