@@ -80,6 +80,7 @@ SOURCES += VectorInt.h
 SOURCES += VectorInt.inl
 SOURCES += polyhedral_common/src_basic/Basic_string.cpp
 SOURCES += polyhedral_common/src_basic/ExceptionEnding.cpp
+SOURCES += polyhedral_common/src_basic/hash_functions.cpp
 SOURCES += polyhedral_common/src_basic/Temp_common.cpp
 SOURCES += polyhedral_common/src_basic/TypeConversion.cpp
 SOURCES += polyhedral_common/src_number/NumberTheory.cpp
