@@ -4,11 +4,11 @@
 #include <string>
 #include <iostream>
 #include "polyhedral_common/src_basic/ExceptionEnding.h"
-#include "defs.hh"
-#include "graph.hh"
-#include "partition.hh"
-#include "timer.hh"
-#include "utils.hh"
+#include "bliss/defs.hh"
+#include "bliss/graph.hh"
+#include "bliss/partition.hh"
+#include "bliss/timer.hh"
+#include "bliss/utils.hh"
 
 
 bliss::Graph* ReadGraphFromFile(FILE *f, unsigned int &nof_vertices)
