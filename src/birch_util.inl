@@ -140,3 +140,16 @@ namespace birch_util
   
 }
 
+template<typename R>
+inline std::ostream& operator<<(std::ostream& os, const std::vector<R>& v)
+{
+  if (v.size() >= 1) {
+    for (size_t i = 0; i < v.size() - 1; i++)
+      os << v[i] << ',';
+  
+    os << v[v.size()-1];
+  }
+  return os;
+}
+
+
