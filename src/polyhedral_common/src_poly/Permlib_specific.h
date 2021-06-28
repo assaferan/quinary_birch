@@ -126,7 +126,7 @@ namespace std {
   template<>
   struct hash<permlib::Permutation>
   {
-    std::size_t operator()(permlib::Permutation const& eElt) const;
+    std::size_t operator()(const permlib::Permutation & eElt) const;
   };
 }
 
