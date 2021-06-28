@@ -1157,8 +1157,8 @@ inline std::unordered_set<Isometry<R,n>> QuadFormInt<R,n>::properAutomorphisms(v
 template<typename R, size_t n>
 inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 						Isometry<R,n> & isom,
-						typename QuadFormInt<R,n>::ReductionMethod alg,
-						bool calc_aut)
+						bool calc_aut,
+						typename QuadFormInt<R,n>::ReductionMethod alg)
 {
   assert(q.bilinearForm().isPositiveDefinite());
 
