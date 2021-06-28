@@ -1734,7 +1734,7 @@ void GetGraphFromWeightedMatrix_color_adj(WeightMatrix<T1,T2> const& WMat, Fcolo
   size_t hS=GetNeededN(nbMult);
   std::vector<int> V = GetListPair(hS, nbMult);
   size_t e_pow = V.size() / 2;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "nbWei=" << nbWei << " nbMult=" << nbMult << " hS=" << hS << " e_pow=" << e_pow << "\n";
   for (size_t i_pow=0; i_pow<e_pow; i_pow++) {
     std::cerr << "i_pow=" << i_pow << "  (" << V[2*i_pow] << " | " << V[2*i_pow+1] << ")\n";
@@ -1889,11 +1889,11 @@ template<typename T1, typename T2, typename Tgr>
 inline typename std::enable_if<(not is_functional_graph_class<Tgr>::value),Tgr>::type GetGraphFromWeightedMatrix(WeightMatrix<T1,T2> const& WMat)
 {
   size_t nof_vertices=get_total_number_vertices(WMat);
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "nof_vertices=" << nof_vertices << "\n";
 #endif
   Tgr eGR(nof_vertices);
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "eGR built\n";
 #endif
   eGR.SetHasColor(true);
@@ -2057,7 +2057,7 @@ std::pair<std::vector<Tidx>, std::vector<Tidx>> GetCanonicalizationVector_Kernel
   //
   size_t nbVert=nbRow+2;
   size_t hS = nof_vertices / nbVert;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   if (hS * nbVert != nof_vertices) {
     std::cerr << "Error in the number of vertices\n";
     std::cerr << "hS=" << hS << " nbVert=" << nbVert << " nof_vertices=" << nof_vertices << "\n";
