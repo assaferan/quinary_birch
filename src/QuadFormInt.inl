@@ -1175,7 +1175,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     can_form = ComputeCanonicalForm<R,R>(mat);
     qf = can_form.Mat;
     can_basis = can_form.Basis;
-    isom = isom * can_basis;
+    isom = isom * can_basis.transpose();
     break;
   case GREEDY :
     num_aut = _iReduce(qf, isom, auts, calc_aut);
