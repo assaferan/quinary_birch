@@ -46,3 +46,4 @@ core
 gmon.out
 src/Makefile~
 libs/
+*.cpp~
