@@ -353,19 +353,7 @@ bool IsVectorConstant(std::vector<T> const& V)
 
 void WriteVectorInt_GAP(std::ostream &os, std::vector<int> const& OneInc);
 
-std::vector<int> DivideListPosition(int const& len, int const& nbBlock)
-{
-  std::vector<int> ListVal;
-  for (int i=0; i<=nbBlock; i++) {
-    double pos_d = (double(i) / double(nbBlock)) * double(len);
-    int pos_i;
-    NearestInteger_double_int(pos_d, pos_i);
-    pos_i = std::max(0, pos_i);
-    pos_i = std::min(len, pos_i);
-    ListVal.push_back(pos_i);
-  }
-  return ListVal;
-}
+std::vector<int> DivideListPosition(int const& len, int const& nbBlock);
 
 
 template<typename T>
