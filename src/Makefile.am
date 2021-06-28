@@ -6,7 +6,7 @@ DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
 OPT_CXXFLAGS += -fvar-tracking-assignments-toggle
 OPT_CXXFLAGS += -fomit-frame-pointer
 OPT_CXXFLAGS += -funroll-all-loops
-DBG_LDFLAGS = -lm -lgmp -lgmpxx -L../libs -lantic -lflint
+DBG_LDFLAGS = -lm -lgmp -lgmpxx -L../libs -lantic -lflint -lbliss
 
 SOURCES = birch.h
 SOURCES += birch_util.cpp
@@ -78,6 +78,9 @@ SOURCES += Vector.h
 SOURCES += Vector.inl
 SOURCES += VectorInt.h
 SOURCES += VectorInt.inl
+SOURCES += polyhedral_common/src_basic/ExceptionEnding.cpp
+SOURCES += polyhedral_common/src_basic/TypeConversion.cpp
+SOURCES += polyhedral_common/src_number/NumberTheory.cpp
 
 birch_dbg_SOURCES = birch.cpp $(SOURCES)
 birch_dbg_CXXFLAGS = $(DBG_CXXFLAGS)
