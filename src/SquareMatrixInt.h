@@ -1,6 +1,7 @@
 #ifndef __SQUARE_MATRIX_INT_H_
 #define __SQUARE_MATRIX_INT_H_
 
+#include "polyhedral_common/src_matrix/MAT_Matrix.h"
 // #include <stdalign.h>
 
 // We create this one to mkae matrix operations more efficient when the underlying class is integral
