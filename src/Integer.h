@@ -3,8 +3,6 @@
 
 #include <vector>
 
-#include "polyhedral_common/src_number/NumberTheory.h"
-
 #include "birch.h"
 #include "IntegerRing.h"
 #include "EuclideanDomainElement.h"
