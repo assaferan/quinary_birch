@@ -3,8 +3,8 @@
 
 
 #include "LatticeDefinitions.h"
-#include "NumberTheory.h"
-#include "MAT_Matrix.h"
+#include "polyhedral_common/src_number/NumberTheory.h"
+#include "polyhedral_common/src_matrix/MAT_Matrix.h"
 
 #define CHECK_BASIC_CONSISTENCY
 
