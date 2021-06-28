@@ -1,8 +1,8 @@
 #ifndef MATRIX_GROUP_INCLUDE
 #define MATRIX_GROUP_INCLUDE
 
-#include "factorizations.h"
-#include "MAT_MatrixInt.h"
+#include "polyhedral_common/src_number/factorizations.h"
+#include "polyhedral_common/src_matrix/MAT_MatrixInt.h"
 #include "GRP_GroupFct.h"
 #include "PERM_Fct.h"
 #include "MatrixGroupBasic.h"
