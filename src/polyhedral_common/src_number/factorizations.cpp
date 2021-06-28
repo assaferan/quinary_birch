@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "factorizations.h"
 #include "NumberTheory.h"
 
