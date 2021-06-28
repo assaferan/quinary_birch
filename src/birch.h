@@ -264,29 +264,4 @@ std::ostream & operator<<(std::ostream & os, const Z128 & z);
 template<typename R>
 std::ostream& operator<<(std::ostream& os, const std::vector<R>& v);
 
-#ifndef struct std::hash<Z>
-// There is no hash defined for class Z
-namespace std {
-
-  template<>
-  struct hash<Z>
-  {
-    Z64 operator()(const Z & a) const
-    {
-      Z64 fnv = FNV_OFFSET;
-      Z modulus = 2;
-      mpz_pow_ui(modulus.get_mpz_t(), modulus.get_mpz_t(), 64);
-      Z tmp = a;
-
-      while (tmp != 0) {
-	Z lsb = tmp % modulus;
-	fnv = (fnv ^ mpz_get_si(lsb.get_mpz_t())) * FNV_PRIME;
-	tmp /= modulus;
-      }
-      return fnv;
-    }
-  };
-}
-#endif
-
 #endif // __BIRCH_H_
