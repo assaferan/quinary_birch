@@ -93,6 +93,17 @@ MySparseMatrix<T2> ConvertSparseMatrix(MySparseMatrix<T1> const& M, std::functio
   return SpMat;
 }
 
+template<typename T, size_t n>
+MyMatrix<T> ConvertMatrix(T arr[n][n])
+{
+  MyMatrix<T> TheMat(n,n);
+  for (iRow=0; iRow<n; iRow++)
+    for (iCol=0; iCol<n; iCol++)
+      TheMat(iRow, iCol) = arr[iRow][iCol];
+  
+  return TheMat;
+}
+
 //
 // ReadWriteMatrices and vectors
 //
