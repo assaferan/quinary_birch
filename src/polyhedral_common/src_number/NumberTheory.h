@@ -221,20 +221,8 @@ namespace std {
 // to_string functionality
 
 namespace std {
-  std::string to_string(const mpz_class& e_val)
-  {
-    std::stringstream s;
-    s << e_val;
-    std::string converted(s.str());
-    return converted;
-  };
-  std::string to_string(const mpq_class& e_val)
-  {
-    std::stringstream s;
-    s << e_val;
-    std::string converted(s.str());
-    return converted;
-  };
+  std::string to_string(const mpz_class& );
+  std::string to_string(const mpq_class& );
 }
 
 // Parsing strings (It takes a std::string because we would need a const char* with a null terminated string
