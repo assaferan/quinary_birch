@@ -1,7 +1,7 @@
 #ifndef POLYTOPE_STOR
 #define POLYTOPE_STOR
 
-#include "Temp_common.h"
+#include "polyhedral_common/src_basic/Temp_common.h"
 #include "Boost_bitset.h"
 
 //
