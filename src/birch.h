@@ -264,6 +264,8 @@ std::ostream & operator<<(std::ostream & os, const Z128 & z);
 template<typename R>
 std::ostream& operator<<(std::ostream& os, const std::vector<R>& v);
 
+// This appears now in polyhedral_common/src_number/NumberTheory.h
+/*
 namespace std {
 
   template<>
@@ -285,5 +287,6 @@ namespace std {
     }
   };
 }
+*/
 
 #endif // __BIRCH_H_
