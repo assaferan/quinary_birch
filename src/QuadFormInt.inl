@@ -1166,7 +1166,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   SquareMatrixInt<R,n> qf = q.bilinearForm();
   size_t num_aut = 0;
   MyMatrix<R> mat;
-  CanonicPosDef<R,R> can_form;
+  Canonic_PosDef<R,R> can_form;
   SquareMatrixInt<R,n> can_basis;
   
   switch(alg) {
@@ -1200,43 +1200,15 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
 							 Isometry<R,n> & isom,
 							 typename QuadFormInt<R,n>::ReductionMethod alg)
 {
-  assert(q.bilinearForm().isPositiveDefinite());
-  SquareMatrixInt<R,n> qf = q.bilinearForm();
-  
-  bool all_eq;
-  MyMatrix<R> mat;
-  Canonic_PosDef<R,R> can_form;
-  SquareMatrixInt<R,n> can_basis;
-
   switch(alg) {
   case GREEDY :
-    greedy(qf, isom);
-   
-    // if n == 5 and all 5 shortest vectors are of the same length
-    // the orbit would be very large and we prefer not to try and compute it.
-    // !! TODO - it seems that the orbit itself would not be very large.
-    // However, determining it takes a long time. (verifying that we covered everything).
-    // Can we figure out a way to make sure we covered everything more efficiently?
-    if (n == 5) {
-      all_eq = true;
-      // for now, when n == 5, we always reduce completely
-      /*
-	for (size_t j = 1; j < n; j++)
-	all_eq = (all_eq) && (q_red(j,j) == q_red(0,0));
-      */
-      if (all_eq) {
-	qf = reduce(qf, isom, alg);
-      }
-    }
-
+    // We would like to be able to just perform greedy, but this fails to work at the moment
+    // greedy(qf, isom);
+    return reduce(q, isom, alg);
     break;
     
   case CANONICAL_FORM :
-    mat = ConvertMatrix(qf.getArray());
-    can_form = ComputeCanonicalForm<R,R>(mat);
-    qf = can_form.Mat;
-    can_basis = can_form.Basis;
-    isom = isom * can_basis;
+    return reduce(q, isom, alg);
     break;
     
   default:
@@ -1244,9 +1216,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
     // This is here in case we would want to remove the throw statement
     break;
   }
-  QuadFormZZ<R,n> q_red(qf);
-
-  return q_red;
+ 
 }
 
 template<typename R, size_t n>
