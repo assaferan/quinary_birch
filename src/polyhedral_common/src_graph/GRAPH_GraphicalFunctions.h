@@ -1,10 +1,10 @@
 #ifndef TEMP_GRAPHICAL_FUNCTION
 #define TEMP_GRAPHICAL_FUNCTION
 
-#include "COMB_Combinatorics.h"
+#include "polyhedral_common/src_comb/COMB_Combinatorics.h"
 #include "GRAPH_GraphicalBasic.h"
-#include "MAT_Matrix.h"
-#include "COMB_Vectors.h"
+#include "polyhedral_common/src_matrix/MAT_Matrix.h"
+#include "polyhedral_common/src_comb/COMB_Vectors.h"
 #include "GRAPH_BitsetType.h"
 
 
