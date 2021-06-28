@@ -5,9 +5,9 @@
 
 #include "ShortestUniversal.h"
 #include "InvariantVectorFamily.h"
-#include "Temp_PolytopeEquiStab.h"
-#include "MAT_MatrixInt.h"
-#include "MatrixGroup.h"
+#include "polyhedral_common/src_poly/Temp_PolytopeEquiStab.h"
+#include "polyhedral_common/src_matrix/MAT_MatrixInt.h"
+#include "polyhedral_common/src_poly/MatrixGroup.h"
 
 
 
