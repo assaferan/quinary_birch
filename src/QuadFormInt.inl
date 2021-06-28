@@ -1173,7 +1173,8 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 
 template<typename R, size_t n>
 inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> & q,
-							 Isometry<R,n> & isom)
+							 Isometry<R,n> & isom,
+							 typename QuadFormInt<R,n>::ReductionMethod alg)
 {
   assert(q.bilinearForm().isPositiveDefinite());
 
