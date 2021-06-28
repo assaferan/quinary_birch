@@ -3,7 +3,7 @@
 
 #include "COMB_Combinatorics_elem.h"
 #include "COMB_Vectors.h"
-#include "MAT_Matrix.h"
+#include "polyhedral_common/src_matrix/MAT_Matrix.h"
 #include "Boost_bitset.h"
 #include "COMB_Stor.h"
 
