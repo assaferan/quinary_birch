@@ -6,7 +6,7 @@
 #include "polyhedral_common/src_number/NumberTheory.h"
 
 #undef TRACK_MAXIMUM_SIZE_COEFF
-#undef DEBUG
+// #undef DEBUG
 
 // Now declarations of generic code.
 // The code below generally requires the field T to be the ring (or fraction ring) of
