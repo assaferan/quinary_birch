@@ -85,6 +85,7 @@ SOURCES += polyhedral_common/src_basic/Temp_common.cpp
 SOURCES += polyhedral_common/src_basic/TypeConversion.cpp
 SOURCES += polyhedral_common/src_comb/Boost_bitset.cpp
 SOURCES += polyhedral_common/src_comb/COMB_Combinatorics_elem.cpp
+SOURCES += polyhedral_common/src_comb/COMB_Stor.cpp
 SOURCES += polyhedral_common/src_number/NumberTheory.cpp
 
 birch_dbg_SOURCES = birch.cpp $(SOURCES)
