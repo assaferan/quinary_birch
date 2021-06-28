@@ -24,6 +24,12 @@ class QuadFormInt
 public:
 
   typedef R SymVec[n*(n+1)/2];
+
+  typedef enum ReductionMethod
+    {
+     GREEDY_REDUCTION,
+     CANONICAL_FORM
+    } ReductionMethod;
   
   QuadFormInt()
     : _is_reduced(false),
