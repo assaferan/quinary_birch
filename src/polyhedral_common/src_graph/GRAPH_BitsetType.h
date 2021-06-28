@@ -2,7 +2,7 @@
 #define INCLUDE_GRAPH_BITSET
 
 
-#include "Boost_bitset.h"
+#include "polyhedral_common/src_comb/Boost_bitset.h"
 
 
 struct GraphBitset {
