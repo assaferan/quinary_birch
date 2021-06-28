@@ -1,6 +1,8 @@
 #ifndef __NUMBER_FIELD_ELEMENT_H_
 #define __NUMBER_FIELD_ELEMENT_H_
 
+#include "antic/nf_elem.h"
+
 #include "birch.h"
 #include "FieldElement.h"
 #include "UnivariatePoly.h"
@@ -10,18 +12,22 @@ class NumberFieldElement : public virtual FieldElement< NumberFieldElement<R>, N
 {
 public:
   NumberFieldElement() = default;
-  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld) : _K(fld), _elt(std::make_shared< const RationalField<R> >()) {}
+  NumberFieldElement(std::shared_ptr<const NumberField<R> > fld)
+    : _K(fld) { _initAntic(); }
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const UnivariatePolyRat<R> & poly)
-    : _K(fld), _elt(poly) {}
+    : _K(fld) {_initAntic(poly); }
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const R & a)
-    : _K(fld), _elt(a) {}
+    : _K(fld) { _initAntic(a); }
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
 		     const Integer<R> & a)
-    : _K(fld), _elt(a) {} 
+    : _K(fld) { _initAntic(a); } 
   NumberFieldElement(std::shared_ptr<const NumberField<R> > fld,
-		     const Rational<R> & a) : _K(fld), _elt(a) {}
+		     const Rational<R> & a)
+    : _K(fld) { _initAntic(a); }
+
+  NumberFieldElement(const NumberFieldElement<R> &);
 
   // assignment operator
   NumberFieldElement<R> & operator=(const NumberFieldElement<R> &) override;
@@ -59,31 +65,35 @@ public:
   static NumberFieldElement<R> one(std::shared_ptr<const NumberField<R> > fld);
   
   inline NumberFieldElement<R>& makeZero(void) override
-  { _elt.makeZero(); return *this; }
+  { nf_elem_zero(_nf_elt_antic, _K->antic()); return (*this); }
 
   inline NumberFieldElement<R>& makeOne(void) override
-  { _elt.makeOne(); return *this; }
+  { nf_elem_one(_nf_elt_antic, _K->antic()); return (*this); }
 
   inline NumberFieldElement<R>* getPtr(void) override {return this;}
   inline const NumberFieldElement<R>* getPtr(void) const override {return this;}
 
-  inline void print(std::ostream& os) const override
-  { _elt.print(os); return; }
+  void print(std::ostream& os) const override;
 
-  inline const UnivariatePolyRat<R> & getPoly(void) const
-  { return _elt; }
+  inline const nf_elem_t & getPoly(void) const
+  { return _nf_elt_antic; }
 
-  inline R trace(void) const
-  { UnivariatePolyInt<R> f = this->minimalPolynomial(); return f.coefficient(f.degree()-1); }
+  R trace(void) const;
 
-  inline R norm(void) const
-  { UnivariatePolyInt<R> f = this->minimalPolynomial(); R sign = (f.degree() % 2 == 0) ? 1 : -1; return sign*f.coefficient(0);}
+  R norm(void) const;
+
+  ~NumberFieldElement();
   
 protected:
   std::shared_ptr<const NumberField<R> > _K;
-  UnivariatePolyRat<R> _elt;
+  
+  nf_elem_t _nf_elt_antic;
 
   MatrixRat<R> _multByMatrix(void) const;
+  void _initAntic(void);
+  void _initAntic(const UnivariatePolyInt<R> &);
+  void _initAntic(const Rational<R> &);
+  void _initAntic(const UnivariatePolyRat<R> &);
 };
 
 namespace std
@@ -91,7 +101,7 @@ namespace std
   template<typename R>
   struct hash< NumberFieldElement<R> >
   {
-    Z64 operator()(const NumberFieldElement<R>& elt) const
+    inline Z64 operator()(const NumberFieldElement<R>& elt) const
     {
       Z64 fnv = std::hash< UnivariatePolyInt<R> >{}(elt.minimalPolynomial());
             

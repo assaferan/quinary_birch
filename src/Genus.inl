@@ -1170,7 +1170,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
       basis_rat(row,col) = V_basis(row,col);
 
 #ifdef DEBUG // _LEVEL_FULL
-  std::cerr << "Restricting T_ " << p << " to V = " << std::endl << basis_rat << "." << std::endl;
+  std::cerr << "Restricting T_" << p << " to V = " << std::endl << basis_rat << "." << std::endl;
 #endif
   
   MatrixRat<Z> T_p_res = T_p.restrict(basis_rat);
@@ -1196,7 +1196,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
   
   UnivariatePolyInt<Z> f_int(coeffs_int);
 
-#ifdef DEBUG // _LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "factoring characteristic polynomial f_int = " << f_int << std::endl;
 #endif
   
@@ -1206,7 +1206,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     UnivariatePolyInt<Z> f = fa.first;
     size_t a = fa.second;
     
-#ifdef DEBUG_ // LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
     std::cerr << "Cutting out subspace using f(T_" << p;
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
@@ -1236,14 +1236,16 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
 	  T_K(row,col) = NumberFieldElement<Z>(K, elt);
 	}
       NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(T_p.baseRing()));
-      T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T_p.nrows());
+      Matrix< NumberFieldElement<Z>, NumberField<Z> > id_mat = Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T_p.nrows());
+      Matrix< NumberFieldElement<Z>, NumberField<Z> > lambda_mat = lambda * id_mat;
+      T_K -= lambda_mat;
 #ifdef DEBUG // _LEVEL_FULL
       std::cerr << "Computing kernel of " << std::endl << T_K << std::endl;
 #endif
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       assert(nullsp.nrows() == 1);
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
-#ifdef DEBUG // _LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
       std::cerr << "found eigenvector: " << vec << std::endl;
 #endif
       evecs.push_back(vec);
