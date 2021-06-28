@@ -4,8 +4,8 @@
 #include "LatticeDefinitions.h"
 #include "Temp_Positivity.h"
 
-#include <shvec.h>
-#include <la_support.h>
+#include <Libshort/shvec.h>
+#include <LibShort/la_support.h>
 
 
 template<typename T, typename Tint>
