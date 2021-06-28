@@ -1,4 +1,4 @@
-#include "MAT_MatrixInt.cpp"
+#include "MAT_MatrixInt.h"
 
 int IsVectorPrimitive(MyVector<int> const& TheV)
 {
