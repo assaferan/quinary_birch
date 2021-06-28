@@ -3,7 +3,7 @@
 
 #include "LatticeDefinitions.h"
 #include "NiemeierN23_24A1.h"
-#include "NumberTheory.h"
+#include "polyhedral_common/src_number/NumberTheory.h"
 #include "COMB_Combinatorics.h"
 
 
