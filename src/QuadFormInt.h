@@ -88,11 +88,11 @@ public:
   static QuadFormZZ<R,n> reduce(const QuadFormZZ<R,n> & q,
 				Isometry<R,n> & isom,
 				bool calc_aut = false,
-				ReductionMethod alg = GREEDY);
+				ReductionMethod alg = CANONICAL_FORM);
 
   static QuadFormZZ<R,n> reduceNonUnique(const QuadFormZZ<R,n> & q,
 					 Isometry<R,n> & isom,
-					 ReductionMethod alg = GREEDY);
+					 ReductionMethod alg = CANONICAL_FORM);
 
   std::unordered_set<Isometry<R,n>> properAutomorphisms(void) const;
 
