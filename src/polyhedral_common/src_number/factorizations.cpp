@@ -1,4 +1,7 @@
+#include <functional>
 #include <iostream>
+
+#include "polyhedral_common/src_basic/ExceptionEnding.h"
 
 #include "factorizations.h"
 #include "NumberTheory.h"
