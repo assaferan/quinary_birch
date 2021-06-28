@@ -1,15 +1,15 @@
 #ifndef TEMP_POLYTOPE_EQUI_STAB
 #define TEMP_POLYTOPE_EQUI_STAB
 
-#include "GRAPH_bliss.h"
-#include "GRAPH_traces.h"
-#include "MAT_Matrix.h"
-#include "Basic_string.h"
-#include "Basic_file.h"
-#include "GRAPH_GraphicalFunctions.h"
-#include "COMB_Combinatorics_elem.h"
-#include "MAT_MatrixInt.h"
-#include "Boost_bitset.h"
+#include "polyhedral_common/src_graph/GRAPH_bliss.h"
+#include "polyhedral_common/src_graph/GRAPH_traces.h"
+#include "polyhedral_common/src_matrix/MAT_Matrix.h"
+#include "polyhedral_common/src_basic/Basic_string.h"
+#include "polyhedral_common/src_basic/Basic_file.h"
+#include "polyhedral_common/src_graph/GRAPH_GraphicalFunctions.h"
+#include "polyhedral_common/src_comb/COMB_Combinatorics_elem.h"
+#include "polyhedral_common/src_matrix/MAT_MatrixInt.h"
+#include "polyhedral_common/src_comb/Boost_bitset.h"
 #include "PERM_Fct.h"
 
 
