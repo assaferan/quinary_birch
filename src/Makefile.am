@@ -6,7 +6,7 @@ DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
 OPT_CXXFLAGS += -fvar-tracking-assignments-toggle
 OPT_CXXFLAGS += -fomit-frame-pointer
 OPT_CXXFLAGS += -funroll-all-loops
-DBG_LDFLAGS = -lm -lgmp -lgmpxx -L../libs -lantic -lflint -lbliss
+DBG_LDFLAGS = -lm -lgmp -lgmpxx -L../libs -lantic -lflint -lbliss -lnauty
 
 SOURCES = birch.h
 SOURCES += birch_util.cpp
