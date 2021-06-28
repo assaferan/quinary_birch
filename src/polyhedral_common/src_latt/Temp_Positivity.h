@@ -1,10 +1,10 @@
 #ifndef TEMP_MATRIX_POSITIVITY_INCLUDE
 #define TEMP_MATRIX_POSITIVITY_INCLUDE
 
-#include "MAT_Matrix.h"
+#include "polyhedral_common/src_matrix/MAT_Matrix.h"
 #include "LatticeDefinitions.h"
-#include "MAT_MatrixInt.h"
-#include "MAT_MatrixFLT.h"
+#include "polyhedral_common/src_matrix/MAT_MatrixInt.h"
+#include "polyhedral_common/src_matrix/MAT_MatrixFLT.h"
 
 
 
