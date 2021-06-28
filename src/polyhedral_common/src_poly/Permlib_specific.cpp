@@ -107,7 +107,6 @@ PermutationGroupPtr PERMLIB_GetStabilizer_general(PermutationGroupPtr const& gro
     return permlib::setStabilizer_partition(*group, eSet.begin(), eSet.end());
 }
 
-template<>
 std::size_t std::hash<permlib::Permutation>::operator()(const permlib::Permutation & eElt) const
 {
   size_t len=eElt.size();
