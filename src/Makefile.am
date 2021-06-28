@@ -83,6 +83,7 @@ SOURCES += polyhedral_common/src_basic/ExceptionEnding.cpp
 SOURCES += polyhedral_common/src_basic/hash_functions.cpp
 SOURCES += polyhedral_common/src_basic/Temp_common.cpp
 SOURCES += polyhedral_common/src_basic/TypeConversion.cpp
+SOURCES += polyhedral_common/src_comb/Boost_bitset.cpp
 SOURCES += polyhedral_common/src_number/NumberTheory.cpp
 
 birch_dbg_SOURCES = birch.cpp $(SOURCES)
