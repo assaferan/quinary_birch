@@ -6,7 +6,7 @@
 
 //#include "Temp_common.h"
 #include "polyhedral_common/src_basic/TypeConversion.h"
-#include "ExceptionEnding.h"
+#include "polyhedral_common/src_basic/ExceptionEnding.h"
 #include <cstdlib>
 #include "gmpxx.h"
 
