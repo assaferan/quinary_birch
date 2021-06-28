@@ -1,13 +1,13 @@
 #ifndef INCLUDE_TEMP_GROUP_FCT_H
 #define INCLUDE_TEMP_GROUP_FCT_H
 
-#include "Temp_common.h"
-#include "Basic_file.h"
-#include "Basic_string.h"
-#include "hash_functions.h"
-#include "COMB_Stor.h"
-#include "NumberTheory.h"
-#include "Boost_bitset.h"
+#include "polyhedral_common/src_basic/Temp_common.h"
+#include "polyhedral_common/src_basic/Basic_file.h"
+#include "polyhedral_common/src_basic/Basic_string.h"
+#include "polyhedral_common/src_basic/hash_functions.h"
+#include "polyhedral_common/src_comb/COMB_Stor.h"
+#include "polyhedral_common/src_number/NumberTheory.h"
+#include "polyhedral_common/src_comb/Boost_bitset.h"
 #include "Temp_PolytopeEquiStab.h"
 
 
