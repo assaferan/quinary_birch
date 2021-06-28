@@ -1,8 +1,8 @@
 #ifndef INCLUDE_COMBINATORICS_ELEM
 #define INCLUDE_COMBINATORICS_ELEM
 
-#include "Temp_common.h"
-#include "MAT_Matrix.h"
+#include "polyhedral_common/src_basic/Temp_common.h"
+#include "polyhedral_common/src_matrix/MAT_Matrix.h"
 
 std::vector<int> BinomialStdvect_First(int const& k)
 {
