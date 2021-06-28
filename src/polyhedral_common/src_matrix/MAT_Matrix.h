@@ -96,6 +96,7 @@ MySparseMatrix<T2> ConvertSparseMatrix(MySparseMatrix<T1> const& M, std::functio
 template<typename T, size_t n>
 MyMatrix<T> ConvertMatrix(T arr[n][n])
 {
+  int iRow, iCol;
   MyMatrix<T> TheMat(n,n);
   for (iRow=0; iRow<n; iRow++)
     for (iCol=0; iCol<n; iCol++)
