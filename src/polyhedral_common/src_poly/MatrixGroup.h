@@ -4,6 +4,7 @@
 #include "polyhedral_common/src_number/factorizations.h"
 #include "polyhedral_common/src_matrix/MAT_MatrixInt.h"
 #include "GRP_GroupFct.h"
+#include "Permlib_specific.h"
 #include "PERM_Fct.h"
 #include "MatrixGroupBasic.h"
 
