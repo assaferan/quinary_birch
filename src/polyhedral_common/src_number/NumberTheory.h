@@ -5,7 +5,7 @@
 #include <sstream>
 
 //#include "Temp_common.h"
-#include "TypeConversion.h"
+#include "polyhedral_common/src_basic/TypeConversion.h"
 #include "ExceptionEnding.h"
 #include <cstdlib>
 #include "gmpxx.h"
