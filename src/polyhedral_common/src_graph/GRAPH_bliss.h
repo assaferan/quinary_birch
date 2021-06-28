@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include "ExceptionEnding.h"
+#include "polyhedral_common/src_basic/ExceptionEnding.h"
 #include "defs.hh"
 #include "graph.hh"
 #include "partition.hh"
