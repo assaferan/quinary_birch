@@ -1,9 +1,9 @@
 #ifndef INCLUDE_LATTICE_DEFINITIONS
 #define INCLUDE_LATTICE_DEFINITIONS
 
-#include "MAT_Matrix.h"
-#include "Boost_bitset.h"
-#include "COMB_Combinatorics.h"
+#include "polyhedral_common/src_matrix/MAT_Matrix.h"
+#include "polyhedral_common/src_comb/Boost_bitset.h"
+#include "polyhedral_common/src_comb/COMB_Combinatorics.h"
 
 template<typename T, typename Tint>
 struct Tshortest {
