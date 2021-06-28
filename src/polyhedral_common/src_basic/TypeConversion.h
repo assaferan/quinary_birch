@@ -197,10 +197,7 @@ struct is_mpq_class {
 
 // basic numeric code
 
-int IntFloor(double const& x)
-{
-  return int(floor(x));
-}
+int IntFloor(double const& x);
 
 // Trait definition for is_mpz
 
