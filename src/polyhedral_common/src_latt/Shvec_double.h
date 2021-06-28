@@ -4,7 +4,7 @@
 #include "LatticeDefinitions.h"
 #include "Temp_Positivity.h"
 
-#include <Libshort/shvec.h>
+#include <LibShort/shvec.h>
 #include <LibShort/la_support.h>
 
 
