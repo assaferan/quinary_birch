@@ -264,4 +264,13 @@ std::ostream & operator<<(std::ostream & os, const Z128 & z);
 template<typename R>
 std::ostream& operator<<(std::ostream& os, const std::vector<R>& v);
 
+// There is no hash defined for class Z
+namespace std {
+  template<>
+  struct hash<Z>
+  {
+    Z64 operator()(const Z & a) const;
+  }
+}
+
 #endif // __BIRCH_H_
