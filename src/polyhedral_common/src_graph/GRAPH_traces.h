@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GRAPH_TRACES
 #define INCLUDE_GRAPH_TRACES
 
-#include "traces.h"
+#include "nauty/traces.h"
 #include <vector>
 #include <iostream>
 
