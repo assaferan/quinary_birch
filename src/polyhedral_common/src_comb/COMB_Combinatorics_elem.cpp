@@ -1,4 +1,4 @@
-#include "COMB_combinatorics_elem.h"
+#include "COMB_Combinatorics_elem.h"
 
 std::vector<int> BinomialStdvect_First(int const& k)
 {
