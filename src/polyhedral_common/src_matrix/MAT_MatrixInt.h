@@ -2,8 +2,8 @@
 #define TEMP_MATRIX_INTEGRAL_RING
 
 #include "MAT_Matrix.h"
-#include "Boost_bitset.h"
-#include "NumberTheory.h"
+#include "polyhedral_common/src_comb/Boost_bitset.h"
+#include "polyhedral_common/src_number/NumberTheory.h"
 
 #undef TRACK_MAXIMUM_SIZE_COEFF
 #undef DEBUG
