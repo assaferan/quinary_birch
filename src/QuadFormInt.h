@@ -87,8 +87,8 @@ public:
 
   static QuadFormZZ<R,n> reduce(const QuadFormZZ<R,n> & q,
 				Isometry<R,n> & isom,
-				ReductionMethod alg = GREEDY,
-				bool calc_aut = false);
+				bool calc_aut = false,
+				ReductionMethod alg = GREEDY);
 
   static QuadFormZZ<R,n> reduceNonUnique(const QuadFormZZ<R,n> & q,
 					 Isometry<R,n> & isom,
