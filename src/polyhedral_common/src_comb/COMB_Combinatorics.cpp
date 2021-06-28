@@ -63,7 +63,7 @@ BlockCppIterator::IteratorContain & BlockCppIterator::IteratorContain::operator+
 
 BlockCppIterator::IteratorContain BlockCppIterator::IteratorContain::operator++(int)
 {
-  BlockCppIterator::IIteratorContain tmp = *this;
+  BlockCppIterator::IteratorContain tmp = *this;
   single_increase();
   return tmp;
 }
@@ -97,25 +97,23 @@ bool BlockCppIterator::IteratorContain::operator==(IteratorContain const& iter)
 }
 
 // The iterator business
-using iterator=BlockCppIterator::IteratorContain;
-using const_iterator=BlockCppIterator::IteratorContain;
 
-const_iterator BlockCppIterator::cbegin() const
+BlockCppIterator::IteratorContain BlockCppIterator::cbegin() const
 {
   return { dim, size, std::vector<int>(dim,0) };
 }
 
-const_iterator BlockCppIterator::cend() const
+BlockCppIterator::IteratorContain BlockCppIterator::cend() const
 {
   return {dim, size, {}};
 }
 
-const_iterator BlockCppIterator::begin() const
+BlockCppIterator::IteratorContain BlockCppIterator::begin() const
 {
   return { dim, size, std::vector<int>(dim,0) };
 }
 
-const_iterator BlockCppIterator::end() const
+BlockCppIterator::IteratorContain BlockCppIterator::end() const
 {
   return {dim, size, {}};
 }
