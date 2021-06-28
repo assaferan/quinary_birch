@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "ExceptionEnding.h"
 
 void TerminalEnding()
@@ -6,5 +7,5 @@ void TerminalEnding()
   int val1=4;
 #endif
   assert(val1 == 5);
-  exit(1);
+  std::exit(1);
 }
