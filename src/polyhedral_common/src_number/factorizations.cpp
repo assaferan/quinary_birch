@@ -1,4 +1,5 @@
 #include "factorizations.h"
+#include "NumberTheory.h"
 
 std::vector<mpz_class> FactorsInt(mpz_class const& x)
 {
