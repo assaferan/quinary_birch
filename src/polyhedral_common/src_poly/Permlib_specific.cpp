@@ -108,7 +108,7 @@ PermutationGroupPtr PERMLIB_GetStabilizer_general(PermutationGroupPtr const& gro
 }
 
 template<>
-std::size_t std::hash<permlib::Permutation>::operator()(permlib::Permutation const& eElt) const
+std::size_t std::hash<permlib::Permutation>::operator()(const permlib::Permutation & eElt) const
 {
   size_t len=eElt.size();
   std::vector<permlib::dom_int> V(len);
