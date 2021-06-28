@@ -264,6 +264,7 @@ std::ostream & operator<<(std::ostream & os, const Z128 & z);
 template<typename R>
 std::ostream& operator<<(std::ostream& os, const std::vector<R>& v);
 
+#ifndef std::hash<Z>
 // There is no hash defined for class Z
 namespace std {
 
@@ -286,5 +287,6 @@ namespace std {
     }
   };
 }
+#endif
 
 #endif // __BIRCH_H_
