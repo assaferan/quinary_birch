@@ -7,91 +7,21 @@
 #include <permlib/permlib_api.h>
 
 
-int OnPoints(int const& i, permlib::Permutation const& elt)
-{
-  return elt.at(i);
-}
-
+int OnPoints(int const& i, permlib::Permutation const& elt);
 
 //
 // Specific implementation with permlib
 //
 
-
-
-
 typedef std::shared_ptr<permlib::PermutationGroup> PermutationGroupPtr;
 typedef boost::dynamic_bitset<> DsetList;
 
-
 /*
-std::vector<permlib::dom_int> GetBaseGroup(TheGroupFormat const& eGRP)
-{
-  std::vector<permlib::dom_int> eList;
-  for (auto & eTrans : eGRP.group->U) {
-    permlib::dom_int eElt=eTrans.element();
-    eList.push_back(eElt);
-  }
-  return eList;
-}
+std::vector<permlib::dom_int> GetBaseGroup(TheGroupFormat const& eGRP);
 */
-
-
-
-
-
-std::set<int> GetSetFrom_DB(Face const& eList)
-{
-  int nb=eList.count();
-  std::set<int> eSet;
-  int aRow=eList.find_first();
-  for (int i=0; i<nb; i++) {
-    eSet.insert(aRow);
-    aRow=eList.find_next(aRow);
-  }
-  return eSet;
-}
-
-Face Face_EquivSimplification(Face const& eFace)
-{
-  int siz=eFace.size();
-  int cnt=eFace.count();
-  if (2*cnt > siz) {
-    Face retFace(siz);
-    for (int i=0; i<siz; i++)
-      retFace[i]=1 - eFace[i];
-    return retFace;
-  }
-  else {
-    return eFace;
-  }
-}
-
-
-
-
-
-std::pair<bool,permlib::Permutation> PERMLIB_TestEquivalenceGeneralNaked(int const& n, PermutationGroupPtr const& group, Face const& eList1, Face const& eList2, int const& eMethod)
-{
-  permlib::Permutation::ptr mappingElement;
-  int nb1=eList1.count();
-  int nb2=eList2.count();
-  if (nb1 != nb2)
-    return {false, {}};
-  //
-  Face NewList1=Face_EquivSimplification(eList1);
-  Face NewList2=Face_EquivSimplification(eList2);
-  std::set<int> eSet1=GetSetFrom_DB(NewList1);
-  std::set<int> eSet2=GetSetFrom_DB(NewList2);
-  if (eMethod == 0)
-    mappingElement = permlib::setImage_classic(*group, eSet1.begin(), eSet1.end(), eSet2.begin(), eSet2.end());
-  if (eMethod == 1)
-    mappingElement = permlib::setImage_partition(*group, eSet1.begin(), eSet1.end(), eSet2.begin(), eSet2.end());
-  if (mappingElement) {
-    return {true, *mappingElement};
-  }
-  return {false, {}};
-}
+std::set<int> GetSetFrom_DB(Face const& eList);
+Face Face_EquivSimplification(Face const& eFace);
+std::pair<bool,permlib::Permutation> PERMLIB_TestEquivalenceGeneralNaked(int const& n, PermutationGroupPtr const& group, Face const& eList1, Face const& eList2, int const& eMethod);
 
 template<typename Tint>
 std::pair<bool,permlib::Permutation> PERMLIB_TestEquivalenceGeneral(int const& n, PermutationGroupPtr const& group, Tint const& grp_size, Face const& eList1, Face const& eList2)
@@ -103,59 +33,14 @@ std::pair<bool,permlib::Permutation> PERMLIB_TestEquivalenceGeneral(int const& n
   return PERMLIB_TestEquivalenceGeneralNaked(n, group, eList1, eList2, eMethod);
 }
 
-
-
 template<typename Tint>
 bool PERMLIB_TestEquivalence(int const& n, PermutationGroupPtr const& group, Tint const& grp_size, Face const& eList1, Face const& eList2)
 {
   return PERMLIB_TestEquivalenceGeneral(n, group, grp_size, eList1, eList2).first;
 }
 
-
-
-
-
-
-
-Face PERMLIB_Canonicalization(int const& n, PermutationGroupPtr const& group, Face const& eList)
-{
-  DsetList eListI(n), eListO(n);
-  int siz=eList.count();
-  int aRow=eList.find_first();
-  for (int i=0; i<siz; i++) {
-    eListI[aRow]=1;
-    aRow=eList.find_next(aRow);
-  }
-  eListO=smallestSetImage(*group, eListI);
-  Face TheRet;
-  for (int i=0; i<n; i++)
-    if (eListO[i] == 1)
-      TheRet[i]=1;
-#ifdef DEBUG_GROUP
-  bool test=PERMLIB_TestEquivalence(n, *group, eList, TheRet);
-  if (!test) {
-    std::cerr << "We have major debugging to do\n";
-    throw TerminalException{1};
-  }
-#endif
-  return TheRet;
-}
-
-
-
-PermutationGroupPtr PERMLIB_GetStabilizer_general(PermutationGroupPtr const& group, Face const& eList, int const& opt)
-{
-  Face NewList=Face_EquivSimplification(eList);
-  std::set<int> eSet=GetSetFrom_DB(NewList);
-  if (opt == 0)
-    return permlib::setStabilizer_classic(*group, eSet.begin(), eSet.end());
-  else
-    return permlib::setStabilizer_partition(*group, eSet.begin(), eSet.end());
-}
-
-
-
-
+Face PERMLIB_Canonicalization(int const& n, PermutationGroupPtr const& group, Face const& eList);
+PermutationGroupPtr PERMLIB_GetStabilizer_general(PermutationGroupPtr const& group, Face const& eList, int const& opt);
 
 template<typename Tint>
 PermutationGroupPtr PERMLIB_GetStabilizer(PermutationGroupPtr const& group, Tint const& grp_size, Face const& eList)
@@ -168,10 +53,6 @@ PermutationGroupPtr PERMLIB_GetStabilizer(PermutationGroupPtr const& group, Tint
     return PERMLIB_GetStabilizer_general(group, eList, 1);
   }
 }
-
-
-
-
 
 template<typename Tint_inp>
 struct TheGroupFormat {
@@ -246,29 +127,11 @@ namespace std {
   template<>
   struct hash<permlib::Permutation>
   {
-    std::size_t operator()(permlib::Permutation const& eElt) const
-    {
-      size_t len=eElt.size();
-      std::vector<permlib::dom_int> V(len);
-      for (size_t i=0; i<len; i++)
-        V[i] = eElt.at(i);
-      return std::hash<std::vector<permlib::dom_int>>()(V);
-    }
+    std::size_t operator()(permlib::Permutation const& eElt) const;
   };
 }
 
-
-
-
-
-void WriteVectorInt(std::ostream &os, std::vector<int> const& OneInc)
-{
-  int i, siz;
-  siz=OneInc.size();
-  for (i=0; i<siz; i++)
-    os << " " << OneInc[i];
-  os << "\n";
-}
+void WriteVectorInt(std::ostream &os, std::vector<int> const& OneInc);
 
 
 

@@ -399,32 +399,7 @@ inline typename std::enable_if<is_totally_ordered<T>::value,MyVector<T>>::type C
   return eVect;
 }
 
-
-
-
-
-
-
-
-
-int IsVectorPrimitive(MyVector<int> const& TheV)
-{
-  int n=TheV.size();
-  int TheGCD=TheV(0);
-  for (int i=1; i<n; i++) {
-    int eValI=TheV(i);
-    GCD_int<int> eRec=ComputePairGcd(TheGCD, eValI);
-    TheGCD=eRec.gcd;
-  }
-  if (abs(TheGCD) == 1)
-    return 1;
-  return 0;
-}
-
-
-
-
-
+int IsVectorPrimitive(MyVector<int> const& TheV);
 
 template<typename T>
 GCD_int<T> ComputeGCD_information(std::vector<T> const& ListX)

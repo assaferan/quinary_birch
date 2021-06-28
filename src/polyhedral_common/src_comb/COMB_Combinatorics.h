@@ -26,40 +26,11 @@ public:
   BlockIteration(int const& eDim, int const& eSize) : dim(eDim), size(eSize), eVect(dim,0)
   {
   }
-  int IncrementShow()
-  {
-    for (int i=0; i<dim; i++)
-      if (eVect[i] < size-1) {
-	eVect[i]++;
-	for (int j=0; j<i; j++)
-	  eVect[j]=0;
-	return i;
-      }
-    return -1;
-  }
-  void IncrementSilent()
-  {
-    for (int i=0; i<dim; i++)
-      if (eVect[i] < size-1) {
-	eVect[i]++;
-	for (int j=0; j<i; j++)
-	  eVect[j]=0;
-	return;
-      }
-    std::cerr << "Should not reach that stage\n";
-    throw TerminalException{1};
-  }
-  std::vector<int> GetVect() const
-  {
-    return eVect;
-  }
-  int GetNbPoss() const
-  {
-    int eRet=1;
-    for (int i=0; i<dim; i++)
-      eRet *= size;
-    return eRet;
-  }
+  int IncrementShow();
+  void IncrementSilent();
+  std::vector<int> GetVect() const;
+  int GetNbPoss() const;
+  
 private:
   int dim;
   int size;
@@ -77,62 +48,16 @@ private:
     int dim_iter;
     int size_iter;
     std::vector<int> U;
-    void single_increase()
-    {
-      for (int i=0; i<dim_iter; i++)
-        if (U[i] < size_iter-1) {
-          U[i]++;
-          for (int j=0; j<i; j++)
-            U[j]=0;
-          return;
-        }
-      U = {};
-    }
+    void single_increase();
   public:
     IteratorContain(int const& eDim, int const& eSize, std::vector<int> const& eU) : dim_iter(eDim), size_iter(eSize), U(eU)
     {
     }
-    std::vector<int> const& operator*()
-    {
-      return U;
-    }
-    IteratorContain & operator++()
-    {
-      single_increase();
-      return *this;
-    }
-    IteratorContain operator++(int)
-    {
-      IteratorContain tmp = *this;
-      single_increase();
-      return tmp;
-    }
-    bool operator!=(IteratorContain const& iter)
-    {
-      if (iter.dim_iter != dim_iter)
-        return true;
-      if (iter.size_iter != size_iter)
-        return true;
-      if (iter.U.size() != U.size())
-        return true;
-      for (size_t i=0; i<U.size(); i++)
-        if (iter.U[i] != U[1])
-          return true;
-      return false;
-    }
-    bool operator==(IteratorContain const& iter)
-    {
-      if (iter.dim_iter != dim_iter)
-        return false;
-      if (iter.size_iter != size_iter)
-        return false;
-      if (iter.U.size() != U.size())
-        return false;
-      for (size_t i=0; i<U.size(); i++)
-        if (iter.U[i] != U[1])
-          return false;
-      return true;
-    }
+    std::vector<int> const& operator*();
+    IteratorContain & operator++();
+    IteratorContain operator++(int);
+    bool operator!=(IteratorContain const& iter);
+    bool operator==(IteratorContain const& iter);
   };
 public:
   // no copy
@@ -153,27 +78,11 @@ public:
   // The iterator business
   using iterator=IteratorContain;
   using const_iterator=IteratorContain;
-  const_iterator cbegin() const
-  {
-    return { dim, size, std::vector<int>(dim,0) };
-  }
-  const_iterator cend() const
-  {
-    return {dim, size, {}};
-  }
-  const_iterator begin() const
-  {
-    return { dim, size, std::vector<int>(dim,0) };
-  }
-  const_iterator end() const
-  {
-    return {dim, size, {}};
-  }
+  const_iterator cbegin() const;
+  const_iterator cend() const;
+  const_iterator begin() const;
+  const_iterator end() const;
 };
-
-
-
-
 
 
 struct BlockIterationMultiple {
@@ -193,40 +102,11 @@ public:
   BlockIterationMultiple(std::vector<int> const& eListSize) : dim(eListSize.size()), ListSize(eListSize), eVect(dim,0)
   {
   }
-  int IncrementShow()
-  {
-    for (size_t i=0; i<dim; i++)
-      if (eVect[i] < ListSize[i]-1) {
-	eVect[i]++;
-	for (size_t j=0; j<i; j++)
-	  eVect[j]=0;
-	return i;
-      }
-    return -1;
-  }
-  void IncrementSilent()
-  {
-    for (size_t i=0; i<dim; i++)
-      if (eVect[i] < ListSize[i]-1) {
-	eVect[i]++;
-	for (size_t j=0; j<i; j++)
-	  eVect[j]=0;
-	return;
-      }
-    std::cerr << "Should not reach that stage\n";
-    throw TerminalException{1};
-  }
-  std::vector<int> GetVect() const
-  {
-    return eVect;
-  }
-  size_t GetNbPoss() const
-  {
-    size_t eRet=1;
-    for (size_t i=0; i<dim; i++)
-      eRet *= ListSize[i];
-    return eRet;
-  }
+  int IncrementShow();
+  void IncrementSilent();
+  std::vector<int> GetVect() const;
+  size_t GetNbPoss() const;
+  
 private:
   size_t dim;
   std::vector<int> ListSize;
@@ -249,25 +129,7 @@ Tint ConvertVectorToNumber(std::vector<int> const& V, int const& N)
 }
 
 
-std::vector<int> RandomPermutation(int const& n)
-{
-  std::vector<int> RetList(n,-1);
-  for (int i=0; i<n; i++) {
-    int rnd_pos = rand() % (n - i);
-    int idx=0;
-    bool IsAssigned = false;
-    for (int j=0; j<n; j++) {
-      if (RetList[j] == -1 && !IsAssigned) {
-        if (rnd_pos == idx) {
-          RetList[j] = i;
-          IsAssigned = true;
-        }
-        idx++;
-      }
-    }
-  }
-  return RetList;
-}
+std::vector<int> RandomPermutation(int const& n);
 
 
 
@@ -364,40 +226,10 @@ public:
   BlockIteration01(int const& eDim) : dim(eDim), eFace(dim)
   {
   }
-  int IncrementShow()
-  {
-    for (int i=0; i<dim; i++)
-      if (eFace[i] == 0) {
-	eFace[i]=1;
-	for (int j=0; j<i; j++)
-	  eFace[j]=0;
-	return i;
-      }
-    return -1;
-  }
-  void IncrementSilent()
-  {
-    for (int i=0; i<dim; i++)
-      if (eFace[i] == 0) {
-	eFace[i]=1;
-	for (int j=0; j<i; j++)
-	  eFace[j]=0;
-	return;
-      }
-    std::cerr << "Should not reach that stage\n";
-    throw TerminalException{1};
-  }
-  Face GetFace() const
-  {
-    return eFace;
-  }
-  int GetNbPoss() const
-  {
-    int eRet=1;
-    for (int i=0; i<dim; i++)
-      eRet *= 2;
-    return eRet;
-  }
+  int IncrementShow();
+  void IncrementSilent();
+  Face GetFace() const;
+  int GetNbPoss() const;
 private:
   int dim;
   Face eFace;
