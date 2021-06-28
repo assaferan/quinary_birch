@@ -29,7 +29,7 @@ public:
   inline const R& operator()(size_t i, size_t j) const {return this->_mat[i][j]; }
   inline R& operator()(size_t i, size_t j) {return this->_mat[i][j];}
 
-  inline const array & getArray(void) {return this->_mat;}
+  inline array getArray(void) {return this->_mat;}
   
   // return the i-th row
   VectorInt<R,n> operator[](size_t i) const;
