@@ -90,7 +90,8 @@ public:
 				bool calc_aut = false);
 
   static QuadFormZZ<R,n> reduceNonUnique(const QuadFormZZ<R,n> & q,
-					 Isometry<R,n> & isom);
+					 Isometry<R,n> & isom,
+					 ReductionMethod alg = GREEDY_REDUCTION);
 
   std::unordered_set<Isometry<R,n>> properAutomorphisms(void) const;
 
