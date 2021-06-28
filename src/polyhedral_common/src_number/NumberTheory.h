@@ -127,10 +127,7 @@ struct underlying_ring<mpq_class> {
 };
 
 
-mpz_class GetRingElement(mpq_class const& eVal)
-{
-  return eVal.get_num();
-}
+mpz_class GetRingElement(mpq_class const& eVal);
 
 
 //
