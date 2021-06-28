@@ -5,9 +5,9 @@
 // http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt
 //
 
-#include "Temp_common.h"
-#include "Basic_string.h"
-#include "hash_functions.h"
+#include "polyhedral_common/src_basic/Temp_common.h"
+#include "polyhedral_common/src_basic/Basic_string.h"
+#include "polyhedral_common/src_basic/hash_functions.h"
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
