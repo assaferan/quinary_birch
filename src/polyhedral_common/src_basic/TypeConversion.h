@@ -197,7 +197,7 @@ struct is_mpq_class {
 
 // basic numeric code
 
-inline int IntFloor(double const& x)
+int IntFloor(double const& x)
 {
   return int(floor(x));
 }
