@@ -7,6 +7,7 @@
 // All GMP are in NumberTheory.h
 // All mpreal are in mpreal_related.h
 
+#include <cstdint>
 #include <math.h>
 #include <type_traits>
 
