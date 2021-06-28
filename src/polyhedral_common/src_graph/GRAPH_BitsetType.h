@@ -11,7 +11,7 @@ public:
   GraphBitset(size_t const& inpNbVert) : nbVert(inpNbVert)
   {
     size_t eProd = nbVert * nbVert;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
     std::cerr << "nbVert=" << nbVert << " eProd=" << eProd << "\n";
 #endif
     LLAdj=boost::dynamic_bitset<>(eProd);
