@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
     num_evs_str >> num_evs;
   }
 
-  std::ifstream is("polyhedral_common/Examples/ConwaySloane_LatticeNoBasis");
+  std::ifstream is("src/polyhedral_common/Examples/ConwaySloane_LatticeNoBasis");
   MyMatrix<Z32> eMat = ReadMatrix<Z32>(is);
   Canonic_PosDef<Z32,Z32> RetF = ComputeCanonicalForm<Z32,Z32>(eMat);
   
