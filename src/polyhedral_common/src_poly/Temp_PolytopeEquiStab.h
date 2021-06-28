@@ -1666,8 +1666,19 @@ WeightMatrix<T,T> ReadWeightedMatrix(std::istream &is)
 
 int GetNeededPower(int nb);
 
-
-inline void GetBinaryExpression(int eVal, size_t h, std::vector<int> & eVect);
+inline void GetBinaryExpression(int eVal, size_t h, std::vector<int> & eVect)
+{
+  int eWork, eExpo, eExpoB, res;
+  eWork=eVal;
+  eExpo=1;
+  for (size_t i=0; i<h; i++) {
+    eExpoB=eExpo*2;
+    res=eWork % eExpoB;
+    eVect[i]=res/eExpo;
+    eExpo=eExpoB;
+    eWork=eWork - res;
+  }
+}
 
 
 #ifdef USE_PAIRS
