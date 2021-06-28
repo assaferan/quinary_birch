@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "polyhedral_common/src_latt/MatrixCanonicalForm.h"
 #include "TestBirch.h"
 
 
@@ -19,6 +20,10 @@ int main(int argc, char* argv[])
     num_evs_str >> num_evs;
   }
 
+  std::ifstream is("polyhedral_common/Examples/ConwaySloane_LatticeNoBasis");
+  MyMatrix<Z32> eMat = ReadMatrix<Z32>(is);
+  Canonic_PosDef<Z32,Z32> RetF = ComputeCanonicalForm<Z32,Z32>(eMat);
+  
   runBirchTests(num_evs);
   
   return 0;
