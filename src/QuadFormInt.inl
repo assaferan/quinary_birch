@@ -1165,16 +1165,19 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   std::unordered_set< Isometry<R,n> > auts;
   SquareMatrixInt<R,n> qf = q.bilinearForm();
   size_t num_aut = 0;
+  MyMatrix<R> mat;
+  CanonicPosDef<R,R> can_form;
+  SquareMatrixInt<R,n> can_basis;
   
   switch(alg) {
-  case CANONICAL_FORM:
-    MyMatrix<R> mat = ConvertMatrix(qf->getArray());
-    Canonic_PosDef<R,R> can_form = ComputeCanonicalForm<R,R>(mat);
+  case CANONICAL_FORM :
+    mat = ConvertMatrix(qf.getArray());
+    can_form = ComputeCanonicalForm<R,R>(mat);
     qf = can_form.Mat;
-    SquareMatrixInt<R,n> can_basis = can_form.Basis;
+    can_basis = can_form.Basis;
     isom = isom * can_basis;
     break;
-  case GREEDY:
+  case GREEDY :
     num_aut = _iReduce(qf, isom, auts, calc_aut);
     break;
   default:
@@ -1199,47 +1202,51 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
 {
   assert(q.bilinearForm().isPositiveDefinite());
   SquareMatrixInt<R,n> qf = q.bilinearForm();
+  
+  bool all_eq;
+  MyMatrix<R> mat;
+  Canonic_PosDef<R,R> can_form;
+  SquareMatrixInt<R,n> can_basis;
 
   switch(alg) {
   case GREEDY :
     greedy(qf, isom);
-    QuadFormZZ<R,n> q_red_g(qf);
-  
+   
     // if n == 5 and all 5 shortest vectors are of the same length
     // the orbit would be very large and we prefer not to try and compute it.
     // !! TODO - it seems that the orbit itself would not be very large.
     // However, determining it takes a long time. (verifying that we covered everything).
     // Can we figure out a way to make sure we covered everything more efficiently?
     if (n == 5) {
-      bool all_eq = true;
+      all_eq = true;
       // for now, when n == 5, we always reduce completely
       /*
 	for (size_t j = 1; j < n; j++)
 	all_eq = (all_eq) && (q_red(j,j) == q_red(0,0));
       */
       if (all_eq) {
-	q_red_g = reduce(q_red_g, isom, alg);
+	qf = reduce(qf, isom, alg);
       }
     }
-    return q_red_g;
-    // This is here in case we would want to remove the return statement
+
     break;
     
   case CANONICAL_FORM :
-    MyMatrix<R> mat = ConvertMatrix(qf->getArray());
-    Canonic_PosDef<R,R> can_form = ComputeCanonicalForm<R,R>(mat);
+    mat = ConvertMatrix(qf.getArray());
+    can_form = ComputeCanonicalForm<R,R>(mat);
     qf = can_form.Mat;
-    SquareMatrixInt<R,n> can_basis = can_form.Basis;
+    can_basis = can_form.Basis;
     isom = isom * can_basis;
-    QuadFormZZ<R,n> q_red_c(qf);
-    return q_red_c;
-    // This is here in case we would want to remove the return statement
     break;
+    
   default:
     throw std::runtime_error("Unknown reduction method!\n");
     // This is here in case we would want to remove the throw statement
     break;
   }
+  QuadFormZZ<R,n> q_red(qf);
+
+  return q_red;
 }
 
 template<typename R, size_t n>
