@@ -2,8 +2,8 @@
 #define INCLUDE_PERMLIB_SPECIFIC_H
 
 
-#include "Boost_bitset.h"
-#include "hash_functions.h"
+#include "polyhedral_common/src_comb/Boost_bitset.h"
+#include "polyhedral_common/src_basic/hash_functions.h"
 #include <permlib/permlib_api.h>
 
 
