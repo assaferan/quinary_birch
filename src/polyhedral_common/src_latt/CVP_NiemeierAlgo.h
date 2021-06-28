@@ -4,7 +4,7 @@
 #include "LatticeDefinitions.h"
 #include "NiemeierN23_24A1.h"
 #include "polyhedral_common/src_number/NumberTheory.h"
-#include "COMB_Combinatorics.h"
+#include "polyhedral_common/src_comb/COMB_Combinatorics.h"
 
 
 //
