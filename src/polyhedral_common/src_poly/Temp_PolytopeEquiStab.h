@@ -878,11 +878,11 @@ WeightMatrixAbs<T> GetSimpleWeightMatrixAntipodal_AbsTrick(MyMatrix<T> const& Th
     }
   }
   WeightMatrix<T,T> WMat=WeightMatrix<T,T>(nbPair, INP_TheMat, INP_ListWeight, INP_TheTol);
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "Before positionZero=" << positionZero << "\n";
 #endif
   positionZero = ReorderingSetWeight_specificPosition(WMat, positionZero);
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "Afeter positionZero=" << positionZero << "\n";
 #endif
 #ifdef TIMINGS
@@ -1222,7 +1222,7 @@ std::vector<Tout> GetLocalInvariantWeightMatrix(WeightMatrix<T1,T2> const&WMat, 
 template<typename T1, typename T2, typename Tgroup>
 WeightMatrix<T1,T2> WeightMatrixFromPairOrbits(Tgroup const& GRP, std::ostream & os)
 {
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   bool IsDiag;
 #endif
   size_t n=GRP.n_act();
@@ -1289,7 +1289,7 @@ WeightMatrix<T1,T2> WeightMatrixFromPairOrbits(Tgroup const& GRP, std::ostream &
     std::pair<int,int> eStart=GetUnset();
     if (eStart.first == -1)
       break;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
     IsDiag=false;
     if (eStart.first == eStart.second)
       IsDiag=true;
@@ -1327,13 +1327,13 @@ WeightMatrix<T1,T2> WeightMatrixFromPairOrbits(Tgroup const& GRP, std::ostream &
       SetZero(iChoice);
       iChoice=iChoiceB;
     }
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
     os << "     size=" << GRP.size() << " orbSize=" << orbSize << "\n";
 #endif
     iOrbit++;
   }
   WMat.SetWeight(ListWeight);
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   for (size_t i=0; i<n; i++)
     os << "i=" << i << "/" << n << " val=" << WMat.GetValue(i,i) << "\n";
 #endif
@@ -1719,7 +1719,7 @@ size_t get_total_number_vertices(WeightMatrix<T1,T2> const& WMat)
   size_t nbRow=WMat.rows();
   size_t nbVert=nbRow + 2;
   size_t nbVertTot=nbVert * hS;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "nbWei=" << nbWei << " nbMult=" << nbMult << " hS=" << hS << " nbRow=" << nbRow << " nbVertTot=" << nbVertTot << "\n";
 #endif
   return nbVertTot;
@@ -1798,16 +1798,16 @@ size_t get_total_number_vertices(WeightMatrix<T1,T2> const& WMat)
 {
   size_t nbWei=WMat.GetWeightSize();
   size_t nbMult=nbWei+2;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "nbWei=" << nbWei << " nbMult=" << nbMult << "\n";
 #endif
   size_t hS=GetNeededPower(nbMult);
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "hS=" << hS << "\n";
 #endif
   size_t nbRow=WMat.rows();
   size_t nbVert=nbRow + 2;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "nbVert=" << nbVert << "\n";
 #endif
   return hS*nbVert;
@@ -1819,7 +1819,7 @@ void GetGraphFromWeightedMatrix_color_adj(WeightMatrix<T1,T2> const& WMat, Fcolo
 {
   size_t nbWei=WMat.GetWeightSize();
   size_t nbMult=nbWei+2;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "nbWei=" << nbWei << " nbMult=" << nbMult << "\n";
 #endif
   size_t hS=GetNeededPower(nbMult);
@@ -2057,7 +2057,7 @@ std::pair<std::vector<Tidx>, std::vector<Tidx>> GetCanonicalizationVector_Kernel
   //
   size_t nbVert=nbRow+2;
   size_t hS = nof_vertices / nbVert;
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG
   if (hS * nbVert != nof_vertices) {
     std::cerr << "Error in the number of vertices\n";
     std::cerr << "hS=" << hS << " nbVert=" << nbVert << " nof_vertices=" << nof_vertices << "\n";
@@ -2434,7 +2434,7 @@ EquivTest<MyMatrix<Tint>> LinPolytopeAntipodalIntegral_CanonicForm_AbsTrick(MyMa
 #ifdef USE_TRACES
   std::pair<std::vector<unsigned int>, std::vector<std::vector<unsigned int>>> ePair = TRACES_GetCanonicalOrdering_ListGenerators(eGR);
 #endif
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   //  PrintStabilizerGroupSizes(std::cerr, eGR);
   std::string eExpr = GetCanonicalForm_string(eGR, ePair.first);
   mpz_class eHash1 = MD5_hash_mpz(eExpr);
@@ -2565,7 +2565,7 @@ EquivTest<MyMatrix<Tint>> LinPolytopeAntipodalIntegral_CanonicForm_AbsTrick(MyMa
   MyMatrix<Tint> EXTreord(nbRow, n_cols);
   std::vector<int> ListSigns(nbRow,0);
   ListSigns[0]=1;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::string strAssign;
   std::cerr << "positionZero=" << WMatAbs.positionZero << "\n";
 #endif
@@ -2579,7 +2579,7 @@ EquivTest<MyMatrix<Tint>> LinPolytopeAntipodalIntegral_CanonicForm_AbsTrick(MyMa
           int ValSign = 1 - 2*int(ChgSign);
           int RetSign = ValSign * ListSigns[k_row];
           ListSigns[i_row] = RetSign;
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
           strAssign += " (" + std::to_string(i_row) + " / " + std::to_string(k_row) + ")";
 #endif
           return;
@@ -2597,12 +2597,12 @@ EquivTest<MyMatrix<Tint>> LinPolytopeAntipodalIntegral_CanonicForm_AbsTrick(MyMa
     if (nbUndone == 0)
       break;
   };
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   mpz_class eHash2 = MD5_hash_mpz(strAssign);
   std::cerr << "strAssign=" << strAssign << "\n";
   std::cerr << "eHash2=" << eHash2 << "\n";
 #endif
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::string strWMat;
   for (size_t i_row=0; i_row<nbRow; i_row++) {
     int i_rowC = PairCanonic.second[i_row];
@@ -2625,7 +2625,7 @@ EquivTest<MyMatrix<Tint>> LinPolytopeAntipodalIntegral_CanonicForm_AbsTrick(MyMa
     for (size_t i_col=0; i_col<n_cols; i_col++)
       EXTreord(i_row, i_col) = eSign * EXT(j_row, i_col);
   }
-#ifdef DEBUG
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "EXTreord=\n";
   WriteMatrix(std::cerr, EXTreord);
   WriteMatrixGAP(std::cerr, EXTreord);
