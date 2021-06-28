@@ -27,7 +27,7 @@ public:
 
   typedef enum ReductionMethod
     {
-     GREEDY_REDUCTION,
+     GREEDY,
      CANONICAL_FORM
     } ReductionMethod;
   
@@ -87,11 +87,12 @@ public:
 
   static QuadFormZZ<R,n> reduce(const QuadFormZZ<R,n> & q,
 				Isometry<R,n> & isom,
+				ReductionMethod alg = GREEDY,
 				bool calc_aut = false);
 
   static QuadFormZZ<R,n> reduceNonUnique(const QuadFormZZ<R,n> & q,
 					 Isometry<R,n> & isom,
-					 ReductionMethod alg = GREEDY_REDUCTION);
+					 ReductionMethod alg = GREEDY);
 
   std::unordered_set<Isometry<R,n>> properAutomorphisms(void) const;
 

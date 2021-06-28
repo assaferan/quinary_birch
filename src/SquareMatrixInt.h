@@ -1,7 +1,7 @@
 #ifndef __SQUARE_MATRIX_INT_H_
 #define __SQUARE_MATRIX_INT_H_
 
-#include <stdalign.h>
+// #include <stdalign.h>
 
 // We create this one to mkae matrix operations more efficient when the underlying class is integral
 // At first tries to let it inherit from SquareMatrix<Integer<R>, IntegerRing<R>, n>
@@ -17,6 +17,7 @@ public:
   SquareMatrixInt(const R mat[n][n]);
   SquareMatrixInt(const SquareMatrixInt<R,n> & mat);
   SquareMatrixInt(const SquareMatrix<Integer<R>,IntegerRing<R>,n> & );
+  SquareMatrixInt(const MyMatrix<R> & mat);
 
   // assignment
   SquareMatrixInt<R,n> & operator=(const SquareMatrixInt<R,n> &);
@@ -25,6 +26,8 @@ public:
   inline const R& operator()(size_t i, size_t j) const {return this->_mat[i][j]; }
   inline R& operator()(size_t i, size_t j) {return this->_mat[i][j];}
 
+  inline const R[n][n] & getArray(void) {return this->_mat;}
+  
   // return the i-th row
   VectorInt<R,n> operator[](size_t i) const;
   

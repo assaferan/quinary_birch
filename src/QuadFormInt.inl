@@ -3,6 +3,8 @@
 #include <map>
 #include <random>
 
+#include "polyhedral_common/src_latt/MatrixCanonicalForm.h"
+
 #include "birch_util.h"
 #include "Fp.h"
 #include "FpElement.h"
@@ -1155,15 +1157,34 @@ inline std::unordered_set<Isometry<R,n>> QuadFormInt<R,n>::properAutomorphisms(v
 template<typename R, size_t n>
 inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 						Isometry<R,n> & isom,
+						typename QuadFormInt<R,n>::ReductionMethod alg,
 						bool calc_aut)
 {
   assert(q.bilinearForm().isPositiveDefinite());
 
   std::unordered_set< Isometry<R,n> > auts;
   SquareMatrixInt<R,n> qf = q.bilinearForm();
-  size_t num_aut = _iReduce(qf, isom, auts, calc_aut);
+  size_t num_aut = 0;
+  
+  switch(alg) {
+  case CANONICAL_FORM:
+    MyMatrix<R> mat = ConvertMatrix(qf->getArray());
+    Canonic_PosDef<R,R> can_form = ComputeCanonicalForm<R,R>(mat);
+    qf = can_form.Mat;
+    SquareMatrixInt<R,n> can_basis = can_form.Basis;
+    isom = isom * can_basis;
+    break;
+  case GREEDY:
+    num_aut = _iReduce(qf, isom, auts, calc_aut);
+    break;
+  default:
+    throw std::runtime_error("Unknown reduction method!\n");
+  }
   QuadFormZZ<R,n> q_red(qf);
   if (calc_aut) {
+    // until we figure out how to compute automorphism groups in the canonical form package
+    if (num_aut == 0)
+      num_aut = _iReduce(qf, isom, auts, calc_aut);
     q_red._num_aut = num_aut;
     q_red._num_aut_init = true;
   }
@@ -1177,29 +1198,48 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
 							 typename QuadFormInt<R,n>::ReductionMethod alg)
 {
   assert(q.bilinearForm().isPositiveDefinite());
-
   SquareMatrixInt<R,n> qf = q.bilinearForm();
-  greedy(qf, isom);
-  QuadFormZZ<R,n> q_red(qf);
 
-  // if n == 5 and all 5 shortest vectors are of the same length
-  // the orbit would be very large and we prefer not to try and compute it.
-  // !! TODO - it seems that the orbit itself would not be very large.
-  // However, determining it takes a long time. (verifying that we covered everything).
-  // Can we figure out a way to make sure we covered everything more efficiently?
-  if (n == 5) {
-    bool all_eq = true;
-    // for now, when n == 5, we always reduce completely
-    /*
-    for (size_t j = 1; j < n; j++)
-      all_eq = (all_eq) && (q_red(j,j) == q_red(0,0));
-    */
-    if (all_eq) {
-      q_red = reduce(q_red, isom);
-    }
-  }
+  switch(alg) {
+  case GREEDY :
+    greedy(qf, isom);
+    QuadFormZZ<R,n> q_red(qf);
   
-  return q_red;
+    // if n == 5 and all 5 shortest vectors are of the same length
+    // the orbit would be very large and we prefer not to try and compute it.
+    // !! TODO - it seems that the orbit itself would not be very large.
+    // However, determining it takes a long time. (verifying that we covered everything).
+    // Can we figure out a way to make sure we covered everything more efficiently?
+    if (n == 5) {
+      bool all_eq = true;
+      // for now, when n == 5, we always reduce completely
+      /*
+	for (size_t j = 1; j < n; j++)
+	all_eq = (all_eq) && (q_red(j,j) == q_red(0,0));
+      */
+      if (all_eq) {
+	q_red = reduce(q_red, isom);
+      }
+    }
+    return q_red;
+    // This is here in case we would want to remove the return statement
+    break;
+    
+  case CANONICAL_FORM :
+    MyMatrix<R> mat = ConvertMatrix(qf->getArray());
+    Canonic_PosDef<R,R> can_form = ComputeCanonicalForm<R,R>(mat);
+    qf = can_form.Mat;
+    SquareMatrixInt<R,n> can_basis = can_form.Basis;
+    isom = isom * can_basis;
+    QuadFormZZ<R,n> q_red(qf);
+    return q_red;
+    // This is here in case we would want to remove the return statement
+    break;
+  default:
+    throw std::runtime_error("Unknown reduction method!\n");
+    // This is here in case we would want to remove the throw statement
+    break;
+  }
 }
 
 template<typename R, size_t n>
