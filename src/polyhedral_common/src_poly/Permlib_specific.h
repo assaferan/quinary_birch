@@ -122,7 +122,6 @@ public:
   }
 };
 
-
 namespace std {
   template<>
   struct hash<permlib::Permutation>
@@ -132,33 +131,6 @@ namespace std {
 }
 
 void WriteVectorInt(std::ostream &os, std::vector<int> const& OneInc);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 struct PairEltPerm {
   permlib::dom_int eElt;
@@ -172,64 +144,11 @@ struct MyFormTransversal {
 };
 
 
-permlib::Permutation IdentityPermutation(int const& n)
-{
-  std::vector<permlib::dom_int> v(n);
-  for (int i=0; i<n; i++)
-    v[i]=i;
-  return permlib::Permutation(v);
-}
+permlib::Permutation IdentityPermutation(int const& n);
 
 
 MyFormTransversal GetListPermutation(PermutationGroupPtr TheGRP,
-				     permlib::SchreierTreeTransversal<permlib::Permutation> const& eTrans)
-{
-  permlib::dom_int n=TheGRP->n;
-  permlib::dom_int eElt=eTrans.element();
-  std::unordered_set<permlib::Permutation, std::hash<permlib::Permutation>> ListPermWork;
-  for (std::shared_ptr<permlib::Permutation> & p : eTrans.GetMtransversal() ) {
-    if (p) {
-      permlib::Permutation ePerm=*p;
-      ListPermWork.insert(ePerm);
-    }
-  }
-  std::unordered_set<permlib::dom_int> SetOrbit;
-  std::vector<PairEltPerm> ListPair;
-  std::vector<bool> StatusDone;
-  std::function<void(permlib::dom_int,permlib::Permutation)> fInsert=[&](permlib::dom_int const& eVal, permlib::Permutation const& ePerm) -> void {
-    std::unordered_set<permlib::dom_int>::iterator iter=SetOrbit.find(eVal);
-    if (iter == SetOrbit.end()) {
-      SetOrbit.insert(eVal);
-      PairEltPerm ePair{eVal, ePerm};
-      ListPair.push_back(ePair);
-      StatusDone.push_back(false);
-    }
-  };
-  permlib::Permutation ePerm=IdentityPermutation(n);
-  fInsert(eElt, ePerm);
-  while(true) {
-    bool IsFinished=true;
-    int len=ListPair.size();
-    for (int i=0; i<len; i++)
-      if (!StatusDone[i]) {
-	StatusDone[i]=true;
-	IsFinished=false;
-	for (auto & fPerm : ListPermWork) {
-	  permlib::dom_int fVal=fPerm.at(ListPair[i].eElt);
-	  permlib::Permutation eProd=ListPair[i].ePerm*fPerm;
-	  permlib::dom_int gVal=eProd.at(eElt);
-	  if (gVal != fVal) {
-	    std::cerr << "Inconsistency here on the permutation product\n";
-	    throw TerminalException{1};
-	  }
-	  fInsert(fVal, eProd);
-	}
-      }
-    if (IsFinished)
-      break;
-  }
-  return {eElt, ListPair};
-}
+				     permlib::SchreierTreeTransversal<permlib::Permutation> const& eTrans);
 
 struct IteratorGrp {
   int n;
@@ -316,73 +235,10 @@ ResultMinimum<Tint> GetMinimumRecord(OrbitMinimumArr<Tint> const& ArrMin, Face c
   return {FaceMin, eOrbitSize};
 }
 
-
-
-
-
-
-permlib::Permutation GetPermutation(IteratorGrp const& eIter)
-{
-  int n=eIter.n;
-  permlib::Permutation ePerm=IdentityPermutation(n);
-  int nbClass=eIter.ListPos.size();
-  for (int i=0; i<nbClass; i++) {
-    size_t ePos=eIter.ListPos[i];
-    ePerm = eIter.ListTrans[i].ListPair[ePos].ePerm*ePerm;
-  }
-  return ePerm;
-}
-
-bool IsFinalIterator(IteratorGrp const& eIter)
-{
-  int nbClass=eIter.ListPos.size();
-  for (int i=0; i<nbClass; i++) {
-    size_t siz=eIter.ListTrans[i].ListPair.size();
-    if (eIter.ListPos[i] < siz-1)
-      return false;
-  }
-  return true;
-}
-
-int IteratorIncrease(IteratorGrp & eIter)
-{
-  int nbClass=eIter.ListPos.size();
-  for (int i=0; i<nbClass; i++)
-    if (eIter.ListPos[i] < eIter.ListTrans[i].ListPair.size() -1) {
-      eIter.ListPos[i]++;
-      for (int j=0; j<i; j++)
-	eIter.ListPos[j]=0;
-      return 0;
-    }
-  return -1;
-}
-
-
-bool TestBelongingInGroup(IteratorGrp const& eIter, permlib::Permutation const& ePerm)
-{
-  permlib::Permutation eWork=ePerm;
-  int nbClass=eIter.ListTrans.size();
-  std::function<bool(permlib::dom_int,int)> fUpdate=[&](permlib::dom_int const& eElt,int const& i) -> bool {
-    permlib::dom_int eImg=eWork.at(eElt);
-    int len=eIter.ListTrans[i].ListPair.size();
-    for (int j=0; j<len; j++)
-      if (eIter.ListTrans[i].ListPair[j].eElt == eImg) {
-	eWork = eWork * (~eIter.ListTrans[i].ListPair[j].ePerm);
-	return true;
-      }
-    return false;
-  };
-  for (int i=0; i<nbClass; i++) {
-    permlib::dom_int eElt=eIter.ListTrans[i].eElt;
-    bool test1=fUpdate(eElt, i);
-    if (!test1)
-      return false;
-  }
-  return eWork.isIdentity();
-}
-
-
-
+permlib::Permutation GetPermutation(IteratorGrp const& eIter);
+bool IsFinalIterator(IteratorGrp const& eIter);
+int IteratorIncrease(IteratorGrp & eIter);
+bool TestBelongingInGroup(IteratorGrp const& eIter, permlib::Permutation const& ePerm);
 
 
 template<typename Tint>
