@@ -1203,7 +1203,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
   switch(alg) {
   case GREEDY :
     greedy(qf, isom);
-    QuadFormZZ<R,n> q_red(qf);
+    QuadFormZZ<R,n> q_red_g(qf);
   
     // if n == 5 and all 5 shortest vectors are of the same length
     // the orbit would be very large and we prefer not to try and compute it.
@@ -1218,10 +1218,10 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
 	all_eq = (all_eq) && (q_red(j,j) == q_red(0,0));
       */
       if (all_eq) {
-	q_red = reduce(q_red, isom);
+	q_red_g = reduce(q_red_g, isom, alg);
       }
     }
-    return q_red;
+    return q_red_g;
     // This is here in case we would want to remove the return statement
     break;
     
@@ -1231,8 +1231,8 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
     qf = can_form.Mat;
     SquareMatrixInt<R,n> can_basis = can_form.Basis;
     isom = isom * can_basis;
-    QuadFormZZ<R,n> q_red(qf);
-    return q_red;
+    QuadFormZZ<R,n> q_red_c(qf);
+    return q_red_c;
     // This is here in case we would want to remove the return statement
     break;
   default:
