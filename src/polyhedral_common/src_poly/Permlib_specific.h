@@ -59,11 +59,13 @@ struct TheGroupFormat {
 private:
   int n;
   Tint_inp e_size;
+  
+public:
   PermutationGroupPtr group;
   TheGroupFormat(int const& _n, Tint_inp const& _size, PermutationGroupPtr const& _group) : n(_n), e_size(_size), group(_group)
   {
   }
-public:
+  
   using Tint = Tint_inp;
   using Telt = permlib::Permutation;
   TheGroupFormat(std::vector<permlib::Permutation> const& ListPerm, int const& n_inp)
