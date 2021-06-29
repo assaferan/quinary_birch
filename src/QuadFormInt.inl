@@ -4,6 +4,7 @@
 #include <random>
 
 #include "polyhedral_common/src_latt/MatrixCanonicalForm.h"
+#include "polyhedral_common/src_latt/Temp_Tspace_general.h"
 
 #include "birch_util.h"
 #include "Fp.h"
@@ -1164,7 +1165,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 
   std::unordered_set< Isometry<R,n> > auts;
   SquareMatrixInt<R,n> qf = q.bilinearForm();
-  size_t num_aut;
+  size_t num_aut = 0;
   MyMatrix<R> mat;
   Canonic_PosDef<R,R> can_form;
   SquareMatrixInt<R,n> can_basis;
@@ -1179,11 +1180,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     qf = can_form.Mat;
     can_basis = can_form.Basis;
     isom = isom * can_basis.transpose();
-    if (calc_aut) {
       T_GetGramMatrixAutomorphismGroup(mat, 0, grp_perm, list_matr_gens);
-      num_aut = q_red.numAutomorphisms();
-      assert(grp_perm.size() == num_aut);
-    }
     break;
   case GREEDY :
     num_aut = _iReduce(qf, isom, auts, calc_aut);
@@ -1194,6 +1191,11 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   QuadFormZZ<R,n> q_red(qf);
   if (calc_aut) {
     // until we figure out how to compute automorphism groups in the canonical form package
+    if (num_aut == 0) {
+      T_GetGramMatrixAutomorphismGroup(mat, 0, grp_perm, list_matr_gens);
+      num_aut = q_red.numAutomorphisms();
+      assert(grp_perm.size() == num_aut);
+    }
     q_red._num_aut = num_aut;
     q_red._num_aut_init = true;
   }
