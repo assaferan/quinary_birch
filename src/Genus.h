@@ -45,8 +45,8 @@ public:
 
   Genus(const QuadFormZZ<R,n>& q,
 	const std::vector<PrimeSymbol<R>>& symbols,
-	W64 seed=0,
-	typename QuadFormInt<R,n>::ReductionMethod alg=GREEDY);
+	ReductionMethod alg=GREEDY,
+	W64 seed=0);
 
   // copy c-tor
   template<typename T>
@@ -121,7 +121,7 @@ protected:
   // mapping from the invariant hash to the genus representatives
   std::unordered_map< size_t, size_t > _inv_map;
   W64 _seed;
-  typename QuadFormInt<R,n>::ReductionMethod _alg;
+  ReductionMethod _alg;
 
   template<typename S, typename T>
   std::vector< NumberFieldElement<Z> > _eigenvectors(EigenvectorManager<R,n>& manager,

@@ -187,8 +187,8 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 template<typename R, size_t n>
 Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 		  const std::vector<PrimeSymbol<R>>& symbols,
-		  W64 seed,
-		  typename QuadFormInt<R,n>::ReductionMethod alg)
+		  ReductionMethod alg,
+		  W64 seed)
 {
   if (seed == 0)
     {
@@ -1009,7 +1009,7 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 	  */
 	  // Build the neighbor and reduce it.
 	  foo.q = manager.buildNeighbor(foo.s);
-	  foo.q = QuadFormZZ<R,n>::reduceNonUnique(foo.q, foo.s);
+	  foo.q = QuadFormZZ<R,n>::reduceNonUnique(foo.q, foo.s, this->_alg);
 
 	  assert( foo.s.isIsometry(cur.q, foo.q) );
 

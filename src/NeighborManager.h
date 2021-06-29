@@ -17,7 +17,7 @@ public:
 
   void nextIsotropicSubspace(void);
 
-  GenusRep<T,n> getReducedNeighborRep(void);
+  GenusRep<T,n> getReducedNeighborRep(ReductionMethod alg=GREEDY);
 
   // to representative of the line
   VectorInt<R,n> transformVector(const GenusRep<T,n>& dst, VectorInt<R,n> src);

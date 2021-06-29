@@ -11,9 +11,9 @@
 #include "QuadFormInt.h"
 
 template<typename R, size_t n>
-TestBirch<R,n>::TestBirch(const QuadFormZZ<R,n> & q)
+TestBirch<R,n>::TestBirch(const QuadFormZZ<R,n> & q, ReductionMethod alg)
 {
-  this->_init(q);
+  this->_init(q,alg);
   std::cerr << "Testing orthogonal modular forms for " << std::endl  << q << std::endl;
 }
 
@@ -116,9 +116,9 @@ inline bool TestBirch<R,n>::testEigenvalueTraces(const R & spinor_prime,
 }
 
 template<typename R, size_t n>
-inline TestBirch<R,n>::TestBirch(const BirchExample<R,n> & example, size_t num_evs)
+inline TestBirch<R,n>::TestBirch(const BirchExample<R,n> & example, size_t num_evs, ReductionMethod alg)
 {
-  this->_init(example.qf);
+  this->_init(example.qf, alg);
   bool pass_dim = this->testDim(example.spinor_prime, example.dim);
   if (!pass_dim)
     throw std::runtime_error("Dimension test failed.\n");
@@ -131,7 +131,7 @@ inline TestBirch<R,n>::TestBirch(const BirchExample<R,n> & example, size_t num_e
 }
 
 template<typename R, size_t n>
-inline void TestBirch<R,n>::_init(const QuadFormZZ<R,n> & q)
+inline void TestBirch<R,n>::_init(const QuadFormZZ<R,n> & q, ReductionMethod alg)
 {
   Integer<R> disc = q.discriminant();
   typename Integer<R>::FactorData facs = disc.factorization();
@@ -146,7 +146,7 @@ inline void TestBirch<R,n>::_init(const QuadFormZZ<R,n> & q)
     symbols.push_back(symb);
   }
 
-  this->_p_genus = std::make_shared< Genus<R,n> >(q, symbols);
+  this->_p_genus = std::make_shared< Genus<R,n> >(q, symbols, alg);
 }
 
 inline void runBirchTests(size_t num_evs) {

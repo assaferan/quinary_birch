@@ -25,12 +25,6 @@ public:
 
   typedef R SymVec[n*(n+1)/2];
 
-  typedef enum ReductionMethod
-    {
-     GREEDY,
-     CANONICAL_FORM
-    } ReductionMethod;
-  
   QuadFormInt()
     : _is_reduced(false),
       _num_aut(0),
@@ -88,11 +82,11 @@ public:
   static QuadFormZZ<R,n> reduce(const QuadFormZZ<R,n> & q,
 				Isometry<R,n> & isom,
 				bool calc_aut = false,
-				ReductionMethod alg = CANONICAL_FORM);
+				ReductionMethod alg = GREEDY);
 
   static QuadFormZZ<R,n> reduceNonUnique(const QuadFormZZ<R,n> & q,
 					 Isometry<R,n> & isom,
-					 ReductionMethod alg = CANONICAL_FORM);
+					 ReductionMethod alg = GREEDY);
 
   std::unordered_set<Isometry<R,n>> properAutomorphisms(void) const;
 
@@ -103,11 +97,11 @@ public:
 
   static void greedy(SquareMatrixInt<R,n>& q, Isometry<R,n>& s, size_t dim = n);
 
-  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > generateOrbit() const;
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > generateOrbit(void) const;
 
   inline bool isReduced(void) const { return this->_is_reduced; }
 
-  size_t numAutomorphisms(ReductionMethod alg = CANONICAL_FORM) const;
+  size_t numAutomorphisms(ReductionMethod alg = GREEDY) const;
 
   inline void setNumAut(size_t num_aut)
   { this->_num_aut = num_aut; this->_num_aut_init = true; return;}

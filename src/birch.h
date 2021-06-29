@@ -18,6 +18,12 @@ typedef int32_t Z32;
 typedef int64_t Z64;
 typedef __int128_t Z128;
 
+typedef enum ReductionMethod
+  {
+   GREEDY,
+   CANONICAL_FORM
+  } ReductionMethod;
+
 /* Builtins */
 
 #define likely(x)   __builtin_expect(!!(x), 1)

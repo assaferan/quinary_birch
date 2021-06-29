@@ -477,12 +477,12 @@ inline void NeighborManager<R,S,T,n>::nextIsotropicSubspace(void)
 }
 
 template<typename R, typename S, typename T, size_t n>
-inline GenusRep<T,n> NeighborManager<R,S,T,n>::getReducedNeighborRep(void)
+inline GenusRep<T,n> NeighborManager<R,S,T,n>::getReducedNeighborRep(ReductionMethod alg)
 {
   GenusRep<T,n> rep;
 
   rep.q = this->buildNeighbor(rep.s);
-  rep.q = QuadFormZZ<T,n>::reduceNonUnique(rep.q, rep.s);
+  rep.q = QuadFormZZ<T,n>::reduceNonUnique(rep.q, rep.s, alg);
   
   return rep;
 }

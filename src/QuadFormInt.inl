@@ -1183,7 +1183,7 @@ template<typename R, size_t n>
 inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 						Isometry<R,n> & isom,
 						bool calc_aut,
-						typename QuadFormInt<R,n>::ReductionMethod alg)
+						ReductionMethod alg)
 {
   assert(q.bilinearForm().isPositiveDefinite());
 
@@ -1234,7 +1234,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 template<typename R, size_t n>
 inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> & q,
 							 Isometry<R,n> & isom,
-							 typename QuadFormInt<R,n>::ReductionMethod alg)
+							 ReductionMethod alg)
 {
   switch(alg) {
   case GREEDY :
@@ -1572,6 +1572,7 @@ QuadFormInt<R,n>::generateOrbit(void) const
         orbit[j->first] = i->second*j->second;
       }
     }
+    // It seems that we should also add neighbor orbit ?
   }
   return orbit;
 }
