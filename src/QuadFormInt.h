@@ -107,7 +107,7 @@ public:
 
   inline bool isReduced(void) const { return this->_is_reduced; }
 
-  size_t numAutomorphisms(void) const;
+  size_t numAutomorphisms(ReductionMethod alg = CANONICAL_FORM) const;
 
   inline void setNumAut(size_t num_aut)
   { this->_num_aut = num_aut; this->_num_aut_init = true; return;}
