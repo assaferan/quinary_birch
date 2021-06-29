@@ -81,7 +81,7 @@ public:
     // There is some issue with the empty vector - we construct the trivial group
     if (n == 0) {
       std::vector<int> v(1);
-      v[0] = 1;
+      v[0] = 0;
       generatorList.push_back(permlib::Permutation::ptr(new permlib::Permutation(v)));
       n = 1;
     }
