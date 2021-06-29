@@ -1,8 +1,8 @@
 #ifndef TEMP_POLYTOPE_FCT_INCLUDE
 #define TEMP_POLYTOPE_FCT_INCLUDE
 
-#include "MAT_Matrix.h"
-#include "Boost_bitset.h"
+#include "polyhedral_common/src_matrix/MAT_Matrix.h"
+#include "polyhedral_common/src_comb/Boost_bitset.h"
 
 template<typename T>
 MyVector<T> SumMatrixLineSubset(MyMatrix<T> const& eMat, Face const& eList)
