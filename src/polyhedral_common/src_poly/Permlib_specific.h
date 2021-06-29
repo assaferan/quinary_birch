@@ -71,13 +71,13 @@ public:
   TheGroupFormat(std::vector<permlib::Permutation> const& ListPerm, int const& n_inp)
   {
     std::vector<permlib::Permutation::ptr> generatorList;
+    n = n_inp;
     for (auto & eGen : ListPerm) {
       std::vector<int> v(n);
       for (int i=0; i<n; i++)
         v[i]=eGen.at(i);
       generatorList.push_back(permlib::Permutation::ptr(new permlib::Permutation(v)));
     }
-    n = n_inp;
     group = construct(n, generatorList.begin(), generatorList.end());
     e_size = group->order<Tint>();
   }
