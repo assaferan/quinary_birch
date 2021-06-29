@@ -3,6 +3,7 @@
 #include <map>
 #include <random>
 
+#include "polyhedral_common/src_gap/Group.h"
 #include "polyhedral_common/src_gap/Permutation.h"
 
 #include "polyhedral_common/src_latt/MatrixCanonicalForm.h"
@@ -1172,7 +1173,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   Canonic_PosDef<R,R> can_form;
   SquareMatrixInt<R,n> can_basis;
   std::vector<MyMatrix<R>> list_matr_gens;
-  permutalib::DoubleSidedPerm<R> grp_perm;
+  permutalib::Group<permutalib::DoubleSidedPerm<R>,R> grp_perm;
   
   
   switch(alg) {
