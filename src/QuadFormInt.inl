@@ -1236,11 +1236,20 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
 							 Isometry<R,n> & isom,
 							 ReductionMethod alg)
 {
+  SquareMatrixInt<R,n> qf = q.bilinearForm();
+  
   switch(alg) {
   case GREEDY :
     // We would like to be able to just perform greedy, but this fails to work at the moment
     greedy(qf, isom);
-    // return reduce(q, isom, alg);
+    bool all_eq = true;
+    
+    for (size_t j = 1; j < n; j++)
+      all_eq = (all_eq) && (qf(j,j) == qf(0,0));
+    
+    if (all_eq) {
+      return reduce(q, isom, alg);
+    }
     break;
     
   case CANONICAL_FORM :
@@ -1252,7 +1261,9 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
     // This is here in case we would want to remove the throw statement
     break;
   }
- 
+  
+  QuadFormZZ<R,n> q_red(qf);
+  return q_red;
 }
 
 template<typename R, size_t n>
@@ -1542,11 +1553,11 @@ QuadFormInt<R,n>::generateOrbit(void) const
   // Can we figure out a way to make sure we covered everything more efficiently?
   if (n == 5) {
     bool all_eq = true;
-    // for now when n==5 we always reduce completely
-    /*
+    
+    
     for (size_t j = 1; j < n; j++)
       all_eq = (all_eq) && (qf(j,j) == qf(0,0));
-    */
+    
     if (all_eq) {
       return orbit;
     }
