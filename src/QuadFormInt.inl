@@ -3,7 +3,7 @@
 #include <map>
 #include <random>
 
-#include "polyhedral_common/src_gap/Group.h"
+#include "polyhedral_common/src_gap/Permutation.h"
 
 #include "polyhedral_common/src_latt/MatrixCanonicalForm.h"
 #include "polyhedral_common/src_latt/Temp_Tspace_General.h"
