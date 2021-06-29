@@ -1,6 +1,7 @@
 
 *.h~
 *.inl~
+*.cpp~
 src/.#Fp.inl
 *.inl#
 make.log
