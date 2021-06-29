@@ -39,6 +39,8 @@ src/Makefile.in
 src/birch
 src/birch_dbg
 src/libbirch.la
+*.o
+*.lo
 src/*.o
 src/*.lo
 Makefile~
@@ -46,3 +48,9 @@ gmon.out
 src/Makefile~
 libs/
 *.cpp~
+src/*/*.o
+src/*/*.lo
+src/*/*/*.o
+src/*/*/*.lo
+src/*/*/*/*.o
+src/*/*/*/*.lo
