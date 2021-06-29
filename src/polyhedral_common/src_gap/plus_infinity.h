@@ -50,7 +50,7 @@ template<typename T>
 Tplusinfinity<T> GetInfinity()
 {
   T val = 0;
-  Tplusinfinity<T> ret = Tplusinfinity(val);
+  Tplusinfinity<T> ret = Tplusinfinity<T>(val);
   ret.SetToInfinity();
   return ret;
 }
