@@ -1554,7 +1554,6 @@ QuadFormInt<R,n>::generateOrbit(void) const
   if (n == 5) {
     bool all_eq = true;
     
-    
     for (size_t j = 1; j < n; j++)
       all_eq = (all_eq) && (qf(j,j) == qf(0,0));
     
