@@ -330,7 +330,7 @@ template<typename T, typename Tint, typename Tgroup>
 void T_GetGramMatrixAutomorphismGroup(MyMatrix<T> const& eMat, T const& TheTol, Tgroup & GRPperm, std::vector<MyMatrix<Tint>> &ListMatrGens)
 {
   T MaxDet=T_GRAM_GetUpperBound(eMat);
-  MyMatrix<Tint> ListShort=T_ShortVector(eMat, MaxDet);
+  MyMatrix<Tint> ListShort=T_ShortVector<T,Tint>(eMat, MaxDet);
   MyMatrix<T> ListShort_T=ConvertMatrixUniversal<T,Tint>(ListShort);
   WeightMatrix<T, T> WMat=GetWeightMatrixGramMatShort(eMat, ListShort, TheTol);
   GRPperm=GetStabilizerWeightMatrix(WMat);
