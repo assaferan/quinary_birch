@@ -44,10 +44,11 @@ public:
   inline Rational<R> operator-(const Rational<R> &b) const override
   {return (*this)+(-b); }
   Rational<R> operator*(const Rational<R> &) const override;
+  /*
   inline Rational<R> operator*(const Integer<R> & b) const {
     Rational<R> b_rat(b);
     return (*this)*b_rat;
-  }
+    }*/
 
   Rational<R> operator/(const Rational<R> &) const override;
   inline Rational<R> operator/(const Integer<R> & b) const {
