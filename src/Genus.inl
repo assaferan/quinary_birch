@@ -186,7 +186,9 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 
 template<typename R, size_t n>
 Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
-		  const std::vector<PrimeSymbol<R>>& symbols, W64 seed)
+		  const std::vector<PrimeSymbol<R>>& symbols,
+		  W64 seed,
+		  typename QuadFormInt<R,n>::ReductionMethod alg)
 {
   if (seed == 0)
     {
@@ -196,6 +198,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
   
   this->_disc = q.discriminant();
   this->_seed = seed;
+  this->_alg = alg;
   
   this->_prime_divisors.reserve(symbols.size());
   for (const PrimeSymbol<R>& symb : symbols)
@@ -236,8 +239,8 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
   // Should this be 1/#aut or 2/#aut? probably depends if this is SO or O
   GenusRep<R,n> rep;
   Isometry<R,n> s;
-  rep.q = QuadFormZZ<R,n>::reduce(q,s);
-  Z num_aut = rep.q.numAutomorphisms();
+  rep.q = QuadFormZZ<R,n>::reduce(q,s,false,alg);
+  Z num_aut = rep.q.numAutomorphisms(alg);
   Rational<Z> sum_mass(1, num_aut);
   
   rep.p = 1;
@@ -339,7 +342,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 	      // !!TODO - ?? Do we want this ??
 	      // We can compute it only if we need to add it.
 	      
-	      foo.q = QuadFormZZ<R,n>::reduce(foo.q, foo.s, true);
+	      foo.q = QuadFormZZ<R,n>::reduce(foo.q, foo.s, true, alg);
 
 	      assert( foo.s.transform(mother.bilinearForm()) ==
 		      foo.q.bilinearForm() );
@@ -539,6 +542,9 @@ Genus<R,n>::Genus(const Genus<T,n>& src)
 
   // Copy mass.
   this->_mass = src._mass;
+  
+  // Copy reduction method
+  this->_alg = src._alg;
 
   // Build a copy of the spinor primes hash table.
   this->_spinor_primes = std::unique_ptr<HashMap<W16>>(new HashMap<W16>(src._spinor_primes->size()));
@@ -689,7 +695,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 
       while (!done)
 	{
-	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep();
+	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep(this->_alg);
 
 #ifdef DEBUG_LEVEL_FULL
 	  std::cerr << "foo.q = " << std::endl << foo.q << std::endl;
@@ -830,7 +836,7 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 
       while (!done)
 	{
-	  GenusRep<R,n> foo = manager.getReducedNeighborRep();
+	  GenusRep<R,n> foo = manager.getReducedNeighborRep(this->_alg);
 
 	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
