@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <optional>
+#include <boost/optional.hpp>
 #include "Face_basic.h"
 
 
@@ -166,7 +166,7 @@ std::string PosFalse_to_string(int const& pos)
 
 
 template<typename T>
-std::string GapStringMissingTVector(std::vector<std::optional<T>> const& f)
+std::string GapStringMissingTVector(std::vector<boost::optional<T>> const& f)
 {
   int len=f.size();
   std::vector<bool> Vstatus(len);
