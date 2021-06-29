@@ -1180,7 +1180,6 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     qf = can_form.Mat;
     can_basis = can_form.Basis;
     isom = isom * can_basis.transpose();
-      T_GetGramMatrixAutomorphismGroup(mat, 0, grp_perm, list_matr_gens);
     break;
   case GREEDY :
     num_aut = _iReduce(qf, isom, auts, calc_aut);
