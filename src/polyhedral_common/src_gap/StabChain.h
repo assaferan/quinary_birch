@@ -31,6 +31,8 @@
 #include <vector>
 #include <memory>
 
+#include <boost/optional.hpp>
+
 #include "GapPrint.h"
 #include "PermGroup.h"
 #include "list.h"
@@ -223,7 +225,7 @@ void PrintStabChainTransversals(StabChain<Telt> const& S)
   int n=Swork->comm->n;
   int iLevel=0;
   while (Swork != nullptr) {
-    std::vector<std::optional<Telt>> V(n);
+    std::vector<boost::optional<Telt>> V(n);
     for (int i=0; i<n; i++) {
       int eVal = Swork->transversal[i];
       if (eVal == -1)
