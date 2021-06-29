@@ -83,6 +83,7 @@ public:
       std::vector<int> v(1);
       v[0] = 1;
       generatorList.push_back(permlib::Permutation::ptr(new permlib::Permutation(v)));
+      n = 1;
     }
     group = construct(n, generatorList.begin(), generatorList.end());
     e_size = group->order<Tint>();
