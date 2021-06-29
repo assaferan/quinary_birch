@@ -1157,7 +1157,7 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
 	mat_Q(i,j) = qf(i,j);
     T_GetGramMatrixAutomorphismGroup(mat_Q, zero, grp_perm, list_matr_gens);
     num_aut = grp_perm.size();
-    assert(num_aut == q_red.numAutomorphisms(GREEDY));
+    assert(num_aut == this->numAutomorphisms(GREEDY));
     return num_aut;
     break;
   default:
