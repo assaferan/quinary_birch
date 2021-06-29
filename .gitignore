@@ -41,6 +41,7 @@ src/birch_dbg
 src/libbirch.la
 *.o
 *.lo
+*.Plo
 src/*.o
 src/*.lo
 Makefile~
