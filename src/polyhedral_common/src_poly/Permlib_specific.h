@@ -78,6 +78,12 @@ public:
         v[i]=eGen.at(i);
       generatorList.push_back(permlib::Permutation::ptr(new permlib::Permutation(v)));
     }
+    // There is some issue with the empty vector - we construct the trivial group
+    if (n == 0) {
+      std::vector<int> v(1);
+      v[0] = 1;
+      generatorList.push_back(permlib::Permutation::ptr(new permlib::Permutation(v)));
+    }
     group = construct(n, generatorList.begin(), generatorList.end());
     e_size = group->order<Tint>();
   }
