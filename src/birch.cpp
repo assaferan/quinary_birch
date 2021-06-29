@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
     }
   }
   
-  runBirchTests(num_evs);
+  runBirchTests(num_evs,alg);
   
   return 0;
 }
