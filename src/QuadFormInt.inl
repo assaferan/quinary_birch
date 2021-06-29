@@ -1173,6 +1173,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   SquareMatrixInt<R,n> can_basis;
   std::vector<MyMatrix<R>> list_matr_gens;
   TheGroupFormat<R> grp_perm;
+  MyMatrix<Rational<R>> mat_Q(n,n);
   
   
   switch(alg) {
@@ -1193,7 +1194,10 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   if (calc_aut) {
     // until we figure out how to compute automorphism groups in the canonical form package
     if (num_aut == 0) {
-      T_GetGramMatrixAutomorphismGroup(mat, R(0), grp_perm, list_matr_gens);
+      for (size_t i = 0; i < n; i++)
+	for (size_t j = 0; j < n; j++)
+	  mat_Q(i,j) = mat(i,j);
+      T_GetGramMatrixAutomorphismGroup(mat_Q, R(0), grp_perm, list_matr_gens);
       num_aut = q_red.numAutomorphisms();
       assert(grp_perm.size() == num_aut);
     }
