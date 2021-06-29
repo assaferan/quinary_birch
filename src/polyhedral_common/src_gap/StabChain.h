@@ -293,7 +293,7 @@ void PrintStabChain(StabChain<Telt> const& S)
         std::cerr << "Swork->transversal should be of length 0 or n=" << n << "\n";
         throw PermutalibException{1};
       }
-      std::vector<std::optional<Telt>> V(n);
+      std::vector<boost::optional<Telt>> V(n);
       for (int i=0; i<n; i++) {
         int eVal = Swork->transversal[i];
         if (eVal == -1)
