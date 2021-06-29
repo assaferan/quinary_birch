@@ -14,7 +14,6 @@ template<typename R, size_t n>
 TestBirch<R,n>::TestBirch(const QuadFormZZ<R,n> & q, ReductionMethod alg)
 {
   this->_init(q,alg);
-  std::cerr << "Testing orthogonal modular forms for " << std::endl  << q << std::endl;
 }
 
 template<typename R, size_t n>
@@ -147,6 +146,8 @@ inline void TestBirch<R,n>::_init(const QuadFormZZ<R,n> & q, ReductionMethod alg
   }
 
   this->_p_genus = std::make_shared< Genus<R,n> >(q, symbols, alg);
+
+  std::cerr << "Testing orthogonal modular forms for " << std::endl  << q << std::endl;
 }
 
 inline void runBirchTests(size_t num_evs, ReductionMethod alg) {
