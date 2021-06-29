@@ -53,7 +53,7 @@ inline bool TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
 	computed_evalues[i].vec.push_back(computed[i]);
       }
       // #ifdef DEBUG
-      std::cerr << "Testing eigenvalues of T_" << p << "^" << k << "..." << std::endl;
+      std::cerr << "Testing eigenvalues of T_" << p << "^" << k+1 << "..." << std::endl;
       std::cerr << "ev.second = " << ev.second << std::endl;
       std::cerr << "computed eigenvalues: " << computed << std::endl;
       // #endif
