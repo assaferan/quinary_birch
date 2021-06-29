@@ -1237,13 +1237,13 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
 							 ReductionMethod alg)
 {
   SquareMatrixInt<R,n> qf = q.bilinearForm();
+  bool all_eq = true;
   
   switch(alg) {
   case GREEDY :
     // We would like to be able to just perform greedy, but this fails to work at the moment
     greedy(qf, isom);
-    bool all_eq = true;
-    
+  
     for (size_t j = 1; j < n; j++)
       all_eq = (all_eq) && (qf(j,j) == qf(0,0));
     
