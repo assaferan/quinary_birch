@@ -1199,7 +1199,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 	  mat_Q(i,j) = mat(i,j);
       T_GetGramMatrixAutomorphismGroup(mat_Q, zero, grp_perm, list_matr_gens);
       num_aut = q_red.numAutomorphisms();
-      assert(grp_perm.size() == num_aut);
+      assert(grp_perm.size() == static_cast<int>(num_aut));
     }
     q_red._num_aut = num_aut;
     q_red._num_aut_init = true;
