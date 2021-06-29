@@ -326,19 +326,20 @@ MyMatrix<T> T_GRAM_GetScalProdMat(MyMatrix<T> const& eMat, MyMatrix<int> const& 
 }
 
 
-template<typename T, typename Tint, typename Tgroup>
-void T_GetGramMatrixAutomorphismGroup(MyMatrix<T> const& eMat, T const& TheTol, Tgroup & GRPperm, std::vector<MyMatrix<Tint>> &ListMatrGens)
+template<typename T, typename Tgroup>
+void T_GetGramMatrixAutomorphismGroup(MyMatrix<T> const& eMat, T const& TheTol, Tgroup & GRPperm, std::vector<MyMatrix<T>> &ListMatrGens)
 {
   T MaxDet=T_GRAM_GetUpperBound(eMat);
-  MyMatrix<Tint> ListShort=T_ShortVector<T,Tint>(eMat, MaxDet);
+  MyMatrix<T> ListShort=T_ShortVector<T,T>(eMat, MaxDet);
   MyMatrix<T> ListShort_T=ConvertMatrixUniversal<T,Tint>(ListShort);
   WeightMatrix<T,T> WMat=GetWeightMatrixGramMatShort(eMat, ListShort, TheTol);
   GRPperm=GetStabilizerWeightMatrix<T,T,Tgroup>(WMat);
   ListMatrGens.clear();
   for (auto & eGen : GRPperm.group->S) {
     MyMatrix<T> M3_T=RepresentVertexPermutation(ListShort_T, ListShort_T, *eGen);
-    MyMatrix<Tint> M3_I=ConvertMatrixUniversal<Tint,T>(M3_T);
-    ListMatrGens.push_back(M3_I);
+    // MyMatrix<Tint> M3_I=ConvertMatrixUniversal<Tint,T>(M3_T);
+    // ListMatrGens.push_back(M3_I);
+    ListMatrGens.push_back(M3_T);
   }
 }
 
