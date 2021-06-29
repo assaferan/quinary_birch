@@ -1584,7 +1584,7 @@ QuadFormInt<R,n>::generateOrbit(void) const
         orbit[j->first] = i->second*j->second;
       }
     }
-    // It seems that we should also add neighbor orbit ?
+    // It seems that we should also add _neighborOrbit ?
   }
   return orbit;
 }
