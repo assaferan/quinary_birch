@@ -1172,7 +1172,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   Canonic_PosDef<R,R> can_form;
   SquareMatrixInt<R,n> can_basis;
   std::vector<MyMatrix<R>> list_matr_gens;
-  permutalib::Group<MyMatrix<R>,R> grp_perm;
+  permutalib::DoubleSidedPerm<R> grp_perm;
   
   
   switch(alg) {
