@@ -1171,8 +1171,8 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   MyMatrix<R> mat;
   Canonic_PosDef<R,R> can_form;
   SquareMatrixInt<R,n> can_basis;
-  std::vector<MyMatrix<Z>> list_matr_gens;
-  TheGroupFormat<Z> grp_perm;
+  std::vector<MyMatrix<mpq_class>> list_matr_gens;
+  TheGroupFormat<mpq_class> grp_perm;
   MyMatrix<mpq_class> mat_Q(n,n);
   mpq_class zero = 0;
   
