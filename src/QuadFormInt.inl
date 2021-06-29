@@ -1173,8 +1173,8 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   SquareMatrixInt<R,n> can_basis;
   std::vector<MyMatrix<R>> list_matr_gens;
   TheGroupFormat<R> grp_perm;
-  MyMatrix< Rational<R> > mat_Q(n,n);
-  Rational<R> zero = 0;
+  MyMatrix<mpq_class> mat_Q(n,n);
+  mpq_class zero = 0;
   
   switch(alg) {
   case CANONICAL_FORM :
