@@ -333,7 +333,7 @@ void T_GetGramMatrixAutomorphismGroup(MyMatrix<T> const& eMat, T const& TheTol, 
   MyMatrix<Tint> ListShort=T_ShortVector<T,Tint>(eMat, MaxDet);
   MyMatrix<T> ListShort_T=ConvertMatrixUniversal<T,Tint>(ListShort);
   WeightMatrix<T, T> WMat=GetWeightMatrixGramMatShort(eMat, ListShort, TheTol);
-  GRPperm=GetStabilizerWeightMatrix(WMat);
+  GRPperm=GetStabilizerWeightMatrix<Tint,T,Tgroup>(WMat);
   ListMatrGens.clear();
   for (auto & eGen : GRPperm.group->S) {
     MyMatrix<T> M3_T=RepresentVertexPermutation(ListShort_T, ListShort_T, *eGen);
