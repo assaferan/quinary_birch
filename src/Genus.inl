@@ -186,7 +186,9 @@ Rational<Z> Genus<R,n>::_getMass(const QuadFormZZ<R,n>& q,
 
 template<typename R, size_t n>
 Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
-		  const std::vector<PrimeSymbol<R>>& symbols, W64 seed)
+		  const std::vector<PrimeSymbol<R>>& symbols,
+		  ReductionMethod alg,
+		  W64 seed)
 {
   if (seed == 0)
     {
@@ -196,6 +198,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
   
   this->_disc = q.discriminant();
   this->_seed = seed;
+  this->_alg = alg;
   
   this->_prime_divisors.reserve(symbols.size());
   for (const PrimeSymbol<R>& symb : symbols)
@@ -236,8 +239,8 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
   // Should this be 1/#aut or 2/#aut? probably depends if this is SO or O
   GenusRep<R,n> rep;
   Isometry<R,n> s;
-  rep.q = QuadFormZZ<R,n>::reduce(q,s);
-  Z num_aut = rep.q.numAutomorphisms();
+  rep.q = QuadFormZZ<R,n>::reduce(q,s,false,alg);
+  Z num_aut = rep.q.numAutomorphisms(alg);
   Rational<Z> sum_mass(1, num_aut);
   
   rep.p = 1;
@@ -339,7 +342,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 	      // !!TODO - ?? Do we want this ??
 	      // We can compute it only if we need to add it.
 	      
-	      foo.q = QuadFormZZ<R,n>::reduce(foo.q, foo.s, true);
+	      foo.q = QuadFormZZ<R,n>::reduce(foo.q, foo.s, true, alg);
 
 	      assert( foo.s.transform(mother.bilinearForm()) ==
 		      foo.q.bilinearForm() );
@@ -539,6 +542,9 @@ Genus<R,n>::Genus(const Genus<T,n>& src)
 
   // Copy mass.
   this->_mass = src._mass;
+  
+  // Copy reduction method
+  this->_alg = src._alg;
 
   // Build a copy of the spinor primes hash table.
   this->_spinor_primes = std::unique_ptr<HashMap<W16>>(new HashMap<W16>(src._spinor_primes->size()));
@@ -689,7 +695,7 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 
       while (!done)
 	{
-	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep();
+	  GenusRep<R,n> foo = neighbor_manager.getReducedNeighborRep(this->_alg);
 
 #ifdef DEBUG_LEVEL_FULL
 	  std::cerr << "foo.q = " << std::endl << foo.q << std::endl;
@@ -830,7 +836,7 @@ Genus<R,n>::_heckeMatrixSparseInternal(const R& p) const
 
       while (!done)
 	{
-	  GenusRep<R,n> foo = manager.getReducedNeighborRep();
+	  GenusRep<R,n> foo = manager.getReducedNeighborRep(this->_alg);
 
 	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
@@ -1003,7 +1009,7 @@ Genus<R,n>::_heckeMatrixDenseInternal(const R& p) const
 	  */
 	  // Build the neighbor and reduce it.
 	  foo.q = manager.buildNeighbor(foo.s);
-	  foo.q = QuadFormZZ<R,n>::reduceNonUnique(foo.q, foo.s);
+	  foo.q = QuadFormZZ<R,n>::reduceNonUnique(foo.q, foo.s, this->_alg);
 
 	  assert( foo.s.isIsometry(cur.q, foo.q) );
 
@@ -1170,7 +1176,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
       basis_rat(row,col) = V_basis(row,col);
 
 #ifdef DEBUG // _LEVEL_FULL
-  std::cerr << "Restricting T_ " << p << " to V = " << std::endl << basis_rat << "." << std::endl;
+  std::cerr << "Restricting T_" << p << " to V = " << std::endl << basis_rat << "." << std::endl;
 #endif
   
   MatrixRat<Z> T_p_res = T_p.restrict(basis_rat);
@@ -1196,7 +1202,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
   
   UnivariatePolyInt<Z> f_int(coeffs_int);
 
-#ifdef DEBUG // _LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "factoring characteristic polynomial f_int = " << f_int << std::endl;
 #endif
   
@@ -1206,7 +1212,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     UnivariatePolyInt<Z> f = fa.first;
     size_t a = fa.second;
     
-#ifdef DEBUG_ // LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
     std::cerr << "Cutting out subspace using f(T_" << p;
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
@@ -1236,14 +1242,16 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
 	  T_K(row,col) = NumberFieldElement<Z>(K, elt);
 	}
       NumberFieldElement<Z> lambda(K, UnivariatePolyRat<Z>::x(T_p.baseRing()));
-      T_K -= lambda * Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T_p.nrows());
+      Matrix< NumberFieldElement<Z>, NumberField<Z> > id_mat = Matrix< NumberFieldElement<Z>, NumberField<Z> >::identity(K, T_p.nrows());
+      Matrix< NumberFieldElement<Z>, NumberField<Z> > lambda_mat = lambda * id_mat;
+      T_K -= lambda_mat;
 #ifdef DEBUG // _LEVEL_FULL
       std::cerr << "Computing kernel of " << std::endl << T_K << std::endl;
 #endif
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       assert(nullsp.nrows() == 1);
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
-#ifdef DEBUG // _LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
       std::cerr << "found eigenvector: " << vec << std::endl;
 #endif
       evecs.push_back(vec);

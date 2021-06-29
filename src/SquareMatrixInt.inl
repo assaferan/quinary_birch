@@ -35,6 +35,15 @@ SquareMatrixInt<R,n>::SquareMatrixInt(const SquareMatrix<Integer<R>,IntegerRing<
       this->_mat[i][j] = other(i,j).num();
 }
 
+template<typename R, size_t n>
+SquareMatrixInt<R,n>::SquareMatrixInt(const MyMatrix<R> & other)
+{
+  assert((other.rows() == n) && (other.cols() == n));
+  for (size_t i = 0; i < n; i++)
+    for (size_t j = 0; j < n; j++)
+      this->_mat[i][j] = other(i,j);
+}
+
 // access
 template<typename R, size_t n>
 inline VectorInt<R,n> SquareMatrixInt<R,n>::operator[](size_t i) const

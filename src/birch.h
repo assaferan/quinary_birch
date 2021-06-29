@@ -18,6 +18,12 @@ typedef int32_t Z32;
 typedef int64_t Z64;
 typedef __int128_t Z128;
 
+typedef enum ReductionMethod
+  {
+   GREEDY,
+   CANONICAL_FORM
+  } ReductionMethod;
+
 /* Builtins */
 
 #define likely(x)   __builtin_expect(!!(x), 1)
@@ -264,7 +270,8 @@ std::ostream & operator<<(std::ostream & os, const Z128 & z);
 template<typename R>
 std::ostream& operator<<(std::ostream& os, const std::vector<R>& v);
 
-// There is no hash defined for class Z
+// This appears now in polyhedral_common/src_number/NumberTheory.h
+/*
 namespace std {
 
   template<>
@@ -286,5 +293,6 @@ namespace std {
     }
   };
 }
+*/
 
 #endif // __BIRCH_H_

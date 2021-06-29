@@ -2,11 +2,11 @@ bin_PROGRAMS = birch birch_dbg
 lib_LTLIBRARIES = libbirch.la
 
 OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11 -msse3 -mavx
-DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG -msse3 -mavx # -DDEBUG_LEVEL_FULL
+DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
 OPT_CXXFLAGS += -fvar-tracking-assignments-toggle
 OPT_CXXFLAGS += -fomit-frame-pointer
 OPT_CXXFLAGS += -funroll-all-loops
-DBG_LDFLAGS = -lm -lgmp -lgmpxx
+DBG_LDFLAGS = -lm -lgmp -lgmpxx -L../libs -lantic -lflint -lbliss -lnauty
 
 SOURCES = birch.h
 SOURCES += birch_util.cpp
@@ -78,6 +78,23 @@ SOURCES += Vector.h
 SOURCES += Vector.inl
 SOURCES += VectorInt.h
 SOURCES += VectorInt.inl
+SOURCES += polyhedral_common/src_basic/Basic_file.cpp
+SOURCES += polyhedral_common/src_basic/Basic_string.cpp
+SOURCES += polyhedral_common/src_basic/ExceptionEnding.cpp
+SOURCES += polyhedral_common/src_basic/hash_functions.cpp
+SOURCES += polyhedral_common/src_basic/Temp_common.cpp
+SOURCES += polyhedral_common/src_basic/TypeConversion.cpp
+SOURCES += polyhedral_common/src_comb/Boost_bitset.cpp
+SOURCES += polyhedral_common/src_comb/COMB_Combinatorics.cpp
+SOURCES += polyhedral_common/src_comb/COMB_Combinatorics_elem.cpp
+SOURCES += polyhedral_common/src_comb/COMB_Stor.cpp
+SOURCES += polyhedral_common/src_graph/GRAPH_bliss.cpp
+SOURCES += polyhedral_common/src_graph/GRAPH_GraphicalFunctions.cpp
+SOURCES += polyhedral_common/src_matrix/MAT_MatrixInt.cpp
+SOURCES += polyhedral_common/src_number/factorizations.cpp
+SOURCES += polyhedral_common/src_number/NumberTheory.cpp
+SOURCES += polyhedral_common/src_poly/Temp_PolytopeEquiStab.cpp
+SOURCES += polyhedral_common/src_poly/Permlib_specific.cpp
 
 birch_dbg_SOURCES = birch.cpp $(SOURCES)
 birch_dbg_CXXFLAGS = $(DBG_CXXFLAGS)

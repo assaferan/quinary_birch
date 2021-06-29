@@ -1,13 +1,17 @@
 #ifndef __NUMBER_FIELD_H_
 #define __NUMBER_FIELD_H_
 
+#include "antic/nf.h"
+
 #include "birch.h"
 
 template<typename R>
 class NumberField : public virtual Ring< NumberField<R>, NumberFieldElement<R> >
 {
 public:
-  NumberField(const UnivariatePolyRat<R> & mod) : _f(mod) {}
+  NumberField(const UnivariatePolyRat<R> & mod) : _f(mod)
+  {_initAntic(); }
+  
   NumberField(const UnivariatePolyInt<R> &);
 
   inline const UnivariatePolyRat<R> & modulus(void) const
@@ -21,9 +25,17 @@ public:
   
   inline NumberFieldElement<R> one(void) const override
   {return NumberFieldElement<R>::one(this->getPtr()); }
+
+  ~NumberField()
+  { nf_clear(_nf_antic); }
+
+  inline const nf_t & antic(void) const {return _nf_antic; }
   
 protected:
   UnivariatePolyRat<R> _f;
+  nf_t _nf_antic;
+
+  void _initAntic(void);
 };
 
 #include "NumberField.inl"

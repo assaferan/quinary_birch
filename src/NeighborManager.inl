@@ -263,7 +263,8 @@ inline void NeighborManager<R,S,T,n>::_liftSubspace(void)
   Integer<T> half = (p*p+Integer<T>::one())/two;
   for (size_t i = 0; i < this->_k; i++) {
     X_new[i] = this->_X[i];
-    Integer<T> gram2 = gram(i,i)/2 + ((gram(i,i) % 2 == 0) ? 0 : half.num());
+    Integer<T> gram2 = gram(i,i);
+    gram2 = gram2/two + ((gram(i,i) % 2 == 0) ? 0 : half.num());
     for (size_t j = this->_k-1-i; j < this->_k; j++) {
       Integer<T> scalar = (i+j == this->_k-1) ? gram2 : gram(i, this->_k-1-j);
       scalar = (scalar / (p*p) + Integer<T>::one())*p*p-scalar;
@@ -476,12 +477,12 @@ inline void NeighborManager<R,S,T,n>::nextIsotropicSubspace(void)
 }
 
 template<typename R, typename S, typename T, size_t n>
-inline GenusRep<T,n> NeighborManager<R,S,T,n>::getReducedNeighborRep(void)
+inline GenusRep<T,n> NeighborManager<R,S,T,n>::getReducedNeighborRep(ReductionMethod alg)
 {
   GenusRep<T,n> rep;
 
   rep.q = this->buildNeighbor(rep.s);
-  rep.q = QuadFormZZ<T,n>::reduceNonUnique(rep.q, rep.s);
+  rep.q = QuadFormZZ<T,n>::reduceNonUnique(rep.q, rep.s, alg);
   
   return rep;
 }

@@ -13,9 +13,9 @@ template<typename R, size_t n>
 class TestBirch
 {
 public:
-  TestBirch(const QuadFormZZ<R,n> &);
+  TestBirch(const QuadFormZZ<R,n> &, ReductionMethod alg=GREEDY);
 
-  TestBirch(const BirchExample<R,n> &, size_t);
+  TestBirch(const BirchExample<R,n> &, size_t, ReductionMethod alg=GREEDY);
 
   bool testDim(const R &, size_t) const;
 
@@ -30,7 +30,7 @@ public:
 protected:
   std::shared_ptr< Genus<R,n> > _p_genus;
 
-  inline void _init(const QuadFormZZ<R,n> &);
+  inline void _init(const QuadFormZZ<R,n> &, ReductionMethod alg);
   
 };
 
@@ -73,7 +73,7 @@ namespace std {
   };
 }
 
-void runBirchTests(size_t num_evs = 0);
+void runBirchTests(size_t num_evs = 0, ReductionMethod alg = GREEDY);
 
 #include "TestBirch.inl"
 
