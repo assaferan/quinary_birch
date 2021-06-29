@@ -1154,7 +1154,7 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
   case CANONICAL_FORM :
     for (size_t i = 0; i < n; i++)
       for (size_t j = 0; j < n; j++)
-	mat_Q(i,j) = mat(i,j);
+	mat_Q(i,j) = qf(i,j);
     T_GetGramMatrixAutomorphismGroup(mat_Q, zero, grp_perm, list_matr_gens);
     num_aut = grp_perm.size();
     assert(num_aut == q_red.numAutomorphisms(GREEDY));
