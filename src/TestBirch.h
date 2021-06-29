@@ -73,7 +73,7 @@ namespace std {
   };
 }
 
-void runBirchTests(size_t num_evs = 0);
+void runBirchTests(size_t num_evs = 0, ReductionMethod alg = GREEDY);
 
 #include "TestBirch.inl"
 
