@@ -1,8 +1,8 @@
 #ifndef TEMP_TSPACE_GENERAL_INCLUDE
 #define TEMP_TSPACE_GENERAL_INCLUDE
 
-#include "POLY_PolytopeFct.h"
-#include "Temp_PolytopeEquiStab.h"
+#include "polyhedral_common/src_poly/POLY_PolytopeFct.h"
+#include "polyhedral_common/src_poly/Temp_PolytopeEquiStab.h"
 #include "Temp_Positivity.h"
 #include "ShortestUniversal.h"
 
