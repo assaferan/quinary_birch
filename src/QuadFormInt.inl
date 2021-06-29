@@ -1135,13 +1135,35 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> 
 }
 
 template<typename R, size_t n>
-inline size_t QuadFormInt<R,n>::numAutomorphisms(void) const
+inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
 {
   if (this->_num_aut_init) return this->_num_aut;
   SquareMatrixInt<R,n> qf = this->_B;
   Isometry<R,n> isom;
   std::unordered_set< Isometry<R,n> > auts;
-  return _iReduce(qf, isom, auts, true);
+  std::vector<MyMatrix<mpq_class>> list_matr_gens;
+  TheGroupFormat<int> grp_perm;
+  MyMatrix<mpq_class> mat_Q(n,n);
+  mpq_class zero = 0;
+  size_t num_aut;
+  
+  switch(alg) {
+  case GREEDY :
+    return _iReduce(qf, isom, auts, true);
+    break;
+  case CANONICAL_FORM :
+    for (size_t i = 0; i < n; i++)
+      for (size_t j = 0; j < n; j++)
+	mat_Q(i,j) = mat(i,j);
+    T_GetGramMatrixAutomorphismGroup(mat_Q, zero, grp_perm, list_matr_gens);
+    num_aut = grp_perm.size();
+    assert(num_aut == q_red.numAutomorphisms(GREEDY));
+    return num_aut;
+    break;
+  default:
+    throw std::runtime_error("Unknown reduction method!\n");
+    break;
+  }
 }
 
 // !! - TODO - think whether we want to save this as a member.
@@ -1189,6 +1211,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     break;
   default:
     throw std::runtime_error("Unknown reduction method!\n");
+    break;
   }
   QuadFormZZ<R,n> q_red(qf);
   if (calc_aut) {
@@ -1199,7 +1222,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
 	  mat_Q(i,j) = mat(i,j);
       T_GetGramMatrixAutomorphismGroup(mat_Q, zero, grp_perm, list_matr_gens);
       num_aut = grp_perm.size();
-      assert(num_aut == q_red.numAutomorphisms());
+      assert(num_aut == q_red.numAutomorphisms(GREEDY));
     }
     q_red._num_aut = num_aut;
     q_red._num_aut_init = true;
