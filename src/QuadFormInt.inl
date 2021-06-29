@@ -1238,6 +1238,8 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
 {
   SquareMatrixInt<R,n> qf = q.bilinearForm();
   bool all_eq = true;
+  // dummy variable - !! TODO - correct the flow
+  std::unordered_set< Isometry<R,n> > auts;
   
   switch(alg) {
   case GREEDY :
@@ -1248,7 +1250,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
       all_eq = (all_eq) && (qf(j,j) == qf(0,0));
     
     if (all_eq) {
-      return reduce(q, isom, alg);
+      _iReduce(qf, isom, auts);
     }
     break;
     
