@@ -1187,7 +1187,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   if (calc_aut) {
     // until we figure out how to compute automorphism groups in the canonical form package
     if (num_aut == 0)
-      num_aut = _iReduce(qf, isom, auts, calc_aut);
+      num_aut = q_red.numAutomorphisms();
     q_red._num_aut = num_aut;
     q_red._num_aut_init = true;
   }
