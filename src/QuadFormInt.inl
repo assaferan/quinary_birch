@@ -4,7 +4,7 @@
 #include <random>
 
 #include "polyhedral_common/src_latt/MatrixCanonicalForm.h"
-#include "polyhedral_common/src_latt/Temp_Tspace_general.h"
+#include "polyhedral_common/src_latt/Temp_Tspace_General.h"
 
 #include "birch_util.h"
 #include "Fp.h"
