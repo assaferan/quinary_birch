@@ -1168,7 +1168,7 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
   
   switch(alg) {
   case GREEDY :
-    mas.construct(qf);
+    mas.construct(qf_64);
     mas.search(K);
     num_aut = _iReduce(qf, isom, auts, true);
     assert(K.order() == num_aut);
