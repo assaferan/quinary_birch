@@ -1155,7 +1155,7 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
   
   switch(alg) {
   case GREEDY :
-    return _iReduce(qf, isom, auts, true);
+    num_aut = _iReduce(qf, isom, auts, true);
     break;
     
 #ifndef ONLY_GREEDY
@@ -1166,13 +1166,15 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
     T_GetGramMatrixAutomorphismGroup(mat_Q, zero, grp_perm, list_matr_gens);
     num_aut = grp_perm.size();
     assert(num_aut == this->numAutomorphisms(GREEDY));
-    return num_aut;
+    
     break;
 #endif // ONLY_GREEDY
   default:
     throw std::runtime_error("Unknown reduction method!\n");
     break;
   }
+
+  return num_aut;
 }
 
 // !! - TODO - think whether we want to save this as a member.
