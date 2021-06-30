@@ -1251,7 +1251,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       assert(nullsp.nrows() == 1);
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
       std::cerr << "found eigenvector: " << vec << std::endl;
 #endif
       evecs.push_back(vec);
