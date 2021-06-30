@@ -197,8 +197,8 @@ inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const NumberFiel
   if (this != &other) {
     if (this->_K != other._K) {
       this->_K = other._K;
-      nf_elem_clear(_nf_elt_antic)
-	nf_elem_init(_nf_elt_antic, other._K->antic());
+      nf_elem_clear(_nf_elt_antic, _K->antic());
+      nf_elem_init(_nf_elt_antic, other._K->antic());
     }
     nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, other._K->antic());
   }
