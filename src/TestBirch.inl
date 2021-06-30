@@ -170,7 +170,7 @@ inline void runQuinaryBirch(const Z64 & disc, size_t num_evs, ReductionMethod al
 
     EigenvectorManager<Z64,5> manager;
     std::map<Z64, std::vector< std::vector< NumberFieldElement<Z> > > > all_evecs = tester.genus().eigenvectors();
-    for (std::pair<Z64, std::vector< std::vector< NumberFieldElement<Z> > > evecs : all_evecs) {
+    for (std::pair<Z64, std::vector< std::vector< NumberFieldElement<Z> > > > evecs : all_evecs) {
       for (std::vector< NumberFieldElement<Z> > evec : evecs.second)
 	manager.addEigenvector(tester.genus().eigenvector(evec, evecs.first));
       manager.finalize();
