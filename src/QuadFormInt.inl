@@ -3,6 +3,7 @@
 #include <map>
 #include <random>
 
+#ifndef ONLY_GREEDY
 #include "polyhedral_common/src_poly/Permlib_specific.h"
 
 #include "polyhedral_common/src_latt/MatrixCanonicalForm.h"
@@ -1250,7 +1251,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
       all_eq = (all_eq) && (qf(j,j) == qf(0,0));
     
     if (all_eq) {
-      _iReduce(qf, isom, auts);
+      _iReduce(qf, isom, auts, false);
     }
     break;
     
