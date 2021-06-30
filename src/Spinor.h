@@ -54,7 +54,7 @@ public:
       if ((n % 2 == 1) && (s_mat.determinant() == -GF->one()))
 	s_mat = -s_mat;
       // We still have a problem when n is even
-      assert((s_mat.determinant() == GF->one()) || (s_mat.determinant() == -GF->one()));
+      assert((s_mat.determinant() == GF->one()) || (s_mat.determinant() == -GF->one()) || (s_mat.determinant().isZero() && (s.getScale() == prime)));
       W16_MatrixFp rad = this->_rads.at(prime);
 #ifdef DEBUG_LEVEL_FULL
       std::cerr << "rad = " << std::endl << rad << std::endl;
