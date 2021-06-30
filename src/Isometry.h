@@ -101,8 +101,6 @@ public:
 
   inline SquareMatrixInt<R,n> hermiteForm(const R & d) const
   {return _a.hermiteForm(d); }
-
-  typedef size_t Tidx;
   
 protected:
   SquareMatrixInt<R,n> _a;
