@@ -11,6 +11,8 @@ class NumberField : public virtual Ring< NumberField<R>, NumberFieldElement<R> >
 public:
   NumberField(const UnivariatePolyRat<R> & mod) : _f(mod)
   {_initAntic(); }
+
+  NumberField(const NumberField<R> &);
   
   NumberField(const UnivariatePolyInt<R> &);
 
