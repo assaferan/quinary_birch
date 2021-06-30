@@ -1224,7 +1224,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     
     if (a == 1) {
 #ifdef DEBUG // _LEVEL_FULL
-      std::cerr << "Found irreducible subspace W = " << W_basis << std::endl;
+      std::cerr << "Found irreducible subspace W = " << std::endl << W_basis << std::endl;
       std::cerr << "computing eigenvector." << std::endl;
 #endif
       std::shared_ptr< NumberField<Z> > K
