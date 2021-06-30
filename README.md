@@ -10,6 +10,11 @@ The code in this repository is based on the work of many, among them:
 3. Matthew Greenberg and John Voight - their magma code for p-neighbors is the algorithm on which this code is based. (https://github.com/assaferan/ModFrmAlg)
 
 - [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contribution)
+
+## Requirements
 
 - [autotools](https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html)
 - [gcc](https://gcc.gnu.org/)
@@ -27,7 +32,7 @@ The main (and develop) branch require the following libraries:
 - [MPFR](http://www.mpfr.org)
 - [nauty](https://pallini.di.uniroma1.it)
 
-- [Installation](#installation)
+## Installation
 
 This can be installed either as a C++ library (libbirch.so) or compiled directly for use within a Sage session.
 
@@ -46,7 +51,7 @@ To build as a C++ library on a standard Linux system with autotools:
 
 See [Usage](#usage).
 
-- [Usage](#usage)
+## Usage
 
 While this library can compiled into a C++ library and used within applications, it was specifically designed to be integrated into Sage.
 
@@ -156,6 +161,6 @@ In a later session, this can then be provided upon constructing your ``BirchGenu
 
     sage: h = BirchGenus(11*13*17*19*23, seed=my_seed)
 
-- [Contributing](#contribution)
+## contribution
 
 If you want to help develop this project, please create your own fork on Github and submit a pull request. I will do my best to integrate any additional useful features as necessary. Alternatively, submit a patch to me via email at assaferan@gmail.com.
