@@ -173,8 +173,8 @@ inline void runQuinaryBirch(const Z64 & disc, size_t num_evs, ReductionMethod al
     for (std::pair<Z64, std::vector< std::vector< NumberFieldElement<Z> > > > evecs : all_evecs) {
       for (std::vector< NumberFieldElement<Z> > evec : evecs.second)
 	manager.addEigenvector(tester.genus().eigenvector(evec, evecs.first));
-      manager.finalize();
     }
+    manager.finalize();
   
     for (size_t k = 1; k < 3; k++) {
       Integer<Z64> p = 2;
