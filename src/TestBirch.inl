@@ -1,4 +1,5 @@
 #include <chrono>
+#include <ctime>
 #include <map>
 #include <unordered_set>
 #include <vector>
@@ -44,10 +45,13 @@ inline bool TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
     size_t num_processed = 0;
     for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs[k]) {
       Integer<R> p = ev.first;
-      std::chrono::time_point<std::chrono::system_clock> time1 = std::chrono::system_clock::now();
+      // std::chrono::time_point<std::chrono::system_clock> time1 = std::chrono::system_clock::now();
+      std::clock_t time1 = std::clock();
       std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num(), k+1);
-      std::chrono::time_point<std::chrono::system_clock> time2 = std::chrono::system_clock::now();
-      std::cerr << "computing eigenvalues took " << std::chrono::duration_cast<std::chrono::milliseconds>(time2 - time1).count() << " ms\n";
+      // std::chrono::time_point<std::chrono::system_clock> time2 = std::chrono::system_clock::now();
+      std::clock_t time2 = std::clock();
+      // std::cerr << "computing eigenvalues took " << std::chrono::duration_cast<std::chrono::milliseconds>(time2 - time1).count() << " ms\n";
+      std::cerr << "computing eigenvalues took " << 1000.0 * (time2 - time1) / CLOCKS_PER_SEC << " ms\n";
       for (size_t i = 0; i < evecs.size(); i++) {
 	evalues[i].vec.push_back(ev.second[i]);
 	computed_evalues[i].vec.push_back(computed[i]);
