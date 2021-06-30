@@ -7,6 +7,8 @@
 #include "FieldElement.h"
 #include "UnivariatePoly.h"
 
+// A class wrapping antic's nf_elem_t
+
 template<typename R>
 class NumberFieldElement : public virtual FieldElement< NumberFieldElement<R>, NumberField<R> >
 {
