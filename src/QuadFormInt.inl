@@ -12,12 +12,14 @@
 
 #endif // ONLY_GREEDY
 
+/*
 #include "permlib/permutation.h"
 #include "permlib/bsgs.h"
 #include "permlib/symmetric_group.h"
 #include "permlib/construct/schreier_sims_construction.h"
 #include "permlib/transversal/schreier_tree_transversal.h"
 #include "permlib/search/partition/matrix_automorphism_search.h"
+*/
 
 #include "birch_util.h"
 #include "Fp.h"
@@ -1159,19 +1161,10 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
   mpq_class zero = 0;
 #endif // ONLY_GREEDY
   size_t num_aut;
-
-  permlib::SymmetricGroup<permlib::Permutation> s_n(n);
-  permlib::partition::MatrixAutomorphismSearch<permlib::SymmetricGroup<permlib::Permutation>, permlib::SchreierTreeTransversal<permlib::Permutation> > mas(s_n, false);
-  permlib::BSGS<permlib::Permutation, permlib::SchreierTreeTransversal<permlib::Permutation> > K(n);
-  // permlib can't handle mpz_class
-  SquareMatrixInt<Z64,n> qf_64 = birch_util::convertSquareMatrix<R,Z64,n>(qf);
   
   switch(alg) {
   case GREEDY :
-    mas.construct(qf_64);
-    mas.search(K);
     num_aut = _iReduce(qf, isom, auts, true);
-    assert(K.order() == num_aut);
     break;
     
 #ifndef ONLY_GREEDY
