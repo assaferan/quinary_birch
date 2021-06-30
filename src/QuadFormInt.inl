@@ -4,10 +4,13 @@
 #include <random>
 
 #ifndef ONLY_GREEDY
+
 #include "polyhedral_common/src_poly/Permlib_specific.h"
 
 #include "polyhedral_common/src_latt/MatrixCanonicalForm.h"
 #include "polyhedral_common/src_latt/Temp_Tspace_General.h"
+
+#endif // ONLY_GREEDY
 
 #include "birch_util.h"
 #include "Fp.h"
@@ -1142,16 +1145,20 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
   SquareMatrixInt<R,n> qf = this->_B;
   Isometry<R,n> isom;
   std::unordered_set< Isometry<R,n> > auts;
+#ifndef ONLY_GREEDY
   std::vector<MyMatrix<mpq_class>> list_matr_gens;
   TheGroupFormat<int> grp_perm;
   MyMatrix<mpq_class> mat_Q(n,n);
   mpq_class zero = 0;
+#endif // ONLY_GREEDY
   size_t num_aut;
   
   switch(alg) {
   case GREEDY :
     return _iReduce(qf, isom, auts, true);
     break;
+    
+#ifndef ONLY_GREEDY
   case CANONICAL_FORM :
     for (size_t i = 0; i < n; i++)
       for (size_t j = 0; j < n; j++)
@@ -1161,6 +1168,7 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
     assert(num_aut == this->numAutomorphisms(GREEDY));
     return num_aut;
     break;
+#endif // ONLY_GREEDY
   default:
     throw std::runtime_error("Unknown reduction method!\n");
     break;
@@ -1191,6 +1199,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   std::unordered_set< Isometry<R,n> > auts;
   SquareMatrixInt<R,n> qf = q.bilinearForm();
   size_t num_aut = 0;
+#ifndef ONLY_GREEDY
   MyMatrix<R> mat;
   Canonic_PosDef<R,R> can_form;
   SquareMatrixInt<R,n> can_basis;
@@ -1198,8 +1207,10 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   TheGroupFormat<int> grp_perm;
   MyMatrix<mpq_class> mat_Q(n,n);
   mpq_class zero = 0;
+#endif // ONLY_GREEDY
   
   switch(alg) {
+#ifndef ONLY_GREEDY
   case CANONICAL_FORM :
     mat = ConvertMatrix(qf.getArray());
     can_form = ComputeCanonicalForm<R,R>(mat);
@@ -1207,6 +1218,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     can_basis = can_form.Basis;
     isom = isom * can_basis.transpose();
     break;
+#endif // ONLY_GREEDY
   case GREEDY :
     num_aut = _iReduce(qf, isom, auts, calc_aut);
     break;
@@ -1255,9 +1267,11 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
     }
     break;
     
+#ifndef ONLY_GREEDY
   case CANONICAL_FORM :
     return reduce(q, isom, alg);
     break;
+#endif // ONLY_GREEDY
     
   default:
     throw std::runtime_error("Unknown reduction method!\n");
