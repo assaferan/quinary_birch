@@ -180,6 +180,9 @@ protected:
   
   std::unordered_map<  QuadFormZZ<R,n>, Isometry<R,n> >
   _signOrbit(void) const;
+
+  std::unordered_map<  QuadFormZZ<R,n>, Isometry<R,n> >
+  _neighborOrbit(void) const;
 };
 
 // we need this intermediate class for the partial specialization
