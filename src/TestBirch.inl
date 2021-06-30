@@ -162,7 +162,7 @@ inline void runQuinaryBirch(const Z64 & disc, size_t num_evs, ReductionMethod al
   assert(!qfs.empty());
   assert(!qfs[0].empty());
   for (size_t gen_idx = 0; gen_idx < qfs.size(); gen_idx++) {
-    Genus<Z64,5> tester(qfs[gen_idx][0], alg);
+    TestBirch<Z64,5> tester(qfs[gen_idx][0], alg);
     std::map<Z64,size_t> dims = tester.genus().dimensionMap();
     for (std::pair<Z64, size_t> dim_pair : dims) {
       std::cerr << "spinor " << dim_pair.first << " has dimension " << dim_pair.second << std::endl;;
