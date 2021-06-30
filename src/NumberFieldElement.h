@@ -46,9 +46,6 @@ public:
   NumberFieldElement<R> operator*(const R & ) const;
   NumberFieldElement<R> operator/(const R & ) const;
 
-  NumberFieldElement<R> operator*(const Rational<R> & ) const;
-  NumberFieldElement<R> operator/(const Rational<R> & ) const;
-
   NumberFieldElement<R> & operator+=(const NumberFieldElement<R> & ) override;
   NumberFieldElement<R> & operator-=(const NumberFieldElement<R> & ) override;
   NumberFieldElement<R> & operator*=(const NumberFieldElement<R> & ) override;
