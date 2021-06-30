@@ -33,7 +33,11 @@ public:
   inline const R& at(size_t i, size_t j) const {return this->_mat[i][j]; }
   inline R& at(size_t i, size_t j) {return this->_mat[i][j];}
 
+  // These are for permlib
+  
   inline size_t dimension(void) const {return n; }
+
+  inline size_t k(void) const {return n; }
 
   inline const array & getArray(void) const {return this->_mat;}
   
