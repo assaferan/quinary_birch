@@ -22,15 +22,22 @@ The code in this repository is based on the work of many, among them:
 - [sage](http://www.sagemath.org/)
 
 * sage is only needed for usage with the sage interface
-**  This code has only been tested so far on linux #73-Ubuntu, compiled with gcc 9.3.0 on AMD Ryzen Threadripper 2970WX 24-Core Processor.
+
+* This code has only been tested so far on linux #73-Ubuntu, compiled with gcc 9.3.0 on AMD Ryzen Threadripper 2970WX 24-Core Processor.
 
 The main (and develop) branch require the following libraries:
 
 - [ANTIC](https://github.com/wbhart/antic)
 - [BLISS](https://github.com/mkoeppe/bliss)
+- [BOOST](https://www.boost.org)
+- [EIGEN](https://eigen.tuxfamily.org)
 - [FLINT](http://www.flintlib.org)
 - [MPFR](http://www.mpfr.org)
 - [nauty](https://pallini.di.uniroma1.it)
+- [PermLib](http://www.math.uni-rostock.de/~rehn/software/permlib.html)
+
+The standalone branch does not use any of them.
+The flint branch only requires ANTIC and FLINT.
 
 ## Installation
 
