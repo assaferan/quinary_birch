@@ -1675,7 +1675,7 @@ QuadFormInt<R,n>::_neighborOrbit(void) const
 {
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit;
   Isometry<R,n> s;
-  SquareMatrixInt<R,n> q;
+  SquareMatrixInt<R,n> qf = this->bilinearForm();
 
   std::vector< std::set< VectorInt<R,n> > > local_neighbors(1);
   Isometry<R,n> b0;
