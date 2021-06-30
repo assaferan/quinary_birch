@@ -1802,6 +1802,7 @@ QuadFormInt<R,n>::_neighborOrbit(void) const
 	b0(i,j) = c[j][i];
     if (b0.determinant().abs().isOne()) {
       SquareMatrixInt<R,n> q0 = b0.transform(qf);
+      s.setIdentity();
       greedy(q0, s);
       s = b0 * s;
       QuadFormZZ<R,n> qq(q0);
