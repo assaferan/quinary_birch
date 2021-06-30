@@ -1112,7 +1112,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> > & auts)
 {
-  Group<Isometry<R,n>, R> grp(auts);
+  permutalib::Group<Isometry<R,n>, R> grp(auts);
   size_t num_aut;
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "Before generating more, automorphisms are: " << std::endl;
