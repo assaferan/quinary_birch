@@ -1,8 +1,10 @@
 bin_PROGRAMS = birch birch_dbg
 lib_LTLIBRARIES = libbirch.la
 
-OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11 -msse3 -mavx
-DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
+# at the moment we define ONLY_GREEDY for ease of debugging
+
+OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11 -msse3 -mavx -DONLY_GREEDY
+DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG -DONLY_GREEDY # -DDEBUG_LEVEL_FULL
 OPT_CXXFLAGS += -fvar-tracking-assignments-toggle
 OPT_CXXFLAGS += -fomit-frame-pointer
 OPT_CXXFLAGS += -funroll-all-loops
