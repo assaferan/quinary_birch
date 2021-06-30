@@ -176,15 +176,15 @@ inline void runQuinaryBirch(const Z64 & disc, size_t num_evs, ReductionMethod al
       manager.finalize();
     }
   
-    for (size_t k = 0; k < evs.size(); k++) {
+    for (size_t k = 1; k < 3; k++) {
       Integer<Z64> p = 2;
       for (size_t num_processed = 0; num_processed < num_evs; num_processed++) {
 	std::clock_t time1 = std::clock();
-	std::vector< NumberFieldElement<Z> > computed = tester.genus().eigenvalues(manager, p.num(), k+1);
+	std::vector< NumberFieldElement<Z> > computed = tester.genus().eigenvalues(manager, p.num(), k);
 	std::clock_t time2 = std::clock();
 	std::cerr << "computing eigenvalues took " << 1000.0 * (time2 - time1) / CLOCKS_PER_SEC << " ms\n";
 	// #ifdef DEBUG
-	std::cerr << "Testing eigenvalues of T_" << p << "^" << k+1 << "..." << std::endl;
+	std::cerr << "Testing eigenvalues of T_" << p << "^" << k << "..." << std::endl;
 	std::cerr << "computed eigenvalues: " << computed << std::endl;
 	// #endif
 	p = p.nextPrime();
