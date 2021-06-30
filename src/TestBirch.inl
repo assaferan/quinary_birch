@@ -154,6 +154,46 @@ inline void TestBirch<R,n>::_init(const QuadFormZZ<R,n> & q, ReductionMethod alg
   std::cerr << "Testing orthogonal modular forms for " << std::endl  << q << std::endl;
 }
 
+// This one does not compare the result to anything, but simply prints out the computed data
+inline void runQuinaryBirch(const Z64 & disc, size_t num_evs, ReductionMethod alg)
+{
+  std::vector< std::vector< QuadFormZZ<Z64,5> > > qfs;
+  qfs = QuadFormZZ<Z64,5>::getQuinaryForms(disc);
+  assert(!qfs.empty());
+  assert(!qfs[0].empty());
+  for (size_t gen_idx = 0; gen_idx < qfs.size(); gen_idx++) {
+    Genus<Z64,5> tester(qfs[gen_idx][0], alg);
+    std::map<Z64,size_t> dims = tester.genus().dimensionMap();
+    for (std::pair<Z64, size_t> dim_pair : dims) {
+      std::cerr << "spinor " << dim_pair.first << " has dimension " << dim_pair.second << std::endl;;
+    }
+
+    EigenvectorManager<Z64,5> manager;
+    std::map<R, std::vector< std::vector< NumberFieldElement<Z> > > > all_evecs = tester.genus().eigenvectors();
+    for (std::pair<R, std::vector< std::vector< NumberFieldElement<Z> > > evecs : all_evecs) {
+      for (std::vector< NumberFieldElement<Z> > evec : evecs.second)
+	manager.addEigenvector(tester.genus().eigenvector(evec, evecs.first));
+      manager.finalize();
+    }
+  
+    for (size_t k = 0; k < evs.size(); k++) {
+      Integer<Z64> p = 2;
+      for (size_t num_processed = 0; num_processed < num_evs; num_processed++) {
+	std::clock_t time1 = std::clock();
+	std::vector< NumberFieldElement<Z> > computed = tester.genus().eigenvalues(manager, p.num(), k+1);
+	std::clock_t time2 = std::clock();
+	std::cerr << "computing eigenvalues took " << 1000.0 * (time2 - time1) / CLOCKS_PER_SEC << " ms\n";
+	// #ifdef DEBUG
+	std::cerr << "Testing eigenvalues of T_" << p << "^" << k+1 << "..." << std::endl;
+	std::cerr << "computed eigenvalues: " << computed << std::endl;
+	// #endif
+	p = p.nextPrime();
+      }
+    }
+  }
+  return;
+}
+
 inline void runBirchTests(size_t num_evs, ReductionMethod alg) {
   // tetss reading from Nipp's tables
   std::vector< std::vector< QuadFormZZ<Z64,5> > > qfs;
@@ -166,3 +206,4 @@ inline void runBirchTests(size_t num_evs, ReductionMethod alg) {
   TestBirch<Z64,5> test_RT_table1(BirchExample<Z64,5>::getExample_RT_Table1(), num_evs, alg);
   
 }
+
