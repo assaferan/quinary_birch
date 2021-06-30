@@ -1239,6 +1239,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   }
   QuadFormZZ<R,n> q_red(qf);
   if (calc_aut) {
+#ifndef ONLY_GREEDY
     // until we figure out how to compute automorphism groups in the canonical form package
     if (num_aut == 0) {
       for (size_t i = 0; i < n; i++)
@@ -1248,6 +1249,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
       num_aut = grp_perm.size();
       assert(num_aut == q_red.numAutomorphisms(GREEDY));
     }
+#endif
     q_red._num_aut = num_aut;
     q_red._num_aut_init = true;
   }
