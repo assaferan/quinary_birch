@@ -8,7 +8,7 @@ template<typename R>
 NumberFieldElement<R>::NumberFieldElement(const NumberFieldElement<R> & other)
   : _K(other._K)
 {
-  nf_elem_init(_nf_elt_antic, _K->antic());
+  nf_elem_init(_nf_elt_antic, other._K->antic());
   nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, other._K->antic());
 }
 
@@ -195,7 +195,11 @@ template<typename R>
 inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const NumberFieldElement<R> & other)
 {
   if (this != &other) {
-    this->_K = other._K;
+    if (this->_K != other._K) {
+      this->_K = other._K;
+      nf_elem_clear(_nf_elt_antic)
+	nf_elem_init(_nf_elt_antic, other._K->antic());
+    }
     nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, other._K->antic());
   }
   return (*this);
