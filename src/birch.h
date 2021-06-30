@@ -134,6 +134,9 @@ class PolynomialFp;
 template<class R, class Parent, size_t n>
 class Vector;
 
+template<typename R, size_t n>
+using VectorRat = Vector<Rational<R>,RationalField<R>,n>;
+
 // convenient typedefs
 
 // quadratic forms

@@ -101,6 +101,17 @@ public:
 
   inline SquareMatrixInt<R,n> hermiteForm(const R & d) const
   {return _a.hermiteForm(d); }
+
+  inline VectorRat<R,n> operator*(const VectorRat<R,n> & v) const
+  {
+    SquareMatrixRat<R,n> mat;
+    for (size_t i = 0; i < n; i++)
+      for (size_t j = 0; j < n; j++) {
+	Rational<R> elt(_a(i,j), _scale);
+	mat(i,j) = elt;
+      }
+    return mat * v;
+  }
   
 protected:
   SquareMatrixInt<R,n> _a;

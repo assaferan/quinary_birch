@@ -1110,6 +1110,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> > & auts)
 {
+  Group< Isometry<R,n>, VectorRat<R,n> > grp(auts);
   size_t num_aut;
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "Before generating more, automorphisms are: " << std::endl;
@@ -1144,6 +1145,7 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> 
   for (Isometry<R,n> s : auts)
     std::cerr << s << std::endl;
 #endif
+  assert(grp.size() == num_aut);
   return num_aut;
 }
 
@@ -1182,7 +1184,7 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
     throw std::runtime_error("Unknown reduction method!\n");
     break;
   }
-
+  
   return num_aut;
 }
 
