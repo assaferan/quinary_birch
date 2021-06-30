@@ -1584,7 +1584,17 @@ QuadFormInt<R,n>::generateOrbit(void) const
         orbit[j->first] = i->second*j->second;
       }
     }
-    // It seems that we should also add _neighborOrbit ?
+
+    for (i = orbit.begin(); i != orbit.end(); i++) {
+      std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
+	signs = (i->first)._neighborOrbit();
+      for (j = signs.begin(); j != signs.end(); j++) {
+	assert((i->second*j->second).transform(this->bilinearForm()) ==
+	       j->first.bilinearForm());
+        orbit[j->first] = i->second*j->second;
+      }
+    }
+    
   }
   return orbit;
 }
@@ -1656,6 +1666,150 @@ QuadFormInt<R,n>::_signOrbit(void) const
     assert(s.transform(this->bilinearForm()) == qq.bilinearForm());
     orbit[qq] = s;
   }
+  return orbit;
+}
+
+template<typename R, size_t n>
+inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
+QuadFormInt<R,n>::_neighborOrbit(void) const
+{
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit;
+  Isometry<R,n> s;
+  SquareMatrixInt<R,n> q;
+
+  std::vector< std::set< VectorInt<R,n> > > local_neighbors(1);
+  Isometry<R,n> b0;
+
+  VectorInt<R,n> vec;
+  vec[0] = 1;
+  for (size_t i = 1; i < n; i++)
+    vec[i] = 0;
+  local_neighbors[0].insert(vec);
+  size_t num_free = 1;
+  for (size_t i = 1; i < n; i++) {
+    num_free *= 3;
+    std::set< VectorInt<R,n> > free_hood;
+    for (size_t x_idx = 0; x_idx < num_free; x_idx++) {
+      size_t tmp = x_idx;
+      VectorInt<R,n> x;
+      for (size_t j = 0; j < i; j++) {
+	// we separate because tmp is unsigned, which might lead to overflow
+	x[j] = R(tmp % 3);
+	x[j]--;
+	tmp /= 3;
+      }
+      x[i] = 1;
+      for (size_t j = i+1; j < n; j++)
+	x[j] = 0;
+      R norm = VectorInt<R,n>::innerProduct(x*qf, x);
+      if (norm == qf(i,i)) {
+	free_hood.insert(x);
+      }
+    }
+    local_neighbors.push_back(free_hood);
+  }
+
+  std::map< R, std::vector<size_t> > norms;
+  for (size_t i = 0; i < n; i++) {
+    R val = qf(i,i);
+    auto search = norms.find(val);
+    if (search == norms.end()) {
+      std::vector<size_t> empty_vec(0);
+      norms[val] = empty_vec;
+    }
+    norms[val].push_back(i);
+  }
+  typename std::map< R, std::vector<size_t> >::const_iterator iter;
+  // !! TODO - here there's duplication.
+  // we can simply call local_neighbors[norms[i]],
+  // changin local_neighbors to depend on the norm
+  for (iter = norms.begin(); iter != norms.end(); iter++) {
+    std::vector<size_t> inds = iter->second;
+    std::set< VectorInt<R,n> > X;
+    for (size_t i : inds) {
+      X.insert(local_neighbors[i].begin(), local_neighbors[i].end());
+    }
+    for (size_t i  : inds)
+      local_neighbors[i] = X;
+  }
+
+  size_t nbs_size = 1;
+  for (size_t i = 0; i < local_neighbors.size(); i++)
+    nbs_size *= local_neighbors[i].size();
+  
+#ifdef DEBUG_LEVEL_FULL
+  std::cerr << "Original NeighborSpace size: " << nbs_size << std::endl;
+#endif
+  
+  std::vector< std::vector< VectorInt<R,n> > > ns;
+  for (VectorInt<R,n> x : local_neighbors[0]) {
+    std::vector< VectorInt<R,n> > singleton;
+    singleton.push_back(x);
+    ns.push_back(singleton);
+  }
+  std::vector< std::vector< VectorInt<R,n> > > ns0;
+  
+  std::vector< std::vector< VectorInt<R,n> > > & neighbor_space = ns;
+  std::vector< std::vector< VectorInt<R,n> > > & ns1 = ns0;
+  
+  for (size_t i = 1; i < n; i++) {
+    ns1.clear();
+    R norm = qf(i,i);
+    std::vector<size_t> inds;
+    for (size_t j = 0; j < i; j++)
+      if (qf(j,j) == norm) inds.push_back(j);
+    for (VectorInt<R,n> y : local_neighbors[i]) {
+      for (std::vector< VectorInt<R,n> > c : neighbor_space) {
+	bool include = true;
+	for (size_t j : inds)
+	  if (c[j] == y) {
+	    include = false;
+	    break;
+	  }
+	if ((include) &&
+	    (abs(VectorInt<R,n>::innerProduct(c[i-1]*qf, y)) >= abs(qf(i,i-1)))) {
+	  c.push_back(y);
+	  ns1.push_back(c);
+	}
+	else {
+	  for (size_t j = 1; j < i; j++) {
+	    if (abs(VectorInt<R,n>::innerProduct(c[j-1]*qf, c[j])) >
+		abs(qf(j,j-1)) ) {
+	      c.push_back(y);
+	      ns1.push_back(c);
+	      break;
+	    }
+	  }
+	}
+      }
+    }
+    // swap pointers
+    std::vector< std::vector< VectorInt<R,n> > > & tmp = neighbor_space;
+    neighbor_space = ns1;
+    ns1 = tmp;
+  }
+  
+#ifdef DEBUG_LEVEL_FULL
+  std::cerr << "Reduced to NeighborSpace of size:";
+  std::cerr << neighbor_space.size() << std::endl;
+#endif
+  
+  // !! - TODO - we can from the beginning store c as a matrix
+  for (std::vector< VectorInt<R,n> > c : neighbor_space) {
+    for (size_t i = 0; i < n; i++)
+      for (size_t j = 0; j < n; j++)
+	// note that we transpose
+	b0(i,j) = c[j][i];
+    if (b0.determinant().abs().isOne()) {
+      SquareMatrixInt<R,n> q0 = b0.transform(qf);
+      greedy(q0, s);
+      s = b0 * s;
+      QuadFormZZ<R,n> qq(q0);
+      assert(s.transform(this->bilinearForm()) == qq.bilinearForm());
+      orbit[qq] = s;
+    }
+  }
+ 
   return orbit;
 }
 
