@@ -48,13 +48,17 @@ public:
       W16_FpElement scale(GF, abs(s.getScale()));
       if (is_neg)
 	scale = -scale;
+      // at the moment, when s has scale divisible by p (at the bad primes)
+      // we replace it by the trivial matrix. In general, should implement the spinor norm using reflection decomposition
       if (!scale.isZero())
 	s_mat *= scale.inverse();
+      else
+	s_mat = W16_MatrixFp::identity(GF, n);
       // To obtain an element of the special orthogonal group (we let the center act trivially)
       if ((n % 2 == 1) && (s_mat.determinant() == -GF->one()))
 	s_mat = -s_mat;
       // We still have a problem when n is even
-      assert((s_mat.determinant() == GF->one()) || (s_mat.determinant() == -GF->one()) || (s_mat.determinant().isZero() && (s.getScale() == prime)));
+      assert((s_mat.determinant() == GF->one()) || (s_mat.determinant() == -GF->one()));
       W16_MatrixFp rad = this->_rads.at(prime);
 #ifdef DEBUG_LEVEL_FULL
       std::cerr << "rad = " << std::endl << rad << std::endl;
