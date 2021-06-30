@@ -12,8 +12,6 @@
 
 #endif // ONLY_GREEDY
 
-#include "polyhedral_common/src_gap/Group.h"
-
 /*
 #include "permlib/permutation.h"
 #include "permlib/bsgs.h"
@@ -1112,8 +1110,6 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> > & auts)
 {
-  std::vector<Isometry<R,n> > aut_vec(auts.begin(), auts.end());
-  permutalib::Group<Isometry<R,n>, R> grp(aut_vec, n);
   size_t num_aut;
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "Before generating more, automorphisms are: " << std::endl;
@@ -1148,7 +1144,6 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> 
   for (Isometry<R,n> s : auts)
     std::cerr << s << std::endl;
 #endif
-  assert(num_aut == grp.size());
   return num_aut;
 }
 
