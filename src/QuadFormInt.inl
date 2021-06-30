@@ -1163,6 +1163,8 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
   permlib::SymmetricGroup<permlib::Permutation> s_n(n);
   permlib::partition::MatrixAutomorphismSearch<permlib::SymmetricGroup<permlib::Permutation>, permlib::SchreierTreeTransversal<permlib::Permutation> > mas(s_n, false);
   permlib::BSGS<permlib::Permutation, permlib::SchreierTreeTransversal<permlib::Permutation> > K(n);
+  // permlib can't handle mpz_class
+  SquareMatrixInt<Z64,n> qf_64 = birch_util::convertSquareMatrix(qf);
   
   switch(alg) {
   case GREEDY :
