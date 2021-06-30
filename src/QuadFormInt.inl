@@ -1113,7 +1113,7 @@ template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> > & auts)
 {
   std::vector<Isometry<R,n> > aut_vec(auts.begin(), auts.end());
-  permutalib::Group<Isometry<R,n>, R> grp(aut_vec);
+  permutalib::Group<Isometry<R,n>, R> grp(aut_vec, n);
   size_t num_aut;
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "Before generating more, automorphisms are: " << std::endl;
