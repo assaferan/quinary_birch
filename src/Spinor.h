@@ -48,7 +48,8 @@ public:
       W16_FpElement scale(GF, abs(s.getScale()));
       if (is_neg)
 	scale = -scale;
-      s_mat *= scale.inverse();
+      if (!scale.isZero())
+	s_mat *= scale.inverse();
       // To obtain an element of the special orthogonal group (we let the center act trivially)
       if ((n % 2 == 1) && (s_mat.determinant() == -GF->one()))
 	s_mat = -s_mat;
