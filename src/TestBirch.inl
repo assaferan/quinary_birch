@@ -47,10 +47,12 @@ inline bool TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
     size_t num_processed = 0;
     for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs[k]) {
       Integer<R> p = ev.first;
-      std::clock_t time1 = std::clock();
-      std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num(), k+1);
-      std::clock_t time2 = std::clock();
 #ifdef DEBUG
+      std::clock_t time1 = std::clock();
+#endif
+      std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num(), k+1);
+#ifdef DEBUG
+      std::clock_t time2 = std::clock();
       std::cerr << "computing eigenvalues took " << 1000.0 * (time2 - time1) / CLOCKS_PER_SEC << " ms\n";
 #endif 
       for (size_t i = 0; i < evecs.size(); i++) {
