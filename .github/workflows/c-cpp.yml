@@ -7,14 +7,25 @@ on:
     branches: [ main ]
 
 jobs:
+
   build:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: cache mpfr
+      id:   cache-mpfr
+      uses: actions/cache@v2.1.6
+      with:
+        path: mpfr
+        key: ${{ runner.os }}-mpfr
+      
     - name: install mpfr
+      if: steps.cache-mpfr.outputs.cache-hit != 'true'
       run:  sudo apt-get install libmpfr-dev
+      
     - name: clone flint
       run:  git clone https://github.com/wbhart/flint2.git
     - name: configure flint
@@ -26,6 +37,7 @@ jobs:
     - name: install flint
       working-directory: ./flint2
       run:  make install
+      
     - name: autogen
       run: ./autogen.sh
     - name: configure
