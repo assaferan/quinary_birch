@@ -51,15 +51,15 @@ namespace birch_util
   }
   
   template<>
-  unsigned long convertInteger<Z>(const Z& x)
+  W32 convertInteger<Z>(const Z& x)
   {
-    return (unsigned long)mpz_get_ui(x.get_mpz_t());
+    return (W32)mpz_get_ui(x.get_mpz_t());
   }
 
   template<>
-  unsigned long convertInteger<unsigned short>(const unsigned short& x)
+  W32 convertInteger<W16>(const W16& x)
   {
-    return (unsigned long)x;
+    return (W32)x;
   }
 
   template<>
@@ -100,18 +100,6 @@ namespace birch_util
   
   template<>
   Z convertInteger<Z32>(const Z32& x)
-  {
-    return static_cast<Z>(x);
-  }
-  
-  template<>
-  Z convertInteger<long>(const long& x)
-  {
-    return static_cast<Z>(x);
-  }
-
-  template<>
-  Z convertInteger<unsigned long>(const unsigned long& x)
   {
     return static_cast<Z>(x);
   }
@@ -157,7 +145,7 @@ namespace birch_util
   }
 
   template<>
-  long convertInteger<Z>(const Z& x)
+  Z32 convertInteger<Z>(const Z& x)
   {
     return mpz_get_si(x.get_mpz_t());
   }
@@ -180,12 +168,6 @@ namespace birch_util
     return (Z64)x;
   }
 
-  template<>
-  int convertInteger<Z>(const Z& x)
-  {
-    return mpz_get_si(x.get_mpz_t());
-  }
-  
   template<>
   Z64 convertInteger<Z>(const Z& x)
   {
@@ -237,9 +219,9 @@ namespace birch_util
   }
 
   template<>
-  Rational<Z> convert(const unsigned long & x)
+  Rational<Z> convert(const W32 & x)
   {
-    Z y = convertInteger<unsigned long,Z>(x);
+    Z y = convertInteger<W32,Z>(x);
     return y;
   }
   

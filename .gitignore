@@ -59,3 +59,9 @@ src/flint/*
 src/polyhedral_common/*/.deps/*
 src/polyhedral_common/*/.libs/*
 libs/*
+src/polyhedral_common/src_basic/.dirstamp
+src/polyhedral_common/src_comb/.dirstamp
+src/polyhedral_common/src_graph/.dirstamp
+src/polyhedral_common/src_matrix/.dirstamp
+src/polyhedral_common/src_number/.dirstamp
+src/polyhedral_common/src_poly/.dirstamp

@@ -304,7 +304,7 @@ void NumberFieldElement<R>::_initAntic(const UnivariatePolyRat<R> & f) {
     for (int i = 0; i <= f.degree(); i++) {
       Rational<R> c = f.coefficient(i);
       mpq_init(c_mpq[i]);
-      mpq_set_si(c_mpq[i], birch_util::convertInteger<R,slong>(c.num().num()), birch_util::convertInteger<R,ulong>(c.denom().num()));
+      mpq_set_si(c_mpq[i], birch_util::convertInteger<R,Z64>(c.num().num()), birch_util::convertInteger<R,W64>(c.denom().num()));
     }
     
     fmpq_poly_set_array_mpq(poly, (const mpq_t *)c_mpq, f.degree()+1);
