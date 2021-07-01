@@ -52,14 +52,16 @@ jobs:
       working-directory: ./flint2
       if:   steps.cache-flint.outputs.cache-hit != 'true'
       run:  sudo make install
-      
-    - name: autogen
-      run:  ./autogen.sh
-    - name: configure
-      run:  ./configure
-    - name: make
-      run:  make
-    - name: make check
-      run:  make check
-    - name: make distcheck
-      run:  make distcheck
+
+#    We comment out all these because we would like to cache flint at least once
+
+#    - name: autogen
+#      run:  ./autogen.sh
+#    - name: configure
+#      run:  ./configure
+#    - name: make
+#      run:  make
+#    - name: make check
+#      run:  make check
+#    - name: make distcheck
+#      run:  make distcheck
