@@ -55,3 +55,7 @@ src/*/*/*.o
 src/*/*/*.lo
 src/*/*/*/*.o
 src/*/*/*/*.lo
+src/flint/*
+src/polyhedral_common/*/.deps/*
+src/polyhedral_common/*/.libs/*
+libs/*
