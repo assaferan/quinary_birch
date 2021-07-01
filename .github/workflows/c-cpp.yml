@@ -47,7 +47,11 @@ jobs:
     - name: build flint
       working-directory: ./flint2
       if:   steps.cache-flint.outputs.cache-hit != 'true'
-      run:  sudo make && make check
+      run:  sudo make
+    - name: check flint
+      working-directory: ./flint2
+      if:   steps.cache-flint.outputs.cache-hit != 'true'
+      run:  sudo make check
     - name: install flint
       working-directory: ./flint2
       if:   steps.cache-flint.outputs.cache-hit != 'true'
