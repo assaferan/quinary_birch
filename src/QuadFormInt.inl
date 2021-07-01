@@ -1074,7 +1074,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
       for (size_t j = 0; j < n; j++)
 	// note that we transpose
 	b0(i,j) = c[j][i];
-    if (b0.determinant().abs().isOne()) {
+    if (abs(b0.integralMatrix().determinant()) == 1) {
       SquareMatrixInt<R,n> q0 = b0.transform(qf);
       Isometry<R,n> u;
       std::unordered_set< Isometry<R,n> > tmp_auts;
