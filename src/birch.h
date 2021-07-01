@@ -21,7 +21,8 @@ typedef __int128_t Z128;
 typedef enum ReductionMethod
   {
    GREEDY,
-   CANONICAL_FORM
+   CANONICAL_FORM,
+   GREEDY_FULL
   } ReductionMethod;
 
 /* Builtins */

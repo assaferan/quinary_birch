@@ -97,7 +97,7 @@ public:
 
   static void greedy(SquareMatrixInt<R,n>& q, Isometry<R,n>& s, size_t dim = n);
 
-  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > generateOrbit(void) const;
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > generateOrbit(ReductionMethod alg) const;
 
   inline bool isReduced(void) const { return this->_is_reduced; }
 

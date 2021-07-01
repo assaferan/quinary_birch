@@ -1159,6 +1159,7 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
   
   switch(alg) {
   case GREEDY :
+  case GREEDY_FULL :
     num_aut = _iReduce(qf, isom, auts, true);
     break;
     
@@ -1226,6 +1227,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     break;
 #endif // ONLY_GREEDY
   case GREEDY :
+  case GREEDY_FULL:
     num_aut = _iReduce(qf, isom, auts, calc_aut);
     break;
   default:
@@ -1273,6 +1275,10 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
     if (all_eq) {
       _iReduce(qf, isom, auts, false);
     }
+    break;
+
+  case GREEDY_FULL :
+    _iReduce(qf, isom, auts, false);
     break;
     
 #ifndef ONLY_GREEDY
@@ -1561,7 +1567,7 @@ bool QuadFormInt<R,n>::_signNormalizationFast(SquareMatrixInt<R,n> & qf,
 
 template<typename R, size_t n>
 inline std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >
-QuadFormInt<R,n>::generateOrbit(void) const
+QuadFormInt<R,n>::generateOrbit(ReductionMethod alg) const
 {
   Isometry<R,n> s;
   QuadFormZZ<R,n> qf(this->bilinearForm());
@@ -1570,6 +1576,10 @@ QuadFormInt<R,n>::generateOrbit(void) const
   typename std::unordered_map< QuadFormZZ<R,n>,
 			       Isometry<R,n> >::const_iterator i, j;
   orbit[qf] = s;
+
+  if (alg == GREEDY_FULL) {
+    return orbit;
+  }
   
   // if n == 5 and all 5 shortest vectors are of the same length
   // the orbit would be very large and we prefer not to try and compute it.
@@ -1619,13 +1629,27 @@ QuadFormInt<R,n>::generateOrbit(void) const
     }
     
   }
-  return orbit;
+
+  // finally, we greedy reduce everything in the orbit, to obtain only greedy reduced things
+  // since we will only look for greedy reduced elements
+  // If this takes too long, we can probably skip it, as it does not save much later
+
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > greedy_orbit;
+  
+  for (i = orbit.begin(); i != orbit.end(); i++) {
+    SquareMatrixInt<R,n> q = i->first.bilinearForm();
+    Isometry<R,n> s = i->second;
+    greedy(q, s);
+    greedy_orbit[i->first] = s;
+  }
+  
+  return greedy_orbit;
 }
 
 
 template<typename R, size_t n>
 inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
-QuadFormInt<R,n>::_permutationOrbit() const
+QuadFormInt<R,n>::_permutationOrbit(void) const
 {
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit; 
   std::map<Integer<R>, std::vector<size_t> > stable_sets;
@@ -1658,7 +1682,7 @@ QuadFormInt<R,n>::_permutationOrbit() const
       Isometry<R,n> s;
       s.updatePerm(large_perm);
       q1 = s.transform(this->bilinearForm());
-      greedy(q1, s);
+      //      greedy(q1, s);
       QuadFormZZ<R,n> q(q1);
 
       assert(s.transform(this->bilinearForm()) == q.bilinearForm());
@@ -1684,7 +1708,7 @@ QuadFormInt<R,n>::_signOrbit(void) const
       tmp >>= 1;
     }
     q = s.transform(this->bilinearForm());
-    greedy(q,s);
+    //    greedy(q,s);
     QuadFormZZ<R,n> qq(q);
     assert(s.transform(this->bilinearForm()) == qq.bilinearForm());
     orbit[qq] = s;
@@ -1825,12 +1849,16 @@ QuadFormInt<R,n>::_neighborOrbit(void) const
 	b0(i,j) = c[j][i];
     if (b0.determinant().abs().isOne()) {
       SquareMatrixInt<R,n> q0 = b0.transform(qf);
-      s.setIdentity();
-      greedy(q0, s);
-      s = b0 * s;
+      // s.setIdentity();
+      // greedy(q0, s);
+      // s = b0 * s;
+      s = b0;
       QuadFormZZ<R,n> qq(q0);
       assert(s.transform(this->bilinearForm()) == qq.bilinearForm());
-      orbit[qq] = s;
+      std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > sign_orbit = qq._signOrbit();
+      for (std::pair< QuadFormZZ<R,n>, Isometry<R,n> > q_s : sign_orbit)
+	orbit[q_s.first] = s * q_s.second;
+      //orbit[qq] = s;
     }
   }
  

@@ -264,7 +264,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 
   // add the orbit representatives to the invariants
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > q_orbit;
-  q_orbit = rep.q.generateOrbit();
+  q_orbit = rep.q.generateOrbit(alg);
   typename std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >::const_iterator
     iter;
 
@@ -364,7 +364,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 		  this->_spinor_primes->add(prime);
 
 		  // add the orbit representatives to the invariants
-		  q_orbit = temp.q.generateOrbit();		  
+		  q_orbit = temp.q.generateOrbit(alg);		  
 
 		  assert(q_orbit.find(temp.q) != q_orbit.end());
 
