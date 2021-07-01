@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
   }
   
   runQuinaryBirch(disc,num_evs,alg);
-  runBirchTests(num_evs,alg);
+  // runBirchTests(num_evs,alg);
   
   return 0;
 }
