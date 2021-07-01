@@ -17,12 +17,12 @@ jobs:
     
     - name: cache mpfr
       id:   cache-mpfr
-      uses: sudo actions/cache@v2.1.6
+      uses: actions/cache@v2.1.6
       with:
         path: |
           /usr/local/lib/libmpfr*
           /usr/local/include/mpfr.h
-        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+        key: ${{ runner.os }}-mpfr-${{ hashFiles('**/lockfiles') }}
       
     - name: install mpfr
       if: steps.cache-mpfr.outputs.cache-hit != 'true'
@@ -30,24 +30,24 @@ jobs:
       
     - name: cache flint
       id:   cache-flint
-      uses: sudo actions/cache@v2.1.6
+      uses: actions/cache@v2.1.6
       with:
         path: |
           /usr/local/lib/libflint*
           /usr/local/include/flint
-        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+        key: ${{ runner.os }}-flint-${{ hashFiles('**/lockfiles') }}
       
     - name: clone flint
       if:   steps.cache-flint.outputs.cache-hit != 'true'
-      run:  git clone https://github.com/wbhart/flint2.git
+      run:  sudo git clone https://github.com/wbhart/flint2.git
     - name: configure flint
       working-directory: ./flint2
       if:   steps.cache-flint.outputs.cache-hit != 'true'
-      run:  ./configure
+      run:  sudo ./configure
     - name: build flint
       working-directory: ./flint2
       if:   steps.cache-flint.outputs.cache-hit != 'true'
-      run:  make && make check
+      run:  sudo make && make check
     - name: install flint
       working-directory: ./flint2
       if:   steps.cache-flint.outputs.cache-hit != 'true'
