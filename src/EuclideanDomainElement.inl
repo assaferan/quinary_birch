@@ -150,3 +150,6 @@ EuclideanDomainElement<Derived,DerivedParent>::operator%=(const Derived& b)
   *(this->getPtr()) = (*this) % b;
   return *(this->getPtr());
 }
+
+template <class Derived, class DerivedParent>
+inline EuclideanDomainElement<Derived,DerivedParent>::~EuclideanDomainElement() {};

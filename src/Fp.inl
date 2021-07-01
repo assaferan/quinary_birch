@@ -2,6 +2,8 @@
 #include <memory>
 #include <random>
 
+#include "birch_util.h"
+
 template<typename R, typename S>
 Fp<R,S>::Fp(const R& p, W64 seed, bool use_inverse_lut)
 {
@@ -77,8 +79,8 @@ inline R Fp<R,S>::sub(R a, R b) const
 template<typename R, typename S>
 inline int Fp<R,S>::legendre(R a) const
 {
-  Z aa(a);
-  Z pp(this->_p);
+  Z aa = birch_util::convertInteger<R,Z>(a);
+  Z pp = birch_util::convertInteger<R,Z>(this->_p);
   return mpz_legendre(aa.get_mpz_t(), pp.get_mpz_t());
 }
 
@@ -113,8 +115,8 @@ template<typename R, typename S>
 inline R Fp<R,S>::_inv(R a) const
 {
   if (a == 0) return 0;
-  Z aa(a);
-  Z pp(this->_p);
+  Z aa = birch_util::convertInteger<R,Z>(a);
+  Z pp = birch_util::convertInteger<R,Z>(this->_p);
   mpz_invert(aa.get_mpz_t(), aa.get_mpz_t(), pp.get_mpz_t());
   R ainv = mpz_get_ui(aa.get_mpz_t());
 

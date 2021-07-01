@@ -16,8 +16,8 @@ template<class R, class Parent>
 class UnivariatePoly
 {
   // We would want R to be a Euclidean domain, to be able to perform things such as gcd and reduction
-  static_assert(std::is_base_of<EuclideanDomainElement<R,Parent>,R>::value);
-  static_assert(std::is_base_of<Ring<Parent,R>,Parent>::value);
+  static_assert(std::is_base_of<EuclideanDomainElement<R,Parent>,R>::value, "UnivariatePoly only supports polynomials over euclidean domains, R template parameter must inherit from it.");
+  static_assert(std::is_base_of<Ring<Parent,R>,Parent>::value, "Parent template parameter has to inherit from Ring.");
 public:
   // create the zero polynomial
   UnivariatePoly(std::shared_ptr<const Parent> base_ring) : _base(base_ring) {}

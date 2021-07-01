@@ -6,8 +6,8 @@
 template<class R, class Parent, size_t n>
 class Vector {
   
-  static_assert(std::is_base_of<RingElement<R,Parent>, R>::value);
-  static_assert(std::is_base_of<Ring<Parent,R>, Parent>::value);
+  static_assert(std::is_base_of<RingElement<R,Parent>, R>::value, "R template parameter has to inherit from RingElement.");
+  static_assert(std::is_base_of<Ring<Parent,R>, Parent>::value, "Parent template parameter has to inherit from Ring.");
   
 public:
 
@@ -91,7 +91,7 @@ namespace std
     {
       Z64 fnv = FNV_OFFSET;
       for (size_t i = 0; i < n; i++)
-	fnv = (fnv ^ vec[i].num()) * FNV_PRIME;
+	fnv = (fnv ^ std::hash<R>{}(vec[i])) * FNV_PRIME;
             
       return fnv;
     }

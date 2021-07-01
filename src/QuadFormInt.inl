@@ -12,15 +12,6 @@
 
 #endif // ONLY_GREEDY
 
-/*
-#include "permlib/permutation.h"
-#include "permlib/bsgs.h"
-#include "permlib/symmetric_group.h"
-#include "permlib/construct/schreier_sims_construction.h"
-#include "permlib/transversal/schreier_tree_transversal.h"
-#include "permlib/search/partition/matrix_automorphism_search.h"
-*/
-
 #include "birch_util.h"
 #include "Fp.h"
 #include "FpElement.h"
@@ -30,6 +21,8 @@
 #include "Matrix.h"
 #include "SquareMatrix.h"
 #include "VectorInt.h"
+
+#include "SchreierSims.h"
 
 // c-tors
 template<typename R, size_t n>
@@ -1110,7 +1103,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> > & auts)
 {
-  Group< Isometry<R,n>, VectorRat<R,n> > grp(auts);
+  //   Group< Isometry<R,n>, VectorRat<R,n> > grp(auts);
   size_t num_aut;
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "Before generating more, automorphisms are: " << std::endl;
@@ -1145,7 +1138,7 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> 
   for (Isometry<R,n> s : auts)
     std::cerr << s << std::endl;
 #endif
-  assert(grp.size() == num_aut);
+  // assert(grp.size() == num_aut);
   return num_aut;
 }
 

@@ -104,6 +104,9 @@ inline Derived& RingElement<Derived,DerivedParent>::operator-- (void)
   return *(this->getPtr());
 }
 
+template <class Derived, class DerivedParent>
+inline RingElement<Derived,DerivedParent>::~RingElement() {};
+
 /**
  * Output operator.
  *
@@ -121,3 +124,5 @@ inline std::ostream& operator<< (std::ostream& ostream, RingElement<Derived,Deri
   d.print(ostream);
   return ostream;
 }
+
+

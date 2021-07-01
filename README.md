@@ -23,7 +23,9 @@ The code in this repository is based on the work of many, among them:
 
 * sage is only needed for usage with the sage interface
 
-* This code has only been tested so far on linux #73-Ubuntu, compiled with gcc 9.3.0 on AMD Ryzen Threadripper 2970WX 24-Core Processor.
+* This code has only been tested so far on:
+- linux #73-Ubuntu, compiled with gcc 9.3.0 on AMD Ryzen Threadripper 2970WX 24-Core Processor.
+- macOS BigSur 11.4, compiled with gcc 4.2.1 on Intel i9 8-Core Processor.
 
 The main (and develop) branch require the following libraries:
 

@@ -34,7 +34,7 @@ public:
     : _num(other._num) {}
   
   // assignment
-  Integer<R> & operator=(const Integer<R> & b);
+  Integer<R> & operator=(const Integer<R> & b) override;
 
   // conversion
   // This might be dangerous, so we don't do it for now
@@ -44,14 +44,14 @@ public:
   inline const R & num(void) const { return this->_num; }
   
   // arithmetic
-  Integer<R> & operator+=(const Integer<R> &b);
-  Integer<R> & operator-=(const Integer<R> &b);
-  Integer<R> & operator*=(const Integer<R> &b);
+  Integer<R> & operator+=(const Integer<R> &b) override;
+  Integer<R> & operator-=(const Integer<R> &b) override;
+  Integer<R> & operator*=(const Integer<R> &b) override;
 
   // !! - TODO - move these to a monoid / ordered / valued ring
   // comparison
-  bool operator==(const Integer<R> &) const;
-  inline bool operator!=(const Integer<R> &b) const {return !((*this)==b); }
+  bool operator==(const Integer<R> &) const override;
+  inline bool operator!=(const Integer<R> &b) const override {return !((*this)==b); }
   bool operator<(const Integer<R> &) const;
   inline bool operator>(const Integer<R> &b) const {return b < (*this); }
   inline bool operator<=(const Integer<R> &b) const
@@ -61,15 +61,15 @@ public:
 
   // global constants
 
-  inline bool isZero(void) const { return (_num == 0); }
+  inline bool isZero(void) const override { return (_num == 0); }
 
   // assign zero
-  inline Integer<R> & makeZero(void) { _num = 0; return (*this); }
+  inline Integer<R> & makeZero(void) override { _num = 0; return (*this); }
 
-  inline bool isOne(void) const { return (_num == 1); }
+  inline bool isOne(void) const override { return (_num == 1); }
 
   // assign to one
-  inline Integer<R> & makeOne(void) { _num = 1; return (*this); }
+  inline Integer<R> & makeOne(void) override { _num = 1; return (*this); }
 
   inline static Integer<R> zero(void) { Integer<R> a; return a.makeZero(); }
   inline static Integer<R> one(void) { Integer<R> a; return a.makeOne(); }
@@ -81,13 +81,13 @@ public:
    * quotient and the remainder.
    */
   typename EuclideanDomainElement<Integer<R>, IntegerRing<R> >::DivRes
-  euclideanDivision(const Integer<R>& b) const;
+  euclideanDivision(const Integer<R>& b) const override;
 
-  void print(std::ostream&) const;
+  void print(std::ostream&) const override;
 
-  inline Integer<R>* getPtr(void) { return this; }
+  inline Integer<R>* getPtr(void) override { return this; }
 
-  inline const Integer<R>* getPtr(void) const { return this; }
+  inline const Integer<R>* getPtr(void) const override { return this; }
 
   inline std::shared_ptr<const IntegerRing<R> > parent(void) const override
   {return std::make_shared< IntegerRing<R> >(); }

@@ -414,7 +414,9 @@ SquareMatrix<R,Parent,n>::solve(const Vector<R,Parent,n> & vec) const
   Vector<R,Parent,n> sol(_base);
   SquareMatrix<R,Parent,n> L(_base);
   Vector<R,Parent,n> D(_base);
+#ifdef DEBUG
   bool is_positive_definite = cholesky(L, D);
+#endif
   assert(is_positive_definite);
   sol = L._forwardSubstitution(vec);
   for (size_t i = 0; i < n; i++)

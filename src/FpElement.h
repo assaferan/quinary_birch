@@ -27,7 +27,7 @@ public:
 
   // arithmetic
   inline FpElement<R,S> operator+() const {return FpElement(_GF, _val); }
-  inline FpElement<R,S> operator++(int)
+  inline FpElement<R,S> operator++(int) override
   {return ((*this) += _GF->one()); }
   FpElement<R,S> operator-() const override;
   FpElement<R,S> operator+(const FpElement<R,S> &other) const override;

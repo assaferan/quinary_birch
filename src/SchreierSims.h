@@ -35,7 +35,7 @@ public:
   OrbitTree(const GSetElt & x)
   {
     GrpElt id;
-    OrbitNode<GrpElt, GSetElt> > root(id,x);
+    OrbitNode<GrpElt, GSetElt> root(id,x);
     _vec.push_back(root);
     _elt_to_node_idx[x] = 0;
   }
@@ -46,7 +46,7 @@ public:
   {
     assert(_vec[_elt_to_node_idx[p1]].elt == p1);
 
-    const OrbitNode<GrpElt,GSetElt> & old_node = _vec[_elt_to_node_idx[p1]];
+    OrbitNode<GrpElt,GSetElt> & old_node = _vec[_elt_to_node_idx[p1]];
     OrbitNode<GrpElt,GSetElt> new_node(l * old_node.coset_rep, p2);
 
     old_node.children_idxs.push_back(_vec.size());
@@ -59,9 +59,10 @@ public:
   inline bool contains(const GSetElt & x) const
   {return (_elt_to_node_idx.find(x) != _elt_to_node_idx.end());}
   
-  inline GrpElt orbitElement(const GSetElt & x) const {
+  inline GrpElt orbitElement(const GSetElt & x) {
     assert(this->contains(x));
-    return _vec[_elt_to_node_idx[x]].coset_rep;
+    size_t x_node = _elt_to_node_idx[x];
+    return _vec[x_node].coset_rep;
   }
   
   inline GrpElt getSchreierGenerator(const GSetElt & p, const GrpElt & s)
@@ -72,6 +73,15 @@ public:
   }
 
   inline size_t size(void) const {return _vec.size(); }
+
+  inline std::vector< GSetElt > orbit(void) const
+  {
+    std::vector< GSetElt > orb;
+    for (OrbitNode<GrpElt, GSetElt> node : _vec) {
+      orb.push_back(node.elt);
+    }
+    return orb;
+  }
   
 protected:
 
@@ -81,7 +91,7 @@ protected:
 };
 
 template<typename R, size_t n>
-VectorInt<R,n> newBasePoint(const Isometry<R,n> & g);
+VectorRat<R,n> newBasePoint(const Isometry<R,n> & g);
 
 template <class GrpElt, class GSetElt>
 class Group
@@ -108,15 +118,19 @@ public:
   void getPartialBSGS(const GeneratorSet & S, const EltSeq & B)
   {
     for (size_t i = 0; i < B.size(); i++)
-      _B.add(B.at(i));
+      _B.add(B[i]);
 
-    for (GSetElt s : S) {
+    for (GrpElt s : S) {
       if (!s.isIdentity()) {
-	EltSeq s_B;
-	for (GSetElt x : _B) {
-	  s_B.add(s*x);
+	bool stab = true;
+	for (size_t i = 0; i < _B.size(); i++) {
+	  GSetElt x = _B[i];
+	  if (!(_B.exists(s * x))) {
+	    stab = false;
+	    break;
+	  }
 	}
-	if (s_B == _B) {
+	if (stab) {
 	  GSetElt point = newBasePoint(s);
 	  _B.add(point);
 	}
@@ -131,7 +145,7 @@ public:
     EltSeq empty_seq;
     this->getPartialBSGS(S, empty_seq);
     
-    for (size_t i = base.size(); i > 0; i--) {
+    for (size_t i = _B.size(); i > 0; i--) {
       this->doSchreierSims(i); 
     }
     
@@ -145,13 +159,13 @@ public:
     for (size_t i = start_idx; i < n; i++) {
       GSetElt x = r * _B[i];
       if (!(_T[i].contains(x))) {
-	return make_pair(r, i);
+	return std::make_pair(r, i);
       }
       assert(i < _T.size());
       GrpElt elt = _T[i].orbitElement(x);
       r = r*elt.inverse();
     }
-    return make_pair(r,n);
+    return std::make_pair(r,n);
   }
   
   void doSchreierSims(size_t i) {
@@ -161,7 +175,8 @@ public:
     if (_T.size() < k)
       _T.resize(k);
     OrbitTree<GrpElt, GSetElt> T = computeSchreierTree(gens, _B[i-1]);
-    for (GSetElt p : T.orbit()) {
+    std::vector< GSetElt > orb = T.orbit();
+    for (GSetElt p : orb) {
       for (GrpElt s : gens) {
 	GrpElt gen = T.getSchreierGenerator(p,s);
 	if (!gen.isIdentity()) {
@@ -173,7 +188,7 @@ public:
 	    _S.insert(gen.inverse());
 	    if (dropout == k) {
 	      GSetElt point = newBasePoint(gen);
-	      _B.insert(point);
+	      _B.add(point);
 	    }
 	    for (size_t j = dropout; j >= i; j--) {
 	      doSchreierSims(j+1);
@@ -195,7 +210,7 @@ public:
     do {
       EltSeq children;
       for (size_t idx = 0; idx < points.size(); idx++) {
-	GSetElt p = points.at(idx);
+	GSetElt p = points[idx];
 	for (GrpElt s : S) {
 	  GSetElt p_prime = s * p;
 	  if (!tree.contains(p_prime)) {

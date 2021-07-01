@@ -48,7 +48,6 @@ src/*.lo
 Makefile~
 gmon.out
 src/Makefile~
-libs/
 *.cpp~
 src/*/*.o
 src/*/*.lo

@@ -20,6 +20,11 @@ public:
   // producing the global constants of the ring
   virtual DerivedElement zero(void) const = 0;
   virtual DerivedElement one(void) const = 0;
+
+  virtual ~Ring() = 0;
 };
+
+template <class Derived, class DerivedElement>
+Ring<Derived, DerivedElement>::~Ring() {};
 
 #endif // __RING_H_

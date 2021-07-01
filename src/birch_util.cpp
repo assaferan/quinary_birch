@@ -51,9 +51,15 @@ namespace birch_util
   }
   
   template<>
-  W32 convertInteger<Z>(const Z& x)
+  unsigned long convertInteger<Z>(const Z& x)
   {
-    return (W32)mpz_get_ui(x.get_mpz_t());
+    return (unsigned long)mpz_get_ui(x.get_mpz_t());
+  }
+
+  template<>
+  unsigned long convertInteger<unsigned short>(const unsigned short& x)
+  {
+    return (unsigned long)x;
   }
 
   template<>
@@ -83,42 +89,62 @@ namespace birch_util
   template<>
   Z convertInteger<W16>(const W16& x)
   {
-    return Z(x);
+    return static_cast<Z>(x);
   }
 
   template<>
   Z convertInteger<W32>(const W32& x)
   {
-    return Z(x);
-  }
-
-  template<>
-  Z convertInteger<W64>(const W64& x)
-  {
-    return Z(x);
+    return static_cast<Z>(x);
   }
   
   template<>
   Z convertInteger<Z32>(const Z32& x)
   {
-    return Z(x);
+    return static_cast<Z>(x);
   }
   
   template<>
-  Z convertInteger<Z64>(const Z64& x)
+  Z convertInteger<long>(const long& x)
   {
-    return Z(x);
+    return static_cast<Z>(x);
   }
 
+  template<>
+  Z convertInteger<unsigned long>(const unsigned long& x)
+  {
+    return static_cast<Z>(x);
+  }
+
+  template<>
+  Z convertInteger<W64>(const W64& x)
+  {
+    W32 top = x >> 32;
+    W32 bottom = x & UINT32_MAX;
+    
+    Z ret = convertInteger<W32,Z>(top);
+    ret <<= 32;
+    ret += bottom;
+    return ret;
+  }
+
+  template<>
+  Z convertInteger<Z64>(const Z64& x)
+  {
+    W64 abs_x = x < 0 ? -x : x;
+    Z ret = convertInteger<W64,Z>(abs_x);
+    return x < 0 ? -ret : ret;
+  }
+  
   template<>
   Z convertInteger<W128>(const W128& x)
   {
     W64 top = x >> 64;
     W64 bottom = x & UINT64_MAX;
     
-    Z ret = top;
+    Z ret = convertInteger<W64,Z>(top);
     ret <<= 64;
-    ret += bottom;
+    ret += convertInteger<W64,Z>(bottom);
     return ret;
   }
 
@@ -131,7 +157,7 @@ namespace birch_util
   }
 
   template<>
-  Z32 convertInteger<Z>(const Z& x)
+  long convertInteger<Z>(const Z& x)
   {
     return mpz_get_si(x.get_mpz_t());
   }
@@ -152,6 +178,12 @@ namespace birch_util
   Z64 convertInteger<W64>(const W64& x)
   {
     return (Z64)x;
+  }
+
+  template<>
+  int convertInteger<Z>(const Z& x)
+  {
+    return mpz_get_si(x.get_mpz_t());
   }
   
   template<>
@@ -205,9 +237,9 @@ namespace birch_util
   }
 
   template<>
-  Rational<Z> convert(const W32 & x)
+  Rational<Z> convert(const unsigned long & x)
   {
-    Z y = convertInteger<W32,Z>(x);
+    Z y = convertInteger<unsigned long,Z>(x);
     return y;
   }
   

@@ -350,7 +350,7 @@ inline R NumberFieldElement<R>::norm(void) const
   fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), fnorm);
   fmpq_clear(fnorm);
 
-  trace = birch_util::convertInteger<Z,R>(num);
+  norm = birch_util::convertInteger<Z,R>(num);
   return norm;
 }
 
