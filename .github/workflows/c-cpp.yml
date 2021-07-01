@@ -17,7 +17,7 @@ jobs:
     
     - name: cache mpfr
       id:   cache-mpfr
-      uses: actions/cache@v2.1.6
+      uses: sudo actions/cache@v2.1.6
       with:
         path: |
           /usr/local/lib/libmpfr*
@@ -30,7 +30,7 @@ jobs:
       
     - name: cache flint
       id:   cache-flint
-      uses: actions/cache@v2.1.6
+      uses: sudo actions/cache@v2.1.6
       with:
         path: |
           /usr/local/lib/libflint*
