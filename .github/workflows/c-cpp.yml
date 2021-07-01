@@ -13,8 +13,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: install flint
+    - name: clone flint2
       run:  git clone https://github.com/wbhart/flint2.git
+    - name: descending to flint2...
+      run:  cd flint2
+    - name: configure flint
+      run:  ./configure
+    - name: build flint
+      run:  make && make check
+    - name: install flint
+      run:  make install
     - name: autogen
       run: ./autogen.sh
     - name: configure
