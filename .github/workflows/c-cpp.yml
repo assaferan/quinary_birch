@@ -55,8 +55,8 @@ jobs:
 
 #    We comment out all these because we would like to cache flint at least once
 
-#    - name: autogen
-#      run:  ./autogen.sh
+    - name: autogen
+      run:  ./autogen.sh
 #    - name: configure
 #      run:  ./configure
 #    - name: make
