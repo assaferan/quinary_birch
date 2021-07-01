@@ -670,7 +670,12 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 			  std::shared_ptr<Fp<S,T>> GF, const R& p, size_t k) const
 {
   const NumberFieldElement<Z> *stride_ptr = vector_manager._strided_eigenvectors.data();
-  std::vector< NumberFieldElement<Z> > eigenvalues(vector_manager.size(), stride_ptr->parent());
+  std::vector< NumberFieldElement<Z> > eigenvalues;
+
+  // initializing eigenvalues to the correct fields
+  for (size_t evec_idx = 0; evec_idx < vector_manager.size(); evec_idx++) {
+    eigenvalues.push_back(stride_ptr[evec_idx].parent()->zero());
+  }
 
   //  S prime = GF->prime();
 
@@ -771,7 +776,19 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	      NumberFieldElement<Z> val_nf(coord.parent(), val_rat);
 	      if (likely(!coord.isZero()))
 		{
+#ifdef DEBUG_LEVEL_FULL
+		  if (vpos == 1) {
+		    std::cerr << "coord = " << coord << ", with field " << coord.parent()->modulus() << std::endl;
+		    std::cerr << "val_nf = " << val_nf << std::endl;
+		    std::cerr << "adding " << val_nf * coord << " to " << eigenvalues[vpos] << std::endl;
+		  }
+#endif
 		  eigenvalues[vpos] += (val_nf * coord);
+#ifdef DEBUG_LEVEL_FULL
+		  if (vpos == 1) {
+		    std::cerr << "results in " << eigenvalues[vpos] << std::endl;
+		  }
+#endif
 		}
 	    }
 	  neighbor_manager.getNextNeighbor();
@@ -785,7 +802,17 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	  size_t offset = vector_manager._stride * npos;
 	  NumberFieldElement<Z> coord = vector_manager._strided_eigenvectors[offset + vpos];
 	  // assert( eigenvalues[vpos] % coord == 0 );
+#ifdef DEBUG_LEVEL_FULL
+	  if (vpos == 1) {
+	    std::cerr << "dividing " << eigenvalues[vpos] << " by " << coord << std::endl;
+	  }
+#endif
 	  eigenvalues[vpos] /= coord;
+#ifdef DEBUG_LEVEL_FULL
+	  if (vpos == 1) {
+	    std::cerr << "results in " << eigenvalues[vpos] << " in field " << eigenvalues[vpos].parent()->modulus() << std::endl;
+	  }
+#endif
 	}
     }
   

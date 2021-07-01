@@ -1,5 +1,7 @@
 AC_INIT([birch],[2.0.0-beta.3])
 AM_INIT_AUTOMAKE([-Wall -Werror subdir-objects foreign])
+# AC_PROG_CXX automatically adds -g -O2
+: ${CXXFLAGS=""}
 AC_PROG_CXX
 AM_PROG_AR
 AC_PROG_LIBTOOL
