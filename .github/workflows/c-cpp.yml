@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install flint
-      run:  sudo apt-get install hirsute
+      run:  git clone https://github.com/wbhart/flint2.git
     - name: autogen
       run: ./autogen.sh
     - name: configure
