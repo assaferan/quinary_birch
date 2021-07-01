@@ -20,33 +20,46 @@ jobs:
       uses: actions/cache@v2.1.6
       with:
         path: |
-          /usr/local/lib
-          /usr/local/include
+          /usr/local/lib/libmpfr*
+          /usr/local/include/mpfr.h
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       
     - name: install mpfr
       if: steps.cache-mpfr.outputs.cache-hit != 'true'
       run:  sudo apt-get install libmpfr-dev
       
+    - name: cache flint
+      id:   cache-flint
+      uses: actions/cache@v2.1.6
+      with:
+        path: |
+          /usr/local/lib/libflint*
+          /usr/local/include/flint
+        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+      
     - name: clone flint
+      if:   steps.cache-flint.outputs.cache-hit != 'true'
       run:  git clone https://github.com/wbhart/flint2.git
     - name: configure flint
       working-directory: ./flint2
+      if:   steps.cache-flint.outputs.cache-hit != 'true'
       run:  ./configure
     - name: build flint
       working-directory: ./flint2
+      if:   steps.cache-flint.outputs.cache-hit != 'true'
       run:  make && make check
     - name: install flint
       working-directory: ./flint2
+      if:   steps.cache-flint.outputs.cache-hit != 'true'
       run:  make install
       
     - name: autogen
-      run: ./autogen.sh
+      run:  ./autogen.sh
     - name: configure
-      run: ./configure
+      run:  ./configure
     - name: make
-      run: make
+      run:  make
     - name: make check
-      run: make check
+      run:  make check
     - name: make distcheck
-      run: make distcheck
+      run:  make distcheck
