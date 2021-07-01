@@ -38,32 +38,32 @@ inline bool TestBirch<R,n>::testEigenvalues(const R & spinor_prime,
 
   std::vector< EigenvalueVector > evalues(evecs.size());
   std::vector< EigenvalueVector > computed_evalues(evecs.size());
-
+  
+#ifdef DEBUG
   std::cerr << "Testing Hecke eigensystem with spinor = " << spinor_prime << std::endl;
+#endif
   
   for (size_t k = 0; k < evs.size(); k++) {
     size_t num_processed = 0;
     for (std::pair< R, std::vector< NumberFieldElement<Z> > > ev : evs[k]) {
       Integer<R> p = ev.first;
-      // std::chrono::time_point<std::chrono::system_clock> time1 = std::chrono::system_clock::now();
       std::clock_t time1 = std::clock();
       std::vector< NumberFieldElement<Z> > computed = _p_genus->eigenvalues(manager, p.num(), k+1);
-      // std::chrono::time_point<std::chrono::system_clock> time2 = std::chrono::system_clock::now();
       std::clock_t time2 = std::clock();
-      // std::cerr << "computing eigenvalues took " << std::chrono::duration_cast<std::chrono::milliseconds>(time2 - time1).count() << " ms\n";
+#ifdef DEBUG
       std::cerr << "computing eigenvalues took " << 1000.0 * (time2 - time1) / CLOCKS_PER_SEC << " ms\n";
+#endif 
       for (size_t i = 0; i < evecs.size(); i++) {
 	evalues[i].vec.push_back(ev.second[i]);
 	computed_evalues[i].vec.push_back(computed[i]);
       }
-      // #ifdef DEBUG
+#ifdef DEBUG
       std::cerr << "Testing eigenvalues of T_" << p << "^" << k+1 << "..." << std::endl;
       std::cerr << "ev.second = " << ev.second << std::endl;
       std::cerr << "computed eigenvalues: " << computed << std::endl;
-      // #endif
+#endif
       num_processed++;
       if (num_processed == num_evs) break;
-      //    assert(ev.second == _p_genus->eigenvalues(manager, p.num()));
     }
 
     std::unordered_set< EigenvalueVector > evalue_set(evalues.begin(), evalues.end());
@@ -99,13 +99,12 @@ inline bool TestBirch<R,n>::testEigenvalueTraces(const R & spinor_prime,
 	evalues[i].vec.push_back(ev_tr.second[i]);
 	computed_evalues[i].vec.push_back(birch_util::convertInteger<R,Z>(computed[i].trace()));
       }
-      // #ifdef DEBUG
+#ifdef DEBUG
       std::cerr << "ev_tr.second = " << ev_tr.second << std::endl;
       std::cerr << "computed eigenvalues: " << computed << std::endl;
-      // #endif
+#endif
       num_processed++;
       if (num_processed == num_evs) break;
-      //    assert(ev.second == _p_genus->eigenvalues(manager, p.num()));
     }
 
     std::unordered_set< std::vector<R> > evalue_set(evalues.begin(), evalues.end());
@@ -150,7 +149,7 @@ inline void TestBirch<R,n>::_init(const QuadFormZZ<R,n> & q, ReductionMethod alg
   }
 
   this->_p_genus = std::make_shared< Genus<R,n> >(q, symbols, alg);
-
+  
   std::cerr << "Testing orthogonal modular forms for " << std::endl  << q << std::endl;
 }
 
