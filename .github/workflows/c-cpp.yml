@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install flint
-      run:  sudo apt-get install flint 
+      run:  sudo apt-get install libflint-2.6.3 
     - name: autogen
       run: ./autogen.sh
     - name: configure
