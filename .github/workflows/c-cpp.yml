@@ -51,7 +51,7 @@ jobs:
     - name: install flint
       working-directory: ./flint2
       if:   steps.cache-flint.outputs.cache-hit != 'true'
-      run:  make install
+      run:  sudo make install
       
     - name: autogen
       run:  ./autogen.sh
