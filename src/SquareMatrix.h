@@ -10,8 +10,8 @@ template<class R, class Parent, size_t n>
 class SquareMatrix
 {
   
-  static_assert(std::is_base_of<RingElement<R,Parent>, R>::value);
-  static_assert(std::is_base_of<Ring<Parent,R>, Parent>::value);
+  static_assert(std::is_base_of<RingElement<R,Parent>, R>::value, "R template parameter must inherit from RingElement.");
+  static_assert(std::is_base_of<Ring<Parent,R>, Parent>::value, "Parent template parameter must inherit from Ring.");
   
 public:
   // c-tor

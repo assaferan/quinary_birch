@@ -26,6 +26,8 @@ public:
   bool testEigenvalueTraces(const R &,
 			    const std::vector< std::map< R, std::vector<R> > > &,
 			    size_t) const;
+
+  inline Genus<R,n> & genus(void) {return *_p_genus;}
   
 protected:
   std::shared_ptr< Genus<R,n> > _p_genus;
@@ -73,6 +75,7 @@ namespace std {
   };
 }
 
+void runQuinaryBirch(const Z64 & disc, size_t num_evs, ReductionMethod alg = GREEDY);
 void runBirchTests(size_t num_evs = 0, ReductionMethod alg = GREEDY);
 
 #include "TestBirch.inl"

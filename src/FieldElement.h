@@ -23,6 +23,8 @@ class FieldElement : public virtual EuclideanDomainElement<Derived, DerivedParen
   inline virtual Derived operator^ (long long int e) const;
 
   inline virtual Derived& operator^= (long long int e);
+
+  virtual ~FieldElement() = 0;
 };
 
 #include "FieldElement.inl"

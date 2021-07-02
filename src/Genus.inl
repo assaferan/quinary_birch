@@ -264,7 +264,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 
   // add the orbit representatives to the invariants
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > q_orbit;
-  q_orbit = rep.q.generateOrbit();
+  q_orbit = rep.q.generateOrbit(alg);
   typename std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >::const_iterator
     iter;
 
@@ -364,7 +364,7 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 		  this->_spinor_primes->add(prime);
 
 		  // add the orbit representatives to the invariants
-		  q_orbit = temp.q.generateOrbit();		  
+		  q_orbit = temp.q.generateOrbit(alg);		  
 
 		  assert(q_orbit.find(temp.q) != q_orbit.end());
 
@@ -670,7 +670,12 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 			  std::shared_ptr<Fp<S,T>> GF, const R& p, size_t k) const
 {
   const NumberFieldElement<Z> *stride_ptr = vector_manager._strided_eigenvectors.data();
-  std::vector< NumberFieldElement<Z> > eigenvalues(vector_manager.size(), stride_ptr->parent());
+  std::vector< NumberFieldElement<Z> > eigenvalues;
+
+  // initializing eigenvalues to the correct fields
+  for (size_t evec_idx = 0; evec_idx < vector_manager.size(); evec_idx++) {
+    eigenvalues.push_back(stride_ptr[evec_idx].parent()->zero());
+  }
 
   //  S prime = GF->prime();
 
@@ -771,7 +776,19 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	      NumberFieldElement<Z> val_nf(coord.parent(), val_rat);
 	      if (likely(!coord.isZero()))
 		{
+#ifdef DEBUG_LEVEL_FULL
+		  if (vpos == 1) {
+		    std::cerr << "coord = " << coord << ", with field " << coord.parent()->modulus() << std::endl;
+		    std::cerr << "val_nf = " << val_nf << std::endl;
+		    std::cerr << "adding " << val_nf * coord << " to " << eigenvalues[vpos] << std::endl;
+		  }
+#endif
 		  eigenvalues[vpos] += (val_nf * coord);
+#ifdef DEBUG_LEVEL_FULL
+		  if (vpos == 1) {
+		    std::cerr << "results in " << eigenvalues[vpos] << std::endl;
+		  }
+#endif
 		}
 	    }
 	  neighbor_manager.getNextNeighbor();
@@ -785,7 +802,17 @@ Genus<R,n>::_eigenvectors(EigenvectorManager<R,n>& vector_manager,
 	  size_t offset = vector_manager._stride * npos;
 	  NumberFieldElement<Z> coord = vector_manager._strided_eigenvectors[offset + vpos];
 	  // assert( eigenvalues[vpos] % coord == 0 );
+#ifdef DEBUG_LEVEL_FULL
+	  if (vpos == 1) {
+	    std::cerr << "dividing " << eigenvalues[vpos] << " by " << coord << std::endl;
+	  }
+#endif
 	  eigenvalues[vpos] /= coord;
+#ifdef DEBUG_LEVEL_FULL
+	  if (vpos == 1) {
+	    std::cerr << "results in " << eigenvalues[vpos] << " in field " << eigenvalues[vpos].parent()->modulus() << std::endl;
+	  }
+#endif
 	}
     }
   
@@ -1187,7 +1214,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     
   UnivariatePolyRat<Z> f = T_p_res.charPoly();
   
-#ifdef DEBUG // _LEVEL_FULL
+#ifdef DEBUG_LEVEL_FULL
   std::cerr << "f = " << f << std::endl;
   std::cerr << "multiplying by common denominator." << std::endl;
 #endif
@@ -1202,7 +1229,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
   
   UnivariatePolyInt<Z> f_int(coeffs_int);
 
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
   std::cerr << "factoring characteristic polynomial f_int = " << f_int << std::endl;
 #endif
   
@@ -1212,7 +1239,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     UnivariatePolyInt<Z> f = fa.first;
     size_t a = fa.second;
     
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
     std::cerr << "Cutting out subspace using f(T_" << p;
     std::cerr << "), where f = " << f << "." << std::endl;
 #endif
@@ -1224,7 +1251,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
     
     if (a == 1) {
 #ifdef DEBUG // _LEVEL_FULL
-      std::cerr << "Found irreducible subspace W = " << W_basis << std::endl;
+      std::cerr << "Found irreducible subspace W = " << std::endl << W_basis << std::endl;
       std::cerr << "computing eigenvector." << std::endl;
 #endif
       std::shared_ptr< NumberField<Z> > K
@@ -1251,7 +1278,7 @@ Genus<R,n>::_decompositionRecurse(const MatrixRat<Z> & V_basis,
       Matrix< NumberFieldElement<Z>, NumberField<Z> > nullsp = T_K.kernel();
       assert(nullsp.nrows() == 1);
       std::vector< NumberFieldElement<Z> > vec = nullsp[0];
-#ifdef DEBUG_LEVEL_FULL
+#ifdef DEBUG // _LEVEL_FULL
       std::cerr << "found eigenvector: " << vec << std::endl;
 #endif
       evecs.push_back(vec);

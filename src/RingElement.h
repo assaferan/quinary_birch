@@ -168,6 +168,8 @@ public:
 
   virtual std::shared_ptr<const DerivedParent > parent(void) const = 0;
 
+  virtual ~RingElement() = 0;
+
 };
 
 #include "RingElement.inl"

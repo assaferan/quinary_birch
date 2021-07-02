@@ -97,7 +97,7 @@ inline size_t Matrix<R,Parent>::rowEchelon(Matrix<R,Parent> & echelon, Matrix<R,
 {
   // This one assumes R is a field
   // !! TODO - think how to make this method appear only for fields
-  static_assert(std::is_base_of<FieldElement<R,Parent>, R>::value);
+  static_assert(std::is_base_of<FieldElement<R,Parent>, R>::value, "R template parameter must inherit from FieldElement.");
   
   // trans = identity(echelon.nrows());
   for (size_t row = 0; row < trans.nrows(); row++)
@@ -235,7 +235,7 @@ inline UnivariatePoly<R,Parent> Matrix<R,Parent>::charPoly(void) const
   c[n] = this->baseRing()->one();
   for (size_t k = 1; k <= n; k++) {
     M[k] = A*M[k-1]+c[n-k+1]*I;
-    R k_R = birch_util::convert<size_t, R>(k);
+    R k_R = birch_util::convert<W64, R>(k);
     c[n-k] = - (A*M[k]).trace() / k_R;
   }
 

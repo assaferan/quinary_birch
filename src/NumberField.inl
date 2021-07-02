@@ -1,6 +1,12 @@
 #include <cassert>
 
 template<typename R>
+NumberField<R>::NumberField(const NumberField<R> & other)
+  : _f(other._f), _nf_antic(other._nf_antic)
+{
+}
+
+template<typename R>
 NumberField<R>::NumberField(const UnivariatePolyInt<R> & mod)
   : _f(std::make_shared< const RationalField<R> >())
 {

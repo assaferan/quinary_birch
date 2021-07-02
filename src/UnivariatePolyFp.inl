@@ -49,7 +49,7 @@ UnivariatePolyFp<R,S>::_czEqDegPartialFactor(size_t r) const
     
     Integer<R> p_r = this->baseRing()->prime();
     p_r ^= r;
-    size_t m = (birch_util::convertInteger<R,size_t>(p_r.num()) - 1) / 2;
+    size_t m = (birch_util::convertInteger<R,W64>(p_r.num()) - 1) / 2;
 
     UnivariatePolyFp<R,S> b_m = b.powMod(m, *this);
     UnivariatePolyFp<R,S> factor(this->baseRing());
@@ -107,12 +107,12 @@ UnivariatePolyFp<R,S>::_czDistinctDegFactor(void) const
   UnivariatePolyFp<R,S> x_p_i = UnivariatePolyFp<R,S>::x(this->_base);
   for (size_t i = 0; i < l; i++) {
     h.push_back(x_p_i);
-    x_p_i = x_p_i.powMod(birch_util::convertInteger<R,size_t>(p.num()), *this);
+    x_p_i = x_p_i.powMod(birch_util::convertInteger<R,W64>(p.num()), *this);
   }
 
   x_p_i = UnivariatePolyFp<R,S>::x(this->baseRing());
   for (size_t i = 0; i <= m; i++) {
-    x_p_i = x_p_i.powMod(birch_util::convertInteger<R, size_t>(p_l.num()), *this);
+    x_p_i = x_p_i.powMod(birch_util::convertInteger<R,W64>(p_l.num()), *this);
     H.push_back(x_p_i);
   }
 

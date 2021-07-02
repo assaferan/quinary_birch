@@ -46,3 +46,6 @@ Derived& FieldElement<Derived,DerivedParent>::operator^= (long long int e)
     *(this->getPtr()) = this->inverse();
   return (*this->getPtr());
 }
+
+template <class Derived, class DerivedParent>
+inline FieldElement<Derived,DerivedParent>::~FieldElement() {};

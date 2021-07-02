@@ -1,11 +1,21 @@
 bin_PROGRAMS = birch birch_dbg
 lib_LTLIBRARIES = libbirch.la
 
-OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11 -msse3 -mavx
-DBG_CXXFLAGS = -g -pg -Wall -Werror -std=c++11 -DDEBUG # -DDEBUG_LEVEL_FULL
-OPT_CXXFLAGS += -fvar-tracking-assignments-toggle
+# at the moment we define ONLY_GREEDY for ease of debugging
+
+OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11 -msse3 -mavx -DONLY_GREEDY
+DBG_CXXFLAGS = -g -Wall -Werror -std=c++11 -DDEBUG -DONLY_GREEDY # -DDEBUG_LEVEL_FULL
 OPT_CXXFLAGS += -fomit-frame-pointer
-OPT_CXXFLAGS += -funroll-all-loops
+
+# These are not supported on macOS
+
+if LINUX
+	AM_MSG_ERROR("Still beleives this is linux...")
+	OPT_CXXFLAGS += -fvar-tracking-assignments-toggle
+	OPT_CXXFLAGS += -funroll-all-loops
+        DBG_CXXFLAGS += -pg
+endif
+
 DBG_LDFLAGS = -lm -lgmp -lgmpxx -L../libs -lantic -lflint -lbliss -lnauty
 
 SOURCES = birch.h

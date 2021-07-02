@@ -8,8 +8,8 @@ template<typename R>
 NumberFieldElement<R>::NumberFieldElement(const NumberFieldElement<R> & other)
   : _K(other._K)
 {
-  nf_elem_init(_nf_elt_antic, _K->antic());
-  nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+  nf_elem_init(_nf_elt_antic, other._K->antic());
+  nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, other._K->antic());
 }
 
 template<typename R>
@@ -34,6 +34,7 @@ template<typename R>
 inline NumberFieldElement<R>
 NumberFieldElement<R>::operator+(const NumberFieldElement<R> & other) const
 {
+  assert(this->_K == other._K);
   NumberFieldElement<R> sum(this->_K);
   
   nf_elem_add(sum._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
@@ -45,7 +46,7 @@ template<typename R>
 inline NumberFieldElement<R>
 NumberFieldElement<R>::operator-(const NumberFieldElement<R> & other) const
 {
-  // return (*this)+(-other);
+  assert(this->_K == other._K);
   NumberFieldElement<R> diff(this->_K);
 
   nf_elem_sub(diff._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
@@ -57,6 +58,7 @@ template<typename R>
 inline NumberFieldElement<R>
 NumberFieldElement<R>::operator*(const NumberFieldElement<R> & other) const
 {
+  assert(this->_K == other._K);
   NumberFieldElement<R> prod(this->_K);
 
   nf_elem_mul(prod._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
@@ -68,6 +70,7 @@ template<typename R>
 inline NumberFieldElement<R>
 NumberFieldElement<R>::operator/(const NumberFieldElement<R> & other) const
 {
+  assert(this->_K == other._K);
   NumberFieldElement<R> quo(this->_K);
   
   nf_elem_div(quo._nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
@@ -99,6 +102,7 @@ template<typename R>
 inline NumberFieldElement<R> &
 NumberFieldElement<R>::operator+=(const NumberFieldElement<R> & other)
 {
+  assert(this->_K == other._K);
   nf_elem_add(this->_nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
   
   return (*this);
@@ -108,6 +112,7 @@ template<typename R>
 inline NumberFieldElement<R> &
 NumberFieldElement<R>::operator-=(const NumberFieldElement<R> & other)
 {
+  assert(this->_K == other._K);
   nf_elem_sub(this->_nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
   
   return (*this);
@@ -117,6 +122,7 @@ template<typename R>
 inline NumberFieldElement<R> &
 NumberFieldElement<R>::operator*=(const NumberFieldElement<R> & other)
 {
+  assert(this->_K == other._K);
   nf_elem_mul(this->_nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
   
   return (*this);
@@ -126,6 +132,7 @@ template<typename R>
 inline NumberFieldElement<R> &
 NumberFieldElement<R>::operator/=(const NumberFieldElement<R> & other)
 {
+  assert(this->_K == other._K);
   nf_elem_div(this->_nf_elt_antic, this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
   
   return (*this);
@@ -195,8 +202,12 @@ template<typename R>
 inline NumberFieldElement<R> & NumberFieldElement<R>::operator=(const NumberFieldElement<R> & other)
 {
   if (this != &other) {
-    this->_K = other._K;
-    nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, this->_K->antic());
+    if (this->_K != other._K) {
+      nf_elem_clear(_nf_elt_antic, _K->antic());
+      this->_K = other._K;
+      nf_elem_init(_nf_elt_antic, other._K->antic());
+    }
+    nf_elem_set(this->_nf_elt_antic, other._nf_elt_antic, other._K->antic());
   }
   return (*this);
 }
@@ -293,7 +304,7 @@ void NumberFieldElement<R>::_initAntic(const UnivariatePolyRat<R> & f) {
     for (int i = 0; i <= f.degree(); i++) {
       Rational<R> c = f.coefficient(i);
       mpq_init(c_mpq[i]);
-      mpq_set_si(c_mpq[i], birch_util::convertInteger<R,slong>(c.num().num()), birch_util::convertInteger<R,ulong>(c.denom().num()));
+      mpq_set_si(c_mpq[i], birch_util::convertInteger<R,Z64>(c.num().num()), birch_util::convertInteger<R,W64>(c.denom().num()));
     }
     
     fmpq_poly_set_array_mpq(poly, (const mpq_t *)c_mpq, f.degree()+1);
@@ -315,8 +326,10 @@ void NumberFieldElement<R>::_initAntic(const UnivariatePolyRat<R> & f) {
 template<typename R>
 inline void NumberFieldElement<R>::print(std::ostream& os) const
 {
-  char* elt_str = nf_elem_get_str_pretty(_nf_elt_antic, "x", _K->antic());
+  char* elt_str = nf_elem_get_str_pretty(_nf_elt_antic, "a", _K->antic());
   os << elt_str;
+  if (_K->modulus().degree() > 1) 
+    os << " where a is a root of " << _K->modulus();
   return;
 }
 
@@ -346,7 +359,7 @@ inline R NumberFieldElement<R>::norm(void) const
   fmpq_get_mpz_frac(num.get_mpz_t(), denom.get_mpz_t(), fnorm);
   fmpq_clear(fnorm);
 
-  trace = birch_util::convertInteger<Z,R>(num);
+  norm = birch_util::convertInteger<Z,R>(num);
   return norm;
 }
 

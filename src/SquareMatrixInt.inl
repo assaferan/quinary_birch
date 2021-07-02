@@ -406,7 +406,7 @@ SquareMatrixInt<R,n>::ldl(SquareMatrixInt<S,n>& L,  VectorInt<S,n> & D) const
 	    {
 	      inner_sum = 0;
 	      for (size_t r = 0; r <= k; r++)
-		inner_sum += L(k,r)*((*this)(i,r))*L(k,j);
+		inner_sum += L(k,r)*birch_util::convertInteger<R,S>((*this)(i,r))*L(k,j);
 	      inner_sum *= -L(i,i) / D[k];
 	      L(i,j) += inner_sum;
 	    }
@@ -418,7 +418,7 @@ SquareMatrixInt<R,n>::ldl(SquareMatrixInt<S,n>& L,  VectorInt<S,n> & D) const
       D[i] = 0;
       for (size_t j = 0; j <= i; j++)
 	for (size_t k = 0; k <= i; k++)
-	  D[i] += L(i, j)*((*this)(j,k))*L(i, k);
+	  D[i] += L(i,j)*birch_util::convertInteger<R,S>((*this)(j,k))*L(i, k);
       if (D[i] == 0) return false;
       // prod_diag = prod_diag.lcm(D[i]);
       prod_diag = birch_util::lcm(prod_diag, D[i]);
@@ -448,7 +448,9 @@ SquareMatrixInt<R,n>::solve(const VectorInt<R,n> & vec) const
   VectorInt<R,n> sol;
   SquareMatrixInt<R,n> L;
   VectorInt<R,n> D;
+#ifdef DEBUG
   bool is_positive_definite = cholesky(L, D);
+#endif
   assert(is_positive_definite);
   sol = L._forwardSubstitution(vec);
   for (size_t i = 0; i < n; i++)

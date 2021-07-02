@@ -57,6 +57,12 @@ namespace birch_util
   }
 
   template<>
+  W32 convertInteger<W16>(const W16& x)
+  {
+    return (W32)x;
+  }
+
+  template<>
   W64 convertInteger<W16>(const W16& x)
   {
     return (W16)x;
@@ -83,42 +89,50 @@ namespace birch_util
   template<>
   Z convertInteger<W16>(const W16& x)
   {
-    return Z(x);
+    return static_cast<Z>(x);
   }
 
   template<>
   Z convertInteger<W32>(const W32& x)
   {
-    return Z(x);
-  }
-
-  template<>
-  Z convertInteger<W64>(const W64& x)
-  {
-    return Z(x);
+    return static_cast<Z>(x);
   }
   
   template<>
   Z convertInteger<Z32>(const Z32& x)
   {
-    return Z(x);
+    return static_cast<Z>(x);
   }
-  
+
+  template<>
+  Z convertInteger<W64>(const W64& x)
+  {
+    W32 top = x >> 32;
+    W32 bottom = x & UINT32_MAX;
+    
+    Z ret = convertInteger<W32,Z>(top);
+    ret <<= 32;
+    ret += bottom;
+    return ret;
+  }
+
   template<>
   Z convertInteger<Z64>(const Z64& x)
   {
-    return Z(x);
+    W64 abs_x = x < 0 ? -x : x;
+    Z ret = convertInteger<W64,Z>(abs_x);
+    return x < 0 ? -ret : ret;
   }
-
+  
   template<>
   Z convertInteger<W128>(const W128& x)
   {
     W64 top = x >> 64;
     W64 bottom = x & UINT64_MAX;
     
-    Z ret = top;
+    Z ret = convertInteger<W64,Z>(top);
     ret <<= 64;
-    ret += bottom;
+    ret += convertInteger<W64,Z>(bottom);
     return ret;
   }
 
@@ -153,7 +167,7 @@ namespace birch_util
   {
     return (Z64)x;
   }
-  
+
   template<>
   Z64 convertInteger<Z>(const Z& x)
   {

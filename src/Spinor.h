@@ -48,7 +48,12 @@ public:
       W16_FpElement scale(GF, abs(s.getScale()));
       if (is_neg)
 	scale = -scale;
-      s_mat *= scale.inverse();
+      // at the moment, when s has scale divisible by p (at the bad primes)
+      // we replace it by the trivial matrix. In general, should implement the spinor norm using reflection decomposition
+      if (!scale.isZero())
+	s_mat *= scale.inverse();
+      else
+	s_mat = W16_MatrixFp::identity(GF, n);
       // To obtain an element of the special orthogonal group (we let the center act trivially)
       if ((n % 2 == 1) && (s_mat.determinant() == -GF->one()))
 	s_mat = -s_mat;

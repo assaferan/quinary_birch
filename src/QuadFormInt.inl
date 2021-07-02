@@ -3,10 +3,14 @@
 #include <map>
 #include <random>
 
+#ifndef ONLY_GREEDY
+
 #include "polyhedral_common/src_poly/Permlib_specific.h"
 
 #include "polyhedral_common/src_latt/MatrixCanonicalForm.h"
 #include "polyhedral_common/src_latt/Temp_Tspace_General.h"
+
+#endif // ONLY_GREEDY
 
 #include "birch_util.h"
 #include "Fp.h"
@@ -17,6 +21,8 @@
 #include "Matrix.h"
 #include "SquareMatrix.h"
 #include "VectorInt.h"
+
+#include "SchreierSims.h"
 
 // c-tors
 template<typename R, size_t n>
@@ -1068,7 +1074,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
       for (size_t j = 0; j < n; j++)
 	// note that we transpose
 	b0(i,j) = c[j][i];
-    if (b0.determinant().abs().isOne()) {
+    if (abs(b0.integralMatrix().determinant()) == 1) {
       SquareMatrixInt<R,n> q0 = b0.transform(qf);
       Isometry<R,n> u;
       std::unordered_set< Isometry<R,n> > tmp_auts;
@@ -1097,6 +1103,7 @@ inline bool QuadFormInt<R,n>::_neighborReduction(SquareMatrixInt<R,n> & qf,
 template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> > & auts)
 {
+  //   Group< Isometry<R,n>, VectorRat<R,n> > grp(auts);
   size_t num_aut;
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "Before generating more, automorphisms are: " << std::endl;
@@ -1131,6 +1138,7 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> 
   for (Isometry<R,n> s : auts)
     std::cerr << s << std::endl;
 #endif
+  // assert(grp.size() == num_aut);
   return num_aut;
 }
 
@@ -1141,16 +1149,21 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
   SquareMatrixInt<R,n> qf = this->_B;
   Isometry<R,n> isom;
   std::unordered_set< Isometry<R,n> > auts;
+#ifndef ONLY_GREEDY
   std::vector<MyMatrix<mpq_class>> list_matr_gens;
   TheGroupFormat<int> grp_perm;
   MyMatrix<mpq_class> mat_Q(n,n);
   mpq_class zero = 0;
+#endif // ONLY_GREEDY
   size_t num_aut;
   
   switch(alg) {
   case GREEDY :
-    return _iReduce(qf, isom, auts, true);
+  case GREEDY_FULL :
+    num_aut = _iReduce(qf, isom, auts, true);
     break;
+    
+#ifndef ONLY_GREEDY
   case CANONICAL_FORM :
     for (size_t i = 0; i < n; i++)
       for (size_t j = 0; j < n; j++)
@@ -1158,12 +1171,15 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
     T_GetGramMatrixAutomorphismGroup(mat_Q, zero, grp_perm, list_matr_gens);
     num_aut = grp_perm.size();
     assert(num_aut == this->numAutomorphisms(GREEDY));
-    return num_aut;
+    
     break;
+#endif // ONLY_GREEDY
   default:
     throw std::runtime_error("Unknown reduction method!\n");
     break;
   }
+  
+  return num_aut;
 }
 
 // !! - TODO - think whether we want to save this as a member.
@@ -1190,6 +1206,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   std::unordered_set< Isometry<R,n> > auts;
   SquareMatrixInt<R,n> qf = q.bilinearForm();
   size_t num_aut = 0;
+#ifndef ONLY_GREEDY
   MyMatrix<R> mat;
   Canonic_PosDef<R,R> can_form;
   SquareMatrixInt<R,n> can_basis;
@@ -1197,8 +1214,10 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   TheGroupFormat<int> grp_perm;
   MyMatrix<mpq_class> mat_Q(n,n);
   mpq_class zero = 0;
+#endif // ONLY_GREEDY
   
   switch(alg) {
+#ifndef ONLY_GREEDY
   case CANONICAL_FORM :
     mat = ConvertMatrix(qf.getArray());
     can_form = ComputeCanonicalForm<R,R>(mat);
@@ -1206,7 +1225,9 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     can_basis = can_form.Basis;
     isom = isom * can_basis.transpose();
     break;
+#endif // ONLY_GREEDY
   case GREEDY :
+  case GREEDY_FULL:
     num_aut = _iReduce(qf, isom, auts, calc_aut);
     break;
   default:
@@ -1215,6 +1236,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   }
   QuadFormZZ<R,n> q_red(qf);
   if (calc_aut) {
+#ifndef ONLY_GREEDY
     // until we figure out how to compute automorphism groups in the canonical form package
     if (num_aut == 0) {
       for (size_t i = 0; i < n; i++)
@@ -1224,6 +1246,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
       num_aut = grp_perm.size();
       assert(num_aut == q_red.numAutomorphisms(GREEDY));
     }
+#endif
     q_red._num_aut = num_aut;
     q_red._num_aut_init = true;
   }
@@ -1236,23 +1259,42 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
 							 Isometry<R,n> & isom,
 							 ReductionMethod alg)
 {
+  SquareMatrixInt<R,n> qf = q.bilinearForm();
+  bool all_eq = true;
+  // dummy variable - !! TODO - correct the flow
+  std::unordered_set< Isometry<R,n> > auts;
+  
   switch(alg) {
   case GREEDY :
     // We would like to be able to just perform greedy, but this fails to work at the moment
-    // greedy(qf, isom);
-    return reduce(q, isom, alg);
+    greedy(qf, isom);
+  
+    for (size_t j = 1; j < n; j++)
+      all_eq = (all_eq) && (qf(j,j) == qf(0,0));
+    
+    if (all_eq) {
+      _iReduce(qf, isom, auts, false);
+    }
+    break;
+
+  case GREEDY_FULL :
+    _iReduce(qf, isom, auts, false);
     break;
     
+#ifndef ONLY_GREEDY
   case CANONICAL_FORM :
     return reduce(q, isom, alg);
     break;
+#endif // ONLY_GREEDY
     
   default:
     throw std::runtime_error("Unknown reduction method!\n");
     // This is here in case we would want to remove the throw statement
     break;
   }
- 
+  
+  QuadFormZZ<R,n> q_red(qf);
+  return q_red;
 }
 
 template<typename R, size_t n>
@@ -1525,7 +1567,7 @@ bool QuadFormInt<R,n>::_signNormalizationFast(SquareMatrixInt<R,n> & qf,
 
 template<typename R, size_t n>
 inline std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >
-QuadFormInt<R,n>::generateOrbit(void) const
+QuadFormInt<R,n>::generateOrbit(ReductionMethod alg) const
 {
   Isometry<R,n> s;
   QuadFormZZ<R,n> qf(this->bilinearForm());
@@ -1534,6 +1576,10 @@ QuadFormInt<R,n>::generateOrbit(void) const
   typename std::unordered_map< QuadFormZZ<R,n>,
 			       Isometry<R,n> >::const_iterator i, j;
   orbit[qf] = s;
+
+  if (alg == GREEDY_FULL) {
+    return orbit;
+  }
   
   // if n == 5 and all 5 shortest vectors are of the same length
   // the orbit would be very large and we prefer not to try and compute it.
@@ -1542,11 +1588,10 @@ QuadFormInt<R,n>::generateOrbit(void) const
   // Can we figure out a way to make sure we covered everything more efficiently?
   if (n == 5) {
     bool all_eq = true;
-    // for now when n==5 we always reduce completely
-    /*
+    
     for (size_t j = 1; j < n; j++)
       all_eq = (all_eq) && (qf(j,j) == qf(0,0));
-    */
+    
     if (all_eq) {
       return orbit;
     }
@@ -1572,15 +1617,39 @@ QuadFormInt<R,n>::generateOrbit(void) const
         orbit[j->first] = i->second*j->second;
       }
     }
-    // It seems that we should also add neighbor orbit ?
+
+    for (i = orbit.begin(); i != orbit.end(); i++) {
+      std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
+	signs = (i->first)._neighborOrbit();
+      for (j = signs.begin(); j != signs.end(); j++) {
+	assert((i->second*j->second).transform(this->bilinearForm()) ==
+	       j->first.bilinearForm());
+        orbit[j->first] = i->second*j->second;
+      }
+    }
+    
   }
-  return orbit;
+
+  // finally, we greedy reduce everything in the orbit, to obtain only greedy reduced things
+  // since we will only look for greedy reduced elements
+  // If this takes too long, we can probably skip it, as it does not save much later
+
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > greedy_orbit;
+  
+  for (i = orbit.begin(); i != orbit.end(); i++) {
+    SquareMatrixInt<R,n> q = i->first.bilinearForm();
+    Isometry<R,n> s = i->second;
+    greedy(q, s);
+    greedy_orbit[i->first] = s;
+  }
+  
+  return greedy_orbit;
 }
 
 
 template<typename R, size_t n>
 inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
-QuadFormInt<R,n>::_permutationOrbit() const
+QuadFormInt<R,n>::_permutationOrbit(void) const
 {
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit; 
   std::map<Integer<R>, std::vector<size_t> > stable_sets;
@@ -1613,7 +1682,7 @@ QuadFormInt<R,n>::_permutationOrbit() const
       Isometry<R,n> s;
       s.updatePerm(large_perm);
       q1 = s.transform(this->bilinearForm());
-      greedy(q1, s);
+      //      greedy(q1, s);
       QuadFormZZ<R,n> q(q1);
 
       assert(s.transform(this->bilinearForm()) == q.bilinearForm());
@@ -1639,11 +1708,160 @@ QuadFormInt<R,n>::_signOrbit(void) const
       tmp >>= 1;
     }
     q = s.transform(this->bilinearForm());
-    greedy(q,s);
+    //    greedy(q,s);
     QuadFormZZ<R,n> qq(q);
     assert(s.transform(this->bilinearForm()) == qq.bilinearForm());
     orbit[qq] = s;
   }
+  return orbit;
+}
+
+template<typename R, size_t n>
+inline std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> >
+QuadFormInt<R,n>::_neighborOrbit(void) const
+{
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit;
+  Isometry<R,n> s;
+  SquareMatrixInt<R,n> qf = this->bilinearForm();
+
+  std::vector< std::set< VectorInt<R,n> > > local_neighbors(1);
+  Isometry<R,n> b0;
+
+  VectorInt<R,n> vec;
+  vec[0] = 1;
+  for (size_t i = 1; i < n; i++)
+    vec[i] = 0;
+  local_neighbors[0].insert(vec);
+  size_t num_free = 1;
+  for (size_t i = 1; i < n; i++) {
+    num_free *= 3;
+    std::set< VectorInt<R,n> > free_hood;
+    for (size_t x_idx = 0; x_idx < num_free; x_idx++) {
+      size_t tmp = x_idx;
+      VectorInt<R,n> x;
+      for (size_t j = 0; j < i; j++) {
+	// we separate because tmp is unsigned, which might lead to overflow
+	x[j] = R(tmp % 3);
+	x[j]--;
+	tmp /= 3;
+      }
+      x[i] = 1;
+      for (size_t j = i+1; j < n; j++)
+	x[j] = 0;
+      R norm = VectorInt<R,n>::innerProduct(x*qf, x);
+      if (norm == qf(i,i)) {
+	free_hood.insert(x);
+      }
+    }
+    local_neighbors.push_back(free_hood);
+  }
+
+  std::map< R, std::vector<size_t> > norms;
+  for (size_t i = 0; i < n; i++) {
+    R val = qf(i,i);
+    auto search = norms.find(val);
+    if (search == norms.end()) {
+      std::vector<size_t> empty_vec(0);
+      norms[val] = empty_vec;
+    }
+    norms[val].push_back(i);
+  }
+  typename std::map< R, std::vector<size_t> >::const_iterator iter;
+  // !! TODO - here there's duplication.
+  // we can simply call local_neighbors[norms[i]],
+  // changin local_neighbors to depend on the norm
+  for (iter = norms.begin(); iter != norms.end(); iter++) {
+    std::vector<size_t> inds = iter->second;
+    std::set< VectorInt<R,n> > X;
+    for (size_t i : inds) {
+      X.insert(local_neighbors[i].begin(), local_neighbors[i].end());
+    }
+    for (size_t i  : inds)
+      local_neighbors[i] = X;
+  }
+
+  size_t nbs_size = 1;
+  for (size_t i = 0; i < local_neighbors.size(); i++)
+    nbs_size *= local_neighbors[i].size();
+  
+#ifdef DEBUG_LEVEL_FULL
+  std::cerr << "Original NeighborSpace size: " << nbs_size << std::endl;
+#endif
+  
+  std::vector< std::vector< VectorInt<R,n> > > ns;
+  for (VectorInt<R,n> x : local_neighbors[0]) {
+    std::vector< VectorInt<R,n> > singleton;
+    singleton.push_back(x);
+    ns.push_back(singleton);
+  }
+  std::vector< std::vector< VectorInt<R,n> > > ns0;
+  
+  std::vector< std::vector< VectorInt<R,n> > > & neighbor_space = ns;
+  std::vector< std::vector< VectorInt<R,n> > > & ns1 = ns0;
+  
+  for (size_t i = 1; i < n; i++) {
+    ns1.clear();
+    R norm = qf(i,i);
+    std::vector<size_t> inds;
+    for (size_t j = 0; j < i; j++)
+      if (qf(j,j) == norm) inds.push_back(j);
+    for (VectorInt<R,n> y : local_neighbors[i]) {
+      for (std::vector< VectorInt<R,n> > c : neighbor_space) {
+	bool include = true;
+	for (size_t j : inds)
+	  if (c[j] == y) {
+	    include = false;
+	    break;
+	  }
+	if ((include) &&
+	    (abs(VectorInt<R,n>::innerProduct(c[i-1]*qf, y)) >= abs(qf(i,i-1)))) {
+	  c.push_back(y);
+	  ns1.push_back(c);
+	}
+	else {
+	  for (size_t j = 1; j < i; j++) {
+	    if (abs(VectorInt<R,n>::innerProduct(c[j-1]*qf, c[j])) >
+		abs(qf(j,j-1)) ) {
+	      c.push_back(y);
+	      ns1.push_back(c);
+	      break;
+	    }
+	  }
+	}
+      }
+    }
+    // swap pointers
+    std::vector< std::vector< VectorInt<R,n> > > & tmp = neighbor_space;
+    neighbor_space = ns1;
+    ns1 = tmp;
+  }
+  
+#ifdef DEBUG_LEVEL_FULL
+  std::cerr << "Reduced to NeighborSpace of size:";
+  std::cerr << neighbor_space.size() << std::endl;
+#endif
+  
+  // !! - TODO - we can from the beginning store c as a matrix
+  for (std::vector< VectorInt<R,n> > c : neighbor_space) {
+    for (size_t i = 0; i < n; i++)
+      for (size_t j = 0; j < n; j++)
+	// note that we transpose
+	b0(i,j) = c[j][i];
+    if (b0.determinant().abs().isOne()) {
+      SquareMatrixInt<R,n> q0 = b0.transform(qf);
+      // s.setIdentity();
+      // greedy(q0, s);
+      // s = b0 * s;
+      s = b0;
+      QuadFormZZ<R,n> qq(q0);
+      assert(s.transform(this->bilinearForm()) == qq.bilinearForm());
+      std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > sign_orbit = qq._signOrbit();
+      for (std::pair< QuadFormZZ<R,n>, Isometry<R,n> > q_s : sign_orbit)
+	orbit[q_s.first] = s * q_s.second;
+      //orbit[qq] = s;
+    }
+  }
+ 
   return orbit;
 }
 

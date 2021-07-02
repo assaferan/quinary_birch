@@ -96,11 +96,26 @@ public:
   inline Rational<R> determinant() const
   {return Rational<R>(_a.determinant(), Integer<R>(_scale)^n); }
 
-  inline bool isOne() const
+  inline bool isOne(void) const
   {return _a == _scale * SquareMatrixInt<R,n>::identity(); }
+
+  inline bool isIdentity(void) const
+  {return this->isOne();}
 
   inline SquareMatrixInt<R,n> hermiteForm(const R & d) const
   {return _a.hermiteForm(d); }
+
+  inline VectorRat<R,n> operator*(const VectorRat<R,n> & v) const
+  {
+    std::shared_ptr< const RationalField<R> > QQ = std::make_shared< const RationalField<R> >();
+    SquareMatrixRat<R,n> mat(QQ);
+    for (size_t i = 0; i < n; i++)
+      for (size_t j = 0; j < n; j++) {
+	Rational<R> elt(_a(i,j), _scale);
+	mat(i,j) = elt;
+      }
+    return mat * v;
+  }
   
 protected:
   SquareMatrixInt<R,n> _a;

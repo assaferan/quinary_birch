@@ -21,7 +21,8 @@ typedef __int128_t Z128;
 typedef enum ReductionMethod
   {
    GREEDY,
-   CANONICAL_FORM
+   CANONICAL_FORM,
+   GREEDY_FULL
   } ReductionMethod;
 
 /* Builtins */
@@ -133,6 +134,9 @@ class PolynomialFp;
 // vectors
 template<class R, class Parent, size_t n>
 class Vector;
+
+template<typename R, size_t n>
+using VectorRat = Vector<Rational<R>,RationalField<R>,n>;
 
 // convenient typedefs
 

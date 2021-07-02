@@ -95,6 +95,8 @@ class EuclideanDomainElement : public virtual RingElement<Derived, DerivedParent
    * @return this after assignment.
    */
   inline virtual Derived& operator%=(const Derived& b);
+
+  virtual ~EuclideanDomainElement() = 0;
 };
 
 #include "EuclideanDomainElement.inl"
