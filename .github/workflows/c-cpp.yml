@@ -20,13 +20,23 @@ jobs:
       uses: actions/cache@v2.1.6
       with:
         path: |
-          /usr/local/lib/libmpfr*
-          /usr/local/include/mpfr.h
+          # /usr/local/lib/libmpfr*
+          # /usr/local/include/mpfr.h
+          ./libs/libmpfr*
+          ./src/mpfr/*
         key: ${{ runner.os }}-mpfr-${{ hashFiles('**/lockfiles') }}
       
     - name: install mpfr
       if: steps.cache-mpfr.outputs.cache-hit != 'true'
       run:  sudo apt-get install libmpfr-dev
+    
+    - name: copy mpfr to cache location
+      if: steps.cache-mpfr.outputs.cache-hit != 'true'
+      run: sudo cp /usr/local/lib/libmpfr* ./libs/ && sudo cp /usr/local/include/mpfr.h ./src/mpfr/
+      
+    - name: restore mpfr from cache location
+      if: steps.cache-mpfr.outputs.cache-hit == 'true'
+      run: sudo cp ./libs/libmpfr*  /usr/local/lib/ && sudo cp ./src/mpfr/mpfr.h  /usr/local/include/
       
     - name: cache flint
       id:   cache-flint
