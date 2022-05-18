@@ -255,7 +255,7 @@ inline void QuadFormFp<R,S,n>::decompose(SquareMatrixFp<R,S,n> & gram,
   std::cerr << "Resulting gram matrix is " << gram << ", ";
   std::cerr << "Resulting basis is " << basis << std::endl;
 
-  std::shared_ptr< const Fp<R,S> > GF = _B.baseRing();
+  std::shared_ptr< const Fp<R,S> > GF = (this->_B).baseRing();
   
   // Verify that everyhing we've done is correct.
   SquareMatrixFp<R,S,n> temp1(GF);

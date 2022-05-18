@@ -50,10 +50,12 @@ EuclideanDomainElement<Derived, DerivedParent>::gcd(const Derived& b) const
   Derived old_r = *(this->getPtr());
   Derived r = b;
   while (!r.isZero()) {
+    /*
 #ifdef DEBUG_LEVEL_FULL
     std::cerr << "r = " << r << std::endl;
     std::cerr << "old_r = " << old_r << std::endl;
 #endif
+    */
     typename EuclideanDomainElement<Derived, DerivedParent>::DivRes q_r
       = old_r.euclideanDivision(r);
     old_r = r;

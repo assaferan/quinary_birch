@@ -22,7 +22,8 @@ typedef enum ReductionMethod
   {
    GREEDY,
    CANONICAL_FORM,
-   GREEDY_FULL
+   GREEDY_FULL,
+   MINKOWSKI
   } ReductionMethod;
 
 /* Builtins */

@@ -11,6 +11,9 @@
 #include "UnivariatePoly.h"
 
 template<typename R>
+std::ostream& operator<<(std::ostream&, const UnivariatePolyInt<R> &);
+
+template<typename R>
 class UnivariatePolyInt : public UnivariatePoly< Integer<R>, IntegerRing<R> >
 {
 public:

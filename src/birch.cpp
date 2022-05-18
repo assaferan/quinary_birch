@@ -46,6 +46,10 @@ int main(int argc, char* argv[])
 	alg = GREEDY_FULL;
 	is_valid = true;
       }
+      if (param_str == "minkowski") {
+	alg = MINKOWSKI;
+	is_valid = true;
+      }
     }
     
     if (!is_valid)

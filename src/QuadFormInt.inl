@@ -12,6 +12,19 @@
 
 #endif // ONLY_GREEDY
 
+#ifdef __cplusplus
+// Being compiled by a C++ compiler, inhibit name mangling
+extern "C" {
+#endif
+  
+#include "carat/getput.h"
+#include "carat/matrix.h"
+#include "carat/reduction.h"
+
+#ifdef __cplusplus
+}  // End of extern "C"
+#endif
+  
 #include "birch_util.h"
 #include "Fp.h"
 #include "FpElement.h"
@@ -635,10 +648,92 @@ inline void QuadFormInt<R,n>::_closestLatticeVector(SquareMatrixInt<R,n> &q,
 
 #ifdef DEBUG_LEVEL_FULL
   std::cerr << "returning isometry: " << std::endl;
-  iso.a.prettyPrint(std::cerr, dim);
+  iso.integralMatrix().prettyPrint(std::cerr, dim);
   std::cerr << "transformed gram to: " << std::endl;
   q.prettyPrint(std::cerr, dim);
 #endif
+  return;
+}
+
+// Minkowski reduction, based on carat
+template<typename R, size_t n>
+inline void QuadFormInt<R,n>::minkowski_reduction(SquareMatrixInt<R,n>& gram,
+						  Isometry<R,n>& s)
+{
+#ifdef DEBUG_LEVEL_FULL
+  Isometry<R,n> s0 = s;
+  SquareMatrixInt<R,n> q0 = gram;
+#endif
+  
+  // converting to matrix_TYP for carat
+  
+  matrix_TYP *mat, *red, *mink, *T1, *T2;
+  int **M;
+  flag_TYP flags;
+
+  flags.Symmetric = TRUE;
+  flags.Integral = TRUE;
+  flags.Diagonal = FALSE;
+  flags.Scalar = FALSE;
+  
+  mat = init_mat(n,n,"");
+
+  M = mat->array.SZ;
+  for (int  i = 0; i < n; i++) {
+    for (int j = 0; j < n ; j++) {
+      M[i][j] = birch_util::convertInteger<R,unsigned int>(gram[i][j]);
+    }
+  }
+
+  mat->flags.Integral  = flags.Integral;
+  mat->flags.Symmetric = flags.Symmetric;
+  mat->flags.Diagonal  = flags.Diagonal;
+  mat->flags.Scalar    = flags.Scalar;
+  Check_mat(mat);
+
+  // Performing Minkowski reduction
+  
+  T1 = init_mat(n, n, "");
+  red = pair_red(mat, T1);
+  
+  T2 = init_mat(n, n, "");
+  mink = mink_red(red, T2);
+
+  SquareMatrixInt<R,n> s1, s2;
+
+  // This function is not exposed. maybe try later
+  // T = intmat_mul(T1, T2);
+
+  // converting back
+
+  M = mink->array.SZ;
+  for (int  i = 0; i < n; i++) {
+    for (int j = 0; j < n ; j++) {
+      gram(i,j) = M[i][j];
+    }
+  }
+
+  M = T1->array.SZ;
+  for (int  i = 0; i < n; i++) {
+    for (int j = 0; j < n ; j++) {
+      s1(i,j) = M[j][i];
+    }
+  }
+
+  M = T2->array.SZ;
+  for (int  i = 0; i < n; i++) {
+    for (int j = 0; j < n ; j++) {
+      s2(i,j) = M[j][i];
+    }
+  }
+
+  s1 = s1 * s2;
+  s = s * s1;
+
+#ifdef DEBUG_LEVEL_FULL
+  assert((s0.inverse()*s).transform(q0) == gram);
+#endif
+
   return;
 }
 
@@ -1158,11 +1253,19 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
   size_t num_aut;
   
   switch(alg) {
+    // for now we compute in the minkowski case the automorphisms via greedy. !!! TODO : fix that!!!
+  case MINKOWSKI:
+    /*
+    minkowski_reduction(qf, isom);
+    QuadFormZZ<R,n> q_red(qf);
+    num_aut = q_red.numAutomorphisms(GREEDY);
+    break;
+    */
   case GREEDY :
   case GREEDY_FULL :
     num_aut = _iReduce(qf, isom, auts, true);
     break;
-    
+  
 #ifndef ONLY_GREEDY
   case CANONICAL_FORM :
     for (size_t i = 0; i < n; i++)
@@ -1226,6 +1329,9 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     isom = isom * can_basis.transpose();
     break;
 #endif // ONLY_GREEDY
+  case MINKOWSKI:
+    minkowski_reduction(qf, isom);
+    break;
   case GREEDY :
   case GREEDY_FULL:
     num_aut = _iReduce(qf, isom, auts, calc_aut);
@@ -1236,6 +1342,9 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   }
   QuadFormZZ<R,n> q_red(qf);
   if (calc_aut) {
+    // !!! TODO !!! Figure out how to calculate number of automorphisms in CARAT
+    if (alg == MINKOWSKI)
+      num_aut = q_red.numAutomorphisms(GREEDY);
 #ifndef ONLY_GREEDY
     // until we figure out how to compute automorphism groups in the canonical form package
     if (num_aut == 0) {
@@ -1265,6 +1374,10 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
   std::unordered_set< Isometry<R,n> > auts;
   
   switch(alg) {
+  case MINKOWSKI:
+    minkowski_reduction(qf, isom);
+    break;
+    
   case GREEDY :
     // We would like to be able to just perform greedy, but this fails to work at the moment
     greedy(qf, isom);
@@ -1577,7 +1690,7 @@ QuadFormInt<R,n>::generateOrbit(ReductionMethod alg) const
 			       Isometry<R,n> >::const_iterator i, j;
   orbit[qf] = s;
 
-  if (alg == GREEDY_FULL) {
+  if ((alg == GREEDY_FULL) || (alg == MINKOWSKI)) {
     return orbit;
   }
   
@@ -1682,7 +1795,7 @@ QuadFormInt<R,n>::_permutationOrbit(void) const
       Isometry<R,n> s;
       s.updatePerm(large_perm);
       q1 = s.transform(this->bilinearForm());
-      //      greedy(q1, s);
+      greedy(q1, s);
       QuadFormZZ<R,n> q(q1);
 
       assert(s.transform(this->bilinearForm()) == q.bilinearForm());
@@ -1708,7 +1821,7 @@ QuadFormInt<R,n>::_signOrbit(void) const
       tmp >>= 1;
     }
     q = s.transform(this->bilinearForm());
-    //    greedy(q,s);
+    greedy(q,s);
     QuadFormZZ<R,n> qq(q);
     assert(s.transform(this->bilinearForm()) == qq.bilinearForm());
     orbit[qq] = s;
@@ -1913,3 +2026,4 @@ inline std::ostream& operator<<(std::ostream& os, const QuadFormInt<R,n> & q)
   os << q.bilinearForm();
   return os;
 }
+

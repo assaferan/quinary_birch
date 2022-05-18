@@ -96,6 +96,8 @@ public:
   getQuinaryForms(const R & disc);
 
   static void greedy(SquareMatrixInt<R,n>& q, Isometry<R,n>& s, size_t dim = n);
+  
+  static void minkowski_reduction(SquareMatrixInt<R,n>& q, Isometry<R,n>& s);
 
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > generateOrbit(ReductionMethod alg) const;
 

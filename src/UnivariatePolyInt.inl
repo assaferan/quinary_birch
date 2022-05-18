@@ -311,3 +311,18 @@ UnivariatePolyInt<R>::operator=(const UnivariatePolyInt<T> & other)
   
   return (*this); 
 }
+
+template<typename R>
+inline std::ostream& operator<<(std::ostream& os, const UnivariatePolyInt<R> & p)
+{
+  p.print(os);
+  return os;
+}
+
+template<typename R>
+inline std::ostream& operator<<(std::ostream& os, const std::vector< UnivariatePolyInt<R> > & ps)
+{
+  for (auto p : ps)
+    os << p << ", ";
+  return os;
+}
