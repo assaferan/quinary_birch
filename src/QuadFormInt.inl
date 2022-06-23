@@ -1540,7 +1540,10 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
   
   switch(alg) {
   case MINKOWSKI:
-    minkowski_reduction2(qf, isom);
+    // Right now this takes too long for some reason.
+    // Instead, we just do greedy, hoping to get something minkowski reduced.
+    // minkowski_reduction2(qf, isom);
+    greedy(qf, isom);
     break;
     
   case GREEDY :
@@ -1909,8 +1912,19 @@ QuadFormInt<R,n>::short_orbit(const Isometry<R,n> & s) const
 	indices[l] = indices[l+1]; 
     }
     if (isom.determinant().abs() == 1) {
-      QuadFormZZ<R,n> qf = isom.transform(this->bilinearForm());
-      orbit[qf] = s*isom;
+      for (size_t signs = 0; signs < (1 << n); signs++) {
+	Isometry<R,n> sign_isom;
+	size_t rem_signs = signs;
+	for (size_t bit_no = 0; bit_no < n; bit_no++) {
+	  size_t bit = rem_signs & 1;
+	  rem_signs >>= 1;
+	  if (bit)
+	    sign_isom(bit_no, bit_no) = -1;
+	}
+	sign_isom = isom * sign_isom;
+	QuadFormZZ<R,n> qf = sign_isom.transform(this->bilinearForm());
+	orbit[qf] = s*sign_isom;
+      }
     }
   }
   return orbit;
