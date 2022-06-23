@@ -4,7 +4,7 @@ lib_LTLIBRARIES = libbirch.la
 # at the moment we define ONLY_GREEDY for ease of debugging
 
 OPT_CXXFLAGS = -O3 -DNDEBUG -Wall -Werror -std=c++11 -msse3 -mavx -DONLY_GREEDY
-DBG_CXXFLAGS = -g -Wall -Werror -std=c++11 -DDEBUG -DONLY_GREEDY -DDEBUG_LEVEL_FULL
+DBG_CXXFLAGS = -g -Wall -Werror -std=c++11 -DDEBUG -DONLY_GREEDY # -DDEBUG_LEVEL_FULL
 OPT_CXXFLAGS += -fomit-frame-pointer
 
 # These are not supported on macOS
