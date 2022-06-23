@@ -4,8 +4,8 @@
 #include "polyhedral_common/src_matrix/MAT_Matrix.h"
 // #include <stdalign.h>
 
-// We create this one to mkae matrix operations more efficient when the underlying class is integral
-// At first tries to let it inherit from SquareMatrix<Integer<R>, IntegerRing<R>, n>
+// We create this one to make matrix operations more efficient when the underlying class is integral
+// At first tried to let it inherit from SquareMatrix<Integer<R>, IntegerRing<R>, n>
 // but just access to elements was inefficient
 
 template <typename R, size_t n>

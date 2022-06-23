@@ -7,6 +7,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include <carat/bravais.h>
+
 #include "birch.h"
 #include "Integer.h"
 #include "ParseNipp.h"
@@ -98,11 +100,19 @@ public:
   static void greedy(SquareMatrixInt<R,n>& q, Isometry<R,n>& s, size_t dim = n);
   
   static void minkowski_reduction(SquareMatrixInt<R,n>& q, Isometry<R,n>& s);
+  
+  static void minkowski_reduction2(SquareMatrixInt<R,n>& q, Isometry<R,n>& s);
 
   std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > generateOrbit(ReductionMethod alg) const;
 
   inline bool isReduced(void) const { return this->_is_reduced; }
 
+  static SquareMatrixInt<R,n> short_basis(const SquareMatrixInt<R,n>& gram);
+
+  inline std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> > short_orbit(const Isometry<R,n> & s) const;
+  
+  inline bravais_TYP* automorphism_group(SquareMatrixInt<R,n>& gram) const;
+  
   size_t numAutomorphisms(ReductionMethod alg = GREEDY) const;
 
   inline void setNumAut(size_t num_aut)

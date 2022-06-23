@@ -350,9 +350,13 @@ Genus<R,n>::Genus(const QuadFormZZ<R,n>& q,
 	      foo.p = prime;
 	      foo.parent = current;
 
-	      bool added = this->_hash->add(foo);
-	      if (added)
+	      bool exists = this->_inv_hash->exists(foo);
+     
+	      // bool added = this->_hash->add(foo);
+	      // if (added)
+	      if (!exists)
 		{
+		  this->_hash->add(foo);
 		  const GenusRep<R,n>& temp = this->_hash->last();
 		  Z num_aut = temp.q.numAutomorphisms();
 		  Rational<Z> q_mass(1, num_aut);

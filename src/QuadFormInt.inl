@@ -16,10 +16,12 @@
 // Being compiled by a C++ compiler, inhibit name mangling
 extern "C" {
 #endif
-  
+
+#include "carat/autgrp.h"
 #include "carat/getput.h"
 #include "carat/matrix.h"
 #include "carat/reduction.h"
+#include "carat/symm.h"
 
 #ifdef __cplusplus
 }  // End of extern "C"
@@ -655,6 +657,28 @@ inline void QuadFormInt<R,n>::_closestLatticeVector(SquareMatrixInt<R,n> &q,
   return;
 }
 
+template<typename R, size_t n>
+inline void QuadFormInt<R,n>::minkowski_reduction2(SquareMatrixInt<R,n>& gram,
+						  Isometry<R,n>& s)
+{
+#ifdef DEBUG_LEVEL_FULL
+  Isometry<R,n> s0 = s;
+  SquareMatrixInt<R,n> q0 = gram;
+#endif
+
+  Isometry<R,n> short_vecs = short_basis(gram);
+
+  gram = short_vecs.transform(gram);
+
+  s = s*short_vecs;
+
+#ifdef DEBUG_LEVEL_FULL
+  assert((s0.inverse()*s).transform(q0) == gram);
+#endif
+
+  return;
+}
+
 // Minkowski reduction, based on carat
 template<typename R, size_t n>
 inline void QuadFormInt<R,n>::minkowski_reduction(SquareMatrixInt<R,n>& gram,
@@ -1237,6 +1261,145 @@ inline size_t QuadFormInt<R,n>::_generateAuts(std::unordered_set< Isometry<R,n> 
   return num_aut;
 }
 
+// automorphism group, based on carat
+template<typename R, size_t n>
+inline bravais_TYP* QuadFormInt<R,n>::automorphism_group(SquareMatrixInt<R,n>& gram) const
+{
+  // converting to matrix_TYP for carat
+  
+  matrix_TYP *Q;
+  int **M;
+ 
+  bravais_TYP* grp;
+  int i, Qmax;
+  matrix_TYP* SV;
+  int options[6] = {0};
+  
+  Q = init_mat(n,n,"");
+
+  M = Q->array.SZ;
+  for (int  i = 0; i < n; i++) {
+    for (int j = 0; j < n ; j++) {
+      M[i][j] = birch_util::convertInteger<R,unsigned int>(gram[i][j]);
+    }
+  }
+
+  Q->flags.Integral  = TRUE;
+  Q->flags.Symmetric = TRUE;
+  Q->flags.Diagonal  = FALSE;
+  Q->flags.Scalar    = FALSE;
+  Check_mat(Q);
+  
+  Qmax = Q->array.SZ[0][0];
+  for(i=1;i < Q->cols;i++) {
+    if(Q->array.SZ[i][i] > Qmax)
+      Qmax = Q->array.SZ[i][i];
+  }
+  SV = short_vectors(Q, Qmax, 0, 0, 0, &i);
+
+  grp = autgrp(&Q, 1, SV, NULL, 0, options);
+
+  free_mat(SV);
+  
+  return grp;
+}
+
+// short vector basis, based on carat
+template<typename R, size_t n>
+inline SquareMatrixInt<R,n> QuadFormInt<R,n>::short_basis(const SquareMatrixInt<R,n>& gram)
+{
+  // converting to matrix_TYP for carat
+  
+  matrix_TYP *Q;
+  int **M;
+ 
+  int i, Qmax;
+  matrix_TYP* SV;
+  size_t lengths[n];
+
+  for (int i = 0; i < n; i++)
+    lengths[i] = std::numeric_limits<size_t>::max();
+  
+  SquareMatrixInt<R,n> short_gram;
+  for (int i = 0; i < n; i++)
+    for (int j = 0; j < n ; j++)
+      short_gram(i,j) = 0;
+      
+  std::shared_ptr< const RationalField<R> > QQ = std::make_shared< RationalField<R> >();
+  
+  Q = init_mat(n,n,"");
+
+  M = Q->array.SZ;
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n ; j++) {
+      M[i][j] = birch_util::convertInteger<R,unsigned int>(gram[i][j]);
+    }
+  }
+
+  Q->flags.Integral  = TRUE;
+  Q->flags.Symmetric = TRUE;
+  Q->flags.Diagonal  = FALSE;
+  Q->flags.Scalar    = FALSE;
+  Check_mat(Q);
+  
+  Qmax = Q->array.SZ[0][0];
+  for(i=1;i < Q->cols;i++) {
+    if(Q->array.SZ[i][i] > Qmax)
+      Qmax = Q->array.SZ[i][i];
+  }
+  SV = short_vectors(Q, Qmax, 0, 0, 0, &i);
+
+  for (int i = 0; i < SV->rows; i++) {
+    // could be done faster, since they're already sorted
+    for (int j = 0; j < n; j++) {
+      if (SV->array.SZ[i][n] < lengths[j]) {
+	// needs to check it is linearly independent with the first j-1 vectors
+	// for checking linear dependencies
+	Matrix<Rational<R>, RationalField<R> > temp_short(QQ, n, n);
+	for (int l = 0; l < j; l++)
+	  for (int k = 0; k < n; k++)
+	    temp_short(l,k) = short_gram(k,l);
+	for (int k = 0; k < n; k++)
+	  temp_short(j,k) = static_cast< Rational<R> >(SV->array.SZ[i][k]);
+	for (int l = j+1; l < n; l++)
+	  for (int k = 0; k < n; k++)
+	    temp_short(l,k).makeZero();
+	if (temp_short.rank() == j+1) {
+	  // check those that depend on it afterwards
+	  int dep;
+	  for (dep = j; dep < n-1;) {
+	    for (int k = 0; k < n; k++)
+	      temp_short(dep+1,k) = short_gram(k,dep);
+	    if (temp_short.rank() == dep + 1)
+	      break;
+	    dep++;
+	  }
+	  // moving columns
+	  for (int l = dep-1; l >= j; l--) {
+	    for (int k = 0; k < n; k++)
+	      short_gram(k,l+1) = short_gram(k,l);
+	    lengths[l+1] = lengths[l];
+	  }
+	  for (int k = 0; k < n; k++)
+	    short_gram(k,j) = SV->array.SZ[i][k];
+	  
+	  lengths[j] = SV->array.SZ[i][n];
+	  break;
+	}
+      }
+    }
+  }
+
+#ifdef DEBUG
+  assert(short_gram.determinant() != 0);
+#endif // DEBUG
+
+  free_mat(SV);
+  
+  return short_gram;
+}
+
+
 template<typename R, size_t n>
 inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
 {
@@ -1261,6 +1424,8 @@ inline size_t QuadFormInt<R,n>::numAutomorphisms(ReductionMethod alg) const
     num_aut = q_red.numAutomorphisms(GREEDY);
     break;
     */
+    num_aut = automorphism_group(qf)->order;
+    break;
   case GREEDY :
   case GREEDY_FULL :
     num_aut = _iReduce(qf, isom, auts, true);
@@ -1330,7 +1495,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
     break;
 #endif // ONLY_GREEDY
   case MINKOWSKI:
-    minkowski_reduction(qf, isom);
+    minkowski_reduction2(qf, isom);
     break;
   case GREEDY :
   case GREEDY_FULL:
@@ -1344,7 +1509,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduce(const QuadFormZZ<R,n> & q,
   if (calc_aut) {
     // !!! TODO !!! Figure out how to calculate number of automorphisms in CARAT
     if (alg == MINKOWSKI)
-      num_aut = q_red.numAutomorphisms(GREEDY);
+      num_aut = q_red.numAutomorphisms(MINKOWSKI);
 #ifndef ONLY_GREEDY
     // until we figure out how to compute automorphism groups in the canonical form package
     if (num_aut == 0) {
@@ -1375,7 +1540,7 @@ inline QuadFormZZ<R,n> QuadFormInt<R,n>::reduceNonUnique(const QuadFormZZ<R,n> &
   
   switch(alg) {
   case MINKOWSKI:
-    minkowski_reduction(qf, isom);
+    minkowski_reduction2(qf, isom);
     break;
     
   case GREEDY :
@@ -1680,6 +1845,79 @@ bool QuadFormInt<R,n>::_signNormalizationFast(SquareMatrixInt<R,n> & qf,
 
 template<typename R, size_t n>
 inline std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >
+QuadFormInt<R,n>::short_orbit(const Isometry<R,n> & s) const
+{
+  std::unordered_map< QuadFormZZ<R,n>, Isometry<R,n> > orbit;
+  SquareMatrixInt<R,n> gram = this->bilinearForm();
+
+  // converting to matrix_TYP for carat
+  
+  matrix_TYP *Q;
+  int **M;
+ 
+  int i, Qmax;
+  matrix_TYP* SV;
+  size_t lengths[n];
+
+  for (int i = 0; i < n; i++)
+    lengths[i] = std::numeric_limits<size_t>::max();
+  
+  Q = init_mat(n,n,"");
+
+  M = Q->array.SZ;
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n ; j++) {
+      M[i][j] = birch_util::convertInteger<R,unsigned int>(gram[i][j]);
+    }
+  }
+
+  Q->flags.Integral  = TRUE;
+  Q->flags.Symmetric = TRUE;
+  Q->flags.Diagonal  = FALSE;
+  Q->flags.Scalar    = FALSE;
+  Check_mat(Q);
+  
+  Qmax = Q->array.SZ[0][0];
+  for(i=1;i < Q->cols;i++) {
+    if(Q->array.SZ[i][i] > Qmax)
+      Qmax = Q->array.SZ[i][i];
+  }
+  
+  SV = short_vectors(Q, Qmax, 0, 0, 0, &i);
+
+  // needs to go over all possible tuples of short vectors.
+  // Right now only checkks for right determinant only after constructing
+  
+  size_t num_bases = SV->rows;
+  for (size_t i = 1; i < n; i++)
+    num_bases *= (SV->rows-i);
+  
+  for (size_t i = 0; i < num_bases; i++) {
+    size_t idx_var = i;
+    size_t num_vecs = SV->rows;
+    Isometry<R,n> isom;
+    std::vector<size_t> indices(num_vecs);
+    for (size_t j = 0; j < num_vecs; j++)
+      indices[j] = j;
+    for (size_t j = 0; j < n; j++) {
+      size_t vec_idx = idx_var % num_vecs;
+      idx_var /= num_vecs;
+      num_vecs--;
+      for (int k = 0; k < n; k++)
+	isom(k,j) = SV->array.SZ[indices[vec_idx]][k];
+      for (size_t l = vec_idx; l < num_vecs; l++)
+	indices[l] = indices[l+1]; 
+    }
+    if (isom.determinant().abs() == 1) {
+      QuadFormZZ<R,n> qf = isom.transform(this->bilinearForm());
+      orbit[qf] = s*isom;
+    }
+  }
+  return orbit;
+}
+
+template<typename R, size_t n>
+inline std::unordered_map<QuadFormZZ<R,n>, Isometry<R,n> >
 QuadFormInt<R,n>::generateOrbit(ReductionMethod alg) const
 {
   Isometry<R,n> s;
@@ -1690,8 +1928,12 @@ QuadFormInt<R,n>::generateOrbit(ReductionMethod alg) const
 			       Isometry<R,n> >::const_iterator i, j;
   orbit[qf] = s;
 
-  if ((alg == GREEDY_FULL) || (alg == MINKOWSKI)) {
+  if (alg == GREEDY_FULL) {
     return orbit;
+  }
+
+  if (alg == MINKOWSKI) {
+    return short_orbit(s);
   }
   
   // if n == 5 and all 5 shortest vectors are of the same length
