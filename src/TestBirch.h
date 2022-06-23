@@ -50,8 +50,14 @@ struct EigenvalueVector
   inline bool operator==(const EigenvalueVector & other) const
   {
     if (vec.size() != other.size()) return false;
-    for (size_t i = 0; i < vec.size(); i++)
-      if (vec[i] != other[i]) return false;
+    for (size_t i = 0; i < vec.size(); i++) {
+      // could be isomorphic number fields. Right now just compare minimal polyomials
+      // The right thing to do would be to loop over isomorphisms between the fields,
+      // but it requires some more infrastructure.
+      //      if (vec[i].parent() != other[i].parent()) return false;
+      //if (vec[i] != other[i]) return false;
+      if (vec[i].minimalPolynomial() != other[i].minimalPolynomial()) return false;
+    }
     return true;
   }
   
